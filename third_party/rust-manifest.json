@@ -1,0 +1,3856 @@
+{
+  "scope": "Complete Cargo.lock dependency superset from exact Python source releases; includes build/test/other-platform dependencies, not a claim all are in the binary.",
+  "source_packages": [
+    {
+      "name": "cryptography",
+      "version": "49.0.0",
+      "source_url": "https://files.pythonhosted.org/packages/1f/99/d1c90d6041656cc6ee229dc99cd67fd0cd5aec3c5f7d72fffc27cc750054/cryptography-49.0.0.tar.gz",
+      "source_sha256": "f89660a348f4f78a92366240a61404e337586ef7f5909a2fef59ca88ef505493",
+      "cargo_lock_sha256": "104f567ee229a7d3d27189d404e276be705bf2ca384753db6669fcf706591b1d"
+    },
+    {
+      "name": "pydantic_core",
+      "version": "2.46.4",
+      "source_url": "https://files.pythonhosted.org/packages/9d/56/921726b776ace8d8f5db44c4ef961006580d91dc52b803c489fafd1aa249/pydantic_core-2.46.4.tar.gz",
+      "source_sha256": "62f875393d7f270851f20523dd2e29f082bcc82292d66db2b64ea71f64b6e1c1",
+      "cargo_lock_sha256": "c3c27fc600d7dafd149229c6501271dbc5f6b4f7b1bfa116b32e77217c2b5038"
+    },
+    {
+      "name": "jiter",
+      "version": "0.15.0",
+      "source_url": "https://files.pythonhosted.org/packages/66/b5/55f06bb281d92fb3cc86d14e1def2bd908bb77693183e7cb1f5a3c388b0c/jiter-0.15.0.tar.gz",
+      "source_sha256": "4251acc80e2b7c9b7b8823456ea0fceeb0734dac2df7636d3c711b38476b5a76",
+      "cargo_lock_sha256": "0d505592368dfbe68dffdff2b54689723ad8f8fe3d9dc1e0d95754f6e1a70996"
+    },
+    {
+      "name": "watchfiles",
+      "version": "1.2.0",
+      "source_url": "https://files.pythonhosted.org/packages/cd/41/5e1a4bb12aac5f1493fa1bdc11154eca3b258ca4eba65d39c473fe19d8e9/watchfiles-1.2.0.tar.gz",
+      "source_sha256": "c995fba777f1ea992f090f9236e9284cf7a5d1a0130dd5a3d82c598cacd76838",
+      "cargo_lock_sha256": "407e77fc87db0affdd5fde15a495b9ac7dae182bda7b4cee9d39dff5e1c1504e"
+    }
+  ],
+  "crates": [
+    {
+      "name": "ahash",
+      "version": "0.8.12",
+      "url": "https://static.crates.io/crates/ahash/ahash-0.8.12.crate",
+      "sha256": "5a15f179cd60c4584b8a8c596927aadc462e27f2ca70c04e0071964a73ba7a75",
+      "used_by": [
+        "jiter",
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/ahash-0.8.12/LICENSE-APACHE",
+        "upstream/rust/ahash-0.8.12/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "aho-corasick",
+      "version": "1.1.3",
+      "url": "https://static.crates.io/crates/aho-corasick/aho-corasick-1.1.3.crate",
+      "sha256": "8e60d3430d3a69478ad0993f19238d2df97c507009a52b3c10addcd7f6bcb916",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Unlicense OR MIT",
+      "documents": [
+        "upstream/rust/aho-corasick-1.1.3/COPYING",
+        "upstream/rust/aho-corasick-1.1.3/LICENSE-MIT",
+        "upstream/rust/aho-corasick-1.1.3/UNLICENSE"
+      ]
+    },
+    {
+      "name": "aho-corasick",
+      "version": "1.1.4",
+      "url": "https://static.crates.io/crates/aho-corasick/aho-corasick-1.1.4.crate",
+      "sha256": "ddd31a130427c27518df266943a5308ed92d4b226cc639f5a8f1002816174301",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "Unlicense OR MIT",
+      "documents": [
+        "upstream/rust/aho-corasick-1.1.4/COPYING",
+        "upstream/rust/aho-corasick-1.1.4/LICENSE-MIT",
+        "upstream/rust/aho-corasick-1.1.4/UNLICENSE"
+      ]
+    },
+    {
+      "name": "allocator-api2",
+      "version": "0.2.21",
+      "url": "https://static.crates.io/crates/allocator-api2/allocator-api2-0.2.21.crate",
+      "sha256": "683d7910e743518b0e34f1186f92494becacb047c7b6bf616c96772180fef923",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/allocator-api2-0.2.21/LICENSE-APACHE",
+        "upstream/rust/allocator-api2-0.2.21/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "anes",
+      "version": "0.1.6",
+      "url": "https://static.crates.io/crates/anes/anes-0.1.6.crate",
+      "sha256": "4b46cbb362ab8752921c97e041f5e366ee6297bd428a31275b9fcf1e380f7299",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/anes-0.1.6/repository/LICENSE-APACHE",
+        "upstream/rust/anes-0.1.6/repository/LICENSE-MIT"
+      ],
+      "notice_sources": [
+        {
+          "file": "upstream/rust/anes-0.1.6/repository/LICENSE-APACHE",
+          "url": "https://raw.githubusercontent.com/zrzka/anes-rs/378ac7461ecac29fde9e10df7b08359d1315a9ad/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+        },
+        {
+          "file": "upstream/rust/anes-0.1.6/repository/LICENSE-MIT",
+          "url": "https://raw.githubusercontent.com/zrzka/anes-rs/378ac7461ecac29fde9e10df7b08359d1315a9ad/LICENSE-MIT",
+          "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+        }
+      ]
+    },
+    {
+      "name": "anstyle",
+      "version": "1.0.14",
+      "url": "https://static.crates.io/crates/anstyle/anstyle-1.0.14.crate",
+      "sha256": "940b3a0ca603d1eade50a4846a2afffd5ef57a9feac2c0e2ec2e14f9ead76000",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/anstyle-1.0.14/LICENSE-APACHE",
+        "upstream/rust/anstyle-1.0.14/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "anyhow",
+      "version": "1.0.102",
+      "url": "https://static.crates.io/crates/anyhow/anyhow-1.0.102.crate",
+      "sha256": "7f202df86484c868dbad7eaa557ef785d5c66295e41b460ef922eca0723b842c",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/anyhow-1.0.102/LICENSE-APACHE",
+        "upstream/rust/anyhow-1.0.102/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "asn1",
+      "version": "0.24.1",
+      "url": "https://static.crates.io/crates/asn1/asn1-0.24.1.crate",
+      "sha256": "c9795210620c0cb3f9a7ce4f882808c38e1ef7b347c90591dceae0886e031fb1",
+      "used_by": [
+        "cryptography"
+      ],
+      "license_metadata": "BSD-3-Clause",
+      "documents": [
+        "upstream/rust/asn1-0.24.1/LICENSE"
+      ]
+    },
+    {
+      "name": "asn1_derive",
+      "version": "0.24.1",
+      "url": "https://static.crates.io/crates/asn1_derive/asn1_derive-0.24.1.crate",
+      "sha256": "909e307f1cc32bb8bccbd98f446e6d1bf03fa30f7b53a4337da7181ad30fa11a",
+      "used_by": [
+        "cryptography"
+      ],
+      "license_metadata": "BSD-3-Clause",
+      "documents": [
+        "upstream/rust/asn1_derive-0.24.1/LICENSE"
+      ]
+    },
+    {
+      "name": "autocfg",
+      "version": "1.3.0",
+      "url": "https://static.crates.io/crates/autocfg/autocfg-1.3.0.crate",
+      "sha256": "0c4b4d0bd25bd0b74681c0ad21497610ce1b7c91b1022cd21c80c6fbdd9476b0",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/autocfg-1.3.0/LICENSE-APACHE",
+        "upstream/rust/autocfg-1.3.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "autocfg",
+      "version": "1.5.0",
+      "url": "https://static.crates.io/crates/autocfg/autocfg-1.5.0.crate",
+      "sha256": "c08606f8c3cbf4ce6ec8e28fb0014a2c086708fe954eaa885384a6165172e7e8",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/autocfg-1.5.0/LICENSE-APACHE",
+        "upstream/rust/autocfg-1.5.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "base64",
+      "version": "0.22.1",
+      "url": "https://static.crates.io/crates/base64/base64-0.22.1.crate",
+      "sha256": "72b3254f16251a8381aa12e40e3c4d2f0199f8c6508fbecb9d91f575e0fbb8c6",
+      "used_by": [
+        "cryptography",
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/base64-0.22.1/LICENSE-APACHE",
+        "upstream/rust/base64-0.22.1/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "bitflags",
+      "version": "1.3.2",
+      "url": "https://static.crates.io/crates/bitflags/bitflags-1.3.2.crate",
+      "sha256": "bef38d45163c2f1dde094a7dfd33ccf595c92905c8f8f4fdc18d06fb1037718a",
+      "used_by": [
+        "watchfiles"
+      ],
+      "license_metadata": "MIT/Apache-2.0",
+      "documents": [
+        "upstream/rust/bitflags-1.3.2/LICENSE-APACHE",
+        "upstream/rust/bitflags-1.3.2/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "bitflags",
+      "version": "2.11.1",
+      "url": "https://static.crates.io/crates/bitflags/bitflags-2.11.1.crate",
+      "sha256": "c4512299f36f043ab09a583e57bceb5a5aab7a73db1805848e8fef3c9e8c78b3",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/bitflags-2.11.1/LICENSE-APACHE",
+        "upstream/rust/bitflags-2.11.1/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "bitflags",
+      "version": "2.13.0",
+      "url": "https://static.crates.io/crates/bitflags/bitflags-2.13.0.crate",
+      "sha256": "b4388bee8683e3d04af747c73422af53102d2bd24d9eadb6cbc100baef4b43f8",
+      "used_by": [
+        "cryptography"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/bitflags-2.13.0/LICENSE-APACHE",
+        "upstream/rust/bitflags-2.13.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "bitflags",
+      "version": "2.7.0",
+      "url": "https://static.crates.io/crates/bitflags/bitflags-2.7.0.crate",
+      "sha256": "1be3f42a67d6d345ecd59f675f3f012d6974981560836e938c22b424b85ce1be",
+      "used_by": [
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/bitflags-2.7.0/LICENSE-APACHE",
+        "upstream/rust/bitflags-2.7.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "bitflags",
+      "version": "2.9.1",
+      "url": "https://static.crates.io/crates/bitflags/bitflags-2.9.1.crate",
+      "sha256": "1b8e56985ec62d17e9c1001dc89c88ecd7dc08e47eba5ec7c29c7b5eeecde967",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/bitflags-2.9.1/LICENSE-APACHE",
+        "upstream/rust/bitflags-2.9.1/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "bitvec",
+      "version": "1.0.1",
+      "url": "https://static.crates.io/crates/bitvec/bitvec-1.0.1.crate",
+      "sha256": "1bc2832c24239b0141d5674bb9174f9d68a8b5b3f2753311927c172ca46f7e9c",
+      "used_by": [
+        "jiter",
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/bitvec-1.0.1/LICENSE.txt"
+      ]
+    },
+    {
+      "name": "bumpalo",
+      "version": "3.19.0",
+      "url": "https://static.crates.io/crates/bumpalo/bumpalo-3.19.0.crate",
+      "sha256": "46c5e41b57b8bba42a04676d81cb89e9ee8e859a1a66f80a5a72e1cb76b34d43",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/bumpalo-3.19.0/LICENSE-APACHE",
+        "upstream/rust/bumpalo-3.19.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "bumpalo",
+      "version": "3.20.2",
+      "url": "https://static.crates.io/crates/bumpalo/bumpalo-3.20.2.crate",
+      "sha256": "5d20789868f4b01b2f2caec9f5c4e0213b41e3e5702a50157d699ae31ced2fcb",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/bumpalo-3.20.2/LICENSE-APACHE",
+        "upstream/rust/bumpalo-3.20.2/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "cast",
+      "version": "0.3.0",
+      "url": "https://static.crates.io/crates/cast/cast-0.3.0.crate",
+      "sha256": "37b2a672a2cb129a2e41c10b1224bb368f9f37a2b16b612598138befd7b37eb5",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/cast-0.3.0/LICENSE-APACHE",
+        "upstream/rust/cast-0.3.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "cc",
+      "version": "1.0.101",
+      "url": "https://static.crates.io/crates/cc/cc-1.0.101.crate",
+      "sha256": "ac367972e516d45567c7eafc73d24e1c193dcf200a8d94e9db7b3d38b349572d",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/cc-1.0.101/LICENSE-APACHE",
+        "upstream/rust/cc-1.0.101/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "cc",
+      "version": "1.0.96",
+      "url": "https://static.crates.io/crates/cc/cc-1.0.96.crate",
+      "sha256": "065a29261d53ba54260972629f9ca6bffa69bac13cd1fed61420f7fa68b9f8bd",
+      "used_by": [
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/cc-1.0.96/LICENSE-APACHE",
+        "upstream/rust/cc-1.0.96/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "cc",
+      "version": "1.2.62",
+      "url": "https://static.crates.io/crates/cc/cc-1.2.62.crate",
+      "sha256": "a1dce859f0832a7d088c4f1119888ab94ef4b5d6795d1ce05afb7fe159d79f98",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/cc-1.2.62/LICENSE-APACHE",
+        "upstream/rust/cc-1.2.62/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "cc",
+      "version": "1.2.64",
+      "url": "https://static.crates.io/crates/cc/cc-1.2.64.crate",
+      "sha256": "dad887fd958be91b5098c0248def011f4523ab786cd411be668777e55063501f",
+      "used_by": [
+        "cryptography"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/cc-1.2.64/LICENSE-APACHE",
+        "upstream/rust/cc-1.2.64/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "cfg-if",
+      "version": "1.0.0",
+      "url": "https://static.crates.io/crates/cfg-if/cfg-if-1.0.0.crate",
+      "sha256": "baf1de4339761588bc0619e3cbc0120ee582ebb74b53b4efbf79117bd2da40fd",
+      "used_by": [
+        "pydantic_core",
+        "watchfiles"
+      ],
+      "license_metadata": "MIT/Apache-2.0",
+      "documents": [
+        "upstream/rust/cfg-if-1.0.0/LICENSE-APACHE",
+        "upstream/rust/cfg-if-1.0.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "cfg-if",
+      "version": "1.0.4",
+      "url": "https://static.crates.io/crates/cfg-if/cfg-if-1.0.4.crate",
+      "sha256": "9330f8b2ff13f34540b44e946ef35111825727b38d33286ef986142615121801",
+      "used_by": [
+        "cryptography",
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/cfg-if-1.0.4/LICENSE-APACHE",
+        "upstream/rust/cfg-if-1.0.4/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "ciborium",
+      "version": "0.2.2",
+      "url": "https://static.crates.io/crates/ciborium/ciborium-0.2.2.crate",
+      "sha256": "42e69ffd6f0917f5c029256a24d0161db17cea3997d185db0d35926308770f0e",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "Apache-2.0",
+      "documents": [
+        "upstream/rust/ciborium-0.2.2/LICENSE"
+      ]
+    },
+    {
+      "name": "ciborium-io",
+      "version": "0.2.2",
+      "url": "https://static.crates.io/crates/ciborium-io/ciborium-io-0.2.2.crate",
+      "sha256": "05afea1e0a06c9be33d539b876f1ce3692f4afea2cb41f740e7743225ed1c757",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "Apache-2.0",
+      "documents": [
+        "upstream/rust/ciborium-io-0.2.2/LICENSE"
+      ]
+    },
+    {
+      "name": "ciborium-ll",
+      "version": "0.2.2",
+      "url": "https://static.crates.io/crates/ciborium-ll/ciborium-ll-0.2.2.crate",
+      "sha256": "57663b653d948a338bfb3eeba9bb2fd5fcfaecb9e199e87e1eda4d9e8b240fd9",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "Apache-2.0",
+      "documents": [
+        "upstream/rust/ciborium-ll-0.2.2/LICENSE"
+      ]
+    },
+    {
+      "name": "clap",
+      "version": "4.6.1",
+      "url": "https://static.crates.io/crates/clap/clap-4.6.1.crate",
+      "sha256": "1ddb117e43bbf7dacf0a4190fef4d345b9bad68dfc649cb349e7d17d28428e51",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/clap-4.6.1/LICENSE-APACHE",
+        "upstream/rust/clap-4.6.1/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "clap_builder",
+      "version": "4.6.0",
+      "url": "https://static.crates.io/crates/clap_builder/clap_builder-4.6.0.crate",
+      "sha256": "714a53001bf66416adb0e2ef5ac857140e7dc3a0c48fb28b2f10762fc4b5069f",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/clap_builder-4.6.0/LICENSE-APACHE",
+        "upstream/rust/clap_builder-4.6.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "clap_lex",
+      "version": "1.1.0",
+      "url": "https://static.crates.io/crates/clap_lex/clap_lex-1.1.0.crate",
+      "sha256": "c8d4a3bb8b1e0c1050499d1815f5ab16d04f0959b233085fb31653fbfc9d98f9",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/clap_lex-1.1.0/LICENSE-APACHE",
+        "upstream/rust/clap_lex-1.1.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "codspeed",
+      "version": "2.10.1",
+      "url": "https://static.crates.io/crates/codspeed/codspeed-2.10.1.crate",
+      "sha256": "93f4cce9c27c49c4f101fffeebb1826f41a9df2e7498b7cd4d95c0658b796c6c",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/codspeed-2.10.1/repository/LICENSE-APACHE",
+        "upstream/rust/codspeed-2.10.1/repository/LICENSE-MIT"
+      ],
+      "notice_sources": [
+        {
+          "file": "upstream/rust/codspeed-2.10.1/repository/LICENSE-APACHE",
+          "url": "https://raw.githubusercontent.com/CodSpeedHQ/codspeed-rust/071a15cf33fc266221ba444ef0734e5622655556/LICENSE-APACHE",
+          "sha256": "97882764198c718e6bcccf6a776e8c4db5af31782d6f0b409803c737d5e92a46"
+        },
+        {
+          "file": "upstream/rust/codspeed-2.10.1/repository/LICENSE-MIT",
+          "url": "https://raw.githubusercontent.com/CodSpeedHQ/codspeed-rust/071a15cf33fc266221ba444ef0734e5622655556/LICENSE-MIT",
+          "sha256": "8bdf389981158ed3e82ec001461023c14a91b802e964caaba3e1f5e82f3097fc"
+        }
+      ]
+    },
+    {
+      "name": "codspeed-criterion-compat",
+      "version": "2.10.1",
+      "url": "https://static.crates.io/crates/codspeed-criterion-compat/codspeed-criterion-compat-2.10.1.crate",
+      "sha256": "c3c23d880a28a2aab52d38ca8481dd7a3187157d0a952196b6db1db3c8499725",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/codspeed-criterion-compat-2.10.1/repository/LICENSE-APACHE",
+        "upstream/rust/codspeed-criterion-compat-2.10.1/repository/LICENSE-MIT"
+      ],
+      "notice_sources": [
+        {
+          "file": "upstream/rust/codspeed-criterion-compat-2.10.1/repository/LICENSE-APACHE",
+          "url": "https://raw.githubusercontent.com/CodSpeedHQ/codspeed-rust/071a15cf33fc266221ba444ef0734e5622655556/LICENSE-APACHE",
+          "sha256": "97882764198c718e6bcccf6a776e8c4db5af31782d6f0b409803c737d5e92a46"
+        },
+        {
+          "file": "upstream/rust/codspeed-criterion-compat-2.10.1/repository/LICENSE-MIT",
+          "url": "https://raw.githubusercontent.com/CodSpeedHQ/codspeed-rust/071a15cf33fc266221ba444ef0734e5622655556/LICENSE-MIT",
+          "sha256": "8bdf389981158ed3e82ec001461023c14a91b802e964caaba3e1f5e82f3097fc"
+        }
+      ]
+    },
+    {
+      "name": "codspeed-criterion-compat-walltime",
+      "version": "2.10.1",
+      "url": "https://static.crates.io/crates/codspeed-criterion-compat-walltime/codspeed-criterion-compat-walltime-2.10.1.crate",
+      "sha256": "7b0a2f7365e347f4f22a67e9ea689bf7bc89900a354e22e26cf8a531a42c8fbb",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/codspeed-criterion-compat-walltime-2.10.1/LICENSE-APACHE",
+        "upstream/rust/codspeed-criterion-compat-walltime-2.10.1/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "colored",
+      "version": "2.2.0",
+      "url": "https://static.crates.io/crates/colored/colored-2.2.0.crate",
+      "sha256": "117725a109d387c937a1533ce01b450cbde6b88abceea8473c4d7a85853cda3c",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MPL-2.0",
+      "documents": [
+        "upstream/rust/colored-2.2.0/LICENSE"
+      ]
+    },
+    {
+      "name": "criterion-plot",
+      "version": "0.5.0",
+      "url": "https://static.crates.io/crates/criterion-plot/criterion-plot-0.5.0.crate",
+      "sha256": "6b50826342786a51a89e2da3a28f1c32b06e387201bc2d19791f622c673706b1",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT/Apache-2.0",
+      "documents": [
+        "upstream/rust/criterion-plot-0.5.0/LICENSE-APACHE",
+        "upstream/rust/criterion-plot-0.5.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "crossbeam-channel",
+      "version": "0.5.15",
+      "url": "https://static.crates.io/crates/crossbeam-channel/crossbeam-channel-0.5.15.crate",
+      "sha256": "82b8f8f868b36967f9606790d1903570de9ceaf870a7bf9fbbd3016d636a2cb2",
+      "used_by": [
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/crossbeam-channel-0.5.15/LICENSE-APACHE",
+        "upstream/rust/crossbeam-channel-0.5.15/LICENSE-MIT",
+        "upstream/rust/crossbeam-channel-0.5.15/LICENSE-THIRD-PARTY"
+      ]
+    },
+    {
+      "name": "crossbeam-deque",
+      "version": "0.8.6",
+      "url": "https://static.crates.io/crates/crossbeam-deque/crossbeam-deque-0.8.6.crate",
+      "sha256": "9dd111b7b7f7d55b72c0a6ae361660ee5853c9af73f70c3c2ef6858b950e2e51",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/crossbeam-deque-0.8.6/LICENSE-APACHE",
+        "upstream/rust/crossbeam-deque-0.8.6/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "crossbeam-epoch",
+      "version": "0.9.18",
+      "url": "https://static.crates.io/crates/crossbeam-epoch/crossbeam-epoch-0.9.18.crate",
+      "sha256": "5b82ac4a3c2ca9c3460964f020e1402edd5753411d7737aa39c3714ad1b5420e",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/crossbeam-epoch-0.9.18/LICENSE-APACHE",
+        "upstream/rust/crossbeam-epoch-0.9.18/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "crossbeam-utils",
+      "version": "0.8.19",
+      "url": "https://static.crates.io/crates/crossbeam-utils/crossbeam-utils-0.8.19.crate",
+      "sha256": "248e3bacc7dc6baa3b21e405ee045c3047101a49145e7e9eca583ab4c2ca5345",
+      "used_by": [
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/crossbeam-utils-0.8.19/LICENSE-APACHE",
+        "upstream/rust/crossbeam-utils-0.8.19/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "crossbeam-utils",
+      "version": "0.8.21",
+      "url": "https://static.crates.io/crates/crossbeam-utils/crossbeam-utils-0.8.21.crate",
+      "sha256": "d0a5c400df2834b80a4c3327b3aad3a4c4cd4de0629063962b03235697506a28",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/crossbeam-utils-0.8.21/LICENSE-APACHE",
+        "upstream/rust/crossbeam-utils-0.8.21/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "crunchy",
+      "version": "0.2.4",
+      "url": "https://static.crates.io/crates/crunchy/crunchy-0.2.4.crate",
+      "sha256": "460fbee9c2c2f33933d720630a6a0bac33ba7053db5344fac858d4b8952d77d5",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/crunchy-0.2.4/LICENSE"
+      ]
+    },
+    {
+      "name": "displaydoc",
+      "version": "0.2.5",
+      "url": "https://static.crates.io/crates/displaydoc/displaydoc-0.2.5.crate",
+      "sha256": "97369cbbc041bc366949bc74d34658d6cda5621039731c6310521892a3a20ae0",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/displaydoc-0.2.5/LICENSE-APACHE",
+        "upstream/rust/displaydoc-0.2.5/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "either",
+      "version": "1.15.0",
+      "url": "https://static.crates.io/crates/either/either-1.15.0.crate",
+      "sha256": "48c757948c5ede0e46177b7add2e67155f70e33c07fea8284df6576da70b3719",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/either-1.15.0/LICENSE-APACHE",
+        "upstream/rust/either-1.15.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "enum_dispatch",
+      "version": "0.3.13",
+      "url": "https://static.crates.io/crates/enum_dispatch/enum_dispatch-0.3.13.crate",
+      "sha256": "aa18ce2bc66555b3218614519ac839ddb759a7d6720732f979ef8d13be147ecd",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/enum_dispatch-0.3.13/LICENSE"
+      ]
+    },
+    {
+      "name": "equivalent",
+      "version": "1.0.2",
+      "url": "https://static.crates.io/crates/equivalent/equivalent-1.0.2.crate",
+      "sha256": "877a4ace8713b0bcf2a4e7eec82529c029f1d0619886d18145fea96c3ffe5c0f",
+      "used_by": [
+        "jiter",
+        "pydantic_core"
+      ],
+      "license_metadata": "Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/equivalent-1.0.2/LICENSE-APACHE",
+        "upstream/rust/equivalent-1.0.2/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "filetime",
+      "version": "0.2.24",
+      "url": "https://static.crates.io/crates/filetime/filetime-0.2.24.crate",
+      "sha256": "bf401df4a4e3872c4fe8151134cf483738e74b67fc934d6532c882b3d24a4550",
+      "used_by": [
+        "watchfiles"
+      ],
+      "license_metadata": "MIT/Apache-2.0",
+      "documents": [
+        "upstream/rust/filetime-0.2.24/LICENSE-APACHE",
+        "upstream/rust/filetime-0.2.24/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "find-msvc-tools",
+      "version": "0.1.9",
+      "url": "https://static.crates.io/crates/find-msvc-tools/find-msvc-tools-0.1.9.crate",
+      "sha256": "5baebc0774151f905a1a2cc41989300b1e6fbb29aff0ceffa1064fdd3088d582",
+      "used_by": [
+        "cryptography",
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/find-msvc-tools-0.1.9/LICENSE-APACHE",
+        "upstream/rust/find-msvc-tools-0.1.9/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "foldhash",
+      "version": "0.1.5",
+      "url": "https://static.crates.io/crates/foldhash/foldhash-0.1.5.crate",
+      "sha256": "d9c4f5dac5e15c24eb999c26181a6ca40b39fe946cbe4c263c7209467bc83af2",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "Zlib",
+      "documents": [
+        "upstream/rust/foldhash-0.1.5/LICENSE"
+      ]
+    },
+    {
+      "name": "foldhash",
+      "version": "0.2.0",
+      "url": "https://static.crates.io/crates/foldhash/foldhash-0.2.0.crate",
+      "sha256": "77ce24cb58228fbb8aa041425bb1050850ac19177686ea6e0f41a70416f56fdb",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Zlib",
+      "documents": [
+        "upstream/rust/foldhash-0.2.0/LICENSE"
+      ]
+    },
+    {
+      "name": "foreign-types",
+      "version": "0.3.2",
+      "url": "https://static.crates.io/crates/foreign-types/foreign-types-0.3.2.crate",
+      "sha256": "f6f339eb8adc052cd2ca78910fda869aefa38d22d5cb648e6485e4d3fc06f3b1",
+      "used_by": [
+        "cryptography"
+      ],
+      "license_metadata": "MIT/Apache-2.0",
+      "documents": [
+        "upstream/rust/foreign-types-0.3.2/LICENSE-APACHE",
+        "upstream/rust/foreign-types-0.3.2/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "foreign-types-shared",
+      "version": "0.1.1",
+      "url": "https://static.crates.io/crates/foreign-types-shared/foreign-types-shared-0.1.1.crate",
+      "sha256": "00b0228411908ca8685dba7fc2cdd70ec9990a6e753e89b6ac91a84c40fbaf4b",
+      "used_by": [
+        "cryptography"
+      ],
+      "license_metadata": "MIT/Apache-2.0",
+      "documents": [
+        "upstream/rust/foreign-types-shared-0.1.1/LICENSE-APACHE",
+        "upstream/rust/foreign-types-shared-0.1.1/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "form_urlencoded",
+      "version": "1.2.2",
+      "url": "https://static.crates.io/crates/form_urlencoded/form_urlencoded-1.2.2.crate",
+      "sha256": "cb4cb245038516f5f85277875cdaa4f7d2c9a0fa0468de06ed190163b1581fcf",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/form_urlencoded-1.2.2/LICENSE-APACHE",
+        "upstream/rust/form_urlencoded-1.2.2/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "fsevent-sys",
+      "version": "4.1.0",
+      "url": "https://static.crates.io/crates/fsevent-sys/fsevent-sys-4.1.0.crate",
+      "sha256": "76ee7a02da4d231650c7cea31349b889be2f45ddb3ef3032d2ec8185f6313fd2",
+      "used_by": [
+        "watchfiles"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/fsevent-sys-4.1.0/LICENSE"
+      ]
+    },
+    {
+      "name": "funty",
+      "version": "2.0.0",
+      "url": "https://static.crates.io/crates/funty/funty-2.0.0.crate",
+      "sha256": "e6d5a32815ae3f33302d95fdcb2ce17862f8c65363dcfd29360480ba1001fc9c",
+      "used_by": [
+        "jiter",
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/funty-2.0.0/LICENSE.txt"
+      ]
+    },
+    {
+      "name": "futures-core",
+      "version": "0.3.32",
+      "url": "https://static.crates.io/crates/futures-core/futures-core-0.3.32.crate",
+      "sha256": "7e3450815272ef58cec6d564423f6e755e25379b217b0bc688e295ba24df6b1d",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/futures-core-0.3.32/LICENSE-APACHE",
+        "upstream/rust/futures-core-0.3.32/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "futures-task",
+      "version": "0.3.32",
+      "url": "https://static.crates.io/crates/futures-task/futures-task-0.3.32.crate",
+      "sha256": "037711b3d59c33004d3856fbdc83b99d4ff37a24768fa1be9ce3538a1cde4393",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/futures-task-0.3.32/LICENSE-APACHE",
+        "upstream/rust/futures-task-0.3.32/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "futures-util",
+      "version": "0.3.32",
+      "url": "https://static.crates.io/crates/futures-util/futures-util-0.3.32.crate",
+      "sha256": "389ca41296e6190b48053de0321d02a77f32f8a5d2461dd38762c0593805c6d6",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/futures-util-0.3.32/LICENSE-APACHE",
+        "upstream/rust/futures-util-0.3.32/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "getrandom",
+      "version": "0.3.3",
+      "url": "https://static.crates.io/crates/getrandom/getrandom-0.3.3.crate",
+      "sha256": "26145e563e54f2cadc477553f1ec5ee650b00862f0a58bcd12cbdc5f0ea2d2f4",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/getrandom-0.3.3/LICENSE-APACHE",
+        "upstream/rust/getrandom-0.3.3/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "getrandom",
+      "version": "0.3.4",
+      "url": "https://static.crates.io/crates/getrandom/getrandom-0.3.4.crate",
+      "sha256": "899def5c37c4fd7b2664648c28120ecec138e4d395b459e5ca34f9cce2dd77fd",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/getrandom-0.3.4/LICENSE-APACHE",
+        "upstream/rust/getrandom-0.3.4/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "getrandom",
+      "version": "0.4.2",
+      "url": "https://static.crates.io/crates/getrandom/getrandom-0.4.2.crate",
+      "sha256": "0de51e6874e94e7bf76d726fc5d13ba782deca734ff60d5bb2fb2607c7406555",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/getrandom-0.4.2/LICENSE-APACHE",
+        "upstream/rust/getrandom-0.4.2/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "half",
+      "version": "2.7.1",
+      "url": "https://static.crates.io/crates/half/half-2.7.1.crate",
+      "sha256": "6ea2d84b969582b4b1864a92dc5d27cd2b77b622a8d79306834f1be5ba20d84b",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/half-2.7.1/LICENSE-APACHE",
+        "upstream/rust/half-2.7.1/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "hashbrown",
+      "version": "0.15.5",
+      "url": "https://static.crates.io/crates/hashbrown/hashbrown-0.15.5.crate",
+      "sha256": "9229cfe53dfd69f0609a49f65461bd93001ea1ef889cd5529dd176593f5338a1",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/hashbrown-0.15.5/LICENSE-APACHE",
+        "upstream/rust/hashbrown-0.15.5/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "hashbrown",
+      "version": "0.16.1",
+      "url": "https://static.crates.io/crates/hashbrown/hashbrown-0.16.1.crate",
+      "sha256": "841d1cc9bed7f9236f321df977030373f4a4163ae1a7dbfe1a51a2c1a51d9100",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/hashbrown-0.16.1/LICENSE-APACHE",
+        "upstream/rust/hashbrown-0.16.1/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "hashbrown",
+      "version": "0.17.1",
+      "url": "https://static.crates.io/crates/hashbrown/hashbrown-0.17.1.crate",
+      "sha256": "ed5909b6e89a2db4456e54cd5f673791d7eca6732202bbf2a9cc504fe2f9b84a",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/hashbrown-0.17.1/LICENSE-APACHE",
+        "upstream/rust/hashbrown-0.17.1/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "heck",
+      "version": "0.5.0",
+      "url": "https://static.crates.io/crates/heck/heck-0.5.0.crate",
+      "sha256": "2304e00983f87ffb38b55b444b5e3b60a884b5d30c0fca7d82fe33449bbe55ea",
+      "used_by": [
+        "cryptography",
+        "jiter",
+        "pydantic_core",
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/heck-0.5.0/LICENSE-APACHE",
+        "upstream/rust/heck-0.5.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "hermit-abi",
+      "version": "0.5.2",
+      "url": "https://static.crates.io/crates/hermit-abi/hermit-abi-0.5.2.crate",
+      "sha256": "fc0fef456e4baa96da950455cd02c081ca953b141298e41db3fc7e36b1da849c",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/hermit-abi-0.5.2/LICENSE-APACHE",
+        "upstream/rust/hermit-abi-0.5.2/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "hex",
+      "version": "0.4.3",
+      "url": "https://static.crates.io/crates/hex/hex-0.4.3.crate",
+      "sha256": "7f24254aa9a54b5c858eaee2f5bccdb46aaf0e486a595ed5fd8f86ba55232a70",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/hex-0.4.3/LICENSE-APACHE",
+        "upstream/rust/hex-0.4.3/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "icu_collections",
+      "version": "1.5.0",
+      "url": "https://static.crates.io/crates/icu_collections/icu_collections-1.5.0.crate",
+      "sha256": "db2fa452206ebee18c4b5c2274dbf1de17008e874b4dc4f0aea9d01ca79e4526",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Unicode-3.0",
+      "documents": [
+        "upstream/rust/icu_collections-1.5.0/LICENSE"
+      ]
+    },
+    {
+      "name": "icu_locid",
+      "version": "1.5.0",
+      "url": "https://static.crates.io/crates/icu_locid/icu_locid-1.5.0.crate",
+      "sha256": "13acbb8371917fc971be86fc8057c41a64b521c184808a698c02acc242dbf637",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Unicode-3.0",
+      "documents": [
+        "upstream/rust/icu_locid-1.5.0/LICENSE"
+      ]
+    },
+    {
+      "name": "icu_locid_transform",
+      "version": "1.5.0",
+      "url": "https://static.crates.io/crates/icu_locid_transform/icu_locid_transform-1.5.0.crate",
+      "sha256": "01d11ac35de8e40fdeda00d9e1e9d92525f3f9d887cdd7aa81d727596788b54e",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Unicode-3.0",
+      "documents": [
+        "upstream/rust/icu_locid_transform-1.5.0/LICENSE"
+      ]
+    },
+    {
+      "name": "icu_locid_transform_data",
+      "version": "1.5.0",
+      "url": "https://static.crates.io/crates/icu_locid_transform_data/icu_locid_transform_data-1.5.0.crate",
+      "sha256": "fdc8ff3388f852bede6b579ad4e978ab004f139284d7b28715f773507b946f6e",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Unicode-3.0",
+      "documents": [
+        "upstream/rust/icu_locid_transform_data-1.5.0/LICENSE"
+      ]
+    },
+    {
+      "name": "icu_normalizer",
+      "version": "1.5.0",
+      "url": "https://static.crates.io/crates/icu_normalizer/icu_normalizer-1.5.0.crate",
+      "sha256": "19ce3e0da2ec68599d193c93d088142efd7f9c5d6fc9b803774855747dc6a84f",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Unicode-3.0",
+      "documents": [
+        "upstream/rust/icu_normalizer-1.5.0/LICENSE"
+      ]
+    },
+    {
+      "name": "icu_normalizer_data",
+      "version": "1.5.0",
+      "url": "https://static.crates.io/crates/icu_normalizer_data/icu_normalizer_data-1.5.0.crate",
+      "sha256": "f8cafbf7aa791e9b22bec55a167906f9e1215fd475cd22adfcf660e03e989516",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Unicode-3.0",
+      "documents": [
+        "upstream/rust/icu_normalizer_data-1.5.0/LICENSE"
+      ]
+    },
+    {
+      "name": "icu_properties",
+      "version": "1.5.1",
+      "url": "https://static.crates.io/crates/icu_properties/icu_properties-1.5.1.crate",
+      "sha256": "93d6020766cfc6302c15dbbc9c8778c37e62c14427cb7f6e601d849e092aeef5",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Unicode-3.0",
+      "documents": [
+        "upstream/rust/icu_properties-1.5.1/LICENSE"
+      ]
+    },
+    {
+      "name": "icu_properties_data",
+      "version": "1.5.0",
+      "url": "https://static.crates.io/crates/icu_properties_data/icu_properties_data-1.5.0.crate",
+      "sha256": "67a8effbc3dd3e4ba1afa8ad918d5684b8868b3b26500753effea8d2eed19569",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Unicode-3.0",
+      "documents": [
+        "upstream/rust/icu_properties_data-1.5.0/LICENSE"
+      ]
+    },
+    {
+      "name": "icu_provider",
+      "version": "1.5.0",
+      "url": "https://static.crates.io/crates/icu_provider/icu_provider-1.5.0.crate",
+      "sha256": "6ed421c8a8ef78d3e2dbc98a973be2f3770cb42b606e3ab18d6237c4dfde68d9",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Unicode-3.0",
+      "documents": [
+        "upstream/rust/icu_provider-1.5.0/LICENSE"
+      ]
+    },
+    {
+      "name": "icu_provider_macros",
+      "version": "1.5.0",
+      "url": "https://static.crates.io/crates/icu_provider_macros/icu_provider_macros-1.5.0.crate",
+      "sha256": "1ec89e9337638ecdc08744df490b221a7399bf8d164eb52a665454e60e075ad6",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Unicode-3.0",
+      "documents": [
+        "upstream/rust/icu_provider_macros-1.5.0/LICENSE"
+      ]
+    },
+    {
+      "name": "id-arena",
+      "version": "2.3.0",
+      "url": "https://static.crates.io/crates/id-arena/id-arena-2.3.0.crate",
+      "sha256": "3d3067d79b975e8844ca9eb072e16b31c3c1c36928edf9c6789548c524d0d954",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT/Apache-2.0",
+      "documents": [
+        "upstream/rust/id-arena-2.3.0/LICENSE-APACHE",
+        "upstream/rust/id-arena-2.3.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "idna",
+      "version": "1.1.0",
+      "url": "https://static.crates.io/crates/idna/idna-1.1.0.crate",
+      "sha256": "3b0875f23caa03898994f6ddc501886a45c7d3d62d04d2d90788d47be1b1e4de",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/idna-1.1.0/LICENSE-APACHE",
+        "upstream/rust/idna-1.1.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "idna_adapter",
+      "version": "1.2.0",
+      "url": "https://static.crates.io/crates/idna_adapter/idna_adapter-1.2.0.crate",
+      "sha256": "daca1df1c957320b2cf139ac61e7bd64fed304c5040df000a745aa1de3b4ef71",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/idna_adapter-1.2.0/LICENSE-APACHE",
+        "upstream/rust/idna_adapter-1.2.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "indexmap",
+      "version": "2.14.0",
+      "url": "https://static.crates.io/crates/indexmap/indexmap-2.14.0.crate",
+      "sha256": "d466e9454f08e4a911e14806c24e16fba1b4c121d1ea474396f396069cf949d9",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/indexmap-2.14.0/LICENSE-APACHE",
+        "upstream/rust/indexmap-2.14.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "inotify",
+      "version": "0.11.0",
+      "url": "https://static.crates.io/crates/inotify/inotify-0.11.0.crate",
+      "sha256": "f37dccff2791ab604f9babef0ba14fbe0be30bd368dc541e2b08d07c8aa908f3",
+      "used_by": [
+        "watchfiles"
+      ],
+      "license_metadata": "ISC",
+      "documents": [
+        "upstream/rust/inotify-0.11.0/LICENSE"
+      ]
+    },
+    {
+      "name": "inotify-sys",
+      "version": "0.1.5",
+      "url": "https://static.crates.io/crates/inotify-sys/inotify-sys-0.1.5.crate",
+      "sha256": "e05c02b5e89bff3b946cedeca278abc628fe811e604f027c45a8aa3cf793d0eb",
+      "used_by": [
+        "watchfiles"
+      ],
+      "license_metadata": "ISC",
+      "documents": [
+        "upstream/rust/inotify-sys-0.1.5/LICENSE"
+      ]
+    },
+    {
+      "name": "is-terminal",
+      "version": "0.4.17",
+      "url": "https://static.crates.io/crates/is-terminal/is-terminal-0.4.17.crate",
+      "sha256": "3640c1c38b8e4e43584d8df18be5fc6b0aa314ce6ebf51b53313d4306cca8e46",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/is-terminal-0.4.17/LICENSE-MIT",
+        "upstream/rust/is-terminal-0.4.17/LICENSE-MIT-atty"
+      ]
+    },
+    {
+      "name": "itertools",
+      "version": "0.10.5",
+      "url": "https://static.crates.io/crates/itertools/itertools-0.10.5.crate",
+      "sha256": "b0fd2260e829bddf4cb6ea802289de2f86d6a7a690192fbe91b3f46e0f2c8473",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT/Apache-2.0",
+      "documents": [
+        "upstream/rust/itertools-0.10.5/LICENSE-APACHE",
+        "upstream/rust/itertools-0.10.5/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "itoa",
+      "version": "1.0.11",
+      "url": "https://static.crates.io/crates/itoa/itoa-1.0.11.crate",
+      "sha256": "49f1f14873335454500d59611f1cf4a4b0f786f9ac11f4312a78e4cf2566695b",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/itoa-1.0.11/LICENSE-APACHE",
+        "upstream/rust/itoa-1.0.11/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "itoa",
+      "version": "1.0.18",
+      "url": "https://static.crates.io/crates/itoa/itoa-1.0.18.crate",
+      "sha256": "8f42a60cbdf9a97f5d2305f08a87dc4e09308d1276d28c869c684d7777685682",
+      "used_by": [
+        "cryptography",
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/itoa-1.0.18/LICENSE-APACHE",
+        "upstream/rust/itoa-1.0.18/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "jiter",
+      "version": "0.14.0",
+      "url": "https://static.crates.io/crates/jiter/jiter-0.14.0.crate",
+      "sha256": "b6f3b5d3f84b36f4ad09fd1da896d23d9852a1aa86556578dd0289f43dce311d",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/jiter-0.14.0/LICENSE"
+      ]
+    },
+    {
+      "name": "js-sys",
+      "version": "0.3.77",
+      "url": "https://static.crates.io/crates/js-sys/js-sys-0.3.77.crate",
+      "sha256": "1cfaf33c695fc6e08064efbc1f72ec937429614f25eef83af942d0e227c3a28f",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/js-sys-0.3.77/LICENSE-APACHE",
+        "upstream/rust/js-sys-0.3.77/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "js-sys",
+      "version": "0.3.98",
+      "url": "https://static.crates.io/crates/js-sys/js-sys-0.3.98.crate",
+      "sha256": "67df7112613f8bfd9150013a0314e196f4800d3201ae742489d999db2f979f08",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/js-sys-0.3.98/LICENSE-APACHE",
+        "upstream/rust/js-sys-0.3.98/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "kqueue",
+      "version": "1.0.8",
+      "url": "https://static.crates.io/crates/kqueue/kqueue-1.0.8.crate",
+      "sha256": "7447f1ca1b7b563588a205fe93dea8df60fd981423a768bc1c0ded35ed147d0c",
+      "used_by": [
+        "watchfiles"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/kqueue-1.0.8/LICENSE"
+      ]
+    },
+    {
+      "name": "kqueue-sys",
+      "version": "1.0.4",
+      "url": "https://static.crates.io/crates/kqueue-sys/kqueue-sys-1.0.4.crate",
+      "sha256": "ed9625ffda8729b85e45cf04090035ac368927b8cebc34898e7c120f52e4838b",
+      "used_by": [
+        "watchfiles"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/kqueue-sys-1.0.4/LICENSE"
+      ]
+    },
+    {
+      "name": "lazy_static",
+      "version": "1.5.0",
+      "url": "https://static.crates.io/crates/lazy_static/lazy_static-1.5.0.crate",
+      "sha256": "bbd2bcb4c963f2ddae06a2efc7e9f3591312473c50c6685e1f298068316e66fe",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/lazy_static-1.5.0/LICENSE-APACHE",
+        "upstream/rust/lazy_static-1.5.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "leb128fmt",
+      "version": "0.1.0",
+      "url": "https://static.crates.io/crates/leb128fmt/leb128fmt-0.1.0.crate",
+      "sha256": "09edd9e8b54e49e587e4f6295a7d29c3ea94d469cb40ab8ca70b288248a81db2",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/leb128fmt-0.1.0/LICENSE-APACHE",
+        "upstream/rust/leb128fmt-0.1.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "lexical-parse-float",
+      "version": "1.0.5",
+      "url": "https://static.crates.io/crates/lexical-parse-float/lexical-parse-float-1.0.5.crate",
+      "sha256": "de6f9cb01fb0b08060209a057c048fcbab8717b4c1ecd2eac66ebfe39a65b0f2",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT/Apache-2.0",
+      "documents": [
+        "upstream/rust/lexical-parse-float-1.0.5/LICENSE-APACHE",
+        "upstream/rust/lexical-parse-float-1.0.5/LICENSE-MIT",
+        "upstream/rust/lexical-parse-float-1.0.5/LICENSE.md"
+      ]
+    },
+    {
+      "name": "lexical-parse-float",
+      "version": "1.0.6",
+      "url": "https://static.crates.io/crates/lexical-parse-float/lexical-parse-float-1.0.6.crate",
+      "sha256": "52a9f232fbd6f550bc0137dcb5f99ab674071ac2d690ac69704593cb4abbea56",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT/Apache-2.0",
+      "documents": [
+        "upstream/rust/lexical-parse-float-1.0.6/LICENSE-APACHE",
+        "upstream/rust/lexical-parse-float-1.0.6/LICENSE-MIT",
+        "upstream/rust/lexical-parse-float-1.0.6/LICENSE.md"
+      ]
+    },
+    {
+      "name": "lexical-parse-integer",
+      "version": "1.0.5",
+      "url": "https://static.crates.io/crates/lexical-parse-integer/lexical-parse-integer-1.0.5.crate",
+      "sha256": "72207aae22fc0a121ba7b6d479e42cbfea549af1479c3f3a4f12c70dd66df12e",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT/Apache-2.0",
+      "documents": [
+        "upstream/rust/lexical-parse-integer-1.0.5/LICENSE-APACHE",
+        "upstream/rust/lexical-parse-integer-1.0.5/LICENSE-MIT",
+        "upstream/rust/lexical-parse-integer-1.0.5/LICENSE.md"
+      ]
+    },
+    {
+      "name": "lexical-parse-integer",
+      "version": "1.0.6",
+      "url": "https://static.crates.io/crates/lexical-parse-integer/lexical-parse-integer-1.0.6.crate",
+      "sha256": "9a7a039f8fb9c19c996cd7b2fcce303c1b2874fe1aca544edc85c4a5f8489b34",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT/Apache-2.0",
+      "documents": [
+        "upstream/rust/lexical-parse-integer-1.0.6/LICENSE-APACHE",
+        "upstream/rust/lexical-parse-integer-1.0.6/LICENSE-MIT",
+        "upstream/rust/lexical-parse-integer-1.0.6/LICENSE.md"
+      ]
+    },
+    {
+      "name": "lexical-util",
+      "version": "1.0.6",
+      "url": "https://static.crates.io/crates/lexical-util/lexical-util-1.0.6.crate",
+      "sha256": "5a82e24bf537fd24c177ffbbdc6ebcc8d54732c35b50a3f28cc3f4e4c949a0b3",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT/Apache-2.0",
+      "documents": [
+        "upstream/rust/lexical-util-1.0.6/LICENSE-APACHE",
+        "upstream/rust/lexical-util-1.0.6/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "lexical-util",
+      "version": "1.0.7",
+      "url": "https://static.crates.io/crates/lexical-util/lexical-util-1.0.7.crate",
+      "sha256": "2604dd126bb14f13fb5d1bd6a66155079cb9fa655b37f875b3a742c705dbed17",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT/Apache-2.0",
+      "documents": [
+        "upstream/rust/lexical-util-1.0.7/LICENSE-APACHE",
+        "upstream/rust/lexical-util-1.0.7/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "libc",
+      "version": "0.2.169",
+      "url": "https://static.crates.io/crates/libc/libc-0.2.169.crate",
+      "sha256": "b5aba8db14291edd000dfcc4d620c7ebfb122c613afb886ca8803fa4e128a20a",
+      "used_by": [
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/libc-0.2.169/LICENSE-APACHE",
+        "upstream/rust/libc-0.2.169/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "libc",
+      "version": "0.2.185",
+      "url": "https://static.crates.io/crates/libc/libc-0.2.185.crate",
+      "sha256": "52ff2c0fe9bc6cb6b14a0592c2ff4fa9ceb83eea9db979b0487cd054946a2b8f",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/libc-0.2.185/LICENSE-APACHE",
+        "upstream/rust/libc-0.2.185/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "libc",
+      "version": "0.2.186",
+      "url": "https://static.crates.io/crates/libc/libc-0.2.186.crate",
+      "sha256": "68ab91017fe16c622486840e4c83c9a37afeff978bd239b5293d61ece587de66",
+      "used_by": [
+        "cryptography",
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/libc-0.2.186/LICENSE-APACHE",
+        "upstream/rust/libc-0.2.186/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "libredox",
+      "version": "0.1.3",
+      "url": "https://static.crates.io/crates/libredox/libredox-0.1.3.crate",
+      "sha256": "c0ff37bd590ca25063e35af745c343cb7a0271906fb7b37e4813e8f79f00268d",
+      "used_by": [
+        "watchfiles"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/libredox-0.1.3/LICENSE"
+      ]
+    },
+    {
+      "name": "litemap",
+      "version": "0.7.3",
+      "url": "https://static.crates.io/crates/litemap/litemap-0.7.3.crate",
+      "sha256": "643cb0b8d4fcc284004d5fd0d67ccf61dfffadb7f75e1e71bc420f4688a3a704",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Unicode-3.0",
+      "documents": [
+        "upstream/rust/litemap-0.7.3/LICENSE"
+      ]
+    },
+    {
+      "name": "log",
+      "version": "0.4.22",
+      "url": "https://static.crates.io/crates/log/log-0.4.22.crate",
+      "sha256": "a7a70ba024b9dc04c27ea2f0c0548feb474ec5c54bba33a7f72f873a39d07b24",
+      "used_by": [
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/log-0.4.22/LICENSE-APACHE",
+        "upstream/rust/log-0.4.22/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "log",
+      "version": "0.4.27",
+      "url": "https://static.crates.io/crates/log/log-0.4.27.crate",
+      "sha256": "13dc2df351e3202783a1fe0d44375f7295ffb4049267b0f3018346dc122a1d94",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/log-0.4.27/LICENSE-APACHE",
+        "upstream/rust/log-0.4.27/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "log",
+      "version": "0.4.29",
+      "url": "https://static.crates.io/crates/log/log-0.4.29.crate",
+      "sha256": "5e5032e24019045c762d3c0f28f5b6b8bbf38563a65908389bf7978758920897",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/log-0.4.29/LICENSE-APACHE",
+        "upstream/rust/log-0.4.29/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "lru",
+      "version": "0.16.3",
+      "url": "https://static.crates.io/crates/lru/lru-0.16.3.crate",
+      "sha256": "a1dc47f592c06f33f8e3aea9591776ec7c9f9e4124778ff8a3c3b87159f7e593",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/lru-0.16.3/LICENSE"
+      ]
+    },
+    {
+      "name": "memchr",
+      "version": "2.7.4",
+      "url": "https://static.crates.io/crates/memchr/memchr-2.7.4.crate",
+      "sha256": "78ca9ab1a0babb1e7d5695e3530886289c18cf2f87ec19a575a0abdce112e3a3",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Unlicense OR MIT",
+      "documents": [
+        "upstream/rust/memchr-2.7.4/COPYING",
+        "upstream/rust/memchr-2.7.4/LICENSE-MIT",
+        "upstream/rust/memchr-2.7.4/UNLICENSE"
+      ]
+    },
+    {
+      "name": "memchr",
+      "version": "2.8.0",
+      "url": "https://static.crates.io/crates/memchr/memchr-2.8.0.crate",
+      "sha256": "f8ca58f447f06ed17d5fc4043ce1b10dd205e060fb3ce5b979b8ed8e59ff3f79",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "Unlicense OR MIT",
+      "documents": [
+        "upstream/rust/memchr-2.8.0/COPYING",
+        "upstream/rust/memchr-2.8.0/LICENSE-MIT",
+        "upstream/rust/memchr-2.8.0/UNLICENSE"
+      ]
+    },
+    {
+      "name": "mio",
+      "version": "1.0.3",
+      "url": "https://static.crates.io/crates/mio/mio-1.0.3.crate",
+      "sha256": "2886843bf800fba2e3377cff24abf6379b4c4d5c6681eaf9ea5b0d15090450bd",
+      "used_by": [
+        "watchfiles"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/mio-1.0.3/LICENSE"
+      ]
+    },
+    {
+      "name": "notify",
+      "version": "8.0.0",
+      "url": "https://static.crates.io/crates/notify/notify-8.0.0.crate",
+      "sha256": "2fee8403b3d66ac7b26aee6e40a897d85dc5ce26f44da36b8b73e987cc52e943",
+      "used_by": [
+        "watchfiles"
+      ],
+      "license_metadata": "CC0-1.0",
+      "documents": [
+        "upstream/rust/notify-8.0.0/LICENSE-CC0"
+      ]
+    },
+    {
+      "name": "notify-types",
+      "version": "2.0.0",
+      "url": "https://static.crates.io/crates/notify-types/notify-types-2.0.0.crate",
+      "sha256": "5e0826a989adedc2a244799e823aece04662b66609d96af8dff7ac6df9a8925d",
+      "used_by": [
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/notify-types-2.0.0/LICENSE-APACHE",
+        "upstream/rust/notify-types-2.0.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "num-bigint",
+      "version": "0.4.6",
+      "url": "https://static.crates.io/crates/num-bigint/num-bigint-0.4.6.crate",
+      "sha256": "a5e44f723f1133c9deac646763579fdb3ac745e418f2a7af9cd0c431da1f20b9",
+      "used_by": [
+        "jiter",
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/num-bigint-0.4.6/LICENSE-APACHE",
+        "upstream/rust/num-bigint-0.4.6/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "num-integer",
+      "version": "0.1.46",
+      "url": "https://static.crates.io/crates/num-integer/num-integer-0.1.46.crate",
+      "sha256": "7969661fd2958a5cb096e56c8e1ad0444ac2bbcd0061bd28660485a44879858f",
+      "used_by": [
+        "jiter",
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/num-integer-0.1.46/LICENSE-APACHE",
+        "upstream/rust/num-integer-0.1.46/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "num-traits",
+      "version": "0.2.19",
+      "url": "https://static.crates.io/crates/num-traits/num-traits-0.2.19.crate",
+      "sha256": "071dfc062690e90b734c0b2273ce72ad0ffa95f0c74596bc250dcfd960262841",
+      "used_by": [
+        "jiter",
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/num-traits-0.2.19/LICENSE-APACHE",
+        "upstream/rust/num-traits-0.2.19/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "once_cell",
+      "version": "1.21.3",
+      "url": "https://static.crates.io/crates/once_cell/once_cell-1.21.3.crate",
+      "sha256": "42f5e15c9953c5e4ccceeb2e7382a716482c34515315f7b03532b8b4e8393d2d",
+      "used_by": [
+        "pydantic_core",
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/once_cell-1.21.3/LICENSE-APACHE",
+        "upstream/rust/once_cell-1.21.3/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "once_cell",
+      "version": "1.21.4",
+      "url": "https://static.crates.io/crates/once_cell/once_cell-1.21.4.crate",
+      "sha256": "9f7c3e4beb33f85d45ae3e3a1792185706c8e16d043238c593331cc7cd313b50",
+      "used_by": [
+        "cryptography",
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/once_cell-1.21.4/LICENSE-APACHE",
+        "upstream/rust/once_cell-1.21.4/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "oorandom",
+      "version": "11.1.5",
+      "url": "https://static.crates.io/crates/oorandom/oorandom-11.1.5.crate",
+      "sha256": "d6790f58c7ff633d8771f42965289203411a5e5c68388703c06e14f24770b41e",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/oorandom-11.1.5/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "openssl",
+      "version": "0.10.81",
+      "url": "https://static.crates.io/crates/openssl/openssl-0.10.81.crate",
+      "sha256": "77823a27f0babb03091cb9ed9ef80af3b39dbc82f97e8fa530374b7dafd87a45",
+      "used_by": [
+        "cryptography"
+      ],
+      "license_metadata": "Apache-2.0",
+      "documents": [
+        "upstream/rust/openssl-0.10.81/LICENSE",
+        "upstream/rust/openssl-0.10.81/LICENSE-APACHE"
+      ]
+    },
+    {
+      "name": "openssl-macros",
+      "version": "0.1.1",
+      "url": "https://static.crates.io/crates/openssl-macros/openssl-macros-0.1.1.crate",
+      "sha256": "a948666b637a0f465e8564c73e89d4dde00d72d4d473cc972f390fc3dcee7d9c",
+      "used_by": [
+        "cryptography"
+      ],
+      "license_metadata": "MIT/Apache-2.0",
+      "documents": [
+        "upstream/rust/openssl-macros-0.1.1/LICENSE-APACHE",
+        "upstream/rust/openssl-macros-0.1.1/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "openssl-sys",
+      "version": "0.9.117",
+      "url": "https://static.crates.io/crates/openssl-sys/openssl-sys-0.9.117.crate",
+      "sha256": "b47e7e6bb2c38cd930d25a23b40fa52e068c10e85f3e03a7f5ba5aaca5713695",
+      "used_by": [
+        "cryptography"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/openssl-sys-0.9.117/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "paste",
+      "version": "1.0.15",
+      "url": "https://static.crates.io/crates/paste/paste-1.0.15.crate",
+      "sha256": "57c0d7b74b563b49d38dae00a0c37d4d6de9b432382b2892f0574ddcae73fd0a",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/paste-1.0.15/LICENSE-APACHE",
+        "upstream/rust/paste-1.0.15/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "pem",
+      "version": "3.0.6",
+      "url": "https://static.crates.io/crates/pem/pem-3.0.6.crate",
+      "sha256": "1d30c53c26bc5b31a98cd02d20f25a7c8567146caf63ed593a9d87b2775291be",
+      "used_by": [
+        "cryptography"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/pem-3.0.6/LICENSE.md"
+      ]
+    },
+    {
+      "name": "percent-encoding",
+      "version": "2.3.2",
+      "url": "https://static.crates.io/crates/percent-encoding/percent-encoding-2.3.2.crate",
+      "sha256": "9b4f627cb1b25917193a259e49bdad08f671f8d9708acfd5fe0a8c1455d87220",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/percent-encoding-2.3.2/LICENSE-APACHE",
+        "upstream/rust/percent-encoding-2.3.2/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "pin-project-lite",
+      "version": "0.2.17",
+      "url": "https://static.crates.io/crates/pin-project-lite/pin-project-lite-0.2.17.crate",
+      "sha256": "a89322df9ebe1c1578d689c92318e070967d1042b512afbe49518723f4e6d5cd",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/pin-project-lite-0.2.17/LICENSE-APACHE",
+        "upstream/rust/pin-project-lite-0.2.17/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "pkg-config",
+      "version": "0.3.33",
+      "url": "https://static.crates.io/crates/pkg-config/pkg-config-0.3.33.crate",
+      "sha256": "19f132c84eca552bf34cab8ec81f1c1dcc229b811638f9d283dceabe58c5569e",
+      "used_by": [
+        "cryptography"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/pkg-config-0.3.33/LICENSE-APACHE",
+        "upstream/rust/pkg-config-0.3.33/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "plotters",
+      "version": "0.3.7",
+      "url": "https://static.crates.io/crates/plotters/plotters-0.3.7.crate",
+      "sha256": "5aeb6f403d7a4911efb1e33402027fc44f29b5bf6def3effcc22d7bb75f2b747",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/plotters-0.3.7/LICENSE"
+      ]
+    },
+    {
+      "name": "plotters-backend",
+      "version": "0.3.7",
+      "url": "https://static.crates.io/crates/plotters-backend/plotters-backend-0.3.7.crate",
+      "sha256": "df42e13c12958a16b3f7f4386b9ab1f3e7933914ecea48da7139435263a4172a",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/plotters-backend-0.3.7/LICENSE"
+      ]
+    },
+    {
+      "name": "plotters-svg",
+      "version": "0.3.7",
+      "url": "https://static.crates.io/crates/plotters-svg/plotters-svg-0.3.7.crate",
+      "sha256": "51bae2ac328883f7acdfea3d66a7c35751187f870bc81f94563733a154d7a670",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/plotters-svg-0.3.7/LICENSE"
+      ]
+    },
+    {
+      "name": "portable-atomic",
+      "version": "1.13.1",
+      "url": "https://static.crates.io/crates/portable-atomic/portable-atomic-1.13.1.crate",
+      "sha256": "c33a9471896f1c69cecef8d20cbe2f7accd12527ce60845ff44c153bb2a21b49",
+      "used_by": [
+        "cryptography",
+        "jiter"
+      ],
+      "license_metadata": "Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/portable-atomic-1.13.1/LICENSE-APACHE",
+        "upstream/rust/portable-atomic-1.13.1/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "portable-atomic",
+      "version": "1.6.0",
+      "url": "https://static.crates.io/crates/portable-atomic/portable-atomic-1.6.0.crate",
+      "sha256": "7170ef9988bc169ba16dd36a7fa041e5c4cbeb6a35b76d4c03daded371eae7c0",
+      "used_by": [
+        "pydantic_core",
+        "watchfiles"
+      ],
+      "license_metadata": "Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/portable-atomic-1.6.0/LICENSE-APACHE",
+        "upstream/rust/portable-atomic-1.6.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "prettyplease",
+      "version": "0.2.37",
+      "url": "https://static.crates.io/crates/prettyplease/prettyplease-0.2.37.crate",
+      "sha256": "479ca8adacdd7ce8f1fb39ce9ecccbfe93a3f1344b3d0d97f20bc0196208f62b",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/prettyplease-0.2.37/LICENSE-APACHE",
+        "upstream/rust/prettyplease-0.2.37/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "proc-macro2",
+      "version": "1.0.106",
+      "url": "https://static.crates.io/crates/proc-macro2/proc-macro2-1.0.106.crate",
+      "sha256": "8fd00f0bb2e90d81d1044c2b32617f68fcb9fa3bb7640c23e9c748e53fb30934",
+      "used_by": [
+        "cryptography",
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/proc-macro2-1.0.106/LICENSE-APACHE",
+        "upstream/rust/proc-macro2-1.0.106/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "proc-macro2",
+      "version": "1.0.81",
+      "url": "https://static.crates.io/crates/proc-macro2/proc-macro2-1.0.81.crate",
+      "sha256": "3d1597b0c024618f09a9c3b8655b7e430397a36d23fdafec26d6965e9eec3eba",
+      "used_by": [
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/proc-macro2-1.0.81/LICENSE-APACHE",
+        "upstream/rust/proc-macro2-1.0.81/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "proc-macro2",
+      "version": "1.0.86",
+      "url": "https://static.crates.io/crates/proc-macro2/proc-macro2-1.0.86.crate",
+      "sha256": "5e719e8df665df0d1c8fbfd238015744736151d4445ec0836b8e628aae103b77",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/proc-macro2-1.0.86/LICENSE-APACHE",
+        "upstream/rust/proc-macro2-1.0.86/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "pyo3",
+      "version": "0.28.3",
+      "url": "https://static.crates.io/crates/pyo3/pyo3-0.28.3.crate",
+      "sha256": "91fd8e38a3b50ed1167fb981cd6fd60147e091784c427b8f7183a7ee32c31c12",
+      "used_by": [
+        "jiter",
+        "pydantic_core",
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/pyo3-0.28.3/LICENSE-APACHE",
+        "upstream/rust/pyo3-0.28.3/LICENSE-MIT",
+        "upstream/rust/pyo3-0.28.3/pyo3-runtime/LICENSE-APACHE",
+        "upstream/rust/pyo3-0.28.3/pyo3-runtime/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "pyo3",
+      "version": "0.29.0",
+      "url": "https://static.crates.io/crates/pyo3/pyo3-0.29.0.crate",
+      "sha256": "cd274650b21d4bfc26a0a47587962c1edb425f69287324355cd040c3ea66071c",
+      "used_by": [
+        "cryptography"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/pyo3-0.29.0/LICENSE-APACHE",
+        "upstream/rust/pyo3-0.29.0/LICENSE-MIT",
+        "upstream/rust/pyo3-0.29.0/pyo3-runtime/LICENSE-APACHE",
+        "upstream/rust/pyo3-0.29.0/pyo3-runtime/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "pyo3-build-config",
+      "version": "0.28.3",
+      "url": "https://static.crates.io/crates/pyo3-build-config/pyo3-build-config-0.28.3.crate",
+      "sha256": "e368e7ddfdeb98c9bca7f8383be1648fd84ab466bf2bc015e94008db6d35611e",
+      "used_by": [
+        "jiter",
+        "pydantic_core",
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/pyo3-build-config-0.28.3/LICENSE-APACHE",
+        "upstream/rust/pyo3-build-config-0.28.3/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "pyo3-build-config",
+      "version": "0.29.0",
+      "url": "https://static.crates.io/crates/pyo3-build-config/pyo3-build-config-0.29.0.crate",
+      "sha256": "c5e2a7d2f0d013342f295c048ad19237add5154a55b1c5a254c0ec93d4109078",
+      "used_by": [
+        "cryptography"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/pyo3-build-config-0.29.0/LICENSE-APACHE",
+        "upstream/rust/pyo3-build-config-0.29.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "pyo3-ffi",
+      "version": "0.28.3",
+      "url": "https://static.crates.io/crates/pyo3-ffi/pyo3-ffi-0.28.3.crate",
+      "sha256": "7f29e10af80b1f7ccaf7f69eace800a03ecd13e883acfacc1e5d0988605f651e",
+      "used_by": [
+        "jiter",
+        "pydantic_core",
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/pyo3-ffi-0.28.3/LICENSE-APACHE",
+        "upstream/rust/pyo3-ffi-0.28.3/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "pyo3-ffi",
+      "version": "0.29.0",
+      "url": "https://static.crates.io/crates/pyo3-ffi/pyo3-ffi-0.29.0.crate",
+      "sha256": "ca85c467da1bbc8d866eea5deff9cf29ea5f7785054a17da36e65bda9c05845b",
+      "used_by": [
+        "cryptography"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/pyo3-ffi-0.29.0/LICENSE-APACHE",
+        "upstream/rust/pyo3-ffi-0.29.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "pyo3-macros",
+      "version": "0.28.3",
+      "url": "https://static.crates.io/crates/pyo3-macros/pyo3-macros-0.28.3.crate",
+      "sha256": "df6e520eff47c45997d2fc7dd8214b25dd1310918bbb2642156ef66a67f29813",
+      "used_by": [
+        "jiter",
+        "pydantic_core",
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/pyo3-macros-0.28.3/LICENSE-APACHE",
+        "upstream/rust/pyo3-macros-0.28.3/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "pyo3-macros",
+      "version": "0.29.0",
+      "url": "https://static.crates.io/crates/pyo3-macros/pyo3-macros-0.29.0.crate",
+      "sha256": "9ac53762fd065daa3194dd09337a38bd793a188100fd1a9304c4ab312d901771",
+      "used_by": [
+        "cryptography"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/pyo3-macros-0.29.0/LICENSE-APACHE",
+        "upstream/rust/pyo3-macros-0.29.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "pyo3-macros-backend",
+      "version": "0.28.3",
+      "url": "https://static.crates.io/crates/pyo3-macros-backend/pyo3-macros-backend-0.28.3.crate",
+      "sha256": "c4cdc218d835738f81c2338f822078af45b4afdf8b2e33cbb5916f108b813acb",
+      "used_by": [
+        "jiter",
+        "pydantic_core",
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/pyo3-macros-backend-0.28.3/LICENSE-APACHE",
+        "upstream/rust/pyo3-macros-backend-0.28.3/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "pyo3-macros-backend",
+      "version": "0.29.0",
+      "url": "https://static.crates.io/crates/pyo3-macros-backend/pyo3-macros-backend-0.29.0.crate",
+      "sha256": "4ca3a1557399783172dc5bf39cfca835157732532cba56b71d2292161e53b362",
+      "used_by": [
+        "cryptography"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/pyo3-macros-backend-0.29.0/LICENSE-APACHE",
+        "upstream/rust/pyo3-macros-backend-0.29.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "python3-dll-a",
+      "version": "0.2.14",
+      "url": "https://static.crates.io/crates/python3-dll-a/python3-dll-a-0.2.14.crate",
+      "sha256": "d381ef313ae70b4da5f95f8a4de773c6aa5cd28f73adec4b4a31df70b66780d8",
+      "used_by": [
+        "pydantic_core",
+        "watchfiles"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/python3-dll-a-0.2.14/LICENSE"
+      ]
+    },
+    {
+      "name": "python3-dll-a",
+      "version": "0.2.15",
+      "url": "https://static.crates.io/crates/python3-dll-a/python3-dll-a-0.2.15.crate",
+      "sha256": "d80ba7540edb18890d444c5aa8e1f1f99b1bdf26fb26ae383135325f4a36042b",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/python3-dll-a-0.2.15/LICENSE"
+      ]
+    },
+    {
+      "name": "quote",
+      "version": "1.0.44",
+      "url": "https://static.crates.io/crates/quote/quote-1.0.44.crate",
+      "sha256": "21b2ebcf727b7760c461f091f9f0f539b77b8e87f2fd88131e7f1b433b3cece4",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/quote-1.0.44/LICENSE-APACHE",
+        "upstream/rust/quote-1.0.44/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "quote",
+      "version": "1.0.45",
+      "url": "https://static.crates.io/crates/quote/quote-1.0.45.crate",
+      "sha256": "41f2619966050689382d2b44f664f4bc593e129785a36d6ee376ddf37259b924",
+      "used_by": [
+        "cryptography",
+        "jiter",
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/quote-1.0.45/LICENSE-APACHE",
+        "upstream/rust/quote-1.0.45/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "r-efi",
+      "version": "5.2.0",
+      "url": "https://static.crates.io/crates/r-efi/r-efi-5.2.0.crate",
+      "sha256": "74765f6d916ee2faa39bc8e68e4f3ed8949b48cccdac59983d287a7cb71ce9c5",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0 OR LGPL-2.1-or-later",
+      "documents": [
+        "upstream/rust/r-efi-5.2.0/AUTHORS"
+      ]
+    },
+    {
+      "name": "r-efi",
+      "version": "5.3.0",
+      "url": "https://static.crates.io/crates/r-efi/r-efi-5.3.0.crate",
+      "sha256": "69cdb34c158ceb288df11e18b4bd39de994f6657d83847bdffdbd7f346754b0f",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0 OR LGPL-2.1-or-later",
+      "documents": [
+        "upstream/rust/r-efi-5.3.0/AUTHORS"
+      ]
+    },
+    {
+      "name": "r-efi",
+      "version": "6.0.0",
+      "url": "https://static.crates.io/crates/r-efi/r-efi-6.0.0.crate",
+      "sha256": "f8dcc9c7d52a811697d2151c701e0d08956f92b0e24136cf4cf27b57a6a0d9bf",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0 OR LGPL-2.1-or-later",
+      "documents": [
+        "upstream/rust/r-efi-6.0.0/AUTHORS"
+      ]
+    },
+    {
+      "name": "radium",
+      "version": "0.7.0",
+      "url": "https://static.crates.io/crates/radium/radium-0.7.0.crate",
+      "sha256": "dc33ff2d4973d518d823d61aa239014831e521c75da58e3df4840d3f47749d09",
+      "used_by": [
+        "jiter",
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/radium-0.7.0/LICENSE.txt"
+      ]
+    },
+    {
+      "name": "rayon",
+      "version": "1.12.0",
+      "url": "https://static.crates.io/crates/rayon/rayon-1.12.0.crate",
+      "sha256": "fb39b166781f92d482534ef4b4b1b2568f42613b53e5b6c160e24cfbfa30926d",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/rayon-1.12.0/LICENSE-APACHE",
+        "upstream/rust/rayon-1.12.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "rayon-core",
+      "version": "1.13.0",
+      "url": "https://static.crates.io/crates/rayon-core/rayon-core-1.13.0.crate",
+      "sha256": "22e18b0f0062d30d4230b2e85ff77fdfe4326feb054b9783a3460d8435c8ab91",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/rayon-core-1.13.0/LICENSE-APACHE",
+        "upstream/rust/rayon-core-1.13.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "redox_syscall",
+      "version": "0.5.3",
+      "url": "https://static.crates.io/crates/redox_syscall/redox_syscall-0.5.3.crate",
+      "sha256": "2a908a6e00f1fdd0dfd9c0eb08ce85126f6d8bbda50017e74bc4a4b7d4a926a4",
+      "used_by": [
+        "watchfiles"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/redox_syscall-0.5.3/LICENSE"
+      ]
+    },
+    {
+      "name": "regex",
+      "version": "1.12.3",
+      "url": "https://static.crates.io/crates/regex/regex-1.12.3.crate",
+      "sha256": "e10754a14b9137dd7b1e3e5b0493cc9171fdd105e0ab477f51b72e7f3ac0e276",
+      "used_by": [
+        "jiter",
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/regex-1.12.3/LICENSE-APACHE",
+        "upstream/rust/regex-1.12.3/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "regex-automata",
+      "version": "0.4.13",
+      "url": "https://static.crates.io/crates/regex-automata/regex-automata-0.4.13.crate",
+      "sha256": "5276caf25ac86c8d810222b3dbb938e512c55c6831a10f3e6ed1c93b84041f1c",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/regex-automata-0.4.13/LICENSE-APACHE",
+        "upstream/rust/regex-automata-0.4.13/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "regex-automata",
+      "version": "0.4.14",
+      "url": "https://static.crates.io/crates/regex-automata/regex-automata-0.4.14.crate",
+      "sha256": "6e1dd4122fc1595e8162618945476892eefca7b88c52820e74af6262213cae8f",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/regex-automata-0.4.14/LICENSE-APACHE",
+        "upstream/rust/regex-automata-0.4.14/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "regex-syntax",
+      "version": "0.8.10",
+      "url": "https://static.crates.io/crates/regex-syntax/regex-syntax-0.8.10.crate",
+      "sha256": "dc897dd8d9e8bd1ed8cdad82b5966c3e0ecae09fb1907d58efaa013543185d0a",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/regex-syntax-0.8.10/LICENSE-APACHE",
+        "upstream/rust/regex-syntax-0.8.10/LICENSE-MIT",
+        "upstream/rust/regex-syntax-0.8.10/src/unicode_tables/LICENSE-UNICODE"
+      ]
+    },
+    {
+      "name": "regex-syntax",
+      "version": "0.8.5",
+      "url": "https://static.crates.io/crates/regex-syntax/regex-syntax-0.8.5.crate",
+      "sha256": "2b15c43186be67a4fd63bee50d0303afffcef381492ebe2c5d87f324e1b8815c",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/regex-syntax-0.8.5/LICENSE-APACHE",
+        "upstream/rust/regex-syntax-0.8.5/LICENSE-MIT",
+        "upstream/rust/regex-syntax-0.8.5/src/unicode_tables/LICENSE-UNICODE"
+      ]
+    },
+    {
+      "name": "rustversion",
+      "version": "1.0.17",
+      "url": "https://static.crates.io/crates/rustversion/rustversion-1.0.17.crate",
+      "sha256": "955d28af4278de8121b7ebeb796b6a45735dc01436d898801014aced2773a3d6",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/rustversion-1.0.17/LICENSE-APACHE",
+        "upstream/rust/rustversion-1.0.17/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "rustversion",
+      "version": "1.0.22",
+      "url": "https://static.crates.io/crates/rustversion/rustversion-1.0.22.crate",
+      "sha256": "b39cdef0fa800fc44525c84ccb54a029961a8215f9619753635a9c0d2538d46d",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/rustversion-1.0.22/LICENSE-APACHE",
+        "upstream/rust/rustversion-1.0.22/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "same-file",
+      "version": "1.0.6",
+      "url": "https://static.crates.io/crates/same-file/same-file-1.0.6.crate",
+      "sha256": "93fc1dc3aaa9bfed95e02e6eadabb4baf7e3078b0bd1b4d7b6b0b68378900502",
+      "used_by": [
+        "jiter",
+        "watchfiles"
+      ],
+      "license_metadata": "Unlicense/MIT",
+      "documents": [
+        "upstream/rust/same-file-1.0.6/COPYING",
+        "upstream/rust/same-file-1.0.6/LICENSE-MIT",
+        "upstream/rust/same-file-1.0.6/UNLICENSE"
+      ]
+    },
+    {
+      "name": "self_cell",
+      "version": "1.2.2",
+      "url": "https://static.crates.io/crates/self_cell/self_cell-1.2.2.crate",
+      "sha256": "b12e76d157a900eb52e81bc6e9f3069344290341720e9178cde2407113ac8d89",
+      "used_by": [
+        "cryptography"
+      ],
+      "license_metadata": "Apache-2.0 OR GPL-2.0-only",
+      "documents": [
+        "upstream/rust/self_cell-1.2.2/LICENSE-APACHE",
+        "upstream/rust/self_cell-1.2.2/LICENSE-GPLv2"
+      ]
+    },
+    {
+      "name": "semver",
+      "version": "1.0.28",
+      "url": "https://static.crates.io/crates/semver/semver-1.0.28.crate",
+      "sha256": "8a7852d02fc848982e0c167ef163aaff9cd91dc640ba85e263cb1ce46fae51cd",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/semver-1.0.28/LICENSE-APACHE",
+        "upstream/rust/semver-1.0.28/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "serde",
+      "version": "1.0.228",
+      "url": "https://static.crates.io/crates/serde/serde-1.0.228.crate",
+      "sha256": "9a8e94ea7f378bd32cbbd37198a4a91436180c5bb472411e48b5ec2e2124ae9e",
+      "used_by": [
+        "jiter",
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/serde-1.0.228/LICENSE-APACHE",
+        "upstream/rust/serde-1.0.228/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "serde_core",
+      "version": "1.0.228",
+      "url": "https://static.crates.io/crates/serde_core/serde_core-1.0.228.crate",
+      "sha256": "41d385c7d4ca58e59fc732af25c3983b67ac852c1a25000afe1175de458b67ad",
+      "used_by": [
+        "jiter",
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/serde_core-1.0.228/LICENSE-APACHE",
+        "upstream/rust/serde_core-1.0.228/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "serde_derive",
+      "version": "1.0.228",
+      "url": "https://static.crates.io/crates/serde_derive/serde_derive-1.0.228.crate",
+      "sha256": "d540f220d3187173da220f885ab66608367b6574e925011a9353e4badda91d79",
+      "used_by": [
+        "jiter",
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/serde_derive-1.0.228/LICENSE-APACHE",
+        "upstream/rust/serde_derive-1.0.228/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "serde_json",
+      "version": "1.0.149",
+      "url": "https://static.crates.io/crates/serde_json/serde_json-1.0.149.crate",
+      "sha256": "83fc039473c5595ace860d8c4fafa220ff474b3fc6bfdb4293327f1a37e94d86",
+      "used_by": [
+        "jiter",
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/serde_json-1.0.149/LICENSE-APACHE",
+        "upstream/rust/serde_json-1.0.149/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "shlex",
+      "version": "1.3.0",
+      "url": "https://static.crates.io/crates/shlex/shlex-1.3.0.crate",
+      "sha256": "0fda2ff0d084019ba4d7c6f371c95d8fd75ce3524c3cb8fb653a3023f6323e64",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/shlex-1.3.0/LICENSE-APACHE",
+        "upstream/rust/shlex-1.3.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "shlex",
+      "version": "2.0.1",
+      "url": "https://static.crates.io/crates/shlex/shlex-2.0.1.crate",
+      "sha256": "f8fadd59c855ef2080decdef8ff161eb6661b86933c9d82e5ba29dc602a55aba",
+      "used_by": [
+        "cryptography"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/shlex-2.0.1/LICENSE-APACHE",
+        "upstream/rust/shlex-2.0.1/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "slab",
+      "version": "0.4.12",
+      "url": "https://static.crates.io/crates/slab/slab-0.4.12.crate",
+      "sha256": "0c790de23124f9ab44544d7ac05d60440adc586479ce501c1d6d7da3cd8c9cf5",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/slab-0.4.12/LICENSE"
+      ]
+    },
+    {
+      "name": "smallvec",
+      "version": "1.15.1",
+      "url": "https://static.crates.io/crates/smallvec/smallvec-1.15.1.crate",
+      "sha256": "67b1b7a3b5fe4f1376887184045fcf45c69e92af734b7aaddc05fb777b6fbd03",
+      "used_by": [
+        "jiter",
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/smallvec-1.15.1/LICENSE-APACHE",
+        "upstream/rust/smallvec-1.15.1/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "speedate",
+      "version": "0.17.0",
+      "url": "https://static.crates.io/crates/speedate/speedate-0.17.0.crate",
+      "sha256": "aba069c070b5e213f2a094deb7e5ed50ecb092be36102a4f4042e8d2056d060e",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/speedate-0.17.0/LICENSE"
+      ]
+    },
+    {
+      "name": "stable_deref_trait",
+      "version": "1.2.0",
+      "url": "https://static.crates.io/crates/stable_deref_trait/stable_deref_trait-1.2.0.crate",
+      "sha256": "a8f112729512f8e442d81f95a8a7ddf2b7c6b8a1a6f509a95864142b30cab2d3",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT/Apache-2.0",
+      "documents": [
+        "upstream/rust/stable_deref_trait-1.2.0/LICENSE-APACHE",
+        "upstream/rust/stable_deref_trait-1.2.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "static_assertions",
+      "version": "1.1.0",
+      "url": "https://static.crates.io/crates/static_assertions/static_assertions-1.1.0.crate",
+      "sha256": "a2eb9349b6444b326872e140eb1cf5e7c522154d69e7a0ffb0fb81c06b37543f",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/static_assertions-1.1.0/LICENSE-APACHE",
+        "upstream/rust/static_assertions-1.1.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "strum",
+      "version": "0.27.2",
+      "url": "https://static.crates.io/crates/strum/strum-0.27.2.crate",
+      "sha256": "af23d6f6c1a224baef9d3f61e287d2761385a5b88fdab4eb4c6f11aeb54c4bcf",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/strum-0.27.2/LICENSE"
+      ]
+    },
+    {
+      "name": "strum_macros",
+      "version": "0.27.2",
+      "url": "https://static.crates.io/crates/strum_macros/strum_macros-0.27.2.crate",
+      "sha256": "7695ce3845ea4b33927c055a39dc438a45b059f7c1b3d91d38d10355fb8cbca7",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/strum_macros-0.27.2/LICENSE"
+      ]
+    },
+    {
+      "name": "syn",
+      "version": "2.0.117",
+      "url": "https://static.crates.io/crates/syn/syn-2.0.117.crate",
+      "sha256": "e665b8803e7b1d2a727f4023456bbbbe74da67099c585258af0ad9c5013b9b99",
+      "used_by": [
+        "cryptography",
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/syn-2.0.117/LICENSE-APACHE",
+        "upstream/rust/syn-2.0.117/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "syn",
+      "version": "2.0.60",
+      "url": "https://static.crates.io/crates/syn/syn-2.0.60.crate",
+      "sha256": "909518bc7b1c9b779f1bbf07f2929d35af9f0f37e47c6e9ef7f9dddc1e1821f3",
+      "used_by": [
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/syn-2.0.60/LICENSE-APACHE",
+        "upstream/rust/syn-2.0.60/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "syn",
+      "version": "2.0.82",
+      "url": "https://static.crates.io/crates/syn/syn-2.0.82.crate",
+      "sha256": "83540f837a8afc019423a8edb95b52a8effe46957ee402287f4292fae35be021",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/syn-2.0.82/LICENSE-APACHE",
+        "upstream/rust/syn-2.0.82/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "synstructure",
+      "version": "0.13.1",
+      "url": "https://static.crates.io/crates/synstructure/synstructure-0.13.1.crate",
+      "sha256": "c8af7666ab7b6390ab78131fb5b0fce11d6b7a6951602017c35fa82800708971",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/synstructure-0.13.1/LICENSE"
+      ]
+    },
+    {
+      "name": "tap",
+      "version": "1.0.1",
+      "url": "https://static.crates.io/crates/tap/tap-1.0.1.crate",
+      "sha256": "55937e1799185b12863d447f42597ed69d9928686b8d88a1df17376a097d8369",
+      "used_by": [
+        "jiter",
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/tap-1.0.1/LICENSE.txt"
+      ]
+    },
+    {
+      "name": "target-lexicon",
+      "version": "0.13.4",
+      "url": "https://static.crates.io/crates/target-lexicon/target-lexicon-0.13.4.crate",
+      "sha256": "b1dd07eb858a2067e2f3c7155d54e929265c264e6f37efe3ee7a8d1b5a1dd0ba",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Apache-2.0 WITH LLVM-exception",
+      "documents": [
+        "upstream/rust/target-lexicon-0.13.4/LICENSE"
+      ]
+    },
+    {
+      "name": "target-lexicon",
+      "version": "0.13.5",
+      "url": "https://static.crates.io/crates/target-lexicon/target-lexicon-0.13.5.crate",
+      "sha256": "adb6935a6f5c20170eeceb1a3835a49e12e19d792f6dd344ccc76a985ca5a6ca",
+      "used_by": [
+        "cryptography",
+        "jiter",
+        "watchfiles"
+      ],
+      "license_metadata": "Apache-2.0 WITH LLVM-exception",
+      "documents": [
+        "upstream/rust/target-lexicon-0.13.5/LICENSE"
+      ]
+    },
+    {
+      "name": "tinystr",
+      "version": "0.7.6",
+      "url": "https://static.crates.io/crates/tinystr/tinystr-0.7.6.crate",
+      "sha256": "9117f5d4db391c1cf6927e7bea3db74b9a1c1add8f7eda9ffd5364f40f57b82f",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Unicode-3.0",
+      "documents": [
+        "upstream/rust/tinystr-0.7.6/LICENSE"
+      ]
+    },
+    {
+      "name": "tinytemplate",
+      "version": "1.2.1",
+      "url": "https://static.crates.io/crates/tinytemplate/tinytemplate-1.2.1.crate",
+      "sha256": "be4d6b5f19ff7664e8c98d03e2139cb510db9b0a60b55f8e8709b689d939b6bc",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/tinytemplate-1.2.1/LICENSE-APACHE",
+        "upstream/rust/tinytemplate-1.2.1/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "unicode-ident",
+      "version": "1.0.12",
+      "url": "https://static.crates.io/crates/unicode-ident/unicode-ident-1.0.12.crate",
+      "sha256": "3354b9ac3fae1ff6755cb6db53683adb661634f67557942dea4facebec0fee4b",
+      "used_by": [
+        "pydantic_core",
+        "watchfiles"
+      ],
+      "license_metadata": "(MIT OR Apache-2.0) AND Unicode-DFS-2016",
+      "documents": [
+        "upstream/rust/unicode-ident-1.0.12/LICENSE-APACHE",
+        "upstream/rust/unicode-ident-1.0.12/LICENSE-MIT",
+        "upstream/rust/unicode-ident-1.0.12/LICENSE-UNICODE"
+      ]
+    },
+    {
+      "name": "unicode-ident",
+      "version": "1.0.24",
+      "url": "https://static.crates.io/crates/unicode-ident/unicode-ident-1.0.24.crate",
+      "sha256": "e6e4313cd5fcd3dad5cafa179702e2b244f760991f45397d14d4ebf38247da75",
+      "used_by": [
+        "cryptography",
+        "jiter"
+      ],
+      "license_metadata": "(MIT OR Apache-2.0) AND Unicode-3.0",
+      "documents": [
+        "upstream/rust/unicode-ident-1.0.24/LICENSE-APACHE",
+        "upstream/rust/unicode-ident-1.0.24/LICENSE-MIT",
+        "upstream/rust/unicode-ident-1.0.24/LICENSE-UNICODE"
+      ]
+    },
+    {
+      "name": "unicode-xid",
+      "version": "0.2.6",
+      "url": "https://static.crates.io/crates/unicode-xid/unicode-xid-0.2.6.crate",
+      "sha256": "ebc1c04c71510c7f702b52b7c350734c9ff1295c464a03335b00bb84fc54f853",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/unicode-xid-0.2.6/COPYRIGHT",
+        "upstream/rust/unicode-xid-0.2.6/LICENSE-APACHE",
+        "upstream/rust/unicode-xid-0.2.6/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "url",
+      "version": "2.5.8",
+      "url": "https://static.crates.io/crates/url/url-2.5.8.crate",
+      "sha256": "ff67a8a4397373c3ef660812acab3268222035010ab8680ec4215f38ba3d0eed",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/url-2.5.8/LICENSE-APACHE",
+        "upstream/rust/url-2.5.8/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "utf16_iter",
+      "version": "1.0.5",
+      "url": "https://static.crates.io/crates/utf16_iter/utf16_iter-1.0.5.crate",
+      "sha256": "c8232dd3cdaed5356e0f716d285e4b40b932ac434100fe9b7e0e8e935b9e6246",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/utf16_iter-1.0.5/COPYRIGHT",
+        "upstream/rust/utf16_iter-1.0.5/LICENSE-APACHE",
+        "upstream/rust/utf16_iter-1.0.5/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "utf8_iter",
+      "version": "1.0.4",
+      "url": "https://static.crates.io/crates/utf8_iter/utf8_iter-1.0.4.crate",
+      "sha256": "b6c140620e7ffbb22c2dee59cafe6084a59b5ffc27a8859a5f0d494b5d52b6be",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/utf8_iter-1.0.4/COPYRIGHT",
+        "upstream/rust/utf8_iter-1.0.4/LICENSE-APACHE",
+        "upstream/rust/utf8_iter-1.0.4/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "uuid",
+      "version": "1.23.0",
+      "url": "https://static.crates.io/crates/uuid/uuid-1.23.0.crate",
+      "sha256": "5ac8b6f42ead25368cf5b098aeb3dc8a1a2c05a3eee8a9a1a68c640edbfc79d9",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/uuid-1.23.0/LICENSE-APACHE",
+        "upstream/rust/uuid-1.23.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "uuid",
+      "version": "1.23.1",
+      "url": "https://static.crates.io/crates/uuid/uuid-1.23.1.crate",
+      "sha256": "ddd74a9687298c6858e9b88ec8935ec45d22e8fd5e6394fa1bd4e99a87789c76",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/uuid-1.23.1/LICENSE-APACHE",
+        "upstream/rust/uuid-1.23.1/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "vcpkg",
+      "version": "0.2.15",
+      "url": "https://static.crates.io/crates/vcpkg/vcpkg-0.2.15.crate",
+      "sha256": "accd4ea62f7bb7a82fe23066fb0957d48ef677f6eeb8215f372f52e48bb32426",
+      "used_by": [
+        "cryptography"
+      ],
+      "license_metadata": "MIT/Apache-2.0",
+      "documents": [
+        "upstream/rust/vcpkg-0.2.15/LICENSE-APACHE",
+        "upstream/rust/vcpkg-0.2.15/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "version_check",
+      "version": "0.9.5",
+      "url": "https://static.crates.io/crates/version_check/version_check-0.9.5.crate",
+      "sha256": "0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a",
+      "used_by": [
+        "jiter",
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT/Apache-2.0",
+      "documents": [
+        "upstream/rust/version_check-0.9.5/LICENSE-APACHE",
+        "upstream/rust/version_check-0.9.5/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "walkdir",
+      "version": "2.5.0",
+      "url": "https://static.crates.io/crates/walkdir/walkdir-2.5.0.crate",
+      "sha256": "29790946404f91d9c5d06f9874efddea1dc06c5efe94541a7d6863108e3a5e4b",
+      "used_by": [
+        "jiter",
+        "watchfiles"
+      ],
+      "license_metadata": "Unlicense/MIT",
+      "documents": [
+        "upstream/rust/walkdir-2.5.0/COPYING",
+        "upstream/rust/walkdir-2.5.0/LICENSE-MIT",
+        "upstream/rust/walkdir-2.5.0/UNLICENSE"
+      ]
+    },
+    {
+      "name": "wasi",
+      "version": "0.11.0+wasi-snapshot-preview1",
+      "url": "https://static.crates.io/crates/wasi/wasi-0.11.0+wasi-snapshot-preview1.crate",
+      "sha256": "9c8d87e72b64a3b4db28d11ce29237c246188f4f51057d65a7eab63b7987e423",
+      "used_by": [
+        "watchfiles"
+      ],
+      "license_metadata": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/wasi-0.11.0+wasi-snapshot-preview1/LICENSE-APACHE",
+        "upstream/rust/wasi-0.11.0+wasi-snapshot-preview1/LICENSE-Apache-2.0_WITH_LLVM-exception",
+        "upstream/rust/wasi-0.11.0+wasi-snapshot-preview1/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "wasi",
+      "version": "0.14.2+wasi-0.2.4",
+      "url": "https://static.crates.io/crates/wasi/wasi-0.14.2+wasi-0.2.4.crate",
+      "sha256": "9683f9a5a998d873c0d21fcbe3c083009670149a8fab228644b8bd36b2c48cb3",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/wasi-0.14.2+wasi-0.2.4/LICENSE-APACHE",
+        "upstream/rust/wasi-0.14.2+wasi-0.2.4/LICENSE-Apache-2.0_WITH_LLVM-exception",
+        "upstream/rust/wasi-0.14.2+wasi-0.2.4/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "wasip2",
+      "version": "1.0.3+wasi-0.2.9",
+      "url": "https://static.crates.io/crates/wasip2/wasip2-1.0.3+wasi-0.2.9.crate",
+      "sha256": "20064672db26d7cdc89c7798c48a0fdfac8213434a1186e5ef29fd560ae223d6",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/wasip2-1.0.3+wasi-0.2.9/LICENSE-APACHE",
+        "upstream/rust/wasip2-1.0.3+wasi-0.2.9/LICENSE-Apache-2.0_WITH_LLVM-exception",
+        "upstream/rust/wasip2-1.0.3+wasi-0.2.9/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "wasip3",
+      "version": "0.4.0+wasi-0.3.0-rc-2026-01-06",
+      "url": "https://static.crates.io/crates/wasip3/wasip3-0.4.0+wasi-0.3.0-rc-2026-01-06.crate",
+      "sha256": "5428f8bf88ea5ddc08faddef2ac4a67e390b88186c703ce6dbd955e1c145aca5",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/wasip3-0.4.0+wasi-0.3.0-rc-2026-01-06/repository/LICENSE-APACHE",
+        "upstream/rust/wasip3-0.4.0+wasi-0.3.0-rc-2026-01-06/repository/LICENSE-Apache-2.0_WITH_LLVM-exception",
+        "upstream/rust/wasip3-0.4.0+wasi-0.3.0-rc-2026-01-06/repository/LICENSE-MIT"
+      ],
+      "notice_sources": [
+        {
+          "file": "upstream/rust/wasip3-0.4.0+wasi-0.3.0-rc-2026-01-06/repository/LICENSE-APACHE",
+          "url": "https://raw.githubusercontent.com/bytecodealliance/wasi-rs/06ce201370fcde0d1b0d47cac8ecb1b0b312c9f9/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+        },
+        {
+          "file": "upstream/rust/wasip3-0.4.0+wasi-0.3.0-rc-2026-01-06/repository/LICENSE-Apache-2.0_WITH_LLVM-exception",
+          "url": "https://raw.githubusercontent.com/bytecodealliance/wasi-rs/06ce201370fcde0d1b0d47cac8ecb1b0b312c9f9/LICENSE-Apache-2.0_WITH_LLVM-exception",
+          "sha256": "268872b9816f90fd8e85db5a28d33f8150ebb8dd016653fb39ef1f94f2686bc5"
+        },
+        {
+          "file": "upstream/rust/wasip3-0.4.0+wasi-0.3.0-rc-2026-01-06/repository/LICENSE-MIT",
+          "url": "https://raw.githubusercontent.com/bytecodealliance/wasi-rs/06ce201370fcde0d1b0d47cac8ecb1b0b312c9f9/LICENSE-MIT",
+          "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+        }
+      ]
+    },
+    {
+      "name": "wasm-bindgen",
+      "version": "0.2.100",
+      "url": "https://static.crates.io/crates/wasm-bindgen/wasm-bindgen-0.2.100.crate",
+      "sha256": "1edc8929d7499fc4e8f0be2262a241556cfc54a0bea223790e71446f2aab1ef5",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/wasm-bindgen-0.2.100/LICENSE-APACHE",
+        "upstream/rust/wasm-bindgen-0.2.100/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "wasm-bindgen",
+      "version": "0.2.121",
+      "url": "https://static.crates.io/crates/wasm-bindgen/wasm-bindgen-0.2.121.crate",
+      "sha256": "49ace1d07c165b0864824eee619580c4689389afa9dc9ed3a4c75040d82e6790",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/wasm-bindgen-0.2.121/LICENSE-APACHE",
+        "upstream/rust/wasm-bindgen-0.2.121/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "wasm-bindgen-backend",
+      "version": "0.2.100",
+      "url": "https://static.crates.io/crates/wasm-bindgen-backend/wasm-bindgen-backend-0.2.100.crate",
+      "sha256": "2f0a0651a5c2bc21487bde11ee802ccaf4c51935d0d3d42a6101f98161700bc6",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/wasm-bindgen-backend-0.2.100/LICENSE-APACHE",
+        "upstream/rust/wasm-bindgen-backend-0.2.100/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "wasm-bindgen-macro",
+      "version": "0.2.100",
+      "url": "https://static.crates.io/crates/wasm-bindgen-macro/wasm-bindgen-macro-0.2.100.crate",
+      "sha256": "7fe63fc6d09ed3792bd0897b314f53de8e16568c2b3f7982f468c0bf9bd0b407",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/wasm-bindgen-macro-0.2.100/LICENSE-APACHE",
+        "upstream/rust/wasm-bindgen-macro-0.2.100/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "wasm-bindgen-macro",
+      "version": "0.2.121",
+      "url": "https://static.crates.io/crates/wasm-bindgen-macro/wasm-bindgen-macro-0.2.121.crate",
+      "sha256": "8e68e6f4afd367a562002c05637acb8578ff2dea1943df76afb9e83d177c8578",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/wasm-bindgen-macro-0.2.121/LICENSE-APACHE",
+        "upstream/rust/wasm-bindgen-macro-0.2.121/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "wasm-bindgen-macro-support",
+      "version": "0.2.100",
+      "url": "https://static.crates.io/crates/wasm-bindgen-macro-support/wasm-bindgen-macro-support-0.2.100.crate",
+      "sha256": "8ae87ea40c9f689fc23f209965b6fb8a99ad69aeeb0231408be24920604395de",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/wasm-bindgen-macro-support-0.2.100/LICENSE-APACHE",
+        "upstream/rust/wasm-bindgen-macro-support-0.2.100/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "wasm-bindgen-macro-support",
+      "version": "0.2.121",
+      "url": "https://static.crates.io/crates/wasm-bindgen-macro-support/wasm-bindgen-macro-support-0.2.121.crate",
+      "sha256": "d95a9ec35c64b2a7cb35d3fead40c4238d0940c86d107136999567a4703259f2",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/wasm-bindgen-macro-support-0.2.121/LICENSE-APACHE",
+        "upstream/rust/wasm-bindgen-macro-support-0.2.121/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "wasm-bindgen-shared",
+      "version": "0.2.100",
+      "url": "https://static.crates.io/crates/wasm-bindgen-shared/wasm-bindgen-shared-0.2.100.crate",
+      "sha256": "1a05d73b933a847d6cccdda8f838a22ff101ad9bf93e33684f39c1f5f0eece3d",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/wasm-bindgen-shared-0.2.100/LICENSE-APACHE",
+        "upstream/rust/wasm-bindgen-shared-0.2.100/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "wasm-bindgen-shared",
+      "version": "0.2.121",
+      "url": "https://static.crates.io/crates/wasm-bindgen-shared/wasm-bindgen-shared-0.2.121.crate",
+      "sha256": "c4e0100b01e9f0d03189a92b96772a1fb998639d981193d7dbab487302513441",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/wasm-bindgen-shared-0.2.121/LICENSE-APACHE",
+        "upstream/rust/wasm-bindgen-shared-0.2.121/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "wasm-encoder",
+      "version": "0.244.0",
+      "url": "https://static.crates.io/crates/wasm-encoder/wasm-encoder-0.244.0.crate",
+      "sha256": "990065f2fe63003fe337b932cfb5e3b80e0b4d0f5ff650e6985b1048f62c8319",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/wasm-encoder-0.244.0/repository/LICENSE-APACHE",
+        "upstream/rust/wasm-encoder-0.244.0/repository/LICENSE-Apache-2.0_WITH_LLVM-exception",
+        "upstream/rust/wasm-encoder-0.244.0/repository/LICENSE-MIT"
+      ],
+      "notice_sources": [
+        {
+          "file": "upstream/rust/wasm-encoder-0.244.0/repository/LICENSE-APACHE",
+          "url": "https://raw.githubusercontent.com/bytecodealliance/wasm-tools/d4e317f22c3bace76cb3205003bcc34b4929037d/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+        },
+        {
+          "file": "upstream/rust/wasm-encoder-0.244.0/repository/LICENSE-Apache-2.0_WITH_LLVM-exception",
+          "url": "https://raw.githubusercontent.com/bytecodealliance/wasm-tools/d4e317f22c3bace76cb3205003bcc34b4929037d/LICENSE-Apache-2.0_WITH_LLVM-exception",
+          "sha256": "268872b9816f90fd8e85db5a28d33f8150ebb8dd016653fb39ef1f94f2686bc5"
+        },
+        {
+          "file": "upstream/rust/wasm-encoder-0.244.0/repository/LICENSE-MIT",
+          "url": "https://raw.githubusercontent.com/bytecodealliance/wasm-tools/d4e317f22c3bace76cb3205003bcc34b4929037d/LICENSE-MIT",
+          "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+        }
+      ]
+    },
+    {
+      "name": "wasm-metadata",
+      "version": "0.244.0",
+      "url": "https://static.crates.io/crates/wasm-metadata/wasm-metadata-0.244.0.crate",
+      "sha256": "bb0e353e6a2fbdc176932bbaab493762eb1255a7900fe0fea1a2f96c296cc909",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/wasm-metadata-0.244.0/repository/LICENSE-APACHE",
+        "upstream/rust/wasm-metadata-0.244.0/repository/LICENSE-Apache-2.0_WITH_LLVM-exception",
+        "upstream/rust/wasm-metadata-0.244.0/repository/LICENSE-MIT"
+      ],
+      "notice_sources": [
+        {
+          "file": "upstream/rust/wasm-metadata-0.244.0/repository/LICENSE-APACHE",
+          "url": "https://raw.githubusercontent.com/bytecodealliance/wasm-tools/d4e317f22c3bace76cb3205003bcc34b4929037d/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+        },
+        {
+          "file": "upstream/rust/wasm-metadata-0.244.0/repository/LICENSE-Apache-2.0_WITH_LLVM-exception",
+          "url": "https://raw.githubusercontent.com/bytecodealliance/wasm-tools/d4e317f22c3bace76cb3205003bcc34b4929037d/LICENSE-Apache-2.0_WITH_LLVM-exception",
+          "sha256": "268872b9816f90fd8e85db5a28d33f8150ebb8dd016653fb39ef1f94f2686bc5"
+        },
+        {
+          "file": "upstream/rust/wasm-metadata-0.244.0/repository/LICENSE-MIT",
+          "url": "https://raw.githubusercontent.com/bytecodealliance/wasm-tools/d4e317f22c3bace76cb3205003bcc34b4929037d/LICENSE-MIT",
+          "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+        }
+      ]
+    },
+    {
+      "name": "wasmparser",
+      "version": "0.244.0",
+      "url": "https://static.crates.io/crates/wasmparser/wasmparser-0.244.0.crate",
+      "sha256": "47b807c72e1bac69382b3a6fb3dbe8ea4c0ed87ff5629b8685ae6b9a611028fe",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/wasmparser-0.244.0/repository/LICENSE-APACHE",
+        "upstream/rust/wasmparser-0.244.0/repository/LICENSE-Apache-2.0_WITH_LLVM-exception",
+        "upstream/rust/wasmparser-0.244.0/repository/LICENSE-MIT"
+      ],
+      "notice_sources": [
+        {
+          "file": "upstream/rust/wasmparser-0.244.0/repository/LICENSE-APACHE",
+          "url": "https://raw.githubusercontent.com/bytecodealliance/wasm-tools/d4e317f22c3bace76cb3205003bcc34b4929037d/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+        },
+        {
+          "file": "upstream/rust/wasmparser-0.244.0/repository/LICENSE-Apache-2.0_WITH_LLVM-exception",
+          "url": "https://raw.githubusercontent.com/bytecodealliance/wasm-tools/d4e317f22c3bace76cb3205003bcc34b4929037d/LICENSE-Apache-2.0_WITH_LLVM-exception",
+          "sha256": "268872b9816f90fd8e85db5a28d33f8150ebb8dd016653fb39ef1f94f2686bc5"
+        },
+        {
+          "file": "upstream/rust/wasmparser-0.244.0/repository/LICENSE-MIT",
+          "url": "https://raw.githubusercontent.com/bytecodealliance/wasm-tools/d4e317f22c3bace76cb3205003bcc34b4929037d/LICENSE-MIT",
+          "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+        }
+      ]
+    },
+    {
+      "name": "web-sys",
+      "version": "0.3.98",
+      "url": "https://static.crates.io/crates/web-sys/web-sys-0.3.98.crate",
+      "sha256": "4b572dff8bcf38bad0fa19729c89bb5748b2b9b1d8be70cf90df697e3a8f32aa",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/web-sys-0.3.98/LICENSE-APACHE",
+        "upstream/rust/web-sys-0.3.98/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "winapi-util",
+      "version": "0.1.11",
+      "url": "https://static.crates.io/crates/winapi-util/winapi-util-0.1.11.crate",
+      "sha256": "c2a7b1c03c876122aa43f3020e6c3c3ee5c05081c9a00739faf7503aeba10d22",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "Unlicense OR MIT",
+      "documents": [
+        "upstream/rust/winapi-util-0.1.11/COPYING",
+        "upstream/rust/winapi-util-0.1.11/LICENSE-MIT",
+        "upstream/rust/winapi-util-0.1.11/UNLICENSE"
+      ]
+    },
+    {
+      "name": "winapi-util",
+      "version": "0.1.9",
+      "url": "https://static.crates.io/crates/winapi-util/winapi-util-0.1.9.crate",
+      "sha256": "cf221c93e13a30d793f7645a0e7762c55d169dbb0a49671918a2319d289b10bb",
+      "used_by": [
+        "watchfiles"
+      ],
+      "license_metadata": "Unlicense OR MIT",
+      "documents": [
+        "upstream/rust/winapi-util-0.1.9/COPYING",
+        "upstream/rust/winapi-util-0.1.9/LICENSE-MIT",
+        "upstream/rust/winapi-util-0.1.9/UNLICENSE"
+      ]
+    },
+    {
+      "name": "windows-link",
+      "version": "0.2.1",
+      "url": "https://static.crates.io/crates/windows-link/windows-link-0.2.1.crate",
+      "sha256": "f0805222e57f7521d6a62e36fa9163bc891acd422f971defe97d64e70d0a4fe5",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/windows-link-0.2.1/license-apache-2.0",
+        "upstream/rust/windows-link-0.2.1/license-mit"
+      ]
+    },
+    {
+      "name": "windows-sys",
+      "version": "0.52.0",
+      "url": "https://static.crates.io/crates/windows-sys/windows-sys-0.52.0.crate",
+      "sha256": "282be5f36a8ce781fad8c8ae18fa3f9beff57ec1b52cb3de0789201425d9a33d",
+      "used_by": [
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/windows-sys-0.52.0/license-apache-2.0",
+        "upstream/rust/windows-sys-0.52.0/license-mit"
+      ]
+    },
+    {
+      "name": "windows-sys",
+      "version": "0.59.0",
+      "url": "https://static.crates.io/crates/windows-sys/windows-sys-0.59.0.crate",
+      "sha256": "1e38bc4d79ed67fd075bcc251a1c39b32a1776bbe92e5bef1f0bf1f8c531853b",
+      "used_by": [
+        "jiter",
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/windows-sys-0.59.0/license-apache-2.0",
+        "upstream/rust/windows-sys-0.59.0/license-mit"
+      ]
+    },
+    {
+      "name": "windows-sys",
+      "version": "0.61.2",
+      "url": "https://static.crates.io/crates/windows-sys/windows-sys-0.61.2.crate",
+      "sha256": "ae137229bcbd6cdf0f7b80a31df61766145077ddf49416a728b02cb3921ff3fc",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/windows-sys-0.61.2/license-apache-2.0",
+        "upstream/rust/windows-sys-0.61.2/license-mit"
+      ]
+    },
+    {
+      "name": "windows-targets",
+      "version": "0.52.6",
+      "url": "https://static.crates.io/crates/windows-targets/windows-targets-0.52.6.crate",
+      "sha256": "9b724f72796e036ab90c1021d4780d4d3d648aca59e491e6b98e725b84e99973",
+      "used_by": [
+        "jiter",
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/windows-targets-0.52.6/license-apache-2.0",
+        "upstream/rust/windows-targets-0.52.6/license-mit"
+      ]
+    },
+    {
+      "name": "windows_aarch64_gnullvm",
+      "version": "0.52.6",
+      "url": "https://static.crates.io/crates/windows_aarch64_gnullvm/windows_aarch64_gnullvm-0.52.6.crate",
+      "sha256": "32a4622180e7a0ec044bb555404c800bc9fd9ec262ec147edd5989ccd0c02cd3",
+      "used_by": [
+        "jiter",
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/windows_aarch64_gnullvm-0.52.6/license-apache-2.0",
+        "upstream/rust/windows_aarch64_gnullvm-0.52.6/license-mit"
+      ]
+    },
+    {
+      "name": "windows_aarch64_msvc",
+      "version": "0.52.6",
+      "url": "https://static.crates.io/crates/windows_aarch64_msvc/windows_aarch64_msvc-0.52.6.crate",
+      "sha256": "09ec2a7bb152e2252b53fa7803150007879548bc709c039df7627cabbd05d469",
+      "used_by": [
+        "jiter",
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/windows_aarch64_msvc-0.52.6/license-apache-2.0",
+        "upstream/rust/windows_aarch64_msvc-0.52.6/license-mit"
+      ]
+    },
+    {
+      "name": "windows_i686_gnu",
+      "version": "0.52.6",
+      "url": "https://static.crates.io/crates/windows_i686_gnu/windows_i686_gnu-0.52.6.crate",
+      "sha256": "8e9b5ad5ab802e97eb8e295ac6720e509ee4c243f69d781394014ebfe8bbfa0b",
+      "used_by": [
+        "jiter",
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/windows_i686_gnu-0.52.6/license-apache-2.0",
+        "upstream/rust/windows_i686_gnu-0.52.6/license-mit"
+      ]
+    },
+    {
+      "name": "windows_i686_gnullvm",
+      "version": "0.52.6",
+      "url": "https://static.crates.io/crates/windows_i686_gnullvm/windows_i686_gnullvm-0.52.6.crate",
+      "sha256": "0eee52d38c090b3caa76c563b86c3a4bd71ef1a819287c19d586d7334ae8ed66",
+      "used_by": [
+        "jiter",
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/windows_i686_gnullvm-0.52.6/license-apache-2.0",
+        "upstream/rust/windows_i686_gnullvm-0.52.6/license-mit"
+      ]
+    },
+    {
+      "name": "windows_i686_msvc",
+      "version": "0.52.6",
+      "url": "https://static.crates.io/crates/windows_i686_msvc/windows_i686_msvc-0.52.6.crate",
+      "sha256": "240948bc05c5e7c6dabba28bf89d89ffce3e303022809e73deaefe4f6ec56c66",
+      "used_by": [
+        "jiter",
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/windows_i686_msvc-0.52.6/license-apache-2.0",
+        "upstream/rust/windows_i686_msvc-0.52.6/license-mit"
+      ]
+    },
+    {
+      "name": "windows_x86_64_gnu",
+      "version": "0.52.6",
+      "url": "https://static.crates.io/crates/windows_x86_64_gnu/windows_x86_64_gnu-0.52.6.crate",
+      "sha256": "147a5c80aabfbf0c7d901cb5895d1de30ef2907eb21fbbab29ca94c5b08b1a78",
+      "used_by": [
+        "jiter",
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/windows_x86_64_gnu-0.52.6/license-apache-2.0",
+        "upstream/rust/windows_x86_64_gnu-0.52.6/license-mit"
+      ]
+    },
+    {
+      "name": "windows_x86_64_gnullvm",
+      "version": "0.52.6",
+      "url": "https://static.crates.io/crates/windows_x86_64_gnullvm/windows_x86_64_gnullvm-0.52.6.crate",
+      "sha256": "24d5b23dc417412679681396f2b49f3de8c1473deb516bd34410872eff51ed0d",
+      "used_by": [
+        "jiter",
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/windows_x86_64_gnullvm-0.52.6/license-apache-2.0",
+        "upstream/rust/windows_x86_64_gnullvm-0.52.6/license-mit"
+      ]
+    },
+    {
+      "name": "windows_x86_64_msvc",
+      "version": "0.52.6",
+      "url": "https://static.crates.io/crates/windows_x86_64_msvc/windows_x86_64_msvc-0.52.6.crate",
+      "sha256": "589f6da84c646204747d1270a2a5661ea66ed1cced2631d546fdfb155959f9ec",
+      "used_by": [
+        "jiter",
+        "watchfiles"
+      ],
+      "license_metadata": "MIT OR Apache-2.0",
+      "documents": [
+        "upstream/rust/windows_x86_64_msvc-0.52.6/license-apache-2.0",
+        "upstream/rust/windows_x86_64_msvc-0.52.6/license-mit"
+      ]
+    },
+    {
+      "name": "wit-bindgen",
+      "version": "0.51.0",
+      "url": "https://static.crates.io/crates/wit-bindgen/wit-bindgen-0.51.0.crate",
+      "sha256": "d7249219f66ced02969388cf2bb044a09756a083d0fab1e566056b04d9fbcaa5",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/wit-bindgen-0.51.0/LICENSE-APACHE",
+        "upstream/rust/wit-bindgen-0.51.0/LICENSE-Apache-2.0_WITH_LLVM-exception",
+        "upstream/rust/wit-bindgen-0.51.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "wit-bindgen",
+      "version": "0.57.1",
+      "url": "https://static.crates.io/crates/wit-bindgen/wit-bindgen-0.57.1.crate",
+      "sha256": "1ebf944e87a7c253233ad6766e082e3cd714b5d03812acc24c318f549614536e",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/wit-bindgen-0.57.1/LICENSE-APACHE",
+        "upstream/rust/wit-bindgen-0.57.1/LICENSE-Apache-2.0_WITH_LLVM-exception",
+        "upstream/rust/wit-bindgen-0.57.1/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "wit-bindgen-core",
+      "version": "0.51.0",
+      "url": "https://static.crates.io/crates/wit-bindgen-core/wit-bindgen-core-0.51.0.crate",
+      "sha256": "ea61de684c3ea68cb082b7a88508a8b27fcc8b797d738bfc99a82facf1d752dc",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/wit-bindgen-core-0.51.0/LICENSE-APACHE",
+        "upstream/rust/wit-bindgen-core-0.51.0/LICENSE-Apache-2.0_WITH_LLVM-exception",
+        "upstream/rust/wit-bindgen-core-0.51.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "wit-bindgen-rt",
+      "version": "0.39.0",
+      "url": "https://static.crates.io/crates/wit-bindgen-rt/wit-bindgen-rt-0.39.0.crate",
+      "sha256": "6f42320e61fe2cfd34354ecb597f86f413484a798ba44a8ca1165c58d42da6c1",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/wit-bindgen-rt-0.39.0/repository/LICENSE-APACHE",
+        "upstream/rust/wit-bindgen-rt-0.39.0/repository/LICENSE-Apache-2.0_WITH_LLVM-exception",
+        "upstream/rust/wit-bindgen-rt-0.39.0/repository/LICENSE-MIT"
+      ],
+      "notice_sources": [
+        {
+          "file": "upstream/rust/wit-bindgen-rt-0.39.0/repository/LICENSE-APACHE",
+          "url": "https://raw.githubusercontent.com/bytecodealliance/wit-bindgen/f2393e6e98fa5f9236cac580db8a3fc9de6a4b70/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+        },
+        {
+          "file": "upstream/rust/wit-bindgen-rt-0.39.0/repository/LICENSE-Apache-2.0_WITH_LLVM-exception",
+          "url": "https://raw.githubusercontent.com/bytecodealliance/wit-bindgen/f2393e6e98fa5f9236cac580db8a3fc9de6a4b70/LICENSE-Apache-2.0_WITH_LLVM-exception",
+          "sha256": "268872b9816f90fd8e85db5a28d33f8150ebb8dd016653fb39ef1f94f2686bc5"
+        },
+        {
+          "file": "upstream/rust/wit-bindgen-rt-0.39.0/repository/LICENSE-MIT",
+          "url": "https://raw.githubusercontent.com/bytecodealliance/wit-bindgen/f2393e6e98fa5f9236cac580db8a3fc9de6a4b70/LICENSE-MIT",
+          "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+        }
+      ]
+    },
+    {
+      "name": "wit-bindgen-rust",
+      "version": "0.51.0",
+      "url": "https://static.crates.io/crates/wit-bindgen-rust/wit-bindgen-rust-0.51.0.crate",
+      "sha256": "b7c566e0f4b284dd6561c786d9cb0142da491f46a9fbed79ea69cdad5db17f21",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/wit-bindgen-rust-0.51.0/LICENSE-APACHE",
+        "upstream/rust/wit-bindgen-rust-0.51.0/LICENSE-Apache-2.0_WITH_LLVM-exception",
+        "upstream/rust/wit-bindgen-rust-0.51.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "wit-bindgen-rust-macro",
+      "version": "0.51.0",
+      "url": "https://static.crates.io/crates/wit-bindgen-rust-macro/wit-bindgen-rust-macro-0.51.0.crate",
+      "sha256": "0c0f9bfd77e6a48eccf51359e3ae77140a7f50b1e2ebfe62422d8afdaffab17a",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/wit-bindgen-rust-macro-0.51.0/LICENSE-APACHE",
+        "upstream/rust/wit-bindgen-rust-macro-0.51.0/LICENSE-Apache-2.0_WITH_LLVM-exception",
+        "upstream/rust/wit-bindgen-rust-macro-0.51.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "wit-component",
+      "version": "0.244.0",
+      "url": "https://static.crates.io/crates/wit-component/wit-component-0.244.0.crate",
+      "sha256": "9d66ea20e9553b30172b5e831994e35fbde2d165325bec84fc43dbf6f4eb9cb2",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/wit-component-0.244.0/repository/LICENSE-APACHE",
+        "upstream/rust/wit-component-0.244.0/repository/LICENSE-Apache-2.0_WITH_LLVM-exception",
+        "upstream/rust/wit-component-0.244.0/repository/LICENSE-MIT"
+      ],
+      "notice_sources": [
+        {
+          "file": "upstream/rust/wit-component-0.244.0/repository/LICENSE-APACHE",
+          "url": "https://raw.githubusercontent.com/bytecodealliance/wasm-tools/d4e317f22c3bace76cb3205003bcc34b4929037d/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+        },
+        {
+          "file": "upstream/rust/wit-component-0.244.0/repository/LICENSE-Apache-2.0_WITH_LLVM-exception",
+          "url": "https://raw.githubusercontent.com/bytecodealliance/wasm-tools/d4e317f22c3bace76cb3205003bcc34b4929037d/LICENSE-Apache-2.0_WITH_LLVM-exception",
+          "sha256": "268872b9816f90fd8e85db5a28d33f8150ebb8dd016653fb39ef1f94f2686bc5"
+        },
+        {
+          "file": "upstream/rust/wit-component-0.244.0/repository/LICENSE-MIT",
+          "url": "https://raw.githubusercontent.com/bytecodealliance/wasm-tools/d4e317f22c3bace76cb3205003bcc34b4929037d/LICENSE-MIT",
+          "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+        }
+      ]
+    },
+    {
+      "name": "wit-parser",
+      "version": "0.244.0",
+      "url": "https://static.crates.io/crates/wit-parser/wit-parser-0.244.0.crate",
+      "sha256": "ecc8ac4bc1dc3381b7f59c34f00b67e18f910c2c0f50015669dde7def656a736",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "Apache-2.0 WITH LLVM-exception OR Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/wit-parser-0.244.0/repository/LICENSE-APACHE",
+        "upstream/rust/wit-parser-0.244.0/repository/LICENSE-Apache-2.0_WITH_LLVM-exception",
+        "upstream/rust/wit-parser-0.244.0/repository/LICENSE-MIT"
+      ],
+      "notice_sources": [
+        {
+          "file": "upstream/rust/wit-parser-0.244.0/repository/LICENSE-APACHE",
+          "url": "https://raw.githubusercontent.com/bytecodealliance/wasm-tools/d4e317f22c3bace76cb3205003bcc34b4929037d/LICENSE-APACHE",
+          "sha256": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2"
+        },
+        {
+          "file": "upstream/rust/wit-parser-0.244.0/repository/LICENSE-Apache-2.0_WITH_LLVM-exception",
+          "url": "https://raw.githubusercontent.com/bytecodealliance/wasm-tools/d4e317f22c3bace76cb3205003bcc34b4929037d/LICENSE-Apache-2.0_WITH_LLVM-exception",
+          "sha256": "268872b9816f90fd8e85db5a28d33f8150ebb8dd016653fb39ef1f94f2686bc5"
+        },
+        {
+          "file": "upstream/rust/wit-parser-0.244.0/repository/LICENSE-MIT",
+          "url": "https://raw.githubusercontent.com/bytecodealliance/wasm-tools/d4e317f22c3bace76cb3205003bcc34b4929037d/LICENSE-MIT",
+          "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+        }
+      ]
+    },
+    {
+      "name": "write16",
+      "version": "1.0.0",
+      "url": "https://static.crates.io/crates/write16/write16-1.0.0.crate",
+      "sha256": "d1890f4022759daae28ed4fe62859b1236caebfc61ede2f63ed4e695f3f6d936",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/write16-1.0.0/COPYRIGHT",
+        "upstream/rust/write16-1.0.0/LICENSE-APACHE",
+        "upstream/rust/write16-1.0.0/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "writeable",
+      "version": "0.5.5",
+      "url": "https://static.crates.io/crates/writeable/writeable-0.5.5.crate",
+      "sha256": "1e9df38ee2d2c3c5948ea468a8406ff0db0b29ae1ffde1bcf20ef305bcc95c51",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Unicode-3.0",
+      "documents": [
+        "upstream/rust/writeable-0.5.5/LICENSE"
+      ]
+    },
+    {
+      "name": "wyz",
+      "version": "0.5.1",
+      "url": "https://static.crates.io/crates/wyz/wyz-0.5.1.crate",
+      "sha256": "05f360fc0b24296329c78fda852a1e9ae82de9cf7b27dae4b7f62f118f77b9ed",
+      "used_by": [
+        "jiter",
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/wyz-0.5.1/LICENSE.txt"
+      ]
+    },
+    {
+      "name": "yoke",
+      "version": "0.7.4",
+      "url": "https://static.crates.io/crates/yoke/yoke-0.7.4.crate",
+      "sha256": "6c5b1314b079b0930c31e3af543d8ee1757b1951ae1e1565ec704403a7240ca5",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Unicode-3.0",
+      "documents": [
+        "upstream/rust/yoke-0.7.4/LICENSE"
+      ]
+    },
+    {
+      "name": "yoke-derive",
+      "version": "0.7.4",
+      "url": "https://static.crates.io/crates/yoke-derive/yoke-derive-0.7.4.crate",
+      "sha256": "28cc31741b18cb6f1d5ff12f5b7523e3d6eb0852bbbad19d73905511d9849b95",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Unicode-3.0",
+      "documents": [
+        "upstream/rust/yoke-derive-0.7.4/LICENSE"
+      ]
+    },
+    {
+      "name": "zerocopy",
+      "version": "0.8.25",
+      "url": "https://static.crates.io/crates/zerocopy/zerocopy-0.8.25.crate",
+      "sha256": "a1702d9583232ddb9174e01bb7c15a2ab8fb1bc6f227aa1233858c351a3ba0cb",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "BSD-2-Clause OR Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/zerocopy-0.8.25/LICENSE-APACHE",
+        "upstream/rust/zerocopy-0.8.25/LICENSE-BSD",
+        "upstream/rust/zerocopy-0.8.25/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "zerocopy",
+      "version": "0.8.48",
+      "url": "https://static.crates.io/crates/zerocopy/zerocopy-0.8.48.crate",
+      "sha256": "eed437bf9d6692032087e337407a86f04cd8d6a16a37199ed57949d415bd68e9",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "BSD-2-Clause OR Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/zerocopy-0.8.48/LICENSE-APACHE",
+        "upstream/rust/zerocopy-0.8.48/LICENSE-BSD",
+        "upstream/rust/zerocopy-0.8.48/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "zerocopy-derive",
+      "version": "0.8.25",
+      "url": "https://static.crates.io/crates/zerocopy-derive/zerocopy-derive-0.8.25.crate",
+      "sha256": "28a6e20d751156648aa063f3800b706ee209a32c0b4d9f24be3d980b01be55ef",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "BSD-2-Clause OR Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/zerocopy-derive-0.8.25/LICENSE-APACHE",
+        "upstream/rust/zerocopy-derive-0.8.25/LICENSE-BSD",
+        "upstream/rust/zerocopy-derive-0.8.25/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "zerocopy-derive",
+      "version": "0.8.48",
+      "url": "https://static.crates.io/crates/zerocopy-derive/zerocopy-derive-0.8.48.crate",
+      "sha256": "70e3cd084b1788766f53af483dd21f93881ff30d7320490ec3ef7526d203bad4",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "BSD-2-Clause OR Apache-2.0 OR MIT",
+      "documents": [
+        "upstream/rust/zerocopy-derive-0.8.48/LICENSE-APACHE",
+        "upstream/rust/zerocopy-derive-0.8.48/LICENSE-BSD",
+        "upstream/rust/zerocopy-derive-0.8.48/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "zerofrom",
+      "version": "0.1.4",
+      "url": "https://static.crates.io/crates/zerofrom/zerofrom-0.1.4.crate",
+      "sha256": "91ec111ce797d0e0784a1116d0ddcdbea84322cd79e5d5ad173daeba4f93ab55",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Unicode-3.0",
+      "documents": [
+        "upstream/rust/zerofrom-0.1.4/LICENSE"
+      ]
+    },
+    {
+      "name": "zerofrom-derive",
+      "version": "0.1.4",
+      "url": "https://static.crates.io/crates/zerofrom-derive/zerofrom-derive-0.1.4.crate",
+      "sha256": "0ea7b4a3637ea8669cedf0f1fd5c286a17f3de97b8dd5a70a6c167a1730e63a5",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Unicode-3.0",
+      "documents": [
+        "upstream/rust/zerofrom-derive-0.1.4/LICENSE"
+      ]
+    },
+    {
+      "name": "zerovec",
+      "version": "0.10.4",
+      "url": "https://static.crates.io/crates/zerovec/zerovec-0.10.4.crate",
+      "sha256": "aa2b893d79df23bfb12d5461018d408ea19dfafe76c2c7ef6d4eba614f8ff079",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Unicode-3.0",
+      "documents": [
+        "upstream/rust/zerovec-0.10.4/LICENSE"
+      ]
+    },
+    {
+      "name": "zerovec-derive",
+      "version": "0.10.3",
+      "url": "https://static.crates.io/crates/zerovec-derive/zerovec-derive-0.10.3.crate",
+      "sha256": "6eafa6dfb17584ea3e2bd6e76e0cc15ad7af12b09abdd1ca55961bed9b1063c6",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "Unicode-3.0",
+      "documents": [
+        "upstream/rust/zerovec-derive-0.10.3/LICENSE"
+      ]
+    },
+    {
+      "name": "zmij",
+      "version": "1.0.21",
+      "url": "https://static.crates.io/crates/zmij/zmij-1.0.21.crate",
+      "sha256": "b8848ee67ecc8aedbaf3e4122217aff892639231befc6a1b58d29fff4c2cabaa",
+      "used_by": [
+        "jiter"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/zmij-1.0.21/LICENSE-MIT"
+      ]
+    },
+    {
+      "name": "zmij",
+      "version": "1.0.6",
+      "url": "https://static.crates.io/crates/zmij/zmij-1.0.6.crate",
+      "sha256": "aac060176f7020d62c3bcc1cdbcec619d54f48b07ad1963a3f80ce7a0c17755f",
+      "used_by": [
+        "pydantic_core"
+      ],
+      "license_metadata": "MIT",
+      "documents": [
+        "upstream/rust/zmij-1.0.6/LICENSE-MIT"
+      ]
+    }
+  ]
+}

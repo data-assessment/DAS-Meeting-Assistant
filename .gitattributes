@@ -1,0 +1,3 @@
+# Preserve upstream license/source bytes: the manifest verifies exact SHA-256 hashes.
+third_party/** -text
+packaging/licenses/** -text

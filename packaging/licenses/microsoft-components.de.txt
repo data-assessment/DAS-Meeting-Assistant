@@ -1,0 +1,13 @@
+Lizenzbedingungen für Microsoft-Komponenten
+
+Diese Vereinbarung zwischen Ihnen und Data Assessment Solutions gilt ausschließlich für die mit DAS Meeting Assistant gelieferten Microsoft-Komponenten: Microsoft Cognitive Services Speech SDK und Microsoft Visual C++ Runtime.
+
+Sie dürfen diese Komponenten als Bestandteil von DAS Meeting Assistant installieren und für dessen bestimmungsgemäße Funktionen nutzen, unter Einhaltung der jeweils nachfolgenden Microsoft-Bedingungen. Mit Ihrer Zustimmung werden diese vollständigen Bedingungen für die jeweilige Microsoft-Komponente Bestandteil dieser Vereinbarung. Die darin geregelten Schutzrechte, Nutzungsgrenzen und Schutzbestimmungen zugunsten Microsofts und seiner Lizenzgeber bleiben bestehen. Die Begriffe „Software“ bzw. „SDK“ in diesen Texten bezeichnen die jeweilige Microsoft-Komponente.
+
+Der eigene Quellcode von DAS Meeting Assistant bleibt unter Apache-2.0 lizenziert. Andere enthaltene Komponenten behalten ihre jeweiligen Open-Source-Lizenzen, einschließlich LGPL/MPL. Diese Vereinbarung beschränkt diese Rechte nicht, auch nicht das Ändern oder Ersetzen dieser Komponenten oder ein dafür nach ihrer Lizenz zulässiges Reverse Engineering. Zwingende gesetzliche Rechte und die regionalen Regelungen der Microsoft-Bedingungen bleiben unberührt.
+
+Wer die Microsoft-Komponenten mit der Anwendung weiterverteilt, muss die jeweils geltenden Weitergaberechte und -pflichten beachten; die Apache-Lizenz allein erteilt keine Weitergaberechte an Microsoft-Komponenten. Die Visual-Studio-Entwicklerlizenz von DAS wird Ihnen nicht als Voraussetzung für die bloße Nutzung der Anwendung auferlegt.
+
+Nachfolgend finden Sie die vollständigen Microsoft-Bedingungen in ihrer englischen Originalsprache. Sie werden zusammen mit den Originaldateien, den Drittanbieterhinweisen und dieser Vereinbarung im Programmordner unter third_party mitgeliefert. Azure-Dienste und deren Nutzungskosten werden durch diese Vereinbarung nicht freigeschaltet.
+
+Wenn Sie im Namen einer Organisation zustimmen, müssen Sie dazu berechtigt sein. Wenn Sie nicht zustimmen, brechen Sie die Installation ab.

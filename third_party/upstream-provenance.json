@@ -1,0 +1,232 @@
+[
+  {
+    "file": "upstream/libjpeg-turbo/3.1.4.1-LICENSE.md",
+    "url": "https://raw.githubusercontent.com/libjpeg-turbo/libjpeg-turbo/3.1.4.1/LICENSE.md",
+    "sha256": "e10114e6e40f3d0311c401ca25245ac5ef459a43c20f976fd63f03e816f5741f"
+  },
+  {
+    "file": "upstream/libjpeg-turbo/3.1.4.1-README.ijg",
+    "url": "https://raw.githubusercontent.com/libjpeg-turbo/libjpeg-turbo/3.1.4.1/README.ijg",
+    "sha256": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6"
+  },
+  {
+    "file": "upstream/zlib-ng/2.3.3-LICENSE.md",
+    "url": "https://raw.githubusercontent.com/zlib-ng/zlib-ng/2.3.3/LICENSE.md",
+    "sha256": "6c9f0d975b41afaa34d22f55bb8986ce69e5cb7ad327cb2b28820cd425edf5ee"
+  },
+  {
+    "file": "upstream/libtiff/4.7.1-LICENSE.md",
+    "url": "https://gitlab.com/libtiff/libtiff/-/raw/v4.7.1/LICENSE.md",
+    "sha256": "0e27c2382d7b8147972bbb746e04059a1152c8d0fda9d03ef1399d1a433c4ade"
+  },
+  {
+    "file": "upstream/xz/5.8.3-COPYING",
+    "url": "https://raw.githubusercontent.com/tukaani-project/xz/v5.8.3/COPYING",
+    "sha256": "616a3ad264ce29b8f1cb97e53037b139d406899ca8d1f799651e17bfa09830b8"
+  },
+  {
+    "file": "upstream/openjpeg/2.5.4-LICENSE",
+    "url": "https://raw.githubusercontent.com/uclouvain/openjpeg/v2.5.4/LICENSE",
+    "sha256": "a6af136f3e15038a666b61f376612a07d9a4e48cb7c01adbf3e33b3f14ab49b6"
+  },
+  {
+    "file": "upstream/openssl/4.0.1-LICENSE.txt",
+    "url": "https://raw.githubusercontent.com/openssl/openssl/openssl-4.0.1/LICENSE.txt",
+    "sha256": "7d5450cb2d142651b8afa315b5f238efc805dad827d91ba367d8516bc9d49e7a"
+  },
+  {
+    "file": "upstream/openssl/3.5.8-LICENSE.txt",
+    "url": "https://raw.githubusercontent.com/openssl/openssl/openssl-3.5.8/LICENSE.txt",
+    "sha256": "7d5450cb2d142651b8afa315b5f238efc805dad827d91ba367d8516bc9d49e7a"
+  },
+  {
+    "file": "upstream/msvc/redistribution-terms.html",
+    "url": "https://visualstudio.microsoft.com/license-terms/vs2022-cruntime/",
+    "sha256": "4e315865c9a14c50176a8502388fae4f6f486d9957140a8b9a3fba0da353b46b"
+  },
+  {
+    "file": "upstream/msvc/distributable-code.html",
+    "url": "https://learn.microsoft.com/en-us/visualstudio/releases/2022/redistribution",
+    "sha256": "926942f2462074733720867dbcc0ad5d4570ca68b5c4917e46b6ff492dfcc2eb"
+  },
+  {
+    "name": "pystray",
+    "version": "0.19.5",
+    "file": "sources/pystray-0.19.5.tar.gz",
+    "url": "https://codeload.github.com/moses-palmer/pystray/tar.gz/refs/tags/v0.19.5",
+    "sha256": "2ab6bd15c14b400c9e8271a82c9de8adc0f1a0cacfc14080bdd4fb42bb88ec92",
+    "purpose": "Source for collected license documents"
+  },
+  {
+    "name": "soxr",
+    "version": "1.1.0",
+    "file": "sources/soxr-1.1.0.tar.gz",
+    "url": "https://files.pythonhosted.org/packages/ed/11/27cebce4a108f77afea7c80545115536b45e3f11ebfb914f638fdd9ba847/soxr-1.1.0.tar.gz",
+    "sha256": "9f228ae21c78fa9359ca98d8a5e8e91f30639e438e574133dace62c5b5309e44",
+    "purpose": "Source for collected license documents"
+  },
+  {
+    "name": "certifi",
+    "version": "2026.6.17",
+    "file": "sources/certifi-2026.6.17.tar.gz",
+    "url": "https://files.pythonhosted.org/packages/c9/c7/424b75da314c1045981bd9777432fad05a9e0c69daa4ed7e308bbaffe405/certifi-2026.6.17.tar.gz",
+    "sha256": "024c88eeec92ca068db80f02b8b07c9cef7b9fe261d1d535abfd5abd6f6af432",
+    "purpose": "Source for collected license documents"
+  },
+  {
+    "name": "tqdm",
+    "version": "4.68.3",
+    "file": "sources/tqdm-4.68.3.tar.gz",
+    "url": "https://files.pythonhosted.org/packages/87/d7/0535a28b1f5f24f6612fb3ff1e89fb1a8d160fee0f976e0aa6803862134b/tqdm-4.68.3.tar.gz",
+    "sha256": "00dfa48452b6b6cfae3dd9885636c23d3422d1ec97c66d96818cbd5e0821d482",
+    "purpose": "Source for collected license documents"
+  },
+  {
+    "name": "PyAudioWPatch",
+    "version": "0.2.12.8",
+    "url": "https://codeload.github.com/s0d3s/PyAudioWPatch/tar.gz/refs/tags/v0.2.12.8",
+    "sha256": "35e7a7e90f164079173232fc374d8a955f2a450c2ff8ed56505fc9d18fae7ce5",
+    "purpose": "Source for collected license documents",
+    "download_filename": "sources/pyaudiowpatch-0.2.12.8.tar.gz"
+  },
+  {
+    "name": "pillow",
+    "version": "12.2.0",
+    "url": "https://files.pythonhosted.org/packages/8c/21/c2bcdd5906101a30244eaffc1b6e6ce71a31bd0742a01eb89e660ebfac2d/pillow-12.2.0.tar.gz",
+    "sha256": "a830b1a40919539d07806aa58e1b114df53ddd43213d9c8b75847eee6c0182b5",
+    "purpose": "Source for collected license documents",
+    "download_filename": "sources/pillow-12.2.0.tar.gz"
+  },
+  {
+    "name": "cryptography",
+    "version": "49.0.0",
+    "url": "https://files.pythonhosted.org/packages/1f/99/d1c90d6041656cc6ee229dc99cd67fd0cd5aec3c5f7d72fffc27cc750054/cryptography-49.0.0.tar.gz",
+    "sha256": "f89660a348f4f78a92366240a61404e337586ef7f5909a2fef59ca88ef505493",
+    "purpose": "Source for collected license documents",
+    "download_filename": "sources/cryptography-49.0.0.tar.gz"
+  },
+  {
+    "file": "upstream/webview2/LICENSE.txt",
+    "url": "https://api.nuget.org/v3-flatcontainer/microsoft.web.webview2/1.0.3856.49/microsoft.web.webview2.1.0.3856.49.nupkg"
+  },
+  {
+    "file": "upstream/webview2/NOTICE.txt",
+    "url": "https://api.nuget.org/v3-flatcontainer/microsoft.web.webview2/1.0.3856.49/microsoft.web.webview2.1.0.3856.49.nupkg"
+  },
+  {
+    "file": "upstream/proxy-tools/LICENSE.txt",
+    "url": "https://raw.githubusercontent.com/jtushman/proxy_tools/db43f1e35d4f90a65c5a4d56d9e9af88212ec6e6/LICENSE.txt"
+  },
+  {
+    "file": "upstream/xz/5.8.3-COPYING.0BSD",
+    "url": "https://raw.githubusercontent.com/tukaani-project/xz/v5.8.3/COPYING.0BSD",
+    "sha256": "0b01625d853911cd0e2e088dcfb743261034a091bb379246cb25a14cc4c74bf1"
+  },
+  {
+    "file": "licenses/innosetup/LICENSE.txt",
+    "source": "Unmodified license.txt from the Inno Setup used for these installers"
+  },
+  {
+    "file": "upstream/msvc/vs2022-community-license.docx",
+    "url": "https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Community-License-EN.docx",
+    "resolved_url": "https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Community-License-EN.docx",
+    "sha256": "41a207b10c8ab91d0d2f10a854715f73dca54509581692d2fe179aa3ffcb8540",
+    "retrieved_on": "2026-09-22"
+  },
+  {
+    "file": "upstream/msvc/vs2022-community-license.txt",
+    "url": "https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Community-License-EN.docx",
+    "sha256": "a38d10afc3ef8fb2e64af972a9c64d998ef964de8101b9f7a59703f72fa3a5ab",
+    "derived_from": "upstream/msvc/vs2022-community-license.docx",
+    "extraction": "Ordered w:p / w:t content from word/document.xml; list numbering and styling remain in the original DOCX.",
+    "retrieved_on": "2026-09-22"
+  },
+  {
+    "file": "upstream/msvc/vs2022-buildtools-license.docx",
+    "url": "https://visualstudio.microsoft.com/wp-content/uploads/2024/03/Visual-Studio-2022-Diagnostic-Build-Tools-Agent-License_Update-March-2024_EN.docx",
+    "resolved_url": "https://visualstudio.microsoft.com/wp-content/uploads/2024/03/Visual-Studio-2022-Diagnostic-Build-Tools-Agent-License_Update-March-2024_EN.docx",
+    "sha256": "2f66b86a00e8d9833789897ce23d05a4a2dbea370cf39c8c1098dbc17d0e7bdc",
+    "retrieved_on": "2026-09-22"
+  },
+  {
+    "file": "upstream/msvc/vs2022-buildtools-license.txt",
+    "url": "https://visualstudio.microsoft.com/wp-content/uploads/2024/03/Visual-Studio-2022-Diagnostic-Build-Tools-Agent-License_Update-March-2024_EN.docx",
+    "sha256": "c577c6137db9df991585f4988c019761b8dd59578870925b401327ffa3a285aa",
+    "derived_from": "upstream/msvc/vs2022-buildtools-license.docx",
+    "extraction": "Ordered w:p / w:t content from word/document.xml; list numbering and styling remain in the original DOCX.",
+    "retrieved_on": "2026-09-22"
+  },
+  {
+    "file": "upstream/msvc/vc2022-license.docx",
+    "url": "https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx",
+    "resolved_url": "https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx",
+    "sha256": "f1e3d56ceb2ad68aae0711b910375009e651ac5530fa0760f0dea6e81e54fae1",
+    "retrieved_on": "2026-09-22"
+  },
+  {
+    "file": "upstream/msvc/vc2022-license.txt",
+    "url": "https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx",
+    "sha256": "2dd434a15fb5f9d28c33211a5af471eb719acba5db65e5103e0db95e7869a2fb",
+    "derived_from": "upstream/msvc/vc2022-license.docx",
+    "extraction": "Ordered w:p / w:t content from word/document.xml; list numbering and styling remain in the original DOCX.",
+    "retrieved_on": "2026-09-22"
+  },
+  {
+    "file": "upstream/msvc/vs2022-proenterprise-license.docx",
+    "url": "https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx",
+    "resolved_url": "https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx",
+    "sha256": "9c0cd52b20db9d081854c75bd1b50c75514b8f8cb09c8cad15e89d90b97b5bf3",
+    "retrieved_on": "2026-09-22"
+  },
+  {
+    "file": "upstream/msvc/vs2022-proenterprise-license.txt",
+    "url": "https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx",
+    "sha256": "03c500028ab18cdd29bc117ad82a3391eec052ff89cc6d98d05ce7645c9d8b06",
+    "derived_from": "upstream/msvc/vs2022-proenterprise-license.docx",
+    "extraction": "Ordered w:p / w:t content from word/document.xml; list numbering and styling remain in the original DOCX.",
+    "retrieved_on": "2026-09-22"
+  },
+  {
+    "file": "upstream/msvc/vc2026-license.docx",
+    "url": "https://visualstudio.microsoft.com/wp-content/uploads/2025/10/Visual-C-V14-License-Redistributable_and_Runtime_ENU.docx",
+    "resolved_url": "https://visualstudio.microsoft.com/wp-content/uploads/2025/10/Visual-C-V14-License-Redistributable_and_Runtime_ENU.docx",
+    "sha256": "08651651a7602fc7c0e2763de0fde1ff9f868df2780597cd1775ee9d6441c783",
+    "retrieved_on": "2026-09-22"
+  },
+  {
+    "file": "upstream/msvc/vc2026-license.txt",
+    "url": "https://visualstudio.microsoft.com/wp-content/uploads/2025/10/Visual-C-V14-License-Redistributable_and_Runtime_ENU.docx",
+    "sha256": "c15f0776c632b97bc3b01dbc3090ae347bb406235ae7132601bbaba91624e4fc",
+    "derived_from": "upstream/msvc/vc2026-license.docx",
+    "extraction": "Ordered w:p / w:t content from word/document.xml; list numbering and styling remain in the original DOCX.",
+    "retrieved_on": "2026-09-22"
+  },
+  {
+    "file": "upstream/msvc/vc2026-license-page.html",
+    "url": "https://visualstudio.microsoft.com/license-terms/vs2026-ga-visualcpp-v14-redist-runtime/",
+    "resolved_url": "https://visualstudio.microsoft.com/license-terms/vs2026-ga-visualcpp-v14-redist-runtime/",
+    "sha256": "ca24f3bdd360815ff84013f92029f8844e54475627fdbe8bbf4ad516157e429a",
+    "retrieved_on": "2026-09-22"
+  },
+  {
+    "file": "upstream/msvc/vc2026-redist-list.html",
+    "url": "https://learn.microsoft.com/en-us/visualstudio/releases/2026/redistribution",
+    "resolved_url": "https://learn.microsoft.com/en-us/visualstudio/releases/2026/redistribution",
+    "sha256": "57753458380e88e21cdc7c6b2e81a5f939f318a89a87c987d8b27eec97e27234",
+    "retrieved_on": "2026-09-22"
+  },
+  {
+    "file": "upstream/msvc/vc-lifecycle.html",
+    "url": "https://learn.microsoft.com/en-us/lifecycle/faq/visual-c-faq",
+    "resolved_url": "https://learn.microsoft.com/en-us/lifecycle/faq/visual-c-faq",
+    "sha256": "de4fdd55cb54d281253d209c02e241e99dd560d3ba1d3cd3e52ace5e4b4b7074",
+    "retrieved_on": "2026-09-22"
+  },
+  {
+    "file": "upstream/msvc/vc-downloads.html",
+    "url": "https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170",
+    "resolved_url": "https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170",
+    "sha256": "920610a5f275cdf6cec29a94f3f38311b0b2960facda771fb9df2370244bdfef",
+    "retrieved_on": "2026-09-22"
+  }
+]

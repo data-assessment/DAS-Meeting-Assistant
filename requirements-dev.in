@@ -1,0 +1,10 @@
+# Dev/tooling dependencies. Includes runtime deps so the dev lockfile is a
+# superset. Edit here, then run:
+#   pip-compile requirements-dev.in
+-r requirements.in
+
+pip-tools>=7.4   # provides pip-compile / pip-sync
+pytest>=8.0
+pyinstaller>=6.6  # bundle the app into a standalone Windows build (packaging/)
+
+httpx>=0.28  # FastAPI TestClient

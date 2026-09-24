@@ -1,0 +1,41 @@
+# Python
+.venv/
+__pycache__/
+*.py[cod]
+
+# Secrets / local state (NEVER commit)
+.env
+# Legacy/local configuration, never accepted as a build input
+# machine (bundle.env, bundle.gateway.env, ...). The *.template files stay tracked.
+packaging/bundle*.env
+packaging/.env
+# local build-time signing settings (never bundled into the installer)
+packaging/signing.env
+token_cache.bin
+
+# PyInstaller / installer build output
+/build/
+/dist/
+packaging/Output/
+
+# Runtime output
+transcripts/
+recordings/
+onenote-diagnostics*.json
+
+# Frontend (built locally / installed via npm ci)
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+
+# Local deployment selection and private release inputs
+/deployment-profile.json
+/packaging/deployment-profile.json
+/packaging/profiles/*.local.json
+/.test-state/
+/.pytest_cache/
+/frontend/*.tsbuildinfo
+/reports/
+
+# Windows-encrypted local credentials also stay outside source/builds
+*.dpapi

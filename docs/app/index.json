@@ -1,0 +1,22 @@
+[
+  {
+    "id": "getting-started",
+    "title": "Getting Started",
+    "summary": "Record meetings, inspect live transcript text, and create follow-up actions."
+  },
+  {
+    "id": "onenote",
+    "title": "OneNote Pages",
+    "summary": "Save meeting notes into OneNote notebooks and sections."
+  },
+  {
+    "id": "recordings",
+    "title": "Recordings and Retry",
+    "summary": "Understand saved WAV files, retry transcription, and cleanup behavior."
+  },
+  {
+    "id": "troubleshooting",
+    "title": "Troubleshooting",
+    "summary": "Fix common sign-in, Graph, OneNote, and audio issues."
+  }
+]

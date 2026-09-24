@@ -1,0 +1,21 @@
+# Direct runtime dependencies. Edit here, then run:
+#   pip-compile requirements.in
+# which regenerates the fully-pinned requirements.txt.
+
+fastapi>=0.110         # lifespan handler used in app.py
+uvicorn[standard]>=0.29  # [standard] pulls in the websockets impl
+pywebview>=5.0         # WebView2 host window
+pystray>=0.19          # system tray icon
+Pillow>=10             # tray icon image
+msal>=1.28             # Graph device-code auth
+requests>=2.31         # Graph presence call
+python-dotenv>=1.0     # .env loading
+PyAudioWPatch>=0.2.12  # WASAPI loopback + mic capture (engine/audio.py)
+numpy>=1.26            # mix/resample captured audio
+soxr>=0.3              # high-quality anti-aliased resampling (engine/audio.py)
+openai>=1.40           # Azure OpenAI transcription (engine/transcribe.py)
+websockets>=12         # realtime transcription websocket client (engine/realtime.py)
+
+azure-cognitiveservices-speech==1.51.2  # integrated RAM-only mixed stream
+httpx>=0.28            # direct text-model HTTP client
+pydantic>=2            # bounded review schema

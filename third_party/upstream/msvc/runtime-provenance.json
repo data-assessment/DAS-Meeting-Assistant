@@ -1,0 +1,87 @@
+{
+  "checked_on": "2026-09-22",
+  "application_version": "0.40.9",
+  "variants": [
+    "managed",
+    "community"
+  ],
+  "scope": "Observed prepared Windows x64 builds, not a rule for future dependency versions.",
+  "files": [
+    {
+      "path": "_internal/MSVCP140.dll",
+      "version": "14.50.35719.0",
+      "sha256": "def46aa6a8f72f27bafac0c43334419486a4d1dcdb6c479a8ef7034b3e1fa4cb",
+      "origin": "Windows System32; byte-identical to signed Microsoft VC redist 14.50.35719 x64 minimum CAB",
+      "source_bytes_match": true,
+      "community_bytes_match": true,
+      "authenticode_status": "Valid",
+      "signer": "CN=Microsoft Windows, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+      "runtime_use_terms": "upstream/msvc/vc2026-license.docx",
+      "distribution_basis": "Applicable licensed Visual Studio product grant plus its REDIST list; runtime use terms alone are insufficient."
+    },
+    {
+      "path": "_internal/MSVCP140_CODECVT_IDS.dll",
+      "version": "14.50.35719.0",
+      "sha256": "ae8d922b00cdd93e3ebecc37beb46c800f383ebdeb9f9e5b84e04a72428b6fb3",
+      "origin": "Windows System32; byte-identical to signed Microsoft VC redist 14.50.35719 x64 minimum CAB",
+      "source_bytes_match": true,
+      "community_bytes_match": true,
+      "authenticode_status": "Valid",
+      "signer": "CN=Microsoft Windows, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+      "runtime_use_terms": "upstream/msvc/vc2026-license.docx",
+      "distribution_basis": "Applicable licensed Visual Studio product grant plus its REDIST list; runtime use terms alone are insufficient."
+    },
+    {
+      "path": "_internal/VCRUNTIME140.dll",
+      "version": "14.44.35211.0",
+      "sha256": "d5e4d9a3e835fa679450145d6a7d94e36573a509317111904d9b3712c30d9066",
+      "origin": "Python 3.12.14 base runtime",
+      "source_bytes_match": true,
+      "community_bytes_match": true,
+      "authenticode_status": "Valid",
+      "signer": "CN=Microsoft Windows Software Compatibility Publisher, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+      "runtime_use_terms": "upstream/msvc/vc2022-license.docx",
+      "distribution_basis": "Applicable licensed Visual Studio product grant plus its REDIST list; runtime use terms alone are insufficient."
+    },
+    {
+      "path": "_internal/VCRUNTIME140_1.dll",
+      "version": "14.44.35211.0",
+      "sha256": "1f2d41c4aa5db0bc33ebf7b66d72943a817d7ce6cbe880502a9403823633093f",
+      "origin": "Python 3.12.14 base runtime",
+      "source_bytes_match": true,
+      "community_bytes_match": true,
+      "authenticode_status": "Valid",
+      "signer": "CN=Microsoft Windows Software Compatibility Publisher, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+      "runtime_use_terms": "upstream/msvc/vc2022-license.docx",
+      "distribution_basis": "Applicable licensed Visual Studio product grant plus its REDIST list; runtime use terms alone are insufficient."
+    },
+    {
+      "path": "_internal/numpy.libs/msvcp140-a4c2229bdc2a2a630acdc095b4d86008.dll",
+      "version": "14.40.33810.0",
+      "sha256": "a4c2229bdc2a2a630acdc095b4d86008e5c3e3bc7773174354f3da4f5beb9cde",
+      "origin": "NumPy 2.4.6 win_amd64 wheel; vendor-renamed Microsoft DLL",
+      "source_bytes_match": true,
+      "community_bytes_match": true,
+      "authenticode_status": "Valid",
+      "signer": "CN=Microsoft Windows Software Compatibility Publisher, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+      "runtime_use_terms": "upstream/msvc/vc2022-license.docx",
+      "distribution_basis": "Applicable licensed Visual Studio product grant plus its REDIST list; runtime use terms alone are insufficient."
+    }
+  ],
+  "microsoft_package_evidence": {
+    "product": "Microsoft Visual C++ v14 Redistributable (x64) 14.50.35719.0",
+    "minimum_msi_product_code": "{61B44572-8722-4DAF-8ACF-8E742D30BCC5}",
+    "minimum_cab_sha256": "c346d91193246b18301cce532f2ae784fb377cb068d77bd22edec238e5746aa7",
+    "minimum_cab_authenticode_status": "Valid",
+    "minimum_cab_signer": "CN=Microsoft Corporation, O=Microsoft Corporation, L=Redmond, S=Washington, C=US",
+    "bootstrapper_license_url": "https://aka.ms/VCRedistLicense",
+    "resolved_license_url_at_review": "https://visualstudio.microsoft.com/license-terms/vs2026-ga-visualcpp-v14-redist-runtime/",
+    "method": "Read-only extraction of installed Microsoft package cache with 7-Zip; no installer execution. Both MSVCP 14.50 payload files match the shipped bytes."
+  },
+  "das_visual_studio_entitlement": {
+    "product": "Microsoft Visual Studio Enterprise IDE",
+    "confirmed_on": "2026-09-22",
+    "basis": "User confirmation in the release-preparation task.",
+    "note": "Contract and entitlement records remain internal; this file contains no product keys or independently verified subscription details."
+  }
+}

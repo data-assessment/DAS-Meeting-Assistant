@@ -1,0 +1,2 @@
+This application uses the x64 WebView2 loader. This directory is retained
+because pywebview 6.2.1 probes all Windows architecture directories on import.

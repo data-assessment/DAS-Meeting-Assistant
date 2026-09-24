@@ -1,0 +1,1759 @@
+ <!DOCTYPE html>
+		<html
+			class="layout layout-holy-grail   show-table-of-contents faq show-breadcrumb default-focus"
+			lang="en-us"
+			dir="ltr"
+			data-authenticated="false"
+			data-auth-status-determined="false"
+			data-target="docs"
+			x-ms-format-detection="none"
+		>
+			
+		<head>
+			<title>Microsoft C++ Build Tools, Redistributable, and runtime libraries FAQ | Microsoft Learn</title>
+			<meta charset="utf-8" />
+			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+			<meta name="color-scheme" content="light dark" />
+
+			<meta name="description" content="Lifecycle FAQs for the Microsoft C++ Build Tools, Redistributable, and runtime libraries." />
+			<link rel="canonical" href="https://learn.microsoft.com/en-us/lifecycle/faq/visual-c-faq" /> 
+
+			<!-- Non-customizable open graph and sharing-related metadata -->
+			<meta name="twitter:card" content="summary_large_image" />
+			<meta name="twitter:site" content="@MicrosoftLearn" />
+			<meta property="og:type" content="website" />
+			<meta property="og:image:alt" content="Microsoft Learn" />
+			<meta property="og:image" content="https://learn.microsoft.com/en-us/media/open-graph-image.png" />
+			<!-- Page specific open graph and sharing-related metadata -->
+			<meta property="og:title" content="Microsoft C++ Build Tools, Redistributable, and runtime libraries FAQ" />
+			<meta property="og:url" content="https://learn.microsoft.com/en-us/lifecycle/faq/visual-c-faq" />
+			<meta property="og:description" content="Lifecycle FAQs for the Microsoft C++ Build Tools, Redistributable, and runtime libraries." />
+			<meta name="platform_id" content="185dd8ea-b94b-60b1-ea97-405bc8ca8ec4" /> 
+			<meta name="locale" content="en-us" />
+			 
+			<meta name="uhfHeaderId" content="MSDocsHeader-Lifecycle" />
+
+			<meta name="page_type" content="faq" />
+
+			<!--page specific meta tags-->
+			
+
+			<!-- custom meta tags -->
+			
+		<meta name="summary" content="&lt;p&gt;&lt;img src=&quot;../media/search.png&quot; role=&quot;presentation&quot;&gt;
+Please go &lt;a href=&quot;/lifecycle/products/&quot;&gt;here&lt;/a&gt; to search for your product&#39;s lifecycle.&lt;/p&gt;
+" />
+	
+		<meta name="schema" content="FAQ" />
+	
+		<meta name="breadcrumb_path" content="/lifecycle/breadcrumb/toc.json" />
+	
+		<meta name="feedback_system" content="Standard" />
+	
+		<meta name="ms.service" content="visual-cpp" />
+	
+		<meta name="ms.localizationpriority" content="medium" />
+	
+		<meta name="ms.topic" content="faq" />
+	
+		<meta name="ms.date" content="2025-11-24T00:00:00Z" />
+	
+		<meta name="author" content="PoulChapman" />
+	
+		<meta name="document_id" content="00546f74-8259-71d7-5834-c91dd014e601" />
+	
+		<meta name="document_version_independent_id" content="00546f74-8259-71d7-5834-c91dd014e601" />
+	
+		<meta name="updated_at" content="2025-11-24T15:40:00Z" />
+	
+		<meta name="original_content_git_url" content="https://github.com/MicrosoftDocs/lifecycle-pr/blob/live/lifecycle-docs/faq/visual-c-faq.yml" />
+	
+		<meta name="gitcommit" content="https://github.com/MicrosoftDocs/lifecycle-pr/blob/0ec74da9479c5b7bde2e29e1297a51e2a9cba302/lifecycle-docs/faq/visual-c-faq.yml" />
+	
+		<meta name="git_commit_id" content="0ec74da9479c5b7bde2e29e1297a51e2a9cba302" />
+	
+		<meta name="site_name" content="Docs" />
+	
+		<meta name="depot_name" content="MSDN.lifecycle-docs" />
+	
+		<meta name="toc_rel" content="../toc.json" />
+	
+		<meta name="feedback_product_url" content="" />
+	
+		<meta name="feedback_help_link_type" content="" />
+	
+		<meta name="feedback_help_link_url" content="" />
+	
+		<meta name="asset_id" content="faq/visual-c-faq" />
+	
+		<meta name="moniker_range_name" content="" />
+	
+		<meta name="item_type" content="Content" />
+	
+		<meta name="source_path" content="lifecycle-docs/faq/visual-c-faq.yml" />
+	
+		<meta name="github_feedback_content_git_url" content="https://github.com/MicrosoftDocs/lifecycle-pr/blob/main/lifecycle-docs/faq/visual-c-faq.yml" />
+	
+		<meta name="markdown_url" content="https://learn.microsoft.com/en-us/lifecycle/faq/visual-c-faq?accept=text/markdown" />
+	 
+		<meta name="cmProducts" content="https://authoring-docs-microsoft.poolparty.biz/devrel/4628cbd9-6f47-4ae1-b371-d34636609eaf" data-source="generated" />
+	
+		<meta name="spProducts" content="https://authoring-docs-microsoft.poolparty.biz/devrel/be21deb8-8c64-44b0-b71f-2dc56ca7364f" data-source="generated" />
+	
+
+			<!-- Apply persisted/system theme before first paint to prevent wrong-theme flash when scripts are deferred. -->
+			<script id="theme-preference">
+				(function () {
+			try {
+				var stored = localStorage.getItem('theme');
+				var theme = /^(light|dark|high-contrast)$/.test(stored)
+					? stored
+					: matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+				document.documentElement.classList.add('theme-' + theme);
+			} catch (e) {}
+		})();;
+			</script>
+
+			<script id="atlas-layout-preferences">
+				(function () {
+			try {
+				var state = JSON.parse(localStorage.getItem('atlas-layout-preferences') || '{}');
+				var view = state["docs-layout-persistence"] || {};
+				var excludesKey = "";
+				var blocked = {};
+				if (excludesKey) {
+					var exclusions = JSON.parse(localStorage.getItem('atlas-layout-exclusions') || '{}');
+					if (Object.prototype.hasOwnProperty.call(exclusions, excludesKey)) {
+						var scoped = exclusions[excludesKey];
+						if (scoped) {
+							if (typeof scoped === 'object') blocked = scoped;
+						}
+					}
+				}
+				var html = document.documentElement;
+				for (var c in view) {
+					if (Object.prototype.hasOwnProperty.call(blocked, c)) continue;
+					if (view[c]) html.classList.add(c);
+					else html.classList.remove(c);
+				}
+			} catch (e) {}
+		})();;
+			</script>
+
+			<!-- assets and js globals -->
+			
+			<link rel="stylesheet" href="/static/assets/0.4.03547.8249-7a3b4850/styles/site.css" />
+			
+			<script src="https://wcpstatic.microsoft.com/mscc/lib/v2/wcp-consent.js"></script>
+			<!-- Keep this URL in sync with oneDSScriptSelector in instrumentation/one-ds.ts. -->
+			<script async src="https://js.monitor.azure.com/scripts/c/ms.jsll-4.min.js"></script>
+			
+
+			<!-- msdocs global object -->
+			<script id="msdocs-script">
+		var msDocs = {
+  "environment": {
+    "accessLevel": "online",
+    "azurePortalHostname": "portal.azure.com",
+    "reviewFeatures": false,
+    "supportLevel": "production",
+    "systemContent": true,
+    "siteName": "learn",
+    "legacyHosting": false
+  },
+  "data": {
+    "contentLocale": "en-us",
+    "contentDir": "ltr",
+    "userLocale": "en-us",
+    "userDir": "ltr",
+    "pageTemplate": "FAQ",
+    "layoutStateStorageKey": "docs-layout-persistence",
+    "brand": "",
+    "context": {},
+    "standardFeedback": true,
+    "showFeedbackReport": false,
+    "feedbackHelpLinkType": "",
+    "feedbackHelpLinkUrl": "",
+    "feedbackSystem": "Standard",
+    "feedbackGitHubRepo": "",
+    "feedbackProductUrl": "",
+    "extendBreadcrumb": false,
+    "isEditDisplayable": true,
+    "isPrivateUnauthorized": false,
+    "hideViewSource": false,
+    "isPermissioned": false,
+    "hasRecommendations": true
+  },
+  "functions": {}
+};;
+	</script>
+
+			<!-- base scripts, msdocs global should be before this -->
+			<script
+				src="/static/assets/0.4.03547.8249-7a3b4850/scripts/en-us/index-docs.js"
+				async
+			></script>
+			
+
+			<!-- json-ld -->
+			
+		</head>
+	
+			<body
+				id="body"
+				data-bi-name="body"
+				class="layout-body "
+				lang="en-us"
+				dir="ltr"
+			>
+				<header class="layout-body-header background-color-body-medium">
+		<div class="header-holder has-default-focus">
+			
+		<a
+			href="#main"
+			
+			style="z-index: 1070"
+			class="outline-color-text visually-hidden-until-focused position-fixed inner-focus focus-visible top-0 left-0 right-0 padding-xs text-align-center background-color-body"
+			
+		>
+			Skip to main content
+		</a>
+	
+		<a
+			href="#"
+			data-skip-to-ask-learn
+			style="z-index: 1070"
+			class="outline-color-text visually-hidden-until-focused position-fixed inner-focus focus-visible top-0 left-0 right-0 padding-xs text-align-center background-color-body"
+			hidden
+		>
+			Skip to Ask Learn chat experience
+		</a>
+	
+
+			<div hidden id="cookie-consent-holder" data-test-id="cookie-consent-container"></div>
+			<!-- Unsupported browser warning -->
+			<div
+				id="unsupported-browser"
+				style="background-color: white; color: black; padding: 16px; border-bottom: 1px solid grey;"
+				hidden
+			>
+				<div style="max-width: 800px; margin: 0 auto;">
+					<p style="font-size: 24px">This browser is no longer supported.</p>
+					<p style="font-size: 16px; margin-top: 16px;">
+						Upgrade to Microsoft Edge to take advantage of the latest features, security updates, and technical support.
+					</p>
+					<div style="margin-top: 12px;">
+						<a
+							href="https://go.microsoft.com/fwlink/p/?LinkID=2092881 "
+							style="background-color: #0078d4; border: 1px solid #0078d4; color: white; padding: 6px 12px; border-radius: 2px; display: inline-block;"
+						>
+							Download Microsoft Edge
+						</a>
+						<a
+							href="https://learn.microsoft.com/en-us/lifecycle/faq/internet-explorer-microsoft-edge"
+							style="background-color: white; padding: 6px 12px; border: 1px solid #505050; color: #171717; border-radius: 2px; display: inline-block;"
+						>
+							More info about Internet Explorer and Microsoft Edge
+						</a>
+					</div>
+				</div>
+			</div>
+			<!-- site header -->
+			<div
+				id="ms--site-header"
+				data-test-id="site-header-wrapper"
+				itemscope="itemscope"
+				itemtype="http://schema.org/Organization"
+			>
+				<div
+					id="ms--mobile-nav"
+					class="site-header display-none-tablet padding-inline-none gap-none"
+					data-bi-name="mobile-header"
+					data-test-id="mobile-header"
+				></div>
+				<div
+					id="ms--primary-nav"
+					class="site-header display-none display-flex-tablet"
+					data-bi-name="L1-header"
+					data-test-id="primary-header"
+				></div>
+				<div
+					id="ms--secondary-nav"
+					class="site-header display-none display-flex-tablet"
+					data-bi-name="L2-header"
+					data-test-id="secondary-header"
+					
+				></div>
+			</div>
+			
+		<!-- banner -->
+		<div data-banner>
+			<div id="disclaimer-holder"></div>
+			
+		</div>
+		<!-- banner end -->
+	
+		</div>
+	</header>
+				 <section
+					id="layout-body-menu"
+					class="layout-body-menu border-right display-flex background-color-body-medium"
+					data-bi-name="menu"
+			  >
+					
+		<div
+			id="left-container"
+			class="left-container display-none padding-none display-block-tablet width-full display-none-until-layout-restored"
+			data-toc-container="true"
+		>
+			<div
+				id="ms--toc-content"
+				class="padding-left-sm padding-right-none padding-bottom-sm height-full"
+			>
+				<nav
+					id="affixed-left-container"
+					class="margin-top-xxs-tablet position-sticky display-flex flex-direction-column width-full"
+					aria-label="Primary"
+					data-bi-name="left-toc"
+					role="navigation"
+				>
+					<div
+						id="ms--collapsible-toc-header"
+						class="display-flex flex-direction-row-reverse justify-content-center align-items-center margin-bottom-xxs margin-right-xxs"
+					>
+						<button
+							type="button"
+							class="button button-clear button-sm inner-focus"
+							data-collapsible-toc-toggle
+							aria-expanded="true"
+							hidden
+							aria-controls="ms--toc-content"
+							aria-label="Table of contents"
+						>
+							<span class="icon icon-mirrored-rtl" aria-hidden="true">
+								<span
+									class="docon docon-panel-left-contract display-none-layout-menu-collapsed"
+								></span>
+								<span
+									class="docon docon-panel-left-expand display-none display-inline-layout-menu-collapsed"
+								></span>
+							</span>
+						</button>
+						<div
+							id="ms--collapsible-toc-moniker-slot"
+							class="flex-grow-1 display-none-layout-menu-collapsed"
+						></div>
+					</div>
+				</nav>
+			</div>
+		</div>
+	
+			  </section>
+
+				<main
+					id="main"
+					role="main"
+					class="layout-body-main "
+					data-bi-name="content"
+					lang="en-us"
+					dir="ltr"
+				>
+					
+			<div
+		id="ms--content-header"
+		class="content-header default-focus border-bottom-none"
+		data-bi-name="content-header"
+	>
+		<div class="content-header-controls margin-xxs margin-inline-sm-tablet">
+			<button
+				type="button"
+				class="contents-button button button-sm margin-right-xxs"
+				data-bi-name="contents-expand"
+				aria-haspopup="true"
+				data-contents-button
+			>
+				<span class="icon" aria-hidden="true"><span class="docon docon-menu"></span></span>
+				<span class="contents-expand-title"> Table of contents </span>
+			</button>
+			<button
+				type="button"
+				class="ap-collapse-behavior ap-expanded button button-sm"
+				data-bi-name="ap-collapse"
+				aria-controls="action-panel"
+			>
+				<span class="icon" aria-hidden="true"><span class="docon docon-exit-mode"></span></span>
+				<span>Exit editor mode</span>
+			</button>
+		</div>
+	</div> 
+		<div
+			id="action-panel"
+			role="region"
+			aria-label="Action Panel"
+			class="action-panel"
+			tabindex="-1"
+		></div>
+	
+			<div
+				data-main-column
+				class="reading-width margin-inline-auto layout-padding padding-top-none padding-top-sm-tablet padding-bottom-sm"
+			>
+				<div>
+					
+		<div id="article-header" class="background-color-body margin-bottom-xs display-none-print">
+			<div class="display-flex align-items-center justify-content-space-between">
+				
+		<details
+			id="article-header-breadcrumbs-overflow-popover"
+			class="popover popover-left"
+			data-for="article-header-breadcrumbs"
+		>
+			<summary
+				class="button button-clear button-primary button-sm inner-focus"
+				aria-label="All breadcrumbs"
+			>
+				<span class="icon" aria-hidden="true">
+					<span class="docon docon-more"></span>
+				</span>
+			</summary>
+			<div id="article-header-breadcrumbs-overflow" class="popover-content"></div>
+		</details>
+
+		<bread-crumbs
+			id="article-header-breadcrumbs"
+			role="group"
+			aria-label="Breadcrumbs"
+			data-test-id="article-header-breadcrumbs"
+			class="overflow-hidden flex-grow-1 margin-right-sm margin-right-md-tablet margin-right-lg-desktop margin-left-negative-xxs padding-left-xxs"
+		></bread-crumbs>
+	 
+		<div
+			id="article-header-page-actions"
+			class="opacity-none margin-left-auto display-flex flex-wrap-no-wrap align-items-stretch"
+		>
+			
+		<button
+			class="button button-sm border-none inner-focus display-none-tablet flex-shrink-0 "
+			data-bi-name="ask-learn-assistant-entry"
+			data-test-id="ask-learn-assistant-modal-entry-mobile"
+			data-ask-learn-modal-entry
+			
+			type="button"
+			style="min-width: max-content;"
+			aria-expanded="false"
+			aria-label="Ask Learn"
+			hidden
+		>
+			<span class="icon" aria-hidden="true">
+				<span class="docon docon-chat-sparkle-fill gradient-ask-learn-logo"></span>
+			</span>
+		</button>
+		<button
+			class="button button-sm display-none display-inline-flex-tablet display-none-desktop flex-shrink-0 margin-right-xxs border-color-ask-learn "
+			data-bi-name="ask-learn-assistant-entry"
+			
+			data-test-id="ask-learn-assistant-modal-entry-tablet"
+			data-ask-learn-modal-entry
+			type="button"
+			style="min-width: max-content;"
+			aria-expanded="false"
+			hidden
+		>
+			<span class="icon font-size-lg" aria-hidden="true">
+				<span class="docon docon-chat-sparkle-fill gradient-ask-learn-logo"></span>
+			</span>
+			<span>Ask Learn</span>
+		</button>
+		<button
+			class="button button-sm display-none flex-shrink-0 display-inline-flex-desktop margin-right-xxs border-color-ask-learn "
+			data-bi-name="ask-learn-assistant-entry"
+			
+			data-test-id="ask-learn-assistant-flyout-entry"
+			data-ask-learn-flyout-entry
+			data-flyout-button="toggle"
+			type="button"
+			style="min-width: max-content;"
+			aria-expanded="false"
+			aria-controls="ask-learn-flyout"
+			hidden
+		>
+			<span class="icon font-size-lg" aria-hidden="true">
+				<span class="docon docon-chat-sparkle-fill gradient-ask-learn-logo"></span>
+			</span>
+			<span>Ask Learn</span>
+		</button>
+	 
+
+			<details class="popover popover-right" id="article-header-page-actions-overflow">
+				<summary
+					class="justify-content-flex-start button button-clear button-sm button-primary inner-focus"
+					aria-label="More actions"
+					title="More actions"
+				>
+					<span class="icon" aria-hidden="true">
+						<span class="docon docon-more-vertical"></span>
+					</span>
+				</summary>
+				<div class="popover-content">
+					
+		<button
+			type="button"
+			id="ms--focus-mode-button"
+			data-focus-mode
+			data-bi-name="focus-mode-entry"
+			data-page-action-item="overflow-all"
+			data-popover-close
+			class="button button-clear button-sm button-block justify-content-flex-start text-align-left inner-focus display-none display-inline-flex-tablet"
+		>
+			<span class="icon" aria-hidden="true">
+				<span class="docon docon-glasses"></span>
+			</span>
+			<span>Reading mode</span>
+		</button>
+	 
+		<button
+			data-page-action-item="overflow-mobile"
+			type="button"
+			class="display-block-layout-menu-collapsed button-block button-sm inner-focus button button-clear display-none-tablet justify-content-flex-start text-align-left"
+			data-bi-name="contents-expand"
+			data-contents-button
+			data-popover-close
+		>
+			<span class="icon" aria-hidden="true"
+				><span class="docon docon-editor-list-bullet"></span
+			></span>
+			<span class="contents-expand-title">Table of contents</span>
+		</button>
+	 
+		<a
+			id="lang-link-overflow"
+			class="button-sm inner-focus button button-clear button-block justify-content-flex-start text-align-left"
+			data-bi-name="language-toggle"
+			data-page-action-item="overflow-all"
+			data-check-hidden="true"
+			data-read-in-link
+			href="#"
+			hidden
+		>
+			<span class="icon" aria-hidden="true" data-read-in-link-icon>
+				<span class="docon docon-locale-globe"></span>
+			</span>
+			<span data-read-in-link-text>Read in English</span>
+		</a>
+	
+					
+		<button
+			type="button"
+			class="collection button button-clear button-sm button-block justify-content-flex-start text-align-left inner-focus"
+			data-list-type="collection"
+			data-bi-name="collection"
+			data-page-action-item="overflow-all"
+			data-check-hidden="true"
+			data-popover-close
+		>
+			<span class="icon" aria-hidden="true">
+				<span class="docon docon-circle-addition"></span>
+			</span>
+			<span class="collection-status">Add</span>
+		</button>
+	 
+		<button
+			type="button"
+			class="collection button button-block button-clear button-sm justify-content-flex-start text-align-left inner-focus"
+			data-list-type="plan"
+			data-bi-name="plan"
+			data-page-action-item="overflow-all"
+			data-check-hidden="true"
+			data-popover-close
+			hidden
+		>
+			<span class="icon" aria-hidden="true">
+				<span class="docon docon-circle-addition"></span>
+			</span>
+			<span class="plan-status">Add to Plans</span>
+		</button>
+	 
+					
+		<a
+			data-contenteditbtn
+			class="button button-clear button-block button-sm inner-focus justify-content-flex-start text-align-left text-decoration-none"
+			data-bi-name="edit"
+			data-page-action-item="overflow-all"
+			data-check-hidden="true"
+			
+			href="https://github.com/MicrosoftDocs/lifecycle-pr/blob/main/lifecycle-docs/faq/visual-c-faq.yml"
+			data-original_content_git_url="https://github.com/MicrosoftDocs/lifecycle-pr/blob/live/lifecycle-docs/faq/visual-c-faq.yml"
+			data-original_content_git_url_template="{repo}/blob/{branch}/lifecycle-docs/faq/visual-c-faq.yml"
+			data-pr_repo=""
+			data-pr_branch=""
+		>
+			<span class="icon" aria-hidden="true">
+				<span class="docon docon-edit-outline"></span>
+			</span>
+			<span>Edit</span>
+		</a>
+	  
+		<hr class="margin-block-xxs" />
+		
+				<button
+					class="button button-block button-clear button-sm justify-content-flex-start text-align-left inner-focus"
+					type="button"
+					data-bi-name="copy-markdown"
+					data-page-action-item="overflow-all"
+					data-copy-markdown
+					data-copy-state="idle"
+					data-check-hidden="true"
+				>
+					<span class="icon color-primary" aria-hidden="true">
+						<span data-show-when="idle" class="docon docon-code-lang"></span>
+						<span data-show-when="loading" class="loader" hidden></span>
+						<span data-show-when="success" class="docon docon-check-mark" hidden></span>
+					</span>
+					<span>Copy Markdown</span>
+				</button>
+		   
+				<button
+					class="button button-block button-clear button-sm justify-content-flex-start text-align-left inner-focus"
+					type="button"
+					data-bi-name="print"
+					data-page-action-item="overflow-all"
+					data-popover-close
+					data-print-page
+					data-check-hidden="true"
+				>
+					<span class="icon color-primary" aria-hidden="true">
+						<span class="docon docon-print"></span>
+					</span>
+					<span>Print</span>
+				</button>
+		  
+	
+				</div>
+			</details>
+		</div>
+	
+			</div>
+		</div>
+	  
+		<!-- privateUnauthorizedTemplate is hidden by default -->
+		<div unauthorized-private-section data-bi-name="permission-content-unauthorized-private" hidden>
+			<hr class="hr margin-top-xs margin-bottom-sm" />
+			<div class="notification notification-info">
+				<div class="notification-content">
+					<p class="margin-top-none notification-title">
+						<span class="icon" aria-hidden="true"
+							><span class="docon docon-exclamation-circle-solid"></span
+						></span>
+						<span>Note</span>
+					</p>
+					<p class="margin-top-none authentication-determined not-authenticated">
+						Access to this page requires authorization. You can try <a class="docs-sign-in" href="#" data-bi-name="permission-content-sign-in">signing in</a> or <a  class="docs-change-directory" data-bi-name="permisson-content-change-directory">changing directories</a>.
+					</p>
+					<p class="margin-top-none authentication-determined authenticated">
+						Access to this page requires authorization. You can try <a class="docs-change-directory" data-bi-name="permisson-content-change-directory">changing directories</a>.
+					</p>
+				</div>
+			</div>
+		</div>
+	
+					<div class="content"><h1>Lifecycle FAQ - Microsoft C++ Build Tools, Redistributable, and runtime libraries</h1></div>
+					
+		<div
+			id="article-metadata"
+			data-bi-name="article-metadata"
+			data-test-id="article-metadata"
+			class="page-metadata-container display-flex gap-xxs justify-content-space-between align-items-center flex-wrap-wrap"
+		>
+			 
+				<div
+					id="user-feedback"
+					class="margin-block-xxs display-none display-none-print"
+					hidden
+					data-hide-on-archived
+				>
+					
+		<button
+			id="user-feedback-button"
+			data-test-id="conceptual-feedback-button"
+			class="button button-sm button-clear button-primary display-none"
+			type="button"
+			data-bi-name="user-feedback-button"
+			data-user-feedback-button
+			hidden
+		>
+			<span class="icon" aria-hidden="true">
+				<span class="docon docon-like"></span>
+			</span>
+			<span>Feedback</span>
+		</button>
+	
+				</div>
+		  
+		</div>
+	  
+		<nav
+			id="center-doc-outline"
+			class="doc-outline display-none-desktop display-none-print margin-bottom-sm"
+			data-bi-name="intopic toc"
+			aria-label="In this article"
+		>
+			<h2 id="ms--in-this-article" class="title is-6 margin-block-xs">
+				In this article
+			</h2>
+		</nav>
+	 <div class="content"><article id="faq" class="has-body-background is-full-height">
+	<div class="content margin-top-xs">
+		<p><img src="../media/search.png" role="presentation" data-linktype="relative-path">
+Please go <a href="/en-us/lifecycle/products/" data-linktype="absolute-path">here</a> to search for your product's lifecycle.</p>
+
+	</div>
+
+	<section id="faq-content-container" class="anchor-headings">
+		
+			<h2 id="what-is-the-lifecycle-policy-for-visual-c---redistributable-" class="title is-2 margin-top-sm margin-bottom-xs">What is the Lifecycle Policy for Visual C++ Redistributable?
+</h2>
+			
+			<div class="content"><p>The Microsoft Visual C++ Redistributable v14.0 that shipped with Visual Studio 2015 and later is an in-place cumulative update. Any apps built by Visual Studio 2015 or later Microsoft C++ Build Tools (MSVC) can use the latest Microsoft Visual C++ Redistributable under our <a href="/en-us/cpp/porting/binary-compat-2015-2017" data-linktype="absolute-path">binary compatibility</a> promise.</p>
+<p>Starting with Visual Studio 2026, the Visual C++ Redistributable v14 and later follow the <a href="../policies/modern" data-linktype="relative-path">Modern Policy</a> with a lifecycle separate from Visual Studio. They are supported according to the lifecycle of the Microsoft C++ Build Tools they first shipped with.</p>
+<p>The Redistributable versions that first shipped with Visual Studio 2015 through 2022 follow the <a href="../policies/fixed" data-linktype="relative-path">Fixed Lifecycle Policy</a> and are supported according to the <a href="/en-us/lifecycle/products/?terms=visual%20studio" data-linktype="absolute-path">support lifecycle of the version of Visual Studio</a> in which they first ship, even if they ship in a subsequent version of Visual Studio.</p>
+<p>The Visual C++ Redistributable versions that shipped with Visual Studio 2015 and earlier are no longer supported.</p>
+<p>See the table below for more details on released and supported versions of the Redistributable. See also <a href="/en-us/cpp/windows/latest-supported-vc-redist" data-linktype="absolute-path">Microsoft Visual C++ Redistributable latest supported downloads</a>.</p>
+</div>
+			<h2 id="what-is-the-lifecycle-policy-for-microsoft-c---build-tools--msvc--" class="title is-2 margin-top-sm margin-bottom-xs">What is the Lifecycle Policy for Microsoft C++ Build Tools (MSVC)?
+</h2>
+			
+			<div class="content"><p>The Microsoft C++ Build Tools (MSVC) includes the Microsoft C++ compiler, linker, headers, libraries, runtime MSMs and other components for building C++ applications.</p>
+<p>Beginning with Visual Studio 2026, MSVC 14.50 and later follow the <a href="../policies/modern" data-linktype="relative-path">Modern Policy</a> with a lifecycle separate from Visual Studio. MSVC Build Tools releases will be supported for 9 months from the date of first release regardless of the version of Visual Studio in which they ship. Every two years, one of the MSVC releases will be designated as a Long-Term Servicing (LTS) release. LTS releases will be supported for 3 years from the date of first release regardless of the version of Visual Studio in which it ships.</p>
+<p>The Microsoft C++ Build Tools (MSVC) versions 14.44 and earlier that shipped with Visual Studio 2022 and earlier follow the <a href="../policies/fixed" data-linktype="relative-path">Fixed</a> Lifecycle Policy. They are supported according to the <a href="/en-us/lifecycle/products/?terms=visual%20studio" data-linktype="absolute-path">support lifecycle of the version of Visual Studio</a> (including the Visual Studio Build Tools) in which they first ship, <strong>even if they ship in a subsequent version of Visual Studio</strong>.</p>
+</div>
+			<h2 id="how-is-the-visual-c---redistributable-updated-" class="title is-2 margin-top-sm margin-bottom-xs">How is the Visual C++ Redistributable updated?
+</h2>
+			
+			<div class="content"><p>The Visual C++ Redistributable installs the MSVC runtime libraries. Starting with Visual Studio 2015, the Visual C++ Redistributable is an in-place cumulative update. Each release of the Redistributable is compatible with programs compiled using MSVC Build Tools v14.00 and later that shipped with Visual Studio 2015 and later provided that the Redistributable version is equal to or higher than the version of the build tools used to build the application.</p>
+</div>
+			<h2 id="how-can-i-determine-which-applications-on-a-machine-use-an-out-of-support-version-of-the-visual-c---redistributable-" class="title is-2 margin-top-sm margin-bottom-xs">How can I determine which applications on a machine use an out-of-support version of the Visual C++ Redistributable?
+</h2>
+			
+			<div class="content"><p>Across your network, machines may still be running applications that install and use an out-of-support version of the Visual C++ Redistributable. You can use NTFS file auditing to identify such usage as a step towards replacing those applications with ones that use a supported version of the VC Redistributable. For guidance, see <a href="/en-us/cpp/windows/redist-version-auditing" data-linktype="absolute-path">How to audit Visual C++ Redistributable version usage</a>.</p>
+</div>
+			<h2 id="what-versions-of-visual-c---redistributable--msvc-runtime-libraries--and-msvc-build-tools-are-supported-" class="title is-2 margin-top-sm margin-bottom-xs">What versions of Visual C++ Redistributable, MSVC runtime libraries, and MSVC Build Tools are supported?
+</h2>
+			
+			<div class="content"><p>Starting with Visual Studio 2015, the runtime libraries and apps built with the MSVC Build Tools from Visual Studio versions 2015, 2017, 2019, and 2022 are binary-compatible with the latest Microsoft Visual C++ Redistributable. For these versions, we recommend customers use the latest available version of the C++ Redistributable. For more information, see <a href="/en-us/cpp/porting/binary-compat-2015-2017?view=msvc-170" data-linktype="absolute-path">C++ binary compatibility 2015-2022</a> and <a href="/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170" data-linktype="absolute-path">Latest supported Visual C++ Redistributable downloads</a>.</p>
+<table>
+<thead>
+<tr>
+<th><strong>MSVC version</strong></th>
+<th><strong>C++ Redistributable &amp;<br>runtime version</strong></th>
+<th><strong>Shipped with</strong></th>
+<th><strong>Start date</strong></th>
+<th><strong>End date</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>V141 - 14.16</td>
+<td>14.16.27052</td>
+<td>Visual Studio 2017 v15.9 final</td>
+<td>Nov 13, 2018</td>
+<td>Apr 13, 2027</td>
+</tr>
+<tr>
+<td>V142 - 14.29</td>
+<td>14.29.30157</td>
+<td>Visual Studio 2019 v16.11 final</td>
+<td>Apr 2, 2019</td>
+<td>Apr 10, 2029</td>
+</tr>
+<tr>
+<td>V143 - 14.40</td>
+<td>14.40.33816</td>
+<td>Visual Studio 2022 v17.10 LTSC</td>
+<td>May 21, 2024</td>
+<td>Jan 13, 2026</td>
+</tr>
+<tr>
+<td>V143 - 14.42</td>
+<td>14.42.34433</td>
+<td>Visual Studio 2022 v17.12 LTSC</td>
+<td>Nov 12, 2024</td>
+<td>July 14, 2026</td>
+</tr>
+<tr>
+<td>V143 - 14.44</td>
+<td>14.44.35211</td>
+<td>Visual Studio 2022 v17.14 final</td>
+<td>May 13, 2025</td>
+<td>Jan 13, 2032</td>
+</tr>
+<tr>
+<td>V14.50</td>
+<td>14.50.35710</td>
+<td>Visual Studio 2026 v18.0</td>
+<td>Nov 11, 2025</td>
+<td>Nov 14, 2028</td>
+</tr>
+</tbody>
+</table>
+<div class="NOTE">
+<p>Note</p>
+<p>The version of the Visual C++ Redistributable that shipped with the final update for Visual Studio 2017, 2019, and 2022 will be supported for the duration of the respective Visual Studio lifecycle. Users must be on the latest serviced release of that version to be supported.</p>
+</div>
+</div>
+			<h2 id="what-were-the-support-dates-of-older-visual-c---redistributable--runtime-libraries--and-msvc-build-tools-" class="title is-2 margin-top-sm margin-bottom-xs">What were the support dates of older Visual C++ Redistributable, runtime libraries, and MSVC Build Tools?
+</h2>
+			
+			<div class="content"><table>
+<thead>
+<tr>
+<th><strong>MSVC Version</strong></th>
+<th><strong>C++ Redistributable &amp;<br>runtime version</strong></th>
+<th><strong>Shipped with</strong></th>
+<th><strong>Start date</strong></th>
+<th><strong>End date</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>v70</td>
+<td></td>
+<td>Visual Studio 2002</td>
+<td>Feb 12, 2002</td>
+<td>July 9, 2012</td>
+</tr>
+<tr>
+<td>v71</td>
+<td></td>
+<td>Visual Studio 2003</td>
+<td>Jul 10, 2003</td>
+<td>Oct 8, 2013</td>
+</tr>
+<tr>
+<td>v80</td>
+<td></td>
+<td>Visual Studio 2005</td>
+<td>Jan 27, 2006</td>
+<td>Apr 12, 2016</td>
+</tr>
+<tr>
+<td>v90</td>
+<td></td>
+<td>Visual Studio 2008</td>
+<td>Feb 19, 2008</td>
+<td>Apr 10, 2018</td>
+</tr>
+<tr>
+<td>v100</td>
+<td></td>
+<td>Visual Studio 2010</td>
+<td>Jun 29, 2010</td>
+<td>Jul 14, 2020</td>
+</tr>
+<tr>
+<td>v110</td>
+<td></td>
+<td>Visual Studio 2012</td>
+<td>Oct 31, 2012</td>
+<td>Jan 10, 2023</td>
+</tr>
+<tr>
+<td>v120</td>
+<td></td>
+<td>Visual Studio 2013</td>
+<td>Jan 15, 2014</td>
+<td>Apr 9, 2024</td>
+</tr>
+<tr>
+<td>V140 - 14.00</td>
+<td></td>
+<td>Visual Studio 2015</td>
+<td>Jul 20, 2015</td>
+<td>Jul 11, 2017</td>
+</tr>
+<tr>
+<td>V140 - 14.00</td>
+<td>14.0.24212</td>
+<td>Visual Studio 2015 Update 3</td>
+<td>Jul 20, 2015</td>
+<td>Oct 14, 2025</td>
+</tr>
+<tr>
+<td>V141 - 14.00</td>
+<td></td>
+<td>Visual Studio 2017 v15.0 LTSC</td>
+<td>Mar 7, 2017</td>
+<td>Jan 14, 2020</td>
+</tr>
+<tr>
+<td>V142 - 14.20</td>
+<td></td>
+<td>Visual Studio 2019 v16.0 LTSC</td>
+<td>Apr 2, 2019</td>
+<td>Jan 12, 2021</td>
+</tr>
+<tr>
+<td>V142 - 14.24</td>
+<td></td>
+<td>Visual Studio 2019 v16.4 LTSC</td>
+<td>Dec 3, 2019</td>
+<td>Oct 12, 2021</td>
+</tr>
+<tr>
+<td>V142 - 14.27</td>
+<td></td>
+<td>Visual Studio 2019 v16.7 LTSC</td>
+<td>Aug 5, 2020</td>
+<td>Apr 12, 2022</td>
+</tr>
+<tr>
+<td>V142 - 14.28</td>
+<td></td>
+<td>Visual Studio 2019 v16.6 LTSC</td>
+<td>Apr 2, 2019</td>
+<td>Oct 11, 2022</td>
+</tr>
+<tr>
+<td>V143 - 14.30</td>
+<td></td>
+<td>Visual Studio 2022 v17.0 LTSC</td>
+<td>Nov 8, 2021</td>
+<td>Jul 11, 2023</td>
+</tr>
+<tr>
+<td>V143 - 14.32</td>
+<td></td>
+<td>Visual Studio 2022 v17.2 LTSC</td>
+<td>May 10, 2022</td>
+<td>Jan 9, 2024</td>
+</tr>
+<tr>
+<td>V143 - 14.34</td>
+<td></td>
+<td>Visual Studio 2022 v17.4 LTSC</td>
+<td>Nov 8, 2022</td>
+<td>Jul 11, 2024</td>
+</tr>
+<tr>
+<td>V143 - 14.36</td>
+<td>14.36.32547</td>
+<td>Visual Studio 2022 v17.6 LTSC</td>
+<td>May 16, 2023</td>
+<td>Jan 9, 2025</td>
+</tr>
+<tr>
+<td>V143 - 14.38</td>
+<td>14.38.33142</td>
+<td>Visual Studio 2022 v17.8 LTSC</td>
+<td>Nov 14, 2024</td>
+<td>Jul 8, 2025</td>
+</tr>
+</tbody>
+</table>
+<div class="NOTE">
+<p>Note</p>
+<p>Non-LTSC versions of the Visual C++ Redistributable for Visual Studio 2017, 2019, and 2022 were not supported past the subsequent minor version release. For example, v17.5 was supported only until v17.6 released. For more information, see <a href="/en-us/visualstudio/productinfo/release-rhythm" data-linktype="absolute-path">Visual Studio Channels and Release Rhythm</a>.</p>
+</div>
+</div>
+			<h2 id="will-there-be-support-for-legacy-visual-c---redistributables-for-microsoft-products-" class="title is-2 margin-top-sm margin-bottom-xs">Will there be support for legacy Visual C++ Redistributables for Microsoft products?
+</h2>
+			
+			<div class="content"><p>There are a few specific instances where we continue to support the Visual C++ Redistributable beyond the underlying Visual Studio product lifecycle. This support is for security fixes only, and only in the context and timeframe of the Microsoft product(s) that depend on it. The following table indicates the Microsoft product and the corresponding Visual C++ Redistributable supported for that product. See <a href="/en-us/lifecycle/products/" data-linktype="absolute-path">the product's lifecycle information page</a> for details on the support lifecycle.</p>
+<table>
+<thead>
+<tr>
+<th><strong>Product</strong></th>
+<th><strong>Version</strong></th>
+<th><strong>Visual C++ Redistributable version</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>.NET 3.5 included in Windows</td>
+<td>3.5</td>
+<td>VC++ 2008 (v9.x)</td>
+</tr>
+<tr>
+<td>System Center Data Protection Manager (DPM)</td>
+<td>2016</td>
+<td>VC++ 2012 (v11.x)  <br> VC++ 2013 (v12.x)</td>
+</tr>
+<tr>
+<td>System Center Data Protection Manager (DPM)</td>
+<td>2019</td>
+<td>VC++ 2012 (v11.x) <br> VC++ 2013 (v12.x)</td>
+</tr>
+<tr>
+<td>System Center Data Protection Manager (DPM)</td>
+<td>2022</td>
+<td>VC++ 2012 (v11.x) <br> VC++ 2013 (v12.x)</td>
+</tr>
+<tr>
+<td>SharePoint Server</td>
+<td>2016</td>
+<td>VC++ 2012 (v11.x)</td>
+</tr>
+<tr>
+<td>SharePoint Server</td>
+<td>2019</td>
+<td>VC++ 2012 (v11.x)</td>
+</tr>
+<tr>
+<td>SQL Server*</td>
+<td>2012 (11.x)</td>
+<td>VC++ 2010 (v10.x)</td>
+</tr>
+<tr>
+<td>SQL Server*</td>
+<td>2014 (12.x)</td>
+<td>VC++ 2010 (v10.x)</td>
+</tr>
+<tr>
+<td>SQL Server*</td>
+<td>2016 (13.x)</td>
+<td>VC++ 2010 (v10.x)</td>
+</tr>
+<tr>
+<td>SQL Server</td>
+<td>2017 (14.x)</td>
+<td>VC++ 2015-2022</td>
+</tr>
+<tr>
+<td>SQL Server</td>
+<td>2019 (15.x)</td>
+<td>VC++ 2015-2022</td>
+</tr>
+<tr>
+<td>SQL Server</td>
+<td>2022 (26.x)</td>
+<td>VC++ 2015-2022</td>
+</tr>
+<tr>
+<td>Office</td>
+<td>2016</td>
+<td>VC++ 2015-2022</td>
+</tr>
+<tr>
+<td>Office</td>
+<td>2019</td>
+<td>VC++ 2015-2022</td>
+</tr>
+<tr>
+<td>Office</td>
+<td>2021</td>
+<td>VC++ 2015-2022</td>
+</tr>
+</tbody>
+</table>
+<p>* For SQL Server versions 2012, 2014, and 2016 see this page: <a href="/en-us/troubleshoot/sql/database-engine/install/windows/visual-c-redistributable-installed-sql-server-flagged-end-of-life-obsolete" data-linktype="absolute-path">Visual C++ Redistributable installed with SQL Server alerts end of life or obsolete - SQL Server</a>.</p>
+</div>
+			<h2 id="more-information" class="title is-2 margin-top-sm margin-bottom-xs">More information
+</h2>
+			
+			<div class="content"><ul>
+<li><a href="/en-us/cpp/windows/latest-supported-vc-redist" data-linktype="absolute-path">Latest supported Visual C++ Redistributable downloads</a></li>
+<li><a href="/en-us/cpp/porting/binary-compat-2015-2017" data-linktype="absolute-path">C++ binary compatibility 2015-2026</a></li>
+<li><a href="/en-us/cpp/windows/redist-version-auditing" data-linktype="absolute-path">How to audit Visual C++ Runtime version usage</a></li>
+<li><a href="/en-us/cpp/windows/redistributing-visual-cpp-files" data-linktype="absolute-path">Redistributing Visual C++ Files</a></li>
+<li><a href="/en-us/visualstudio/releases/2026/port-migrate-and-upgrade-visual-studio-projects" data-linktype="absolute-path">Visual Studio Port, migrate, and upgrade projects</a></li>
+<li><a href="/en-us/visualstudio/releases/2026/vs-servicing-vs" data-linktype="absolute-path">Visual Studio Product Lifecycle and Servicing</a></li>
+<li><a href="/en-us/visualstudio/releases/2026/release-rhythm" data-linktype="absolute-path">Visual Studio Channels and Release Rhythm</a></li>
+<li><a href="/en-us/lifecycle/products/?terms=visual%20studio" data-linktype="absolute-path">Search Product and Services Lifecycle Information</a></li>
+</ul>
+</div>
+	<div class="content"></div>
+	</section>
+</article>
+<script type="application/ld+json">
+	{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the Lifecycle Policy for Visual C++ Redistributable?\n","acceptedAnswer":{"@type":"Answer","text":"\u003cp\u003eThe Microsoft Visual C++ Redistributable v14.0 that shipped with Visual Studio 2015 and later is an in-place cumulative update. Any apps built by Visual Studio 2015 or later Microsoft C++ Build Tools (MSVC) can use the latest Microsoft Visual C++ Redistributable under our \u003ca href=\"/cpp/porting/binary-compat-2015-2017\"\u003ebinary compatibility\u003c/a\u003e promise.\u003c/p\u003e\n\u003cp\u003eStarting with Visual Studio 2026, the Visual C++ Redistributable v14 and later follow the \u003ca href=\"../policies/modern\"\u003eModern Policy\u003c/a\u003e with a lifecycle separate from Visual Studio. They are supported according to the lifecycle of the Microsoft C++ Build Tools they first shipped with.\u003c/p\u003e\n\u003cp\u003eThe Redistributable versions that first shipped with Visual Studio 2015 through 2022 follow the \u003ca href=\"../policies/fixed\"\u003eFixed Lifecycle Policy\u003c/a\u003e and are supported according to the \u003ca href=\"/lifecycle/products/?terms=visual%20studio\"\u003esupport lifecycle of the version of Visual Studio\u003c/a\u003e in which they first ship, even if they ship in a subsequent version of Visual Studio.\u003c/p\u003e\n\u003cp\u003eThe Visual C++ Redistributable versions that shipped with Visual Studio 2015 and earlier are no longer supported.\u003c/p\u003e\n\u003cp\u003eSee the table below for more details on released and supported versions of the Redistributable. See also \u003ca href=\"/cpp/windows/latest-supported-vc-redist\"\u003eMicrosoft Visual C++ Redistributable latest supported downloads\u003c/a\u003e.\u003c/p\u003e\n"}},{"@type":"Question","name":"What is the Lifecycle Policy for Microsoft C++ Build Tools (MSVC)?\n","acceptedAnswer":{"@type":"Answer","text":"\u003cp\u003eThe Microsoft C++ Build Tools (MSVC) includes the Microsoft C++ compiler, linker, headers, libraries, runtime MSMs and other components for building C++ applications.\u003c/p\u003e\n\u003cp\u003eBeginning with Visual Studio 2026, MSVC 14.50 and later follow the \u003ca href=\"../policies/modern\"\u003eModern Policy\u003c/a\u003e with a lifecycle separate from Visual Studio. MSVC Build Tools releases will be supported for 9 months from the date of first release regardless of the version of Visual Studio in which they ship. Every two years, one of the MSVC releases will be designated as a Long-Term Servicing (LTS) release. LTS releases will be supported for 3 years from the date of first release regardless of the version of Visual Studio in which it ships.\u003c/p\u003e\n\u003cp\u003eThe Microsoft C++ Build Tools (MSVC) versions 14.44 and earlier that shipped with Visual Studio 2022 and earlier follow the \u003ca href=\"../policies/fixed\"\u003eFixed\u003c/a\u003e Lifecycle Policy. They are supported according to the \u003ca href=\"/lifecycle/products/?terms=visual%20studio\"\u003esupport lifecycle of the version of Visual Studio\u003c/a\u003e (including the Visual Studio Build Tools) in which they first ship, \u003cstrong\u003eeven if they ship in a subsequent version of Visual Studio\u003c/strong\u003e.\u003c/p\u003e\n"}},{"@type":"Question","name":"How is the Visual C++ Redistributable updated?\n","acceptedAnswer":{"@type":"Answer","text":"\u003cp\u003eThe Visual C++ Redistributable installs the MSVC runtime libraries. Starting with Visual Studio 2015, the Visual C++ Redistributable is an in-place cumulative update. Each release of the Redistributable is compatible with programs compiled using MSVC Build Tools v14.00 and later that shipped with Visual Studio 2015 and later provided that the Redistributable version is equal to or higher than the version of the build tools used to build the application.\u003c/p\u003e\n"}},{"@type":"Question","name":"How can I determine which applications on a machine use an out-of-support version of the Visual C++ Redistributable?\n","acceptedAnswer":{"@type":"Answer","text":"\u003cp\u003eAcross your network, machines may still be running applications that install and use an out-of-support version of the Visual C++ Redistributable. You can use NTFS file auditing to identify such usage as a step towards replacing those applications with ones that use a supported version of the VC Redistributable. For guidance, see \u003ca href=\"/cpp/windows/redist-version-auditing\"\u003eHow to audit Visual C++ Redistributable version usage\u003c/a\u003e.\u003c/p\u003e\n"}},{"@type":"Question","name":"What versions of Visual C++ Redistributable, MSVC runtime libraries, and MSVC Build Tools are supported?\n","acceptedAnswer":{"@type":"Answer","text":"\u003cp\u003eStarting with Visual Studio 2015, the runtime libraries and apps built with the MSVC Build Tools from Visual Studio versions 2015, 2017, 2019, and 2022 are binary-compatible with the latest Microsoft Visual C++ Redistributable. For these versions, we recommend customers use the latest available version of the C++ Redistributable. For more information, see \u003ca href=\"/cpp/porting/binary-compat-2015-2017?view=msvc-170\"\u003eC++ binary compatibility 2015-2022\u003c/a\u003e and \u003ca href=\"/cpp/windows/latest-supported-vc-redist?view=msvc-170\"\u003eLatest supported Visual C++ Redistributable downloads\u003c/a\u003e.\u003c/p\u003e\n\u003ctable\u003e\n\u003cthead\u003e\n\u003ctr\u003e\n\u003cth\u003e\u003cstrong\u003eMSVC version\u003c/strong\u003e\u003c/th\u003e\n\u003cth\u003e\u003cstrong\u003eC++ Redistributable \u0026amp;\u003cbr/\u003eruntime version\u003c/strong\u003e\u003c/th\u003e\n\u003cth\u003e\u003cstrong\u003eShipped with\u003c/strong\u003e\u003c/th\u003e\n\u003cth\u003e\u003cstrong\u003eStart date\u003c/strong\u003e\u003c/th\u003e\n\u003cth\u003e\u003cstrong\u003eEnd date\u003c/strong\u003e\u003c/th\u003e\n\u003c/tr\u003e\n\u003c/thead\u003e\n\u003ctbody\u003e\n\u003ctr\u003e\n\u003ctd\u003eV141 - 14.16\u003c/td\u003e\n\u003ctd\u003e14.16.27052\u003c/td\u003e\n\u003ctd\u003eVisual Studio 2017 v15.9 final\u003c/td\u003e\n\u003ctd\u003eNov 13, 2018\u003c/td\u003e\n\u003ctd\u003eApr 13, 2027\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eV142 - 14.29\u003c/td\u003e\n\u003ctd\u003e14.29.30157\u003c/td\u003e\n\u003ctd\u003eVisual Studio 2019 v16.11 final\u003c/td\u003e\n\u003ctd\u003eApr 2, 2019\u003c/td\u003e\n\u003ctd\u003eApr 10, 2029\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eV143 - 14.40\u003c/td\u003e\n\u003ctd\u003e14.40.33816\u003c/td\u003e\n\u003ctd\u003eVisual Studio 2022 v17.10 LTSC\u003c/td\u003e\n\u003ctd\u003eMay 21, 2024\u003c/td\u003e\n\u003ctd\u003eJan 13, 2026\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eV143 - 14.42\u003c/td\u003e\n\u003ctd\u003e14.42.34433\u003c/td\u003e\n\u003ctd\u003eVisual Studio 2022 v17.12 LTSC\u003c/td\u003e\n\u003ctd\u003eNov 12, 2024\u003c/td\u003e\n\u003ctd\u003eJuly 14, 2026\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eV143 - 14.44\u003c/td\u003e\n\u003ctd\u003e14.44.35211\u003c/td\u003e\n\u003ctd\u003eVisual Studio 2022 v17.14 final\u003c/td\u003e\n\u003ctd\u003eMay 13, 2025\u003c/td\u003e\n\u003ctd\u003eJan 13, 2032\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eV14.50\u003c/td\u003e\n\u003ctd\u003e14.50.35710\u003c/td\u003e\n\u003ctd\u003eVisual Studio 2026 v18.0\u003c/td\u003e\n\u003ctd\u003eNov 11, 2025\u003c/td\u003e\n\u003ctd\u003eNov 14, 2028\u003c/td\u003e\n\u003c/tr\u003e\n\u003c/tbody\u003e\n\u003c/table\u003e\n\u003cdiv class=\"NOTE\"\u003e\n\u003cp\u003eNote\u003c/p\u003e\n\u003cp\u003eThe version of the Visual C++ Redistributable that shipped with the final update for Visual Studio 2017, 2019, and 2022 will be supported for the duration of the respective Visual Studio lifecycle. Users must be on the latest serviced release of that version to be supported.\u003c/p\u003e\n\u003c/div\u003e\n"}},{"@type":"Question","name":"What were the support dates of older Visual C++ Redistributable, runtime libraries, and MSVC Build Tools?\n","acceptedAnswer":{"@type":"Answer","text":"\u003ctable\u003e\n\u003cthead\u003e\n\u003ctr\u003e\n\u003cth\u003e\u003cstrong\u003eMSVC Version\u003c/strong\u003e\u003c/th\u003e\n\u003cth\u003e\u003cstrong\u003eC++ Redistributable \u0026amp;\u003cbr/\u003eruntime version\u003c/strong\u003e\u003c/th\u003e\n\u003cth\u003e\u003cstrong\u003eShipped with\u003c/strong\u003e\u003c/th\u003e\n\u003cth\u003e\u003cstrong\u003eStart date\u003c/strong\u003e\u003c/th\u003e\n\u003cth\u003e\u003cstrong\u003eEnd date\u003c/strong\u003e\u003c/th\u003e\n\u003c/tr\u003e\n\u003c/thead\u003e\n\u003ctbody\u003e\n\u003ctr\u003e\n\u003ctd\u003ev70\u003c/td\u003e\n\u003ctd\u003e\u003c/td\u003e\n\u003ctd\u003eVisual Studio 2002\u003c/td\u003e\n\u003ctd\u003eFeb 12, 2002\u003c/td\u003e\n\u003ctd\u003eJuly 9, 2012\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003ev71\u003c/td\u003e\n\u003ctd\u003e\u003c/td\u003e\n\u003ctd\u003eVisual Studio 2003\u003c/td\u003e\n\u003ctd\u003eJul 10, 2003\u003c/td\u003e\n\u003ctd\u003eOct 8, 2013\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003ev80\u003c/td\u003e\n\u003ctd\u003e\u003c/td\u003e\n\u003ctd\u003eVisual Studio 2005\u003c/td\u003e\n\u003ctd\u003eJan 27, 2006\u003c/td\u003e\n\u003ctd\u003eApr 12, 2016\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003ev90\u003c/td\u003e\n\u003ctd\u003e\u003c/td\u003e\n\u003ctd\u003eVisual Studio 2008\u003c/td\u003e\n\u003ctd\u003eFeb 19, 2008\u003c/td\u003e\n\u003ctd\u003eApr 10, 2018\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003ev100\u003c/td\u003e\n\u003ctd\u003e\u003c/td\u003e\n\u003ctd\u003eVisual Studio 2010\u003c/td\u003e\n\u003ctd\u003eJun 29, 2010\u003c/td\u003e\n\u003ctd\u003eJul 14, 2020\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003ev110\u003c/td\u003e\n\u003ctd\u003e\u003c/td\u003e\n\u003ctd\u003eVisual Studio 2012\u003c/td\u003e\n\u003ctd\u003eOct 31, 2012\u003c/td\u003e\n\u003ctd\u003eJan 10, 2023\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003ev120\u003c/td\u003e\n\u003ctd\u003e\u003c/td\u003e\n\u003ctd\u003eVisual Studio 2013\u003c/td\u003e\n\u003ctd\u003eJan 15, 2014\u003c/td\u003e\n\u003ctd\u003eApr 9, 2024\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eV140 - 14.00\u003c/td\u003e\n\u003ctd\u003e\u003c/td\u003e\n\u003ctd\u003eVisual Studio 2015\u003c/td\u003e\n\u003ctd\u003eJul 20, 2015\u003c/td\u003e\n\u003ctd\u003eJul 11, 2017\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eV140 - 14.00\u003c/td\u003e\n\u003ctd\u003e14.0.24212\u003c/td\u003e\n\u003ctd\u003eVisual Studio 2015 Update 3\u003c/td\u003e\n\u003ctd\u003eJul 20, 2015\u003c/td\u003e\n\u003ctd\u003eOct 14, 2025\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eV141 - 14.00\u003c/td\u003e\n\u003ctd\u003e\u003c/td\u003e\n\u003ctd\u003eVisual Studio 2017 v15.0 LTSC\u003c/td\u003e\n\u003ctd\u003eMar 7, 2017\u003c/td\u003e\n\u003ctd\u003eJan 14, 2020\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eV142 - 14.20\u003c/td\u003e\n\u003ctd\u003e\u003c/td\u003e\n\u003ctd\u003eVisual Studio 2019 v16.0 LTSC\u003c/td\u003e\n\u003ctd\u003eApr 2, 2019\u003c/td\u003e\n\u003ctd\u003eJan 12, 2021\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eV142 - 14.24\u003c/td\u003e\n\u003ctd\u003e\u003c/td\u003e\n\u003ctd\u003eVisual Studio 2019 v16.4 LTSC\u003c/td\u003e\n\u003ctd\u003eDec 3, 2019\u003c/td\u003e\n\u003ctd\u003eOct 12, 2021\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eV142 - 14.27\u003c/td\u003e\n\u003ctd\u003e\u003c/td\u003e\n\u003ctd\u003eVisual Studio 2019 v16.7 LTSC\u003c/td\u003e\n\u003ctd\u003eAug 5, 2020\u003c/td\u003e\n\u003ctd\u003eApr 12, 2022\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eV142 - 14.28\u003c/td\u003e\n\u003ctd\u003e\u003c/td\u003e\n\u003ctd\u003eVisual Studio 2019 v16.6 LTSC\u003c/td\u003e\n\u003ctd\u003eApr 2, 2019\u003c/td\u003e\n\u003ctd\u003eOct 11, 2022\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eV143 - 14.30\u003c/td\u003e\n\u003ctd\u003e\u003c/td\u003e\n\u003ctd\u003eVisual Studio 2022 v17.0 LTSC\u003c/td\u003e\n\u003ctd\u003eNov 8, 2021\u003c/td\u003e\n\u003ctd\u003eJul 11, 2023\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eV143 - 14.32\u003c/td\u003e\n\u003ctd\u003e\u003c/td\u003e\n\u003ctd\u003eVisual Studio 2022 v17.2 LTSC\u003c/td\u003e\n\u003ctd\u003eMay 10, 2022\u003c/td\u003e\n\u003ctd\u003eJan 9, 2024\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eV143 - 14.34\u003c/td\u003e\n\u003ctd\u003e\u003c/td\u003e\n\u003ctd\u003eVisual Studio 2022 v17.4 LTSC\u003c/td\u003e\n\u003ctd\u003eNov 8, 2022\u003c/td\u003e\n\u003ctd\u003eJul 11, 2024\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eV143 - 14.36\u003c/td\u003e\n\u003ctd\u003e14.36.32547\u003c/td\u003e\n\u003ctd\u003eVisual Studio 2022 v17.6 LTSC\u003c/td\u003e\n\u003ctd\u003eMay 16, 2023\u003c/td\u003e\n\u003ctd\u003eJan 9, 2025\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eV143 - 14.38\u003c/td\u003e\n\u003ctd\u003e14.38.33142\u003c/td\u003e\n\u003ctd\u003eVisual Studio 2022 v17.8 LTSC\u003c/td\u003e\n\u003ctd\u003eNov 14, 2024\u003c/td\u003e\n\u003ctd\u003eJul 8, 2025\u003c/td\u003e\n\u003c/tr\u003e\n\u003c/tbody\u003e\n\u003c/table\u003e\n\u003cdiv class=\"NOTE\"\u003e\n\u003cp\u003eNote\u003c/p\u003e\n\u003cp\u003eNon-LTSC versions of the Visual C++ Redistributable for Visual Studio 2017, 2019, and 2022 were not supported past the subsequent minor version release. For example, v17.5 was supported only until v17.6 released. For more information, see \u003ca href=\"/visualstudio/productinfo/release-rhythm\"\u003eVisual Studio Channels and Release Rhythm\u003c/a\u003e.\u003c/p\u003e\n\u003c/div\u003e\n"}},{"@type":"Question","name":"Will there be support for legacy Visual C++ Redistributables for Microsoft products?\n","acceptedAnswer":{"@type":"Answer","text":"\u003cp\u003eThere are a few specific instances where we continue to support the Visual C++ Redistributable beyond the underlying Visual Studio product lifecycle. This support is for security fixes only, and only in the context and timeframe of the Microsoft product(s) that depend on it. The following table indicates the Microsoft product and the corresponding Visual C++ Redistributable supported for that product. See \u003ca href=\"/lifecycle/products/\"\u003ethe product's lifecycle information page\u003c/a\u003e for details on the support lifecycle.\u003c/p\u003e\n\u003ctable\u003e\n\u003cthead\u003e\n\u003ctr\u003e\n\u003cth\u003e\u003cstrong\u003eProduct\u003c/strong\u003e\u003c/th\u003e\n\u003cth\u003e\u003cstrong\u003eVersion\u003c/strong\u003e\u003c/th\u003e\n\u003cth\u003e\u003cstrong\u003eVisual C++ Redistributable version\u003c/strong\u003e\u003c/th\u003e\n\u003c/tr\u003e\n\u003c/thead\u003e\n\u003ctbody\u003e\n\u003ctr\u003e\n\u003ctd\u003e.NET 3.5 included in Windows\u003c/td\u003e\n\u003ctd\u003e3.5\u003c/td\u003e\n\u003ctd\u003eVC++ 2008 (v9.x)\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eSystem Center Data Protection Manager (DPM)\u003c/td\u003e\n\u003ctd\u003e2016\u003c/td\u003e\n\u003ctd\u003eVC++ 2012 (v11.x)  \u003cbr/\u003e VC++ 2013 (v12.x)\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eSystem Center Data Protection Manager (DPM)\u003c/td\u003e\n\u003ctd\u003e2019\u003c/td\u003e\n\u003ctd\u003eVC++ 2012 (v11.x) \u003cbr/\u003e VC++ 2013 (v12.x)\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eSystem Center Data Protection Manager (DPM)\u003c/td\u003e\n\u003ctd\u003e2022\u003c/td\u003e\n\u003ctd\u003eVC++ 2012 (v11.x) \u003cbr/\u003e VC++ 2013 (v12.x)\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eSharePoint Server\u003c/td\u003e\n\u003ctd\u003e2016\u003c/td\u003e\n\u003ctd\u003eVC++ 2012 (v11.x)\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eSharePoint Server\u003c/td\u003e\n\u003ctd\u003e2019\u003c/td\u003e\n\u003ctd\u003eVC++ 2012 (v11.x)\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eSQL Server*\u003c/td\u003e\n\u003ctd\u003e2012 (11.x)\u003c/td\u003e\n\u003ctd\u003eVC++ 2010 (v10.x)\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eSQL Server*\u003c/td\u003e\n\u003ctd\u003e2014 (12.x)\u003c/td\u003e\n\u003ctd\u003eVC++ 2010 (v10.x)\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eSQL Server*\u003c/td\u003e\n\u003ctd\u003e2016 (13.x)\u003c/td\u003e\n\u003ctd\u003eVC++ 2010 (v10.x)\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eSQL Server\u003c/td\u003e\n\u003ctd\u003e2017 (14.x)\u003c/td\u003e\n\u003ctd\u003eVC++ 2015-2022\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eSQL Server\u003c/td\u003e\n\u003ctd\u003e2019 (15.x)\u003c/td\u003e\n\u003ctd\u003eVC++ 2015-2022\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eSQL Server\u003c/td\u003e\n\u003ctd\u003e2022 (26.x)\u003c/td\u003e\n\u003ctd\u003eVC++ 2015-2022\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eOffice\u003c/td\u003e\n\u003ctd\u003e2016\u003c/td\u003e\n\u003ctd\u003eVC++ 2015-2022\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eOffice\u003c/td\u003e\n\u003ctd\u003e2019\u003c/td\u003e\n\u003ctd\u003eVC++ 2015-2022\u003c/td\u003e\n\u003c/tr\u003e\n\u003ctr\u003e\n\u003ctd\u003eOffice\u003c/td\u003e\n\u003ctd\u003e2021\u003c/td\u003e\n\u003ctd\u003eVC++ 2015-2022\u003c/td\u003e\n\u003c/tr\u003e\n\u003c/tbody\u003e\n\u003c/table\u003e\n\u003cp\u003e* For SQL Server versions 2012, 2014, and 2016 see this page: \u003ca href=\"/troubleshoot/sql/database-engine/install/windows/visual-c-redistributable-installed-sql-server-flagged-end-of-life-obsolete\"\u003eVisual C++ Redistributable installed with SQL Server alerts end of life or obsolete - SQL Server\u003c/a\u003e.\u003c/p\u003e\n"}},{"@type":"Question","name":"More information\n","acceptedAnswer":{"@type":"Answer","text":"\u003cul\u003e\n\u003cli\u003e\u003ca href=\"/cpp/windows/latest-supported-vc-redist\"\u003eLatest supported Visual C++ Redistributable downloads\u003c/a\u003e\u003c/li\u003e\n\u003cli\u003e\u003ca href=\"/cpp/porting/binary-compat-2015-2017\"\u003eC++ binary compatibility 2015-2026\u003c/a\u003e\u003c/li\u003e\n\u003cli\u003e\u003ca href=\"/cpp/windows/redist-version-auditing\"\u003eHow to audit Visual C++ Runtime version usage\u003c/a\u003e\u003c/li\u003e\n\u003cli\u003e\u003ca href=\"/cpp/windows/redistributing-visual-cpp-files\"\u003eRedistributing Visual C++ Files\u003c/a\u003e\u003c/li\u003e\n\u003cli\u003e\u003ca href=\"/visualstudio/releases/2026/port-migrate-and-upgrade-visual-studio-projects\"\u003eVisual Studio Port, migrate, and upgrade projects\u003c/a\u003e\u003c/li\u003e\n\u003cli\u003e\u003ca href=\"/visualstudio/releases/2026/vs-servicing-vs\"\u003eVisual Studio Product Lifecycle and Servicing\u003c/a\u003e\u003c/li\u003e\n\u003cli\u003e\u003ca href=\"/visualstudio/releases/2026/release-rhythm\"\u003eVisual Studio Channels and Release Rhythm\u003c/a\u003e\u003c/li\u003e\n\u003cli\u003e\u003ca href=\"/lifecycle/products/?terms=visual%20studio\"\u003eSearch Product and Services Lifecycle Information\u003c/a\u003e\u003c/li\u003e\n\u003c/ul\u003e\n"}}]}
+</script>
+</div>
+					
+		<div
+			id="ms--inline-notifications"
+			class="margin-block-xs"
+			data-bi-name="inline-notification"
+		></div>
+	 
+		<div
+			id="assertive-live-region"
+			role="alert"
+			aria-live="assertive"
+			class="visually-hidden"
+			aria-relevant="additions"
+			aria-atomic="true"
+		></div>
+		<div
+			id="polite-live-region"
+			role="status"
+			aria-live="polite"
+			class="visually-hidden"
+			aria-relevant="additions"
+			aria-atomic="true"
+		></div>
+	
+					
+		<!-- feedback section -->
+		<section
+			id="site-user-feedback-footer"
+			class="font-size-sm margin-top-md display-none-print display-none-desktop"
+			data-test-id="site-user-feedback-footer"
+			data-bi-name="site-feedback-section"
+		>
+			<hr class="hr" />
+			<h2 id="ms--feedback" class="title is-3">Feedback</h2>
+			<div class="display-flex flex-wrap-wrap align-items-center">
+				<p class="font-weight-semibold margin-xxs margin-left-none">
+					Was this page helpful?
+				</p>
+				<div class="buttons">
+					<button
+						class="thumb-rating-button like button button-primary button-sm"
+						data-test-id="footer-rating-yes"
+						data-binary-rating-response="rating-yes"
+						type="button"
+						title="This article is helpful"
+						data-bi-name="button-rating-yes"
+						aria-pressed="false"
+					>
+						<span class="icon" aria-hidden="true">
+							<span class="docon docon-like"></span>
+						</span>
+						<span>Yes</span>
+					</button>
+					<button
+						class="thumb-rating-button dislike button button-primary button-sm"
+						id="standard-rating-no-button"
+						hidden
+						data-test-id="footer-rating-no"
+						data-binary-rating-response="rating-no"
+						type="button"
+						title="This article is not helpful"
+						data-bi-name="button-rating-no"
+						aria-pressed="false"
+					>
+						<span class="icon" aria-hidden="true">
+							<span class="docon docon-dislike"></span>
+						</span>
+						<span>No</span>
+					</button>
+					<details
+						class="popover popover-top"
+						id="mobile-help-popover"
+						data-test-id="footer-feedback-popover"
+					>
+						<summary
+							class="thumb-rating-button dislike button button-primary button-sm"
+							data-test-id="details-footer-rating-no"
+							data-binary-rating-response="rating-no"
+							title="This article is not helpful"
+							data-bi-name="button-rating-no"
+							aria-pressed="false"
+							data-bi-an="feedback-unhelpful-popover"
+						>
+							<span class="icon" aria-hidden="true">
+								<span class="docon docon-dislike"></span>
+							</span>
+							<span>No</span>
+						</summary>
+						<div
+							class="popover-content width-200 width-300-tablet"
+							role="dialog"
+							aria-labelledby="popover-heading"
+							aria-describedby="popover-description"
+						>
+							<p id="popover-heading" class="font-size-lg margin-bottom-xxs font-weight-semibold">
+								Need help with this topic?
+							</p>
+							<p id="popover-description" class="font-size-sm margin-bottom-xs">
+								Want to try using Ask Learn to clarify or guide you through this topic?
+							</p>
+							
+		<div class="buttons flex-direction-row flex-wrap justify-content-center gap-xxs">
+			<div>
+		<button
+			class="button button-sm border inner-focus display-none margin-right-xxs"
+			data-bi-name="ask-learn-assistant-entry-troubleshoot"
+			data-test-id="ask-learn-assistant-modal-entry-mobile-feedback"
+			data-ask-learn-modal-entry-feedback
+			data-bi-an=feedback-unhelpful-popover
+			type="button"
+			style="min-width: max-content;"
+			aria-expanded="false"
+			aria-label="Ask Learn"
+			hidden
+		>
+			<span class="icon" aria-hidden="true">
+				<span class="docon docon-chat-sparkle-fill gradient-ask-learn-logo"></span>
+			</span>
+		</button>
+		<button
+			class="button button-sm display-inline-flex display-none-desktop flex-shrink-0 margin-right-xxs border-color-ask-learn margin-right-xxs"
+			data-bi-name="ask-learn-assistant-entry-troubleshoot"
+			data-bi-an=feedback-unhelpful-popover
+			data-test-id="ask-learn-assistant-modal-entry-tablet-feedback"
+			data-ask-learn-modal-entry-feedback
+			type="button"
+			style="min-width: max-content;"
+			aria-expanded="false"
+			hidden
+		>
+			<span class="icon font-size-lg" aria-hidden="true">
+				<span class="docon docon-chat-sparkle-fill gradient-ask-learn-logo"></span>
+			</span>
+			<span>Ask Learn</span>
+		</button>
+		<button
+			class="button button-sm display-none flex-shrink-0 display-inline-flex-desktop margin-right-xxs border-color-ask-learn margin-right-xxs"
+			data-bi-name="ask-learn-assistant-entry-troubleshoot"
+			data-bi-an=feedback-unhelpful-popover
+			data-test-id="ask-learn-assistant-flyout-entry-feedback"
+			data-ask-learn-flyout-entry-show-only
+			data-flyout-button="toggle"
+			type="button"
+			style="min-width: max-content;"
+			aria-expanded="false"
+			aria-controls="ask-learn-flyout"
+			hidden
+		>
+			<span class="icon font-size-lg" aria-hidden="true">
+				<span class="docon docon-chat-sparkle-fill gradient-ask-learn-logo"></span>
+			</span>
+			<span>Ask Learn</span>
+		</button>
+	</div>
+			<button
+				type="button"
+				class="button button-sm margin-right-xxs"
+				data-help-option="suggest-fix"
+				data-bi-name="feedback-suggest"
+				data-bi-an="feedback-unhelpful-popover"
+				data-test-id="suggest-fix"
+			>
+				<span class="icon" aria-hidden="true">
+					<span class="docon docon-feedback"></span>
+				</span>
+				<span> Suggest a fix? </span>
+			</button>
+		</div>
+	
+						</div>
+					</details>
+				</div>
+			</div>
+		</section>
+		<!-- end feedback section -->
+	
+				</div>
+				
+		<div id="ms--additional-resources-mobile" class="display-none-print">
+			<hr class="hr" hidden />
+			<h2 id="ms--additional-resources-mobile-heading" class="title is-3" hidden>
+				Additional resources
+			</h2>
+			
+		<section
+			id="right-rail-recommendations-mobile"
+			class=""
+			data-bi-name="recommendations"
+			hidden
+		></section>
+	 
+		<section
+			id="right-rail-training-mobile"
+			class=""
+			data-bi-name="learning-resource-card"
+			hidden
+		></section>
+	 
+		<section
+			id="right-rail-events-mobile"
+			class=""
+			data-bi-name="events-card"
+			hidden
+		></section>
+	
+		</div>
+	 
+		<div
+			id="article-metadata-footer"
+			data-bi-name="article-metadata-footer"
+			data-test-id="article-metadata-footer"
+			class="page-metadata-container"
+		>
+			<hr class="hr" />
+			<ul class="metadata page-metadata" data-bi-name="page info" lang="en-us" dir="ltr">
+				<li class="visibility-hidden-visual-diff">
+			<span class="badge badge-sm text-wrap-pretty">
+				<span>Last updated on <local-time format="twoDigitNumeric"
+		datetime="2025-11-24T15:40:00.000Z"
+		data-article-date-source="git"
+		class="is-invisible"
+	>
+		2025-11-24
+	</local-time></span>
+			</span>
+		</li>
+			</ul>
+		</div>
+	
+			</div>
+		
+				</main>
+				<aside
+					id="layout-body-aside"
+					class="layout-body-aside  "
+					data-bi-name="aside"
+					aria-label="Additional resources"
+			  >
+					
+		<div
+			id="ms--additional-resources"
+			class="right-container padding-sm display-none display-block-desktop height-full"
+			data-bi-name="pageactions"
+		>
+			<div id="affixed-right-container" data-bi-name="right-column">
+				
+		<nav
+			id="side-doc-outline"
+			class="doc-outline border-bottom padding-bottom-xs margin-bottom-xs scrollbar-width-thin"
+			data-bi-name="intopic toc"
+			aria-label="In this article"
+		>
+			<h3>In this article</h3>
+		</nav>
+	
+				<!-- Feedback -->
+				
+		<section
+			id="ms--site-user-feedback-right-rail"
+			class="font-size-sm display-none-print"
+			data-test-id="site-user-feedback-right-rail"
+			data-bi-name="site-feedback-right-rail"
+		>
+			<div class="display-flex flex-wrap-wrap align-items-center">
+				<p class="font-weight-semibold margin-xxs margin-left-none">
+					Was this page helpful?
+				</p>
+				<div class="display-flex flex-wrap-nowrap">
+					<button
+						class="thumb-rating-button like inner-focus"
+						data-test-id="right-rail-rating-yes"
+						data-binary-rating-response="rating-yes"
+						type="button"
+						title="This article is helpful"
+						aria-label="This article is helpful"
+						data-bi-name="button-rating-yes"
+						aria-pressed="false"
+					>
+						<span class="icon" aria-hidden="true">
+							<span class="docon docon-like"></span>
+						</span>
+					</button>
+					<button
+						class="thumb-rating-button dislike inner-focus"
+						id="right-rail-no-button"
+						hidden
+						data-test-id="right-rail-rating-no"
+						data-binary-rating-response="rating-no"
+						type="button"
+						title="This article is not helpful"
+						aria-label="This article is not helpful"
+						data-bi-name="button-rating-no"
+						aria-pressed="false"
+					>
+						<span class="icon" aria-hidden="true">
+							<span class="docon docon-dislike"></span>
+						</span>
+					</button>
+					<details class="popover popover-right" id="help-popover" data-test-id="feedback-popover">
+						<summary
+							tabindex="0"
+							class="thumb-rating-button dislike inner-focus"
+							data-test-id="details-right-rail-rating-no"
+							data-binary-rating-response="rating-no"
+							title="This article is not helpful"
+							aria-label="This article is not helpful"
+							data-bi-name="button-rating-no"
+							aria-pressed="false"
+							data-bi-an="feedback-unhelpful-popover"
+						>
+							<span class="icon" aria-hidden="true">
+								<span class="docon docon-dislike"></span>
+							</span>
+						</summary>
+						<div
+							class="popover-content width-200 width-300-tablet"
+							role="dialog"
+							aria-labelledby="popover-heading-right-rail"
+							aria-describedby="popover-description-right-rail"
+						>
+							<p
+								id="popover-heading-right-rail"
+								class="font-size-lg margin-bottom-xxs font-weight-semibold"
+							>
+								Need help with this topic?
+							</p>
+							<p id="popover-description-right-rail" class="font-size-sm margin-bottom-xs">
+								Want to try using Ask Learn to clarify or guide you through this topic?
+							</p>
+							
+		<div class="buttons flex-direction-row flex-wrap justify-content-center gap-xxs">
+			<div>
+		<button
+			class="button button-sm border inner-focus display-none margin-right-xxs"
+			data-bi-name="ask-learn-assistant-entry-troubleshoot"
+			data-test-id="ask-learn-assistant-modal-entry-mobile-feedback"
+			data-ask-learn-modal-entry-feedback
+			data-bi-an=feedback-unhelpful-popover
+			type="button"
+			style="min-width: max-content;"
+			aria-expanded="false"
+			aria-label="Ask Learn"
+			hidden
+		>
+			<span class="icon" aria-hidden="true">
+				<span class="docon docon-chat-sparkle-fill gradient-ask-learn-logo"></span>
+			</span>
+		</button>
+		<button
+			class="button button-sm display-inline-flex display-none-desktop flex-shrink-0 margin-right-xxs border-color-ask-learn margin-right-xxs"
+			data-bi-name="ask-learn-assistant-entry-troubleshoot"
+			data-bi-an=feedback-unhelpful-popover
+			data-test-id="ask-learn-assistant-modal-entry-tablet-feedback"
+			data-ask-learn-modal-entry-feedback
+			type="button"
+			style="min-width: max-content;"
+			aria-expanded="false"
+			hidden
+		>
+			<span class="icon font-size-lg" aria-hidden="true">
+				<span class="docon docon-chat-sparkle-fill gradient-ask-learn-logo"></span>
+			</span>
+			<span>Ask Learn</span>
+		</button>
+		<button
+			class="button button-sm display-none flex-shrink-0 display-inline-flex-desktop margin-right-xxs border-color-ask-learn margin-right-xxs"
+			data-bi-name="ask-learn-assistant-entry-troubleshoot"
+			data-bi-an=feedback-unhelpful-popover
+			data-test-id="ask-learn-assistant-flyout-entry-feedback"
+			data-ask-learn-flyout-entry-show-only
+			data-flyout-button="toggle"
+			type="button"
+			style="min-width: max-content;"
+			aria-expanded="false"
+			aria-controls="ask-learn-flyout"
+			hidden
+		>
+			<span class="icon font-size-lg" aria-hidden="true">
+				<span class="docon docon-chat-sparkle-fill gradient-ask-learn-logo"></span>
+			</span>
+			<span>Ask Learn</span>
+		</button>
+	</div>
+			<button
+				type="button"
+				class="button button-sm margin-right-xxs"
+				data-help-option="suggest-fix"
+				data-bi-name="feedback-suggest"
+				data-bi-an="feedback-unhelpful-popover"
+				data-test-id="suggest-fix"
+			>
+				<span class="icon" aria-hidden="true">
+					<span class="docon docon-feedback"></span>
+				</span>
+				<span> Suggest a fix? </span>
+			</button>
+		</div>
+	
+						</div>
+					</details>
+				</div>
+			</div>
+		</section>
+	
+			</div>
+		</div>
+	
+			  </aside> <section
+					id="layout-body-flyout"
+					class="layout-body-flyout "
+					data-bi-name="flyout"
+			  >
+					 <div
+	class="height-full border-left background-color-body-medium"
+	id="ask-learn-flyout"
+></div>
+			  </section> <div class="layout-body-footer " data-bi-name="layout-footer">
+		<footer
+			id="footer"
+			data-test-id="footer"
+			data-bi-name="footer"
+			class="footer-layout padding-xs padding-sm-desktop has-default-focus border-top"
+			role="contentinfo"
+		>
+			<div class="display-flex gap-xs flex-wrap-wrap is-full-height padding-right-lg-desktop">
+				
+		<a
+			data-mscc-ic="false"
+			href="#"
+			data-bi-name="select-locale"
+			class="locale-selector-link flex-shrink-0 button button-sm button-clear external-link-indicator"
+			id=""
+			title=""
+			><span class="icon" aria-hidden="true"
+				><span class="docon docon-world"></span></span
+			><span class="local-selector-link-text">en-us</span></a
+		>
+	 <div class="ccpa-privacy-link" data-ccpa-privacy-link hidden>
+		
+		<a
+			data-mscc-ic="false"
+			href="https://aka.ms/yourcaliforniaprivacychoices"
+			data-bi-name="your-privacy-choices"
+			class="button button-sm button-clear flex-shrink-0 external-link-indicator"
+			id=""
+			title=""
+			>
+		<svg
+			xmlns="http://www.w3.org/2000/svg"
+			viewBox="0 0 30 14"
+			xml:space="preserve"
+			height="16"
+			width="43"
+			aria-hidden="true"
+			focusable="false"
+		>
+			<path
+				d="M7.4 12.8h6.8l3.1-11.6H7.4C4.2 1.2 1.6 3.8 1.6 7s2.6 5.8 5.8 5.8z"
+				style="fill-rule:evenodd;clip-rule:evenodd;fill:#fff"
+			></path>
+			<path
+				d="M22.6 0H7.4c-3.9 0-7 3.1-7 7s3.1 7 7 7h15.2c3.9 0 7-3.1 7-7s-3.2-7-7-7zm-21 7c0-3.2 2.6-5.8 5.8-5.8h9.9l-3.1 11.6H7.4c-3.2 0-5.8-2.6-5.8-5.8z"
+				style="fill-rule:evenodd;clip-rule:evenodd;fill:#06f"
+			></path>
+			<path
+				d="M24.6 4c.2.2.2.6 0 .8L22.5 7l2.2 2.2c.2.2.2.6 0 .8-.2.2-.6.2-.8 0l-2.2-2.2-2.2 2.2c-.2.2-.6.2-.8 0-.2-.2-.2-.6 0-.8L20.8 7l-2.2-2.2c-.2-.2-.2-.6 0-.8.2-.2.6-.2.8 0l2.2 2.2L23.8 4c.2-.2.6-.2.8 0z"
+				style="fill:#fff"
+			></path>
+			<path
+				d="M12.7 4.1c.2.2.3.6.1.8L8.6 9.8c-.1.1-.2.2-.3.2-.2.1-.5.1-.7-.1L5.4 7.7c-.2-.2-.2-.6 0-.8.2-.2.6-.2.8 0L8 8.6l3.8-4.5c.2-.2.6-.2.9 0z"
+				style="fill:#06f"
+			></path>
+		</svg>
+	
+			<span>Your Privacy Choices</span></a
+		>
+	
+	</div>
+				<div class="flex-shrink-0">
+		<div class="dropdown has-caret-up">
+			<button
+				data-test-id="theme-selector-button"
+				class="dropdown-trigger button button-clear button-sm inner-focus theme-dropdown-trigger"
+				aria-controls="{{ themeMenuId }}"
+				aria-haspopup="true"
+				aria-expanded="false"
+				data-bi-name="theme"
+			>
+				<span class="icon" aria-hidden="true"><span class="docon docon-sun"></span></span>
+				<span>Theme</span>
+				<span class="icon expanded-indicator" aria-hidden="true">
+					<span class="docon docon-chevron-down-light"></span>
+				</span>
+			</button>
+			<div class="dropdown-menu" id="{{ themeMenuId }}" role="menu">
+				<ul class="theme-selector padding-xxs" data-test-id="theme-dropdown-menu" role="none">
+					<li class="theme display-block" role="none">
+						<button
+							class="button button-clear button-sm theme-control button-block justify-content-flex-start text-align-left"
+							role="menuitemradio"
+							aria-checked="false"
+							data-theme-to="light"
+							tabindex="-1"
+						>
+							<span class="theme-light margin-right-xxs">
+								<span
+									class="theme-selector-icon border display-inline-block has-body-background"
+									aria-hidden="true"
+								>
+									<svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 14">
+										<rect width="22" height="14" class="has-fill-body-background" />
+										<rect x="5" y="5" width="12" height="4" class="has-fill-secondary" />
+										<rect x="5" y="2" width="2" height="1" class="has-fill-secondary" />
+										<rect x="8" y="2" width="2" height="1" class="has-fill-secondary" />
+										<rect x="11" y="2" width="3" height="1" class="has-fill-secondary" />
+										<rect x="1" y="1" width="2" height="2" class="has-fill-secondary" />
+										<rect x="5" y="10" width="7" height="2" rx="0.3" class="has-fill-primary" />
+										<rect x="19" y="1" width="2" height="2" rx="1" class="has-fill-secondary" />
+									</svg>
+								</span>
+							</span>
+							<span> Light </span>
+						</button>
+					</li>
+					<li class="theme display-block" role="none">
+						<button
+							class="button button-clear button-sm theme-control button-block justify-content-flex-start text-align-left"
+							role="menuitemradio"
+							aria-checked="false"
+							data-theme-to="dark"
+							tabindex="-1"
+						>
+							<span class="theme-dark margin-right-xxs">
+								<span
+									class="border theme-selector-icon display-inline-block has-body-background"
+									aria-hidden="true"
+								>
+									<svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 14">
+										<rect width="22" height="14" class="has-fill-body-background" />
+										<rect x="5" y="5" width="12" height="4" class="has-fill-secondary" />
+										<rect x="5" y="2" width="2" height="1" class="has-fill-secondary" />
+										<rect x="8" y="2" width="2" height="1" class="has-fill-secondary" />
+										<rect x="11" y="2" width="3" height="1" class="has-fill-secondary" />
+										<rect x="1" y="1" width="2" height="2" class="has-fill-secondary" />
+										<rect x="5" y="10" width="7" height="2" rx="0.3" class="has-fill-primary" />
+										<rect x="19" y="1" width="2" height="2" rx="1" class="has-fill-secondary" />
+									</svg>
+								</span>
+							</span>
+							<span> Dark </span>
+						</button>
+					</li>
+					<li class="theme display-block" role="none">
+						<button
+							class="button button-clear button-sm theme-control button-block justify-content-flex-start text-align-left"
+							role="menuitemradio"
+							aria-checked="false"
+							data-theme-to="high-contrast"
+							tabindex="-1"
+						>
+							<span class="theme-high-contrast margin-right-xxs">
+								<span
+									class="border theme-selector-icon display-inline-block has-body-background"
+									aria-hidden="true"
+								>
+									<svg class="svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 22 14">
+										<rect width="22" height="14" class="has-fill-body-background" />
+										<rect x="5" y="5" width="12" height="4" class="has-fill-secondary" />
+										<rect x="5" y="2" width="2" height="1" class="has-fill-secondary" />
+										<rect x="8" y="2" width="2" height="1" class="has-fill-secondary" />
+										<rect x="11" y="2" width="3" height="1" class="has-fill-secondary" />
+										<rect x="1" y="1" width="2" height="2" class="has-fill-secondary" />
+										<rect x="5" y="10" width="7" height="2" rx="0.3" class="has-fill-primary" />
+										<rect x="19" y="1" width="2" height="2" rx="1" class="has-fill-secondary" />
+									</svg>
+								</span>
+							</span>
+							<span> High contrast </span>
+						</button>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+			</div>
+			<ul class="links" data-bi-name="footerlinks">
+				<li class="manage-cookies-holder" hidden=""></li>
+				<li>
+		
+		<a
+			data-mscc-ic="false"
+			href="https://learn.microsoft.com/en-us/principles-for-ai-generated-content"
+			data-bi-name="aiDisclaimer"
+			class=" external-link-indicator"
+			id=""
+			title=""
+			>AI Disclaimer</a
+		>
+	
+	</li><li>
+		
+		<a
+			data-mscc-ic="false"
+			href="https://learn.microsoft.com/en-us/previous-versions/"
+			data-bi-name="archivelink"
+			class=" external-link-indicator"
+			id=""
+			title=""
+			>Previous Versions</a
+		>
+	
+	</li> <li>
+		
+		<a
+			data-mscc-ic="false"
+			href="https://techcommunity.microsoft.com/t5/microsoft-learn-blog/bg-p/MicrosoftLearnBlog"
+			data-bi-name="bloglink"
+			class=" external-link-indicator"
+			id=""
+			title=""
+			>Blog</a
+		>
+	
+	</li> <li>
+		
+		<a
+			data-mscc-ic="false"
+			href="https://learn.microsoft.com/en-us/contribute"
+			data-bi-name="contributorGuide"
+			class=" external-link-indicator"
+			id=""
+			title=""
+			>Contribute</a
+		>
+	
+	</li><li>
+		
+		<a
+			data-mscc-ic="false"
+			href="https://go.microsoft.com/fwlink/?LinkId=521839"
+			data-bi-name="privacy"
+			class=" external-link-indicator"
+			id=""
+			title=""
+			>Privacy</a
+		>
+	
+	</li><li>
+		
+		<a
+			data-mscc-ic="false"
+			href="https://go.microsoft.com/fwlink/?linkid=2259814"
+			data-bi-name="consumer-health-privacy"
+			class=" external-link-indicator"
+			id=""
+			title=""
+			>Consumer Health Privacy</a
+		>
+	
+	</li><li>
+		
+		<a
+			data-mscc-ic="false"
+			href="https://learn.microsoft.com/en-us/legal/termsofuse"
+			data-bi-name="termsofuse"
+			class=" external-link-indicator"
+			id=""
+			title=""
+			>Terms of Use</a
+		>
+	
+	</li><li>
+		
+		<a
+			data-mscc-ic="false"
+			href="https://www.microsoft.com/legal/intellectualproperty/Trademarks/"
+			data-bi-name="trademarks"
+			class=" external-link-indicator"
+			id=""
+			title=""
+			>Trademarks</a
+		>
+	
+	</li>
+				<li>&copy; Microsoft 2026</li>
+			</ul>
+		</footer>
+	</footer>
+			</body>
+		</html>

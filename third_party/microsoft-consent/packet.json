@@ -1,0 +1,14 @@
+{
+  "revision": "2026-09-22",
+  "sources": {
+    "third_party/licenses/python/azure-cognitiveservices-speech/azure_cognitiveservices_speech-1.51.2.dist-info/licenses/licensefiles/speech/LICENSE.md": "1e1b2b3c672c6d3d7dea6150fd0ece4309b3851d05e7b46e1faeefa586fdde7a",
+    "third_party/upstream/msvc/vc2026-license.txt": "c15f0776c632b97bc3b01dbc3090ae347bb406235ae7132601bbaba91624e4fc",
+    "third_party/upstream/msvc/vc2022-license.txt": "2dd434a15fb5f9d28c33211a5af471eb719acba5db65e5103e0db95e7869a2fb",
+    "packaging/licenses/microsoft-components.de.txt": "79dab692df8fbe1b887ce0283a13e938c4edd3335fff89990d5aa54491f0953f",
+    "packaging/licenses/microsoft-components.en.txt": "4be137eef22719b9475126bbcd3c3d8c4690ff2d44a4d5b697ba2c80f7ae64c7"
+  },
+  "rtf_sha256": {
+    "de": "f7172696bb38c3632e2a3e6caf74e33d775e3b759533e74e9c902a29c4b84a92",
+    "en": "20cc1fab0e7543b8d8d2bbc16f1bddd5c571e7fbd534b038364fa8a77cb95174"
+  }
+}

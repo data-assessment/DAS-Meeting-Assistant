@@ -1,0 +1,13 @@
+License terms for Microsoft components
+
+This agreement between you and Data Assessment Solutions applies only to the Microsoft components supplied with DAS Meeting Assistant: Microsoft Cognitive Services Speech SDK and Microsoft Visual C++ Runtime.
+
+You may install these components as part of DAS Meeting Assistant and use them for the application's intended functions, subject to the respective Microsoft terms below. By accepting, you agree that those complete terms form part of this agreement for the respective Microsoft component. Their intellectual property protections, use restrictions and provisions protecting Microsoft and its licensors remain in effect. References to the "software" or "SDK" in those texts mean the respective Microsoft component.
+
+DAS Meeting Assistant's own source remains licensed under Apache-2.0. Other included components retain their respective open-source licenses, including LGPL/MPL. This agreement does not restrict those rights, including modification or replacement of those components or reverse engineering permitted by their licenses for that purpose. Mandatory statutory rights and the regional provisions in Microsoft's terms remain unaffected.
+
+Anyone redistributing the Microsoft components with the application must comply with the applicable distribution rights and obligations; Apache-2.0 alone does not grant redistribution rights to Microsoft components. DAS's Visual Studio developer license is not imposed on you as a prerequisite for merely using this application.
+
+The complete Microsoft terms follow in their original English language. They are installed along with the original files, third-party notices and this agreement under third_party in the application directory. This agreement does not activate Azure services or cover their usage charges.
+
+If you accept on behalf of an organization, you must be authorized to do so. If you do not agree, cancel the installation.

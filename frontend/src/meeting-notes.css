@@ -1,0 +1,152 @@
+.meeting-notes{--notes-ink:#203039;--notes-muted:#63717a;--notes-line:#e3e8eb;--notes-accent:#086b64;box-sizing:border-box;flex:1;min-width:0;height:100vh;display:flex;flex-direction:column;background:#fff;color:var(--notes-ink);font:14px/1.5 "Segoe UI",sans-serif;user-select:text}
+.meeting-notes *{box-sizing:border-box}
+.notes-scroll{flex:1;min-height:0;overflow:auto}
+.notes-content{padding:24px}
+.meeting-notes h1{font-size:20px;font-weight:600;line-height:1.3;letter-spacing:-.3px;margin:16px 0 20px;overflow-wrap:anywhere}
+.meeting-notes h2{font-size:12px;line-height:1.4;font-weight:600;color:var(--notes-muted);margin:24px 0 10px}
+.meeting-notes p{margin:8px 0;overflow-wrap:anywhere}
+.meeting-notes button{border:1px solid #cbd5da;border-radius:6px;background:#f4f6f7;color:var(--notes-ink);padding:8px 12px;min-height:34px;font:12px/1.5 "Segoe UI",sans-serif;cursor:pointer;white-space:normal;flex-shrink:0}
+.meeting-notes button:hover{background:#e9eff1;border-color:#98aab3}
+.meeting-notes button:focus-visible{outline:2px solid var(--notes-accent);outline-offset:2px}
+.meeting-notes button:disabled{opacity:.5;cursor:default}
+.meeting-notes button.primary{background:var(--notes-accent);border-color:var(--notes-accent);color:#fff;font-weight:600}
+.notes-status{display:flex;align-items:center;gap:10px;font-size:13px;flex-wrap:wrap}
+.status-label{display:flex;align-items:center;gap:8px;color:var(--notes-accent);font-weight:600}
+.status-dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0}
+.notes-time{margin-left:auto;color:var(--notes-muted);font-size:12px;font-variant-numeric:tabular-nums}
+.notes-summary{white-space:pre-wrap;line-height:1.65;overflow-wrap:anywhere}
+.notes-task{border-top:1px solid var(--notes-line);padding:14px 0}
+.task-row{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}
+.task-title{font-weight:500;overflow-wrap:anywhere;min-width:0}
+.task-owner{font-size:12px;color:var(--notes-muted);overflow-wrap:anywhere;max-width:45%;text-align:right}
+.meeting-notes button.assign{max-width:140px;padding:7px 10px}
+.task-question{color:#875a08;font-size:12px}
+.notice{padding:12px 14px;background:#fff6e5;color:#80590f;border-radius:7px;margin:0 0 18px;font-size:13px;overflow-wrap:anywhere}
+.notice p{margin:0 0 10px}.notice p:last-child{margin-bottom:0}
+.notes-error{color:#b23936}
+.quiet{color:var(--notes-muted);font-size:13px}
+.notes-footer{border-top:1px solid var(--notes-line);padding:14px 20px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;flex-shrink:0;background:#fff;font-size:12px}
+.setup-footer-copy{flex:1;min-width:190px}
+.setup-step{color:var(--notes-muted);font-size:12px;margin-bottom:18px!important}
+.setup-success{padding:14px 16px;background:#eaf5f1;color:#086b64;border-radius:8px;margin:18px 0!important}
+.setup-progress{display:flex;align-items:center;gap:8px}
+.setup-options{border:1px solid var(--notes-line);border-radius:8px;padding:14px 16px;margin:22px 0}
+.setup-options summary{cursor:pointer;font-weight:600}
+.setup-options summary span{font-size:12px;font-weight:400;color:var(--notes-muted);margin-left:8px}
+.setup-options summary:focus-visible{outline:2px solid var(--notes-accent);outline-offset:4px}
+.storage-copy{min-width:0}.storage-status{color:var(--notes-accent)}.storage-location{color:var(--notes-muted);margin-top:3px;overflow-wrap:anywhere}
+.notes-more{display:flex;gap:8px;flex-wrap:wrap;margin-top:16px}
+.meeting-notes .back{margin:0 0 18px}
+.meeting-notes label{display:flex;flex-direction:column;gap:5px;margin:14px 0 10px;font-size:13px;font-weight:500}
+.meeting-notes input,.meeting-notes textarea,.meeting-notes select{font:14px/1.5 "Segoe UI",sans-serif;user-select:text;width:100%;min-width:0;border:1px solid #9dafb8;border-radius:6px;padding:8px;color:var(--notes-ink);background:#fff}
+.meeting-notes input:focus,.meeting-notes textarea:focus,.meeting-notes select:focus{outline:2px solid var(--notes-accent);outline-offset:1px}
+.meeting-notes textarea{resize:vertical}
+.meeting-notes .owner-field{max-width:150px;margin:0;font-size:12px}
+.task-edit{padding:4px 0}.meeting-notes fieldset{padding:0;border:0;min-width:0;margin-top:22px}
+.meeting-notes .checkbox{display:flex;flex-direction:row;gap:8px;align-items:center}.meeting-notes .checkbox input{width:16px;height:16px;flex-shrink:0}
+.history-row{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:14px 0;border-bottom:1px solid var(--notes-line)}.history-row strong{font-weight:500;overflow-wrap:anywhere}.history-row>div{min-width:0}.history-row p{margin:4px 0}
+@media(max-width:380px){.notes-content{padding:18px}.notes-footer{padding:12px 16px}.task-row{gap:10px}.meeting-notes button.assign{max-width:112px}}
+
+.meeting-notes .inline-edit{display:flex;align-items:flex-start;gap:12px;text-align:left;width:100%;background:transparent;border:1px solid transparent;padding:5px 6px;font:inherit;white-space:normal}
+.inline-edit span{flex:1;min-width:0;overflow-wrap:anywhere}.inline-edit svg{flex-shrink:0;margin-top:3px;color:var(--notes-muted)}
+.meeting-notes .inline-edit:hover{background:#f4f6f7;border-color:var(--notes-accent)}.inline-edit:hover span{text-decoration:underline;text-underline-offset:3px}
+.inline-task-title{margin-bottom:12px;font-size:16px;font-weight:500;line-height:1.45}
+.meeting-notes .inline-task-title textarea{font:inherit;padding:5px 6px;resize:none;display:block;min-height:48px}
+.inline-hint{font-size:12px;font-weight:400;color:var(--notes-muted);margin:5px 6px}
+.meeting-notes .person-field{font-size:12px;color:var(--notes-muted);margin:0}
+.meeting-notes select.person-missing{border-color:#91620c;color:#80590f;background:#fff8e9}
+.task-clarification{padding:12px;background:#f4f6f7;border-radius:7px;margin-top:14px}.task-clarification.unanswered{background:#fff8e9}
+.task-clarification p{font-size:13px;margin:0;color:var(--notes-muted)}.task-clarification.unanswered p{color:#80590f}
+.task-clarification .notes-more{margin-top:10px}
+.meeting-notes .task-clarification button[aria-pressed=true]{background:var(--notes-accent);border-color:var(--notes-accent);color:white}
+.new-person{padding:12px;border:1px solid var(--notes-line);border-radius:7px;margin-top:12px}.new-person label:first-child{margin-top:0}
+.task-details{margin-top:12px}.meeting-notes select:disabled{opacity:1;color:var(--notes-muted);background:#f4f6f7;cursor:default}
+
+.task-details summary{cursor:pointer;padding:7px 10px;border:1px solid #cbd5da;border-radius:6px;background:#f4f6f7;width:fit-content;font-size:12px}
+
+/* One continuous meeting view; expansion changes only the summary size. */
+.meeting-notes h1{margin:12px 0 18px;font-size:23px}
+.notes-status{min-height:38px}
+.summary-card{height:240px;display:grid;grid-template-rows:46px 36px minmax(0,1fr);gap:5px;padding:16px 18px;border:1px solid var(--notes-line);border-radius:10px;background:#f7f9f9}
+.summary-heading{display:flex;align-items:center;gap:12px;justify-content:space-between}
+.meeting-notes .summary-heading h2,.meeting-notes .tasks-heading h2{margin:0;font-size:15px;color:var(--notes-ink)}
+.provisional{font-size:12px;background:#fff0d1;color:#80590f;border-radius:20px;padding:3px 10px}
+.summary-state{display:flex;align-items:center;gap:9px;color:var(--notes-muted);font-size:12px;line-height:1.4}
+.summary-body{overflow:auto;min-height:0;scrollbar-gutter:stable}.summary-body p{margin:0}
+.notes-spinner{display:inline-block;width:16px;height:16px;border:2px solid #c8dcd8;border-top-color:var(--notes-accent);border-radius:50%;flex-shrink:0;animation:notes-spin 1s linear infinite}
+@keyframes notes-spin{to{transform:rotate(360deg)}}
+@media(prefers-reduced-motion:reduce){.notes-spinner{animation:none;border-style:dotted}}
+.tasks-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:26px 0 4px}
+.tasks-heading>span{font-size:12px;color:var(--notes-muted)}.tasks-help{margin-bottom:16px!important}
+.task-attention{font-size:13px;color:#80590f}
+.notes-task{border:1px solid var(--notes-line);border-radius:9px;padding:16px;margin:12px 0}
+.task-selection{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
+.meeting-notes .task-selection label{margin:0;font-size:12px}.task-selection input{accent-color:var(--notes-accent)}
+.task-selection>span{font-size:12px;color:var(--notes-muted)}.task-excluded{background:#f6f7f8;border-style:dashed}
+.meeting-notes .person-field{max-width:360px}
+.summary-heading-copy{display:flex;align-items:center;gap:10px;flex-wrap:wrap;min-width:0}
+.meeting-notes .summary-size-toggle{min-width:108px;display:inline-flex;align-items:center;justify-content:center;gap:7px}
+.summary-size-toggle svg{flex-shrink:0}
+.summary-expanded .summary-card{height:500px}
+.summary-expanded .summary-body{font-size:15px;line-height:1.7}
+.meeting-notes.summary-expanded .summary-inline-editor{font-size:15px;line-height:1.7}
+@media(max-width:480px){.notes-content{padding:18px}.task-selection{align-items:flex-start}.notes-task{padding:12px}.tasks-heading{flex-wrap:wrap}.meeting-notes h1{font-size:20px}.summary-heading-copy{gap:2px}.summary-heading{gap:8px}.summary-card{padding:14px;grid-template-rows:58px 44px minmax(0,1fr)}.summary-heading-copy .inline-save{font-size:11px;text-align:left}.meeting-notes .summary-size-toggle{min-width:96px;padding:8px}.summary-expanded .summary-card{height:480px}}
+
+.notes-navigation{padding:10px 24px 0;display:flex;justify-content:flex-end;flex-shrink:0}
+.notes-navigation+.notes-scroll .notes-content{padding-top:10px}
+.meeting-notes h1{margin-bottom:4px}.meeting-date{color:var(--notes-muted);font-size:12px;margin:0 0 16px}
+.storage-filename{font-size:11px;color:var(--notes-muted);margin-top:2px;overflow-wrap:anywhere;max-width:460px}
+.meeting-notes .summary-inline-editor{display:block;width:100%;height:100%;min-height:0;resize:none;padding:8px;line-height:1.5}
+.summary-body:has(.summary-inline-editor){overflow:hidden}.inline-save{font-size:11px;font-weight:400;color:var(--notes-accent);text-align:right}
+.notes-copy{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;margin:20px 0}.notes-copy p{flex-basis:100%;margin:0}.copy-success{color:var(--notes-accent)}
+
+/* Paragraphs and list lines remain visible while editing and reading. */
+.meeting-notes .summary-inline-editor{line-height:1.65}
+.meeting-notes .summary-inline-editor{tab-size:2}
+
+/* One destination card; draft choices live in a modal until explicitly saved. */
+.notes-onenote{border:1px solid var(--notes-line);border-radius:10px;background:#fff;padding:14px 16px;margin:16px 0}
+.notes-onenote>p{margin:4px 0}.notes-onenote .onenote-target{font-size:13px}
+.onenote-heading,.onenote-actions{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.onenote-heading>div{display:grid;gap:4px}.onenote-heading strong{font-size:15px}
+.destination-eyebrow{font-size:10px!important;letter-spacing:1px;color:var(--notes-muted);margin:0!important;font-weight:600}
+.onenote-target{font-weight:500}.notes-onenote p{margin:8px 0;overflow-wrap:anywhere}
+.notes-destination-dialog{width:560px;max-width:calc(100vw - 32px);max-height:calc(100dvh - 32px);padding:0;border:1px solid var(--notes-line);border-radius:14px;margin:auto;color:var(--notes-ink);background:#fff;box-shadow:0 20px 70px #20303940;overflow:visible;font:14px/1.5 "Segoe UI",sans-serif}
+.notes-destination-dialog[open]{display:flex;flex-direction:column}
+.notes-destination-dialog::backdrop{background:#20303970}
+.destination-header{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;padding:22px 24px 18px;flex-shrink:0;border-bottom:1px solid var(--notes-line)}
+.meeting-notes .destination-header h1{font-size:22px;margin:6px 0 0;outline:none}
+.meeting-notes .destination-close{padding:0;width:32px;min-height:32px;font-size:23px;line-height:1;border:0;background:transparent;color:var(--notes-muted)}
+.destination-body{padding:18px 24px 22px;overflow:auto;min-height:0}
+.meeting-notes .destination-methods{display:flex;flex-wrap:wrap;gap:10px 20px;margin:8px 0}
+.meeting-notes .destination-methods label{display:flex;flex-direction:row;align-items:center;gap:8px;padding:4px 0;margin:0;cursor:pointer}
+.destination-methods label.selected{color:var(--notes-accent)}
+.destination-methods input[type=radio]{width:16px;height:16px;accent-color:var(--notes-accent);flex-shrink:0;margin:0}
+.destination-methods strong,.destination-methods small{display:block}.destination-methods small{color:var(--notes-muted);font-size:11px;font-weight:400;margin-top:2px}
+.meeting-notes .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap}
+.destination-field{display:grid;gap:6px;margin:18px 0;font-size:13px;font-weight:500}
+.destination-field input[type=text]{padding:10px 38px 10px 12px}
+.meeting-notes .notes-destination-dialog .search-select-toggle{width:34px;min-height:0;padding:0;border:0;background:transparent;border-radius:5px;color:var(--notes-muted)}
+.notes-destination-dialog .search-select-options{background:white;box-shadow:0 6px 24px #20303924;border:1px solid #9dafb8;padding:4px;font-size:13px}
+.meeting-notes .notes-destination-dialog .search-select-options button{border:0;background:transparent;text-align:left;padding:9px 10px;min-height:36px;white-space:normal;overflow-wrap:anywhere;font-size:13px}
+.meeting-notes .notes-destination-dialog .search-select-options button.active,.meeting-notes .notes-destination-dialog .search-select-options button:hover{background:#edf6f3}
+.notes-destination-dialog .search-select-options button[aria-selected=true]{color:var(--notes-accent);font-weight:600}
+.notes-destination-dialog .search-select-empty{font:12px/1.5 "Segoe UI",sans-serif;color:var(--notes-muted);padding:12px}
+.destination-suggestion{font-size:12px;font-weight:400;color:var(--notes-accent);margin:0!important}
+.destination-loading{display:flex;align-items:center;gap:8px;color:var(--notes-muted);font-size:13px;min-height:36px}
+.meeting-notes .destination-remember{align-items:flex-start;font-size:12px;font-weight:400;line-height:1.6}.destination-remember input{accent-color:var(--notes-accent);margin-top:3px}
+.destination-preview,.destination-local{border-radius:8px;background:#f4f7f7;padding:12px 14px;margin:18px 0 0;overflow-wrap:anywhere}
+.destination-preview span{display:block;color:var(--notes-muted);font-size:11px;margin-bottom:4px}.destination-preview strong{font-size:13px;font-weight:500}
+.destination-help{margin:20px 0 0;color:var(--notes-muted);font-size:12px}.destination-help summary{cursor:pointer;width:fit-content;padding:4px 0}
+.destination-help .onenote-actions{justify-content:flex-start;margin-top:12px}
+.destination-footer{border-top:1px solid var(--notes-line);padding:16px 24px;flex-shrink:0}
+.destination-footer>div{display:flex;justify-content:flex-end;gap:8px;margin-top:12px}.destination-footer button{min-width:90px}
+.destination-footer .quiet{font-size:12px;margin:0}
+@media(max-width:480px){.notes-destination-dialog{max-width:calc(100vw - 16px);max-height:calc(100dvh - 16px);border-radius:10px}.destination-header{padding:16px}.destination-body{padding:14px 16px}.destination-footer{padding:12px 16px}.meeting-notes .destination-header h1{font-size:20px}.meeting-notes .destination-methods label{padding:10px;gap:7px}}
+
+.notes-calendar{padding:12px 14px;margin:12px 0;border:1px solid var(--notes-line);border-radius:9px;background:#f5f8fc;font-size:13px}
+.notes-calendar p{margin:6px 0}.invitation-people{max-height:100px;overflow:auto;overflow-wrap:anywhere;line-height:1.6}
+.meeting-notes .notes-calendar label{display:grid;gap:6px;margin:10px 0}.notes-calendar select{width:100%;min-width:0}
+
+
+.onenote-local-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}

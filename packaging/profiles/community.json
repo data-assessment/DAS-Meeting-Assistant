@@ -1,0 +1,12 @@
+{
+  "schema_version": 1,
+  "mode": "community",
+  "settings": {
+    "GRAPH_AUTH_MODE": "interactive",
+    "GRAPH_TENANT_ID": "organizations",
+    "STT_BACKEND": "azure_openai",
+    "STT_MODE": "batch",
+    "AOAI_API_VERSION": "2024-10-21",
+    "ONENOTE_ENABLED": "false"
+  }
+}
