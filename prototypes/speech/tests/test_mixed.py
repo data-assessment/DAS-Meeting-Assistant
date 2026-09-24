@@ -52,14 +52,14 @@ def test_initial_pre_start_audio_trimmed_and_output_finite():
     assert max(abs(result)) <= .5
 
 
-def test_late_audio_and_capacity_overflow_fail_explicitly():
+def test_late_audio_is_kept_and_only_capacity_overflow_fails():
     mixer = TimelineMixer(0)
     take(mixer, 1000)
-    with pytest.raises(ValueError, match="deadline"):
-        mixer.write("loopback", np.ones(320), .02)
+    mixer.write("loopback", np.ones(320), .02)  # already past its playout time
+    np.testing.assert_allclose(take(mixer, 1320), .5)
     with pytest.raises(ValueError, match="full"):
         mixer.write("mic", np.ones(320), 5)
-    assert not mixer.samples.any()
+    assert not mixer.samples.any() and "mic" not in mixer.next
 
 
 def test_ring_wrap_does_not_replay_old_audio():

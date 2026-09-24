@@ -104,8 +104,8 @@ def test_unplugged_headset_keeps_recording_on_the_windows_defaults_and_returns()
     machine.replug()
     mixed._supervise_once(time.monotonic() + RETURN_INTERVAL)
     assert fallback.closed and names(mixed.capture) == {s: d["name"] for s, d in SELECTION.items()}
-    assert "wieder verbunden" in mixed.notice
-    assert mixed.interruptions == 1 and "1× getrennt" in mixed.summary()
+    assert "fortgesetzt" in mixed.notice
+    assert mixed.interruptions == 1 and "1× unterbrochen" in mixed.summary()
     returned = mixed.capture
     mixed.close()
     assert returned.closed and not errors
@@ -119,7 +119,7 @@ def test_device_errors_from_callbacks_also_reopen_the_devices():
     mixed._supervise_once(time.monotonic())
     assert first.closed and mixed.capture is not first and mixed.capture.started
     assert names(mixed.capture) == {s: d["name"] for s, d in SELECTION.items()}
-    assert mixed.notice == "Audiogerät wieder verbunden. Die Aufnahme läuft weiter."
+    assert mixed.notice == "Audioaufnahme nach kurzer Unterbrechung fortgesetzt."
 
 
 def test_without_any_device_capture_waits_and_retries():
@@ -129,7 +129,7 @@ def test_without_any_device_capture_waits_and_retries():
     machine.devices = []
     now = time.monotonic()
     mixed._supervise_once(now)
-    assert mixed.capture is None and mixed.healthy() and "getrennt" in mixed.notice
+    assert mixed.capture is None and mixed.healthy() and "unterbrochen" in mixed.notice
     machine.devices = laptop_only()
     mixed._supervise_once(now + 0.25)
     assert mixed.capture is None, "Retries are paced"
@@ -139,7 +139,7 @@ def test_without_any_device_capture_waits_and_retries():
     machine.devices = []
     mixed._supervise_once(time.monotonic())
     mixed.close()
-    assert "kein Gerät verfügbar" in mixed.summary()
+    assert "kein Audiogerät" in mixed.summary()
 
 
 def test_listed_but_unopenable_headset_backs_off_instead_of_churning():
@@ -265,4 +265,4 @@ def test_meeting_summary_covers_the_time_after_the_headset_was_unplugged(notes, 
     asyncio.run(notes.finish(review))
     assert session.error == "" and review.status == "Gespräch beendet"
     assert "Vor dem Stecker" in summarized[0] and "Nach dem Stecker" in summarized[0]
-    assert "1× getrennt" in review.warning
+    assert "1× unterbrochen" in review.warning

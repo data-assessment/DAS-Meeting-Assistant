@@ -1,8 +1,10 @@
 """Clock-paced, bounded RAM mix of two devices into one Azure stream.
 
 Callback arrival times provide an approximate common clock. They are not sample-
-accurate hardware timestamps. A 250 ms playout cushion tolerates callback jitter;
-long loopback gaps become silence instead of compressing the remote timeline.
+accurate hardware timestamps. A 250 ms playout cushion absorbs callback jitter and
+late delivery; longer loopback gaps become silence instead of compressing the
+remote timeline. Timing problems are never fatal: audio past its playout time is
+placed at the next playable sample, and a source running ahead of the clock is trimmed.
 """
 import math
 import threading
@@ -16,7 +18,8 @@ BLOCK = 320
 DELAY = 0.25
 RECOVERY_INTERVAL = 1.0  # retry opening devices while none is usable
 RETURN_INTERVAL = 3.0    # look for the originally selected device while on a fallback
-LOST_NOTICE = ("Audiogerät getrennt. Die Aufnahme läuft weiter, sobald wieder ein "
+LEAD = RATE // 10        # how far a source may run ahead of its callback arrival times
+LOST_NOTICE = ("Audioaufnahme unterbrochen. Sie läuft weiter, sobald wieder ein "
                "Mikrofon und ein Wiedergabegerät verfügbar sind.")
 
 
@@ -51,6 +54,8 @@ class TimelineMixer:
         self.next = {}
         self.lock = threading.Lock()
         self.closed = False
+        self.late_blocks = 0     # placed at the playout cursor instead of their arrival time
+        self.dropped_samples = 0  # discarded because their source ran ahead
 
     def write(self, source, samples, end_time):
         values = np.clip(np.nan_to_num(samples, nan=0.0, posinf=1.0, neginf=-1.0), -1, 1)
@@ -61,22 +66,26 @@ class TimelineMixer:
             if self.closed:
                 return
             previous = self.next.get(source)
-            # Preserve consecutive samples across ordinary scheduling jitter.
-            # A gap over 100 ms is placed on the wall clock (not concatenated).
-            start = previous if previous is not None and abs(observed - previous) <= RATE // 10 else observed
-            if previous is not None:
-                start = max(start, previous)
-            end = start + len(values)
-            self.next[source] = end
-            if start < 0:
-                values = values[min(-start, len(values)):]
-                start = 0
-            if not len(values):
+            if previous is not None and previous > observed + LEAD:
+                # The source is ahead of the clock: a burst after a stall or a device
+                # clock running fast. Drop this block; an unbounded lead would
+                # eventually overflow the mix buffer and end the capture.
+                self.dropped_samples += len(values)
                 return
-            if start < self.cursor:
-                raise ValueError("Audio arrived after its playout deadline")
+            if previous is not None and previous >= self.cursor:
+                # Continue the source's own sample stream. This covers jitter and
+                # blocks that arrive late but before their samples are played out.
+                start = previous
+            else:
+                # First block, a real gap (e.g. silent loopback) or audio that is
+                # already past its playout time: use the earliest playable sample.
+                if observed < self.cursor and previous is not None:
+                    self.late_blocks += 1
+                start = max(observed, self.cursor)
+            end = start + len(values)
             if end > self.cursor + self.capacity:
                 raise ValueError("Mix buffer full")
+            self.next[source] = end
             indices = np.arange(start, end) % self.capacity
             # Fixed -6 dB per source leaves headroom even during crosstalk.
             self.samples[indices] += values * 0.5
@@ -124,8 +133,9 @@ class MixInput:
             self.owner.mixer.write(self.source, result,
                                    self.last_time - self.resampler.delay() / RATE)
             return True
-        except Exception:
-            # Late, overfull or invalid device audio: reopen the devices, keep the meeting.
+        except Exception as exc:
+            # Overfull or invalid device audio: reopen the devices, keep the meeting.
+            print(f"[audio] {self.source}: {type(exc).__name__}: {exc}; reopening devices")
             self.owner.device_lost()
             return False
 
@@ -243,6 +253,7 @@ class MixedCapture:
         if self.silent_since is None:
             self.silent_since = time.monotonic()
         if lost:
+            print("[audio] capture interrupted; reopening devices")
             self.interruptions += 1
             self.return_interval = RETURN_INTERVAL
             self.notice = LOST_NOTICE
@@ -270,12 +281,14 @@ class MixedCapture:
         if self.silent_since is not None:
             self.silent_seconds += time.monotonic() - self.silent_since
             self.silent_since = None
+        print(f"[audio] capture reopened: mic {self.current['mic']['name']!r}, "
+              f"playback {self.current['loopback']['name']!r}")
         if self._on_fallback():
             self.notice = ("Audiogerät gewechselt. Die Aufnahme läuft weiter mit Mikrofon „"
                            + self.current["mic"]["name"] + "“ und Wiedergabe „"
                            + self.current["loopback"]["name"].removesuffix(" [Loopback]") + "“.")
         elif self.interruptions:
-            self.notice = "Audiogerät wieder verbunden. Die Aufnahme läuft weiter."
+            self.notice = "Audioaufnahme nach kurzer Unterbrechung fortgesetzt."
         return True
 
     def _open(self, chosen):
@@ -305,9 +318,9 @@ class MixedCapture:
         if not self.interruptions:
             return ""
         if self.silent_since is not None:
-            return ("Audiogerät während des Meetings getrennt; danach war kein Gerät verfügbar. "
-                    "Die Notizen reichen nur bis zu dieser Stelle.")
-        return (f"Audiogerät während des Meetings {self.interruptions}× getrennt; ca. "
+            return ("Audioaufnahme während des Meetings unterbrochen; danach war kein Audiogerät "
+                    "verfügbar. Die Notizen reichen nur bis zu dieser Stelle.")
+        return (f"Audioaufnahme während des Meetings {self.interruptions}× unterbrochen; ca. "
                 f"{max(1, round(self.silent_seconds))} s ohne Ton. Die Notizen umfassen die Zeit davor und danach.")
 
     def _emit_until(self, end):
@@ -365,6 +378,9 @@ class MixedCapture:
                 for sink in self.inputs.values():
                     sink.resampler = None
                 if self.mixer is not None:
+                    if self.mixer.late_blocks or self.mixer.dropped_samples:
+                        print(f"[audio] mix timing: {self.mixer.late_blocks} late blocks moved to playout, "
+                              f"{self.mixer.dropped_samples * 1000 // RATE} ms dropped while a source ran ahead")
                     self.mixer.clear()
 
 
