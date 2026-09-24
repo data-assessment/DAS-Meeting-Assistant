@@ -2,9 +2,8 @@
 
 Callback arrival times provide an approximate common clock. They are not sample-
 accurate hardware timestamps. A 250 ms playout cushion absorbs callback jitter and
-late delivery; longer loopback gaps become silence instead of compressing the
-remote timeline. Timing problems are never fatal: audio past its playout time is
-placed at the next playable sample, and a source running ahead of the clock is trimmed.
+late delivery, pauses stay on the timeline, and timing problems are never fatal;
+see TimelineMixer for how blocks are placed.
 """
 import math
 import threading
@@ -18,9 +17,13 @@ BLOCK = 320
 DELAY = 0.25
 RECOVERY_INTERVAL = 1.0  # retry opening devices while none is usable
 RETURN_INTERVAL = 3.0    # look for the originally selected device while on a fallback
-LEAD = RATE // 10        # how far a source may run ahead of its callback arrival times
+GAP = RATE // 50         # a block starting later than this after its predecessor keeps the pause
+LEAD = RATE // 10        # a source further ahead of its arrival times is played faster
+SPEEDUP = 0.05           # at most 5 % faster, well within what speech recognition tolerates
 LOST_NOTICE = ("Audioaufnahme unterbrochen. Sie läuft weiter, sobald wieder ein "
                "Mikrofon und ein Wiedergabegerät verfügbar sind.")
+DROP_NOTICE = ("Die Verarbeitung war mehrere Sekunden blockiert; ein Teil des Audios aus "
+               "dieser Zeit fehlt in den Notizen. Die Aufnahme läuft weiter.")
 
 
 def candidate_selections(preferred, current, devices):
@@ -45,67 +48,120 @@ def candidate_selections(preferred, current, devices):
 
 
 class TimelineMixer:
+    """Unplayed samples per source, mixed only when they are played out.
+
+    Placement relies on one physical fact: a block was captured no later than it
+    arrived. A block starting clearly after its source's previous block opens a new
+    segment, so real pauses stay on the timeline. When a source's newest segment would
+    end after its arrival time, it is moved earlier, towards its previous segment or
+    the playout cursor: a backlog delivered after a stall returns to where it was
+    captured. A remaining lead (a device clock running fast, or a backlog longer than
+    the playout cushion) is caught up by playing that source up to 5 % faster. Only
+    when a source holds more unplayed audio than the capacity is its oldest audio dropped.
+    """
     def __init__(self, origin, capacity=RATE * 3):
         self.origin = origin
         self.capacity = capacity
-        self.samples = np.zeros(capacity, dtype=np.float32)
         self.cursor = 0
         self.last = 0
-        self.next = {}
+        self.next = {}    # source -> timeline index after its newest sample
+        self.tracks = {}  # source -> [[start, samples], ...], unplayed and ascending
         self.lock = threading.Lock()
         self.closed = False
-        self.late_blocks = 0     # placed at the playout cursor instead of their arrival time
-        self.dropped_samples = 0  # discarded because their source ran ahead
+        self.late_blocks = 0         # arrived after their playout time
+        self.caught_up_samples = 0   # removed by playing a leading source faster
+        self.dropped_samples = 0     # beyond the buffer capacity
+
+    @property
+    def pending(self):
+        with self.lock:
+            return sum(len(values) for track in self.tracks.values() for _, values in track)
 
     def write(self, source, samples, end_time):
-        values = np.clip(np.nan_to_num(samples, nan=0.0, posinf=1.0, neginf=-1.0), -1, 1)
+        values = np.clip(np.nan_to_num(samples, nan=0.0, posinf=1.0, neginf=-1.0), -1, 1).astype(np.float32)
         if not len(values):
             return
-        observed = round((end_time - self.origin) * RATE) - len(values)
+        arrival = round((end_time - self.origin) * RATE)
+        observed = arrival - len(values)
         with self.lock:
             if self.closed:
                 return
-            previous = self.next.get(source)
-            if previous is not None and previous > observed + LEAD:
-                # The source is ahead of the clock: a burst after a stall or a device
-                # clock running fast. Drop this block; an unbounded lead would
-                # eventually overflow the mix buffer and end the capture.
-                self.dropped_samples += len(values)
-                return
-            if previous is not None and previous >= self.cursor:
-                # Continue the source's own sample stream. This covers jitter and
-                # blocks that arrive late but before their samples are played out.
-                start = previous
+            track = self.tracks.setdefault(source, [])
+            if track and observed <= self.next[source] + GAP:
+                # The source's own stream continues: jitter or a delivered backlog.
+                track[-1][1] = np.concatenate((track[-1][1], values))
             else:
-                # First block, a real gap (e.g. silent loopback) or audio that is
-                # already past its playout time: use the earliest playable sample.
-                if observed < self.cursor and previous is not None:
+                if source in self.next and observed < self.cursor:
                     self.late_blocks += 1
-                start = max(observed, self.cursor)
-            end = start + len(values)
-            if end > self.cursor + self.capacity:
-                raise ValueError("Mix buffer full")
-            self.next[source] = end
-            indices = np.arange(start, end) % self.capacity
-            # Fixed -6 dB per source leaves headroom even during crosstalk.
-            self.samples[indices] += values * 0.5
-            self.last = max(self.last, end)
+                track.append([max(observed, self.cursor), values])
+            self._anchor(track, arrival)
+            self._catch_up(track, arrival, len(values))
+            self._bound(track)
+            if track:
+                self.next[source] = track[-1][0] + len(track[-1][1])
+                self.last = max(self.last, self.next[source])
+
+    def _anchor(self, track, arrival):
+        """Move the newest segment earlier while it would end after it arrived."""
+        start, values = track[-1]
+        floor = self.cursor if len(track) < 2 else max(self.cursor, track[-2][0] + len(track[-2][1]))
+        shift = min(start + len(values) - arrival, start - floor)
+        if shift <= 0:
+            return
+        track[-1][0] = start - shift
+        if len(track) > 1 and track[-1][0] == track[-2][0] + len(track[-2][1]):
+            track[-2][1] = np.concatenate((track[-2][1], values))
+            track.pop()
+
+    def _catch_up(self, track, arrival, count):
+        """Play the newest, still unplayed block faster while its source leads."""
+        start, values = track[-1]
+        lead = start + len(values) - arrival
+        if lead <= LEAD:
+            return
+        keep = count - min(lead - LEAD, math.ceil(count * SPEEDUP))
+        block = values[-count:]
+        faster = np.interp(np.linspace(0, count - 1, keep), np.arange(count), block).astype(np.float32)
+        track[-1][1] = np.concatenate((values[:-count], faster))
+        self.caught_up_samples += count - keep
+
+    def _bound(self, track):
+        """Keep at most `capacity` unplayed samples per source; the oldest go first."""
+        excess = sum(len(values) for _, values in track) - self.capacity
+        while excess > 0:
+            start, values = track[0]
+            if len(values) <= excess:
+                track.pop(0)
+            else:
+                track[0] = [start + excess, values[excess:]]
+            self.dropped_samples += min(excess, len(values))
+            excess -= len(values)
 
     def take_until(self, end):
         with self.lock:
             count = min(BLOCK, max(0, end - self.cursor))
             if not count or self.closed:
                 return b""
-            indices = np.arange(self.cursor, self.cursor + count) % self.capacity
-            data = np.clip(self.samples[indices], -1, 1).astype("<f4").tobytes()
-            self.samples[indices] = 0
-            self.cursor += count
-            return data
+            low, high = self.cursor, self.cursor + count
+            mix = np.zeros(count, dtype=np.float32)
+            for track in self.tracks.values():
+                while track and track[0][0] < high:
+                    start, values = track[0]
+                    stop = min(start + len(values), high)
+                    # Fixed -6 dB per source leaves headroom even during crosstalk.
+                    mix[start - low:stop - low] += values[:stop - start] * 0.5
+                    if start + len(values) <= high:
+                        track.pop(0)
+                    else:
+                        track[0] = [high, values[high - start:]]
+                        break
+            self.cursor = high
+            return np.clip(mix, -1, 1).astype("<f4").tobytes()
 
     def clear(self):
         with self.lock:
             self.closed = True
-            self.samples.fill(0)
+            self.tracks.clear()
             self.next.clear()
 
 
@@ -134,7 +190,7 @@ class MixInput:
                                    self.last_time - self.resampler.delay() / RATE)
             return True
         except Exception as exc:
-            # Overfull or invalid device audio: reopen the devices, keep the meeting.
+            # Invalid device audio: reopen the devices, keep the meeting.
             print(f"[audio] {self.source}: {type(exc).__name__}: {exc}; reopening devices")
             self.owner.device_lost()
             return False
@@ -175,6 +231,7 @@ class MixedCapture:
         self.mixer = None
         self.closed = False
         self.notice = ""
+        self.reported_drops = 0
         self.interruptions = 0
         self.silent_seconds = 0.0
         self.silent_since = None
@@ -215,6 +272,10 @@ class MixedCapture:
                 pass  # Supervision must never end the meeting; retry on the next tick.
 
     def _supervise_once(self, now):
+        if self.mixer is not None and self.mixer.dropped_samples > self.reported_drops:
+            self.reported_drops = self.mixer.dropped_samples
+            print(f"[audio] mix buffer exceeded: {self.reported_drops * 1000 // RATE} ms dropped so far")
+            self.notice = DROP_NOTICE
         capture = self.capture
         if capture is not None and not self.lost.is_set() and (
                 not hasattr(capture, "healthy") or capture.healthy()):
@@ -315,13 +376,18 @@ class MixedCapture:
 
     def summary(self):
         """Capture note kept with the finished meeting; empty when nothing was lost."""
-        if not self.interruptions:
-            return ""
-        if self.silent_since is not None:
-            return ("Audioaufnahme während des Meetings unterbrochen; danach war kein Audiogerät "
-                    "verfügbar. Die Notizen reichen nur bis zu dieser Stelle.")
-        return (f"Audioaufnahme während des Meetings {self.interruptions}× unterbrochen; ca. "
-                f"{max(1, round(self.silent_seconds))} s ohne Ton. Die Notizen umfassen die Zeit davor und danach.")
+        notes = []
+        if self.interruptions and self.silent_since is not None:
+            notes.append("Audioaufnahme während des Meetings unterbrochen; danach war kein Audiogerät "
+                         "verfügbar. Die Notizen reichen nur bis zu dieser Stelle.")
+        elif self.interruptions:
+            notes.append(f"Audioaufnahme während des Meetings {self.interruptions}× unterbrochen; ca. "
+                         f"{max(1, round(self.silent_seconds))} s ohne Ton. "
+                         "Die Notizen umfassen die Zeit davor und danach.")
+        dropped = self.mixer.dropped_samples if self.mixer is not None else 0
+        if dropped:
+            notes.append(f"Wegen einer Verzögerung fehlen ca. {max(1, round(dropped / RATE))} s Audio.")
+        return " ".join(notes)
 
     def _emit_until(self, end):
         while data := self.mixer.take_until(end):
@@ -378,9 +444,11 @@ class MixedCapture:
                 for sink in self.inputs.values():
                     sink.resampler = None
                 if self.mixer is not None:
-                    if self.mixer.late_blocks or self.mixer.dropped_samples:
-                        print(f"[audio] mix timing: {self.mixer.late_blocks} late blocks moved to playout, "
-                              f"{self.mixer.dropped_samples * 1000 // RATE} ms dropped while a source ran ahead")
+                    mixer = self.mixer
+                    if mixer.late_blocks or mixer.caught_up_samples or mixer.dropped_samples:
+                        print(f"[audio] mix timing: {mixer.late_blocks} late blocks, "
+                              f"{mixer.caught_up_samples * 1000 // RATE} ms caught up by faster playout, "
+                              f"{mixer.dropped_samples * 1000 // RATE} ms dropped beyond the buffer")
                     self.mixer.clear()
 
 

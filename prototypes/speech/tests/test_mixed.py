@@ -23,7 +23,7 @@ def test_two_sources_sum_with_headroom_on_one_timeline():
     result = take(mixer, 1600)
     assert len(result) == 1600
     np.testing.assert_allclose(result, .7)
-    assert not mixer.samples.any()
+    assert mixer.pending == 0
 
 
 def test_loopback_silence_does_not_compress_time_or_block_mic():
@@ -52,17 +52,15 @@ def test_initial_pre_start_audio_trimmed_and_output_finite():
     assert max(abs(result)) <= .5
 
 
-def test_late_audio_is_kept_and_only_capacity_overflow_fails():
+def test_late_audio_is_kept_at_the_next_playable_sample():
     mixer = TimelineMixer(0)
     take(mixer, 1000)
     mixer.write("loopback", np.ones(320), .02)  # already past its playout time
     np.testing.assert_allclose(take(mixer, 1320), .5)
-    with pytest.raises(ValueError, match="full"):
-        mixer.write("mic", np.ones(320), 5)
-    assert not mixer.samples.any() and "mic" not in mixer.next
+    assert mixer.pending == 0
 
 
-def test_ring_wrap_does_not_replay_old_audio():
+def test_played_audio_is_not_replayed():
     mixer = TimelineMixer(0, capacity=640)
     mixer.write("mic", np.ones(640), .04)
     np.testing.assert_allclose(take(mixer, 640), .5)
@@ -71,7 +69,7 @@ def test_ring_wrap_does_not_replay_old_audio():
     np.testing.assert_allclose(result[:320], .2)
     assert not result[320:].any()
     mixer.clear()
-    assert not mixer.samples.any() and not mixer.next
+    assert mixer.pending == 0 and not mixer.next
     assert mixer.take_until(1600) == b""
 
 
@@ -153,7 +151,7 @@ def test_single_azure_transcriber_receives_both_sources_and_final_text(monkeypat
     assert [(i.source, i.speaker) for i in finals] == [("mixed", "Guest-1")]
     assert session.capture.capture.closed
     assert not session.capture.worker.is_alive()
-    assert not session.capture.mixer.samples.any()
+    assert session.capture.mixer.pending == 0
     assert all(b.closed and b.size == 0 for b in session.buffers.values())
     assert set(session.snapshot()["buffers"]) == {"mixed"}
 
@@ -167,7 +165,7 @@ def test_capture_start_failure_releases_everything_without_raw_exception():
     assert session.finished.wait(3)
     assert session.error and "DO-NOT-LOG" not in session.error
     assert session.capture.capture.closed
-    assert not session.capture.mixer.samples.any()
+    assert session.capture.mixer.pending == 0
 
 
 def test_mixed_speakers_are_never_relabelled_as_local_name():
@@ -191,7 +189,7 @@ def test_output_backpressure_stops_mixer_instead_of_unbounded_growth():
     capture.close()
     assert capture.failed.is_set() and errors
     assert buffer.size == 0 and buffer.closed
-    assert not capture.mixer.samples.any()
+    assert capture.mixer.pending == 0
 
 
 def test_idle_loopback_does_not_block_audio_or_stop():
