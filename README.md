@@ -1,11 +1,55 @@
 # DAS Meeting Assistant
 
-Windows desktop assistant for Teams meetings: live transcription, summaries,
-editable action items, Outlook invitation context and optional OneNote storage.
+**Turn Teams conversations into notes and action items.**
 
-The client is developed by Data Assessment Solutions. Its source is licensed under
-[Apache-2.0](LICENSE); bundled third-party components retain their own terms.
-See [NOTICE](NOTICE), [source attribution](SOURCE.md) and [third-party notices](THIRD_PARTY_NOTICES.md).
+An open-source Windows desktop assistant for live transcription, AI-generated
+meeting summaries and editable tasks. Bring your own Azure resources and save
+notes on your PC or in OneNote.
+
+[Install with your AI agent](#install-with-your-ai-agent) ·
+[Deutsch](docs/README.de.md) · [Data handling](#data-handling) ·
+[About DAS](#about-data-assessment-solutions)
+
+![Meeting Notes showing a summary and editable action items](docs/assets/meeting-notes.png)
+
+*The application UI with synthetic example content. Current interface and summary
+output are primarily German.*
+
+## What you can do
+
+- **Follow the conversation:** Azure Speech transcribes microphone and meeting
+  playback audio; notes and task suggestions update during the meeting.
+- **Review the result:** edit the summary, select action items and assign owners.
+- **Use Outlook context:** match a calendar invitation to recover the title and
+  invited people. An invitation is not proof of attendance.
+- **Keep notes where you work:** save locally or select a OneNote notebook and
+  section. Task corrections can be synchronized to the resulting page.
+- **Install with an agent:** a dedicated runbook guides setup, Microsoft sign-in,
+  Azure configuration and verification on your Windows machine.
+
+<details>
+<summary>See the OneNote destination picker</summary>
+
+![Select a notebook and section for the meeting notes](docs/assets/onenote-destination.png)
+
+*Example notebook names and account; no real meeting or Microsoft account data.*
+
+</details>
+
+## What you need
+
+| Requirement | Details |
+| --- | --- |
+| Desktop | Windows x64, microphone and the playback device used for meetings |
+| Speech and summaries | Your own Azure Speech resource and compatible Azure chat-model deployment |
+| Microsoft integration | Microsoft 365 work/school account and delegated permissions for selected features |
+| AI agent | Access to your Windows machine; a chat-only agent cannot install local software |
+| Costs | Apache-2.0 source code; Azure usage is billed separately by your provider |
+
+The desktop client does not require a DAS service subscription. Speech recognition
+and summarization use cloud services, so this is not an offline AI application.
+The current summary prompt produces German notes; changing the recognition language
+alone does not change the summary language.
 
 ## Install with your AI agent
 
@@ -40,6 +84,30 @@ Both distributions use this codebase. Real organization profiles, operational
 records, service credentials and internal release processes are maintained separately.
 Checked-in profiles contain examples and generic defaults only. See
 [deployment models](docs/deployment-models.md) and [build instructions](packaging/README.md).
+
+## About Data Assessment Solutions
+
+Developed by [Data Assessment Solutions GmbH](https://www.data-assessment.com/)
+in Hannover, Germany. We build AI assistants for business workflows and develop
+[decídalo](https://www.decidalo.com/en/) for skills, profiles and resource management.
+
+This repository contains the desktop assistant. Organization-specific integrations
+and services described on the company website are not automatically included.
+
+The source is licensed under [Apache-2.0](LICENSE); bundled components retain their
+own terms. See [NOTICE](NOTICE), [source attribution](SOURCE.md) and
+[third-party notices](THIRD_PARTY_NOTICES.md).
+
+## Feedback and contributions
+
+Use [GitHub Issues](https://github.com/data-assessment/DAS-Meeting-Assistant/issues)
+for reproducible bugs and feature proposals. Include the app version, Windows
+version and steps to reproduce. Use synthetic examples and remove access keys,
+tokens and meeting content from logs or screenshots.
+
+For a larger change, discuss the approach in an issue before opening a pull request.
+The [test guide](docs/meeting-notes-test.md) explains the isolated validation workflow.
+For business enquiries, use the [DAS contact page](https://www.data-assessment.com/kontakt).
 
 ## Development
 

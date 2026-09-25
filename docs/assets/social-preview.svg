@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640" role="img" aria-labelledby="title desc">
+  <title id="title">DAS Meeting Assistant</title>
+  <desc id="desc">Turn Teams conversations into notes and action items. Open source for Windows, using your own Azure resources.</desc>
+  <rect width="1280" height="640" fill="#112c33"/>
+  <rect x="72" y="72" width="6" height="40" rx="3" fill="#72d5c0"/>
+  <g font-family="Segoe UI, Arial, sans-serif">
+    <text x="100" y="101" fill="#c4dedc" font-size="23" letter-spacing="1">DATA ASSESSMENT SOLUTIONS</text>
+    <text x="72" y="218" fill="#ffffff" font-size="60" font-weight="700">DAS Meeting Assistant</text>
+    <text x="72" y="289" fill="#dcf0ec" font-size="32">Turn Teams conversations into</text>
+    <text x="72" y="334" fill="#dcf0ec" font-size="32">notes and action items.</text>
+    <g transform="translate(72 408)">
+      <rect width="196" height="50" rx="25" fill="#23464b"/>
+      <text x="98" y="33" text-anchor="middle" fill="#e7f6f2" font-size="21">Open source</text>
+      <rect x="211" width="155" height="50" rx="25" fill="#23464b"/>
+      <text x="288" y="33" text-anchor="middle" fill="#e7f6f2" font-size="21">Windows</text>
+      <rect x="381" width="231" height="50" rx="25" fill="#23464b"/>
+      <text x="496" y="33" text-anchor="middle" fill="#e7f6f2" font-size="21">Your own Azure</text>
+    </g>
+    <text x="72" y="557" fill="#abc8c8" font-size="22">github.com/data-assessment/DAS-Meeting-Assistant</text>
+  </g>
+  <g transform="translate(978 253)" fill="none" stroke="#72d5c0" stroke-width="5" stroke-linecap="round" stroke-linejoin="round">
+    <rect x="0" y="0" width="208" height="219" rx="23" fill="#18383e" stroke="#31575b"/>
+    <path d="M31 47l10 10 18-20M31 104l10 10 18-20M31 161l10 10 18-20"/>
+    <path d="M82 46h91M82 103h91M82 160h68" stroke="#c4dedc"/>
+  </g>
+</svg>
