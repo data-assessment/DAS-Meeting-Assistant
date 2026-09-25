@@ -1,6 +1,6 @@
 # DAS Meeting Assistant
 
-**Meeting-Notizen über dein PC-Audio. Automatisch für Teams, manuell für Zoom und mehr.**
+**Meeting-Notizen über dein PC-Audio. Automatisch für Microsoft Teams, manuell für Zoom und mehr.**
 
 Der DAS Meeting Assistant macht aus Gesprächen Zusammenfassungen und bearbeitbare
 Aufgaben. Die quelloffene Windows-Anwendung erfasst Mikrofon und PC-Audiowiedergabe.

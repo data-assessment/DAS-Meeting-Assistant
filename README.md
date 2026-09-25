@@ -1,6 +1,6 @@
 # DAS Meeting Assistant
 
-**Meeting notes from your PC audio. Automatic for Teams, manual for Zoom and more.**
+**Meeting notes from your PC audio. Automatic for Microsoft Teams, manual for Zoom and more.**
 
 An open-source Windows desktop assistant that turns conversations into summaries
 and editable action items. It captures your microphone and PC playback audio, so you
