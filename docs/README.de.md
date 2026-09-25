@@ -1,25 +1,31 @@
 # DAS Meeting Assistant
 
-**Automatische Notizen für Teams-Meetings und Telefonate — über das Audio deines PCs.**
+**Meeting-Notizen über dein PC-Audio. Automatisch für Teams, manuell für Zoom und mehr.**
 
 Der DAS Meeting Assistant macht aus Gesprächen Zusammenfassungen und bearbeitbare
-Aufgaben. Die quelloffene Windows-Anwendung funktioniert bei eigenen Meetings,
-bei Einladungen externer Organisationen und bei Telefonaten mit normalen Rufnummern
-über Teams Phone. Du nutzt deine eigenen Azure-Ressourcen und speicherst die Notizen
-auf deinem PC oder in OneNote.
+Aufgaben. Die quelloffene Windows-Anwendung erfasst Mikrofon und PC-Audiowiedergabe.
+Damit kannst du Teams, Zoom und andere Gespräche über die gewählten Audiogeräte
+zusammenfassen. Bei Teams-Meetings und Telefonaten über Teams Phone kommt der
+besonders praktische automatische Start hinzu, auch bei extern organisierten Meetings.
+Du nutzt deine eigenen Azure-Ressourcen und speicherst die Notizen auf deinem PC
+oder in OneNote.
 
 [English](../README.md) · [Installation für KI-Agenten](agent-install.md) ·
 [Data Assessment Solutions](https://www.data-assessment.com/)
 
-## Unabhängig von der eingebauten Teams-Transkription
+## PC-Audio erfassen, bei Teams automatisch starten
 
-Der Assistent erfasst **dein Mikrofon und die Audiowiedergabe deines PCs**. Er benötigt
-weder eine vom Organisator gestartete Teams-Transkription noch Zugriff auf dessen
-Teams-Transkript.
+Der Assistent erfasst **dein Mikrofon und die Audiowiedergabe deines PCs**, unabhängig
+von der verwendeten Konferenzanwendung. Bei Teams benötigt er weder eine vom
+Organisator gestartete Teams-Transkription noch Zugriff auf dessen Teams-Transkript.
 
-- **Startet automatisch:** Bei aktivierter Automatik erkennt der laufende Assistent
+- **Automatischer Start für Teams:** Bei aktivierter Automatik erkennt der laufende Assistent
   über deinen angemeldeten Teams-Präsenzstatus ein aktives Gespräch und beginnt mit
   den Notizen. Du musst die Transkription nicht für jedes Meeting einzeln starten.
+- **Manueller Start für Zoom und mehr:** Starte die Aufnahme von Hand, um ein
+  Zoom-Meeting oder andere Gespräche und Audioinhalte über das gewählte
+  PC-Wiedergabegerät zusammen mit deinem Mikrofon zusammenzufassen. Am Ende stoppst
+  du sie von Hand. Die automatische Gesprächserkennung gibt es derzeit nur für Teams.
 - **Auch bei extern organisierten Meetings:** Ob Kunde, Partner oder eine andere
   Organisation eingeladen hat, spielt für die Audioerfassung keine Rolle. Du bist
   nicht auf die Freigabe des Transkripts durch den Organisator angewiesen.
@@ -31,8 +37,9 @@ Teams-Transkript.
 
 Die Audioerfassung erfolgt lokal; Spracherkennung und Zusammenfassung übernehmen
 **deine konfigurierten Azure-Dienste**. Die KI-Verarbeitung arbeitet also nicht offline.
-Für den automatischen Start sind Microsoft-Anmeldung und die Erkennung eines aktiven
-Gesprächs erforderlich. Manuelles Starten und Stoppen ist ebenfalls möglich.
+Für den automatischen Teams-Start sind Microsoft-Anmeldung und die Erkennung eines
+aktiven Gesprächs erforderlich. Die manuelle Audioaufnahme benötigt weder ein
+Teams-Meeting noch die Teams-Präsenzerkennung.
 
 ![Meeting-Notizen mit Zusammenfassung und bearbeitbaren Aufgaben](assets/meeting-notes.png)
 

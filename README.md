@@ -1,25 +1,31 @@
 # DAS Meeting Assistant
 
-**Automatic notes for Teams meetings and phone calls — captured on your PC.**
+**Meeting notes from your PC audio. Automatic for Teams, manual for Zoom and more.**
 
 An open-source Windows desktop assistant that turns conversations into summaries
-and editable action items. It works with meetings you organize, meetings hosted by
-external organizations, and Teams Phone calls to or from regular telephone numbers.
-Bring your own Azure resources and save notes on your PC or in OneNote.
+and editable action items. It captures your microphone and PC playback audio, so you
+can summarize Teams, Zoom and other conversations running through your selected
+audio devices. Teams meetings and Teams Phone calls add the convenience of automatic
+start, including meetings hosted by external organizations. Bring your own Azure
+resources and save notes on your PC or in OneNote.
 
 [Install with your AI agent](#install-with-your-ai-agent) ·
 [Deutsch](docs/README.de.md) · [Data handling](#data-handling) ·
 [About DAS](#about-data-assessment-solutions)
 
-## Independent of Teams' built-in transcription
+## PC audio capture, with automatic start for Teams
 
-The assistant captures **your microphone and the audio played by your PC**. It does
-not need the meeting organizer to start Teams transcription or give you access to
-a Teams transcript.
+The assistant captures **your microphone and the audio played by your PC**, independently
+of the conferencing application. For Teams, it does not need the meeting organizer to
+start Teams transcription or give you access to a Teams transcript.
 
-- **Starts automatically:** with automatic start enabled, the running assistant
+- **Automatic start for Teams:** with automatic start enabled, the running assistant
   detects your active Teams call or meeting through your signed-in Teams presence
   and starts taking notes. You do not have to start transcription for each meeting.
+- **Manual start for Zoom and more:** start recording by hand to summarize a Zoom
+  meeting or any other conversation/audio played through the selected PC output,
+  together with your microphone. Stop it by hand when finished. Automatic call
+  detection is currently available only for Teams.
 - **Works with external organizers:** the meeting can be set up by a customer,
   partner or another organization. Audio capture does not depend on who sent the
   invitation or on access to the organizer's transcript.
@@ -29,8 +35,9 @@ a Teams transcript.
   device locally. The conversation must run through those devices on that PC.
 
 Local audio capture is combined with **your configured Azure services** for speech
-recognition and summarization. The AI processing is not offline. Automatic start
-requires Microsoft sign-in and active-call detection; manual start/stop is also available.
+recognition and summarization. The AI processing is not offline. Teams automatic
+start requires Microsoft sign-in and active-call detection; manual audio capture
+does not require a Teams meeting or Teams presence detection.
 
 ![Meeting Notes showing a summary and editable action items](docs/assets/meeting-notes.png)
 

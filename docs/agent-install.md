@@ -267,6 +267,12 @@ an empty `options.credentialError`. Successful saving does not yet prove cloud a
 
 ## 6. Sign in and enable the requested integrations
 
+Manual capture also works for Zoom and other audio played through the selected PC
+output device. Select the device used by that application, start capture manually
+and stop it when finished. This path does not require Teams presence detection;
+automatic call/meeting start is currently a Teams-only feature. Configure Microsoft
+sign-in below for Teams automation or the requested calendar/OneNote integrations.
+
 1. Use **Mit Microsoft anmelden** / the Graph sign-in control. Have the user complete
    account selection and MFA in Microsoft's browser. Do not create a client secret,
    copy browser tokens, or weaken Conditional Access. Verify configured/connected
