@@ -25,6 +25,42 @@ implied merely by possession of this source. Reuse the user's already-authorized
 resources. Batch any missing decisions into one short question, then continue the
 independent local work. Do not ask for approval again for an unchanged approved plan.
 
+## 0. Prove that you can operate the target PC
+
+Before offering to install anything, establish where your shell actually runs and
+which tools can write files and execute commands on the user's Windows desktop.
+For a candidate local PowerShell tool, run this harmless probe:
+
+```powershell
+[Environment]::OSVersion.Platform
+$PSVersionTable.PSVersion.ToString()
+(Get-Location).Path
+```
+
+Require `Win32NT` **and** evidence that this is the user's target PC, rather than an
+unrelated remote Windows host. A Linux sandbox does not become a Windows shell because
+the user has a terminal open. Screen viewing or clicking also does not prove that your
+tool can enter commands. If the tool cannot type/paste into the terminal, do not offer
+that route as a working alternative or repeatedly ask the user to open more terminals.
+
+If no usable local execution tool exists, explain the limitation immediately and offer:
+
+- Continue with an agent that has a local Windows shell, using this same repo URL.
+- A **guided manual handoff**, if the user wants it: present small, complete PowerShell
+  blocks inline in the conversation, use the source steps below, and inspect the result
+  of each stage before proceeding. Keep the agent responsible for interpreting errors.
+
+Do not make a generated chat attachment the only route to installation. A file created
+in your sandbox is not necessarily downloadable or present on the target PC. This repo
+does not currently ship a script named `Install-DAS-Meeting-Assistant.ps1`; do not imply
+that such a generated file is an official installer. Do not invent a script link, assume
+that a download succeeded, or report installation after merely writing/parsing a script.
+
+For a manual handoff, distinguish the four milestones explicitly: **commands prepared**,
+**software installed**, **cloud/Microsoft configuration complete**, **function test passed**.
+Stop at the actual milestone; a file attachment or source download establishes neither
+installation nor a working Azure connection.
+
 ## 1. Discover before changing anything
 
 1. Confirm you are operating on the target Windows desktop, not a remote Linux
@@ -93,13 +129,22 @@ stop and resolve failures instead of continuing with a partial installation:
 
 ```powershell
 # Use this target only after checking that it does not already contain user work.
+$ErrorActionPreference = 'Stop'
 $checkout = Join-Path $env:LOCALAPPDATA 'Programs\DAS-Meeting-Assistant-Source'
+if (Test-Path -LiteralPath $checkout) {
+    throw 'The target already exists. Inspect it before choosing an install or update path.'
+}
 git clone https://github.com/data-assessment/DAS-Meeting-Assistant.git $checkout
+if ($LASTEXITCODE -ne 0) { throw 'Clone failed. Check GitHub access before continuing.' }
 Set-Location -LiteralPath $checkout
 git rev-parse HEAD
+if ($LASTEXITCODE -ne 0) { throw 'Could not identify the source revision.' }
 py -3.12 -c "import platform, struct; print(platform.python_version(), struct.calcsize('P') * 8)"
+if ($LASTEXITCODE -ne 0) { throw 'Python 3.12 is unavailable. Resolve prerequisites first.' }
 py -3.12 -m venv .venv
+if ($LASTEXITCODE -ne 0) { throw 'Python environment creation failed.' }
 & .\.venv\Scripts\python.exe -m pip install -r requirements.txt
+if ($LASTEXITCODE -ne 0) { throw 'Python dependency installation failed.' }
 Push-Location frontend
 try {
     npm.cmd ci
@@ -126,6 +171,30 @@ Building an EXE/installer yourself is a separate optional route documented in
 [packaging/README.md](../packaging/README.md). It needs the pinned build dependencies,
 native runtime inputs, original license documents and (for an installer) Inno Setup.
 Do not make that toolchain a prerequisite for simply running from source.
+
+### Recovering a missing script or failed attachment
+
+If PowerShell says the argument to `-File` does not exist, the named script did not
+run. Check the prompt's working directory. For example,
+`PS C:\Windows\System32>` with `-File .\Install-DAS-Meeting-Assistant.ps1` looks for
+that file in System32, not in Downloads. Repeating the command or changing execution
+policy will not create the missing file.
+
+1. Establish whether the file was actually downloaded. An error such as “This file
+   type cannot be opened” in the chat UI is not proof that the file exists on Windows.
+2. If the user has the file, use its actual full path from Explorer (Copy as path).
+   Check `Test-Path -LiteralPath` and inspect the script before running it. Quoted
+   absolute paths work independently of the terminal's current directory. Never move
+   the script into System32 or request elevation just to resolve a relative path.
+3. If the file is unavailable, switch to the inline source-installation handoff above
+   or to a local-shell agent. Do not keep issuing commands for the absent attachment.
+4. For a private repo, browser access and Git authentication are separate. If cloning
+   fails, resolve the user's GitHub sign-in for Git. A browser-downloaded repository ZIP
+   is another source route: extract the complete archive to a durable user-owned folder,
+   verify `app.py`, `requirements.txt` and `frontend/package-lock.json`, then begin with
+   the Python/build commands from that actual source root. Do not download just a script
+   and claim that the rest of the source is present. Record ZIP provenance separately;
+   `git rev-parse` does not work in an extracted archive.
 
 ## 3. Prepare Microsoft/Azure access
 
@@ -344,6 +413,8 @@ Never `reset --hard` over user changes. Cloud resources normally remain reusable
 
 | Symptom | Check and next action |
 | --- | --- |
+| Agent only has a Linux sandbox or cannot enter commands in Windows | Follow step 0: use a local-shell agent or guided inline commands; do not claim a local install. |
+| `-File` says the script does not exist / attachment cannot be opened | Follow the missing-script recovery above; verify download and absolute path before execution. |
 | GitHub 404 / no assets | Check access and actual release list; use source route if no Community release exists. |
 | Wrong setup / asks for DAS access | Check executable/profile and `options.managed`; install Community, preserve Managed state. |
 | Blank window / native DLL error | Check built frontend, Python x64/3.12, WebView2 and official VC++ runtime; do not copy DLLs from other apps. |

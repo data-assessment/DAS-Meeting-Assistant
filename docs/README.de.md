@@ -78,6 +78,11 @@ Der Quellcode steht unter Apache-2.0. **Azure-Nutzung wird separat abgerechnet.*
 Ein DAS-Service-Abonnement ist für den Desktop-Client nicht erforderlich.
 Ein Agent ohne Zugriff auf deinen PC kann die lokale Installation nicht durchführen.
 
+Der Agent muss zuerst prüfen, ob er Befehle **auf deinem Windows-PC** ausführen kann.
+Ein sichtbares Terminal allein reicht nicht aus. Fehlt dieser Zugriff, beschreibt
+die Anleitung den Wechsel zu einem Agenten mit lokaler Shell oder eine begleitete
+manuelle Installation mit Befehlen direkt im Chat, ohne einen erzeugten Skript-Anhang.
+
 ## Datenverarbeitung
 
 Meeting Notes verarbeitet Roh-Audio und Transkripttext im Arbeitsspeicher und

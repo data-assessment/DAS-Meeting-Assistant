@@ -93,6 +93,11 @@ result. It can prepare the software while you complete account sign-in, MFA or a
 administrator approval. A chat-only agent without access to your PC cannot perform
 the local installation itself.
 
+The agent must first verify that it can execute commands on **your Windows PC**.
+Seeing a terminal through screen control is not enough. If it cannot run commands
+there, the guide offers a local-agent or guided manual route with commands shown
+inline, without relying on a generated script attachment.
+
 Use a Windows x64 desktop. Teams/Outlook/OneNote integration is intended for a
 Microsoft 365 work or school account. Live Meeting Notes needs an Azure Speech
 resource and an Azure-hosted chat-model deployment; it is not an offline model and

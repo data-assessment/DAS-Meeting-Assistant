@@ -12,6 +12,13 @@ before asking questions. Prefer an official Community release; if none is availa
 use the documented source installation. Do not require the user to become a developer
 or send them a list of portal tasks that your tools can perform.
 
+First verify that your tools can execute PowerShell on the user's actual Windows PC.
+A Linux sandbox, a visible Windows terminal, or the ability to click a window is not
+evidence that you can run commands there. If you cannot, explain that limitation before
+promising installation. Offer a local-shell agent or the runbook's guided inline-command
+handoff. Do not substitute an unverified generated script attachment, invent a downloaded
+file path, or claim that a syntax-checked script has installed anything.
+
 An installation request does not authorize unbounded cloud expenditure, broad tenant
 permissions, accepting legal agreements, or recording an ongoing conversation. Resolve
 the necessary concrete choices with the user, honoring authorization already given.
