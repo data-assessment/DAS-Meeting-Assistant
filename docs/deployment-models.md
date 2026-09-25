@@ -14,8 +14,12 @@ they never belong in an installer. Calendar and OneNote permissions are requeste
 for the corresponding features; optional chat/contact discovery is a separate consent.
 
 Meeting Notes uses Speech for live audio and a chat deployment for summaries.
-The legacy batch-recording flow has separate transcription settings. Infrastructure
-provisioning and an agent-guided clean-machine setup remain separate release work.
+The legacy batch-recording flow has separate transcription settings. For an agent-led
+installation from a repository link, follow [the installation runbook](agent-install.md)
+and its [Microsoft/Azure setup companion](agent-azure-setup.md). They cover resource
+discovery/provisioning, the separate Meeting Notes credential store and first-run checks.
+The documented workflow still needs verification on each user's actual machine/tenant;
+it is not evidence that a clean-machine cloud test has already passed.
 
 ## Organization-managed direct Entra access
 

@@ -1,5 +1,10 @@
 # Build DAS Meeting Assistant
 
+For **installing and configuring the app for a user**, start with
+[the agent installation runbook](../docs/agent-install.md). It prefers a published
+Community installer and supports source execution when none is available. The build
+toolchain below is only needed to produce your own packaged application or installer.
+
 Builds accept one validated JSON deployment profile. Only explicitly allowed
 public IDs, HTTPS endpoints, model names and selected defaults are accepted.
 API keys, client secrets, tokens, arbitrary environment variables and unknown

@@ -7,6 +7,28 @@ The client is developed by Data Assessment Solutions. Its source is licensed und
 [Apache-2.0](LICENSE); bundled third-party components retain their own terms.
 See [NOTICE](NOTICE), [source attribution](SOURCE.md) and [third-party notices](THIRD_PARTY_NOTICES.md).
 
+## Install with your AI agent
+
+Give an agent that can operate your Windows computer this repository link and say:
+
+> Install https://github.com/data-assessment/DAS-Meeting-Assistant for me.
+
+**Agents: start with [the installation runbook](docs/agent-install.md).**
+The same entry point is recorded in [AGENTS.md](AGENTS.md). The agent should install
+the Community edition, configure your own Microsoft/Azure resources and verify the
+result. It can prepare the software while you complete account sign-in, MFA or an
+administrator approval. A chat-only agent without access to your PC cannot perform
+the local installation itself.
+
+Use a Windows x64 desktop. Teams/Outlook/OneNote integration is intended for a
+Microsoft 365 work or school account. Live Meeting Notes needs an Azure Speech
+resource and an Azure-hosted chat-model deployment; it is not an offline model and
+does not include DAS service access. Cloud usage is billed separately by your provider.
+The agent will first look for existing resources and clarify costs before creating any.
+
+The runbook also covers running from source when no Community installer is published.
+Successful setup means a verified end-to-end test, not just a successful download.
+
 ## Distributions
 
 - **Community:** use your own Microsoft/Azure configuration. Local state is isolated
