@@ -1,13 +1,38 @@
 # DAS Meeting Assistant
 
-**Aus Teams-Gesprächen werden Notizen und Aufgaben.**
+**Automatische Notizen für Teams-Meetings und Telefonate — über das Audio deines PCs.**
 
-Der DAS Meeting Assistant ist eine quelloffene Windows-Anwendung für
-Live-Transkription, Zusammenfassungen und bearbeitbare Aufgaben. Du nutzt deine
-eigenen Azure-Ressourcen und speicherst die Notizen auf deinem PC oder in OneNote.
+Der DAS Meeting Assistant macht aus Gesprächen Zusammenfassungen und bearbeitbare
+Aufgaben. Die quelloffene Windows-Anwendung funktioniert bei eigenen Meetings,
+bei Einladungen externer Organisationen und bei Telefonaten mit normalen Rufnummern
+über Teams Phone. Du nutzt deine eigenen Azure-Ressourcen und speicherst die Notizen
+auf deinem PC oder in OneNote.
 
 [English](../README.md) · [Installation für KI-Agenten](agent-install.md) ·
 [Data Assessment Solutions](https://www.data-assessment.com/)
+
+## Unabhängig von der eingebauten Teams-Transkription
+
+Der Assistent erfasst **dein Mikrofon und die Audiowiedergabe deines PCs**. Er benötigt
+weder eine vom Organisator gestartete Teams-Transkription noch Zugriff auf dessen
+Teams-Transkript.
+
+- **Startet automatisch:** Bei aktivierter Automatik erkennt der laufende Assistent
+  über deinen angemeldeten Teams-Präsenzstatus ein aktives Gespräch und beginnt mit
+  den Notizen. Du musst die Transkription nicht für jedes Meeting einzeln starten.
+- **Auch bei extern organisierten Meetings:** Ob Kunde, Partner oder eine andere
+  Organisation eingeladen hat, spielt für die Audioerfassung keine Rolle. Du bist
+  nicht auf die Freigabe des Transkripts durch den Organisator angewiesen.
+- **Auch bei Telefonaten:** Der Assistent funktioniert ebenso bei Anrufen zu oder
+  von normalen Telefonnummern über Teams Phone. Ein Teams-Meeting oder Kalendereintrag
+  ist dafür nicht erforderlich.
+- **Läuft lokal auf deinem PC:** Die Windows-Anwendung erfasst das gewählte Mikrofon
+  und Wiedergabegerät. Das Gespräch muss über diese Geräte auf diesem PC laufen.
+
+Die Audioerfassung erfolgt lokal; Spracherkennung und Zusammenfassung übernehmen
+**deine konfigurierten Azure-Dienste**. Die KI-Verarbeitung arbeitet also nicht offline.
+Für den automatischen Start sind Microsoft-Anmeldung und die Erkennung eines aktiven
+Gesprächs erforderlich. Manuelles Starten und Stoppen ist ebenfalls möglich.
 
 ![Meeting-Notizen mit Zusammenfassung und bearbeitbaren Aufgaben](assets/meeting-notes.png)
 

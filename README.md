@@ -1,14 +1,36 @@
 # DAS Meeting Assistant
 
-**Turn Teams conversations into notes and action items.**
+**Automatic notes for Teams meetings and phone calls — captured on your PC.**
 
-An open-source Windows desktop assistant for live transcription, AI-generated
-meeting summaries and editable tasks. Bring your own Azure resources and save
-notes on your PC or in OneNote.
+An open-source Windows desktop assistant that turns conversations into summaries
+and editable action items. It works with meetings you organize, meetings hosted by
+external organizations, and Teams Phone calls to or from regular telephone numbers.
+Bring your own Azure resources and save notes on your PC or in OneNote.
 
 [Install with your AI agent](#install-with-your-ai-agent) ·
 [Deutsch](docs/README.de.md) · [Data handling](#data-handling) ·
 [About DAS](#about-data-assessment-solutions)
+
+## Independent of Teams' built-in transcription
+
+The assistant captures **your microphone and the audio played by your PC**. It does
+not need the meeting organizer to start Teams transcription or give you access to
+a Teams transcript.
+
+- **Starts automatically:** with automatic start enabled, the running assistant
+  detects your active Teams call or meeting through your signed-in Teams presence
+  and starts taking notes. You do not have to start transcription for each meeting.
+- **Works with external organizers:** the meeting can be set up by a customer,
+  partner or another organization. Audio capture does not depend on who sent the
+  invitation or on access to the organizer's transcript.
+- **Includes telephone calls:** conversations with regular phone numbers through
+  Teams Phone are covered too; no scheduled Teams meeting or invitation is needed.
+- **Runs on your PC:** the Windows app captures the selected microphone and playback
+  device locally. The conversation must run through those devices on that PC.
+
+Local audio capture is combined with **your configured Azure services** for speech
+recognition and summarization. The AI processing is not offline. Automatic start
+requires Microsoft sign-in and active-call detection; manual start/stop is also available.
 
 ![Meeting Notes showing a summary and editable action items](docs/assets/meeting-notes.png)
 
