@@ -58,15 +58,21 @@ sind derzeit überwiegend deutschsprachig.*
 
 ## Mit deinem KI-Agenten installieren
 
+**[Community-Installer für Windows x64 herunterladen](https://github.com/data-assessment/DAS-Meeting-Assistant/releases/tag/v0.40.15-community-preview.1).**
+Die Testversion 0.40.15 enthält Installer, SHA-256-Prüfsumme und Installationshinweise.
+Python, Node.js und Git werden dafür nicht benötigt. Der Installer ist unsigniert;
+der externe Installationstest auf einem frischen Windows-PC steht noch aus.
+Solange das Repo privat ist, brauchst du zum Download ein GitHub-Konto mit Repo-Zugriff.
+
 Gib einem KI-Agenten mit Zugriff auf deinen Windows-PC diesen Auftrag:
 
 > Installiere https://github.com/data-assessment/DAS-Meeting-Assistant für mich.
 
 Die [Agentenanleitung](agent-install.md) führt ihn durch Installation,
 Azure-Einrichtung, Microsoft-Anmeldung, Konfiguration und Funktionstests.
-`AGENTS.md` im Hauptverzeichnis verweist ebenfalls darauf. Falls noch kein
-Community-Installer veröffentlicht ist, beschreibt die Anleitung die Installation
-aus dem Quellcode mit einer dauerhaften Startverknüpfung.
+`AGENTS.md` im Hauptverzeichnis verweist ebenfalls darauf. Verwende für den externen
+Test den verlinkten Community-Installer. Die Anleitung beschreibt außerdem die
+Installation aus dem Quellcode mit einer dauerhaften Startverknüpfung.
 
 Du benötigst Windows x64, eine Azure-Speech-Ressource und ein kompatibles
 Textmodell-Deployment in Azure. Für Teams-Präsenz, Outlook und OneNote kommen ein

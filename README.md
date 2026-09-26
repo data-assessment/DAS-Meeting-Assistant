@@ -82,6 +82,12 @@ alone does not change the summary language.
 
 ## Install with your AI agent
 
+**[Download the Community installer preview for Windows x64](https://github.com/data-assessment/DAS-Meeting-Assistant/releases/tag/v0.40.15-community-preview.1).**
+Version 0.40.15 includes an installer, SHA-256 checksum and setup instructions.
+No Python, Node.js or Git build tools are needed. This test release is unsigned;
+clean external Windows onboarding is still being validated. While this repository
+is private, downloads require a GitHub account with repository access.
+
 Give an agent that can operate your Windows computer this repository link and say:
 
 > Install https://github.com/data-assessment/DAS-Meeting-Assistant for me.

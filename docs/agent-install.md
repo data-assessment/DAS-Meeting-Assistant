@@ -92,6 +92,12 @@ Do not upload this record or copy an existing installation's token cache.
 
 ### A. Official Community installer, when available
 
+For the current external installation test, use the published
+[Community 0.40.15 preview](https://github.com/data-assessment/DAS-Meeting-Assistant/releases/tag/v0.40.15-community-preview.1).
+It is intentionally marked **prerelease** and unsigned. Do not overlook it by querying
+only GitHub's latest stable release. Read its validation limits and installation notes;
+the installer, `SHA256SUMS.txt` and `build-manifest.json` are attached to that release.
+
 Inspect [GitHub Releases](https://github.com/data-assessment/DAS-Meeting-Assistant/releases).
 Select a maintainer-published release with a Community asset named
 `DAS-Meeting-Assistant-Community-Setup-<version-with-hyphens>.exe`. Match it to the
