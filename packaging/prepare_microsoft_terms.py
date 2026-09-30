@@ -14,7 +14,7 @@ TERMS = [
     ("A. Microsoft Cognitive Services Speech SDK 1.51.2", SPEECH, "cp1252"),
     ("B. Microsoft Visual C++ V14 / 2026 Runtime (14.50)",
      "third_party/upstream/msvc/vc2026-license.txt", "utf-8"),
-    ("C. Microsoft Visual C++ 2015-2022 Runtime (14.44 / 14.40)",
+    ("C. Microsoft Visual C++ 2015-2022 Runtime (14.42 / 14.40)",
      "third_party/upstream/msvc/vc2022-license.txt", "utf-8"),
 ]
 

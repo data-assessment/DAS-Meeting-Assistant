@@ -116,7 +116,12 @@ def snapshot():
 def verify():
     manifest = json.loads((THIRD / "manifest.json").read_text())
     if manifest["python_version"] != sys.version.split()[0]:
-        raise ValueError("Python changed: refresh the runtime notices and review native dependencies.")
+        raise ValueError(
+            f"Python runtime mismatch: expected {manifest['python_version']}, "
+            f"found {sys.version.split()[0]}. Create a fresh venv with the public "
+            "Windows x64 Python in packaging/README.md and pass its python.exe "
+            "with -PythonExe. Refresh notices only for an intentional runtime update."
+        )
     if manifest["pyinstaller_version"] != metadata.version("pyinstaller"):
         raise ValueError("PyInstaller changed: refresh the bootloader notices.")
     packages = {p["name"]: p["version"] for p in manifest["packages"] if p["ecosystem"] == "python"}

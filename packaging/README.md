@@ -13,13 +13,34 @@ Endpoint URLs cannot contain credentials, query strings or fragments.
 
 ## Prerequisites
 
-Windows, Python 3.12 with requirements-dev.txt, Node.js and Inno Setup 6 on PATH
+Windows, **CPython 3.12.10 x64** with requirements-dev.txt, Node.js 22 LTS and Inno Setup 6 on PATH
 (or installed in its default directory). Use -AppOnly when intentionally producing
 an unpacked test application without Inno Setup.
 
-The current notice snapshot uses Python 3.12.14 and the pinned dependencies.
+Use a short checkout path such as `C:\src\meeting-assistant`. Deep directory trees
+can exceed Windows path limits while Inno Setup reads nested dependency notices.
+
+Use the [official Python 3.12.10 Windows installer (64-bit)](https://www.python.org/ftp/python/3.12.10/python-3.12.10-amd64.exe)
+from the [release page](https://www.python.org/downloads/release/python-31210/).
+Create a fresh virtual environment as shown in the [development instructions](../README.md#development).
+Check `.venv\Scripts\python.exe --version` before installing the pinned dependencies.
+Do not reuse a venv created with 3.12.14. The build accepts an explicit interpreter
+with `-PythonExe C:\path\to\venv\Scripts\python.exe`.
+
+For isolated CI, the official [Python NuGet package](https://www.nuget.org/packages/python/3.12.10)
+is also available; create the venv with its `tools\python.exe`. This is the PSF Windows
+distribution, not a private runtime. Its reviewed source and native components are
+recorded in [python-runtime.json](../third_party/python-runtime.json).
+
+The current notice snapshot uses Python 3.12.10 and the pinned dependencies.
 Other versions require an intentional refresh/review of the third-party documents;
 normal builds reject stale or missing documents rather than silently shipping them.
+
+Python 3.12.10 is the last 3.12 release with a traditional python.org Windows installer.
+It does not contain the security fixes in later 3.12 releases. This baseline makes the
+build publicly reproducible; it is not a claim that 3.12.10 is the latest security
+release. A future runtime upgrade must update and validate these notices together.
+Previously published artifacts retain the Python version in their component inventory.
 
 ## Third-party material and build isolation (0.40.9)
 

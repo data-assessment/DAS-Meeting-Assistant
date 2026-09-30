@@ -16,6 +16,9 @@ summaries. `manifest.json` records their hashes and the installed package versio
 - `sources/`: complete upstream source archives for pystray, soxr, certifi and tqdm.
 - `sources.json`: source archive URLs, versions and SHA-256 hashes.
 - `upstream-provenance.json`: supplementary document provenance.
+- `python-runtime.json`: public Python 3.12.10 Windows download sources, hashes,
+  validation method and native component review. Older supplemental notices remain
+  a superset; they do not assert that every historical version is in the binary.
 - `rust-manifest.json`: exact Cargo.lock sources and the complete set of 259
   locked crate versions used by cryptography, pydantic-core, jiter and watchfiles.
   This deliberately includes build/test and other-platform dependencies; it is

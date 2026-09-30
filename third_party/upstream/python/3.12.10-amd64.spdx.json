@@ -1,0 +1,951 @@
+{
+  "SPDXID": "SPDXRef-DOCUMENT",
+  "creationInfo": {
+    "created": "2025-04-08T13:19:59Z",
+    "creators": [
+      "Person: Python Release Managers",
+      "Tool: ReleaseTools-c8a4771a1ce69ca2a12405e3225c85d505a82dc1"
+    ],
+    "licenseListVersion": "3.22"
+  },
+  "dataLicense": "CC0-1.0",
+  "documentNamespace": "https://www.python.org/ftp/python/3.12.10/python-3.12.10-amd64.exe.spdx.json",
+  "files": [],
+  "name": "CPython SBOM",
+  "packages": [
+    {
+      "SPDXID": "SPDXRef-PACKAGE-bzip2",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "ab8d1b0cc087c20d4c32c0e4fcf7d0c733a95da12cedc6d63b3f0a9af07427e2"
+        }
+      ],
+      "downloadLocation": "https://github.com/python/cpython-source-deps/archive/refs/tags/bzip2-1.0.8.tar.gz",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:bzip:bzip2:1.0.8:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "bzip2",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "1.0.8"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-cachecontrol",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "65e3abd62b06382ce3894df60dde9e0deb92aeb734724f68fa4f3b91e97206b9"
+        }
+      ],
+      "downloadLocation": "https://files.pythonhosted.org/packages/f1/aa/481eb52af52aae093c61c181f2308779973ffd6f0f5f6c0881b2138f3087/cachecontrol-0.14.1-py3-none-any.whl",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE_MANAGER",
+          "referenceLocator": "pkg:pypi/cachecontrol@0.14.1",
+          "referenceType": "purl"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "cachecontrol",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "0.14.1"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-certifi",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "922820b53db7a7257ffbda3f597266d435245903d80737e34f8a45ff3e3230d8"
+        }
+      ],
+      "downloadLocation": "https://files.pythonhosted.org/packages/12/90/3c9ff0512038035f59d279fddeb79f5f1eccd8859f06d6163c58798b9487/certifi-2024.8.30-py3-none-any.whl",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE_MANAGER",
+          "referenceLocator": "pkg:pypi/certifi@2024.8.30",
+          "referenceType": "purl"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "certifi",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "2024.8.30"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-cpython",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "67b5635e80ea51072b87941312d00ec8927c4db9ba18938f7ad2d27b328b95fb"
+        }
+      ],
+      "downloadLocation": "https://www.python.org/ftp/python/3.12.10/python-3.12.10-amd64.exe",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:python:python:3.12.10:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "licenseConcluded": "PSF-2.0",
+      "name": "CPython",
+      "originator": "Organization: Python Software Foundation",
+      "packageFileName": "python-3.12.10-amd64.exe",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "3.12.10"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-distlib",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "47f8c22fd27c27e25a65601af709b38e4f0a45ea4fc2e710f65755fa8caaaf87"
+        }
+      ],
+      "downloadLocation": "https://files.pythonhosted.org/packages/91/a1/cf2472db20f7ce4a6be1253a81cfdf85ad9c7885ffbed7047fb72c24cf87/distlib-0.3.9-py2.py3-none-any.whl",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE_MANAGER",
+          "referenceLocator": "pkg:pypi/distlib@0.3.9",
+          "referenceType": "purl"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "distlib",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "0.3.9"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-distro",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "7bffd925d65168f85027d8da9af6bddab658135b840670a223589bc0c8ef02b2"
+        }
+      ],
+      "downloadLocation": "https://files.pythonhosted.org/packages/12/b3/231ffd4ab1fc9d679809f356cebee130ac7daa00d6d6f3206dd4fd137e9e/distro-1.9.0-py3-none-any.whl",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE_MANAGER",
+          "referenceLocator": "pkg:pypi/distro@1.9.0",
+          "referenceType": "purl"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "distro",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "1.9.0"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-expat-2.6.3",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "17aa6cfc5c4c219c09287abfc10bc13f0c06f30bb654b28bfe6f567ca646eb79"
+        }
+      ],
+      "downloadLocation": "https://github.com/libexpat/libexpat/releases/download/R_2_6_3/expat-2.6.3.tar.gz",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:libexpat_project:libexpat:2.6.3:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "expat",
+      "originator": "Organization: Expat development team",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "2.6.3"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-hacl-star-bb3d0dc8d9d15a5cd51094d5b69e70aa09005ff0",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e31e4ca10da91c585793c0eaf1b98aee3cb43e3a58d3d8d478593e5a6bd82927"
+        }
+      ],
+      "downloadLocation": "https://github.com/hacl-star/hacl-star/archive/bb3d0dc8d9d15a5cd51094d5b69e70aa09005ff0.zip",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:hacl-star:hacl-star:bb3d0dc8d9d15a5cd51094d5b69e70aa09005ff0:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "hacl-star",
+      "originator": "Organization: HACL* Developers",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "bb3d0dc8d9d15a5cd51094d5b69e70aa09005ff0"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-idna",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "946d195a0d259cbba61165e88e65941f16e9b36ea6ddb97f00452bae8b1287d3"
+        }
+      ],
+      "downloadLocation": "https://files.pythonhosted.org/packages/76/c6/c88e154df9c4e1a2a66ccf0005a88dfb2650c1dffb6f5ce603dfbd452ce3/idna-3.10-py3-none-any.whl",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE_MANAGER",
+          "referenceLocator": "pkg:pypi/idna@3.10",
+          "referenceType": "purl"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "idna",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "3.10"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-libb2-0.98.1",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "53626fddce753c454a3fea581cbbc7fe9bbcf0bc70416d48fdbbf5d87ef6c72e"
+        }
+      ],
+      "downloadLocation": "https://github.com/BLAKE2/libb2/releases/download/v0.98.1/libb2-0.98.1.tar.gz",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:blake2:libb2:0.98.1:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "libb2",
+      "originator": "Organization: BLAKE2 - fast secure hashing",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "0.98.1"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-libffi",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9d802681adfea27d84cae0487a785fb9caa925bdad44c401b364c59ab2b8edda"
+        }
+      ],
+      "downloadLocation": "https://github.com/python/cpython-source-deps/archive/refs/tags/libffi-3.4.4.tar.gz",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:libffi_project:libffi:3.4.4:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "libffi",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "3.4.4"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-macholib-1.0",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "c76f268f5054024e962f2515a0e522baf85313064f6740d80375afc850787a38"
+        }
+      ],
+      "downloadLocation": "https://files.pythonhosted.org/packages/ec/57/f0a712efc3ed982cf4038a3cee172057303b9be914c32c93b2fbec27f785/macholib-1.0.tar.gz",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE_MANAGER",
+          "referenceLocator": "pkg:pypi/macholib@1.0",
+          "referenceType": "purl"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "macholib",
+      "originator": "Person: Ronald Oussoren (ronaldoussoren@mac.com)",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-mpdecimal-2.5.1",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9f9cd4c041f99b5c49ffb7b59d9f12d95b683d88585608aa56a6307667b2b21f"
+        }
+      ],
+      "downloadLocation": "https://www.bytereef.org/software/mpdecimal/releases/mpdecimal-2.5.1.tar.gz",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:bytereef:mpdecimal:2.5.1:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "mpdecimal",
+      "originator": "Organization: bytereef.org",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "2.5.1"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-msgpack",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "7ad442d527a7e358a469faf43fda45aaf4ac3249c8310a82f0ccff9164e5dccd"
+        }
+      ],
+      "downloadLocation": "https://files.pythonhosted.org/packages/4b/f9/a892a6038c861fa849b11a2bb0502c07bc698ab6ea53359e5771397d883b/msgpack-1.1.0-cp310-cp310-macosx_10_9_universal2.whl",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE_MANAGER",
+          "referenceLocator": "pkg:pypi/msgpack@1.1.0",
+          "referenceType": "purl"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "msgpack",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "1.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-openssl",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "6bb739ecddbd2cfb6d255eb5898437a9b5739277dee931338d3275bac5d96ba2"
+        }
+      ],
+      "downloadLocation": "https://github.com/python/cpython-source-deps/archive/refs/tags/openssl-3.0.16.tar.gz",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:openssl:openssl:3.0.16:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "openssl",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "3.0.16"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-packaging",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "09abb1bccd265c01f4a3aa3f7a7db064b36514d2cba19a2f694fe6150451a759"
+        }
+      ],
+      "downloadLocation": "https://files.pythonhosted.org/packages/88/ef/eb23f262cca3c0c4eb7ab1933c3b1f03d021f2c48f54763065b6f0e321be/packaging-24.2-py3-none-any.whl",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE_MANAGER",
+          "referenceLocator": "pkg:pypi/packaging@24.2",
+          "referenceType": "purl"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "packaging",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "24.2"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-pip",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "c46efd13b6aa8279f33f2864459c8ce587ea6a1a59ee20de055868d8f7688f7f"
+        }
+      ],
+      "downloadLocation": "https://files.pythonhosted.org/packages/c9/bc/b7db44f5f39f9d0494071bddae6880eb645970366d0a200022a1a93d57f5/pip-25.0.1-py3-none-any.whl",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE_MANAGER",
+          "referenceLocator": "pkg:pypi/pip@25.0.1",
+          "referenceType": "purl"
+        },
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:pypa:pip:25.0.1:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "pip",
+      "originator": "Organization: Python Packaging Authority",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "25.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-platformdirs",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "73e575e1408ab8103900836b97580d5307456908a03e92031bab39e4554cc3fb"
+        }
+      ],
+      "downloadLocation": "https://files.pythonhosted.org/packages/3c/a6/bc1012356d8ece4d66dd75c4b9fc6c1f6650ddd5991e421177d9f8f671be/platformdirs-4.3.6-py3-none-any.whl",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE_MANAGER",
+          "referenceLocator": "pkg:pypi/platformdirs@4.3.6",
+          "referenceType": "purl"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "platformdirs",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "4.3.6"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-pygments",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "b8e6aca0523f3ab76fee51799c488e38782ac06eafcf95e7ba832985c8e7b13a"
+        }
+      ],
+      "downloadLocation": "https://files.pythonhosted.org/packages/f7/3f/01c8b82017c199075f8f788d0d906b9ffbbc5a47dc9918a945e13d5a2bda/pygments-2.18.0-py3-none-any.whl",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE_MANAGER",
+          "referenceLocator": "pkg:pypi/pygments@2.18.0",
+          "referenceType": "purl"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "pygments",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "2.18.0"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-pyproject-hooks",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "9e5c6bfa8dcc30091c74b0cf803c81fdd29d94f01992a7707bc97babb1141913"
+        }
+      ],
+      "downloadLocation": "https://files.pythonhosted.org/packages/bd/24/12818598c362d7f300f18e74db45963dbcb85150324092410c8b49405e42/pyproject_hooks-1.2.0-py3-none-any.whl",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE_MANAGER",
+          "referenceLocator": "pkg:pypi/pyproject-hooks@1.2.0",
+          "referenceType": "purl"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "pyproject-hooks",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "1.2.0"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-requests",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "70761cfe03c773ceb22aa2f671b4757976145175cdfca038c02654d061d6dcc6"
+        }
+      ],
+      "downloadLocation": "https://files.pythonhosted.org/packages/f9/9b/335f9764261e915ed497fcdeb11df5dfd6f7bf257d4a6a2a686d80da4d54/requests-2.32.3-py3-none-any.whl",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE_MANAGER",
+          "referenceLocator": "pkg:pypi/requests@2.32.3",
+          "referenceType": "purl"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "requests",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "2.32.3"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-resolvelib",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "d2da45d1a8dfee81bdd591647783e340ef3bcb104b54c383f70d422ef5cc7dbf"
+        }
+      ],
+      "downloadLocation": "https://files.pythonhosted.org/packages/d2/fc/e9ccf0521607bcd244aa0b3fbd574f71b65e9ce6a112c83af988bbbe2e23/resolvelib-1.0.1-py2.py3-none-any.whl",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE_MANAGER",
+          "referenceLocator": "pkg:pypi/resolvelib@1.0.1",
+          "referenceType": "purl"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "resolvelib",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "1.0.1"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-rich",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "6049d5e6ec054bf2779ab3358186963bac2ea89175919d699e378b99738c2a90"
+        }
+      ],
+      "downloadLocation": "https://files.pythonhosted.org/packages/19/71/39c7c0d87f8d4e6c020a393182060eaefeeae6c01dab6a84ec346f2567df/rich-13.9.4-py3-none-any.whl",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE_MANAGER",
+          "referenceLocator": "pkg:pypi/rich@13.9.4",
+          "referenceType": "purl"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "rich",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "13.9.4"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-setuptools",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "fe384da74336c398e0d956d1cae0669bc02eed936cdb1d49b57de1990dc11ffc"
+        }
+      ],
+      "downloadLocation": "https://files.pythonhosted.org/packages/ef/15/88e46eb9387e905704b69849618e699dc2f54407d8953cc4ec4b8b46528d/setuptools-70.3.0-py3-none-any.whl",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE_MANAGER",
+          "referenceLocator": "pkg:pypi/setuptools@70.3.0",
+          "referenceType": "purl"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "setuptools",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "70.3.0"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-sqlite",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e335aeb44fa36cde60ecbb6a9f8be6f5d449d645ce9b0199ee53a7e6728d19d2"
+        }
+      ],
+      "downloadLocation": "https://github.com/python/cpython-source-deps/archive/refs/tags/sqlite-3.49.1.0.tar.gz",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:sqlite:sqlite:3.49.1.0:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "sqlite",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "3.49.1.0"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-tcl-core",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "4c23f0dd3efcbe6f3a22c503a68d147617bb30c4f5290f1eb3eaacf0b460440b"
+        }
+      ],
+      "downloadLocation": "https://github.com/python/cpython-source-deps/archive/refs/tags/tcl-core-8.6.15.0.tar.gz",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:tcl_tk:tcl_tk:8.6.15.0:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "tcl-core",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "8.6.15.0"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-tix",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "f7b21d115867a41ae5fd7c635a4c234d3ca25126c3661eb36028c6e25601f85e"
+        }
+      ],
+      "downloadLocation": "https://github.com/python/cpython-source-deps/archive/refs/tags/tix-8.4.3.6.tar.gz",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:tcl_tk:tcl_tk:8.4.3.6:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "tix",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "8.4.3.6"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-tk",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "0ae56d39bca92865f338529557a1e56d110594184b6dc5a91339c5675751e264"
+        }
+      ],
+      "downloadLocation": "https://github.com/python/cpython-source-deps/archive/refs/tags/tk-8.6.15.0.tar.gz",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:tcl_tk:tcl_tk:8.6.15.0:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "tk",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "8.6.15.0"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-tomli",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "678e4fa69e4575eb77d103de3df8a895e1591b48e740211bd1067378c69e8249"
+        }
+      ],
+      "downloadLocation": "https://files.pythonhosted.org/packages/43/ca/75707e6efa2b37c77dadb324ae7d9571cb424e61ea73fad7c56c2d14527f/tomli-2.2.1-cp311-cp311-macosx_10_9_x86_64.whl",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE_MANAGER",
+          "referenceLocator": "pkg:pypi/tomli@2.2.1",
+          "referenceType": "purl"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "tomli",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "2.2.1"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-truststore",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "b3798548e421ffe2ca2a6217cca49e7a17baf40b72d86a5505dc7d701e77d15b"
+        }
+      ],
+      "downloadLocation": "https://files.pythonhosted.org/packages/d1/c9/bab5a5dda14af36fe31e2215f0f87bf34408951972fa7220055926dab2e0/truststore-0.10.0-py3-none-any.whl",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE_MANAGER",
+          "referenceLocator": "pkg:pypi/truststore@0.10.0",
+          "referenceType": "purl"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "truststore",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "0.10.0"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-typing-extensions",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "04e5ca0351e0f3f85c6853954072df659d0d13fac324d0072316b67d7794700d"
+        }
+      ],
+      "downloadLocation": "https://files.pythonhosted.org/packages/26/9f/ad63fc0248c5379346306f8668cda6e2e2e9c95e01216d2b8ffd9ff037d0/typing_extensions-4.12.2-py3-none-any.whl",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE_MANAGER",
+          "referenceLocator": "pkg:pypi/typing_extensions@4.12.2",
+          "referenceType": "purl"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "typing_extensions",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "4.12.2"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-urllib3",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "0ed14ccfbf1c30a9072c7ca157e4319b70d65f623e91e7b32fadb2853431016e"
+        }
+      ],
+      "downloadLocation": "https://files.pythonhosted.org/packages/33/cf/8435d5a7159e2a9c83a95896ed596f68cf798005fe107cc655b5c5c14704/urllib3-1.26.20-py2.py3-none-any.whl",
+      "externalRefs": [
+        {
+          "referenceCategory": "PACKAGE_MANAGER",
+          "referenceLocator": "pkg:pypi/urllib3@1.26.20",
+          "referenceType": "purl"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "urllib3",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "1.26.20"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-xz",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "a15c168e39e87d750c3dc766edc7f19bdda57dacf01e509678467eace91ad282"
+        }
+      ],
+      "downloadLocation": "https://github.com/python/cpython-source-deps/archive/refs/tags/xz-5.2.5.tar.gz",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:tukaani:xz:5.2.5:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "xz",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "5.2.5"
+    },
+    {
+      "SPDXID": "SPDXRef-PACKAGE-zlib",
+      "checksums": [
+        {
+          "algorithm": "SHA256",
+          "checksumValue": "e3f3fb32564952006eb18b091ca8464740e5eca29d328cfb0b2da22768e0b638"
+        }
+      ],
+      "downloadLocation": "https://github.com/python/cpython-source-deps/archive/refs/tags/zlib-1.3.1.tar.gz",
+      "externalRefs": [
+        {
+          "referenceCategory": "SECURITY",
+          "referenceLocator": "cpe:2.3:a:zlib:zlib:1.3.1:*:*:*:*:*:*:*",
+          "referenceType": "cpe23Type"
+        }
+      ],
+      "licenseConcluded": "NOASSERTION",
+      "name": "zlib",
+      "primaryPackagePurpose": "LIBRARY",
+      "supplier": "Organization: Python Software Foundation",
+      "versionInfo": "1.3.1"
+    }
+  ],
+  "relationships": [
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-bzip2",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-cpython"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-cachecontrol",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-pip"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-certifi",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-pip"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-cpython",
+      "relationshipType": "DESCRIBES",
+      "spdxElementId": "SPDXRef-DOCUMENT"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-distlib",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-pip"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-distro",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-pip"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-expat-2.6.3",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-cpython"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-hacl-star-bb3d0dc8d9d15a5cd51094d5b69e70aa09005ff0",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-cpython"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-idna",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-pip"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-libb2-0.98.1",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-cpython"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-libffi",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-cpython"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-macholib-1.0",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-cpython"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-mpdecimal-2.5.1",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-cpython"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-msgpack",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-pip"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-openssl",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-cpython"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-packaging",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-pip"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-pip",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-cpython"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-platformdirs",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-pip"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-pygments",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-pip"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-pyproject-hooks",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-pip"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-requests",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-pip"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-resolvelib",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-pip"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-rich",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-pip"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-setuptools",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-pip"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-sqlite",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-cpython"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-tcl-core",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-cpython"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-tix",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-cpython"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-tk",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-cpython"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-tomli",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-pip"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-truststore",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-pip"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-typing-extensions",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-pip"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-urllib3",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-pip"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-xz",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-cpython"
+    },
+    {
+      "relatedSpdxElement": "SPDXRef-PACKAGE-zlib",
+      "relationshipType": "DEPENDS_ON",
+      "spdxElementId": "SPDXRef-PACKAGE-cpython"
+    }
+  ],
+  "spdxVersion": "SPDX-2.3"
+}
