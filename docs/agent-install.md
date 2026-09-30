@@ -123,18 +123,22 @@ a distributable installer. Use a user-writable, non-synced local folder such as
 `%LOCALAPPDATA%/Programs/DAS-Meeting-Assistant-Source`. Inspect it before use; never
 overwrite an unrelated checkout or discard uncommitted work.
 
-Required: Git, x64 CPython **3.12.10**, Node.js **22 LTS** with npm, Microsoft Edge
+Required: Git, x64 CPython **3.12.x**, Node.js **22 LTS** with npm, Microsoft Edge
 WebView2 Evergreen Runtime and the Microsoft VC++ x64 runtime required by Speech.
 Use official vendor distributions or their verified Windows package-manager entries;
-inspect what is already installed first. The tested baseline is the public
+inspect what is already installed first. Any 3.12 patch release is accepted for
+source execution; keep a newer installed 3.12 x64 interpreter. If Python is missing,
+an available public download is the
 [Python 3.12.10 Windows installer (64-bit)](https://www.python.org/downloads/release/python-31210/).
-Select that exact version for a reproducible source setup and packaged build;
-no agent-provided runtime is needed. If `py -3.12` selects another version, use
-the full path to the intended `python.exe` in both commands below. Existing venvs
-keep their original interpreter; create a fresh one for this baseline. Do not
-alter license hashes to force another packaging environment through. The
-[build guide](../packaging/README.md#prerequisites) explains the security tradeoff:
-3.12.10 lacks fixes in later, source-only python.org 3.12 releases.
+If `py -3.12` cannot find the intended x64 interpreter, use the full path to its
+`python.exe` in both commands below. Existing venvs keep their original interpreter;
+recreate one when changing that interpreter. Python 3.13 and later are outside this
+documented setup. Only installer builds require the separately reviewed Python
+3.12.10 runtime and license snapshot. Source installation does not run the packaging
+license guard and does not require a downgrade to 3.12.10. Do not alter license
+hashes to force another packaging environment through; the
+[build guide](../packaging/README.md#prerequisites) covers runtime updates and the
+security tradeoff of the installer baseline.
 
 Run commands in PowerShell, checking `$LASTEXITCODE` after **each** native command;
 stop and resolve failures instead of continuing with a partial installation:
@@ -151,8 +155,8 @@ if ($LASTEXITCODE -ne 0) { throw 'Clone failed. Check GitHub access before conti
 Set-Location -LiteralPath $checkout
 git rev-parse HEAD
 if ($LASTEXITCODE -ne 0) { throw 'Could not identify the source revision.' }
-py -3.12 -c "import sys, struct; print(sys.version); assert sys.version_info[:3] == (3, 12, 10) and struct.calcsize('P') == 8, 'Use Python 3.12.10 x64'"
-if ($LASTEXITCODE -ne 0) { throw 'Python 3.12.10 x64 is unavailable. Resolve prerequisites first.' }
+py -3.12 -c "import sys, struct; print(sys.version); assert sys.version_info[:2] == (3, 12) and struct.calcsize('P') == 8, 'Use Python 3.12.x x64'"
+if ($LASTEXITCODE -ne 0) { throw 'Python 3.12.x x64 is unavailable. Resolve prerequisites first.' }
 py -3.12 -m venv .venv
 if ($LASTEXITCODE -ne 0) { throw 'Python environment creation failed.' }
 & .\.venv\Scripts\python.exe -m pip install -r requirements.txt

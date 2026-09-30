@@ -151,14 +151,15 @@ For business enquiries, use the [DAS contact page](https://www.data-assessment.c
 
 ## Development
 
-Use Windows, **Python 3.12.10 (64-bit)** and Node.js 22 LTS. Install Python from
-the [official Windows download](https://www.python.org/downloads/release/python-31210/)
-(choose **Windows installer (64-bit)**). This is the tested development and packaging
-baseline; no private or agent-provided Python runtime is required.
+Use Windows, **Python 3.12.x (64-bit)** and Node.js 22 LTS. An existing 3.12 x64
+installation can be used for development and source execution; no exact patch
+version is required. If Python is missing, the
+[official Python 3.12.10 Windows download](https://www.python.org/downloads/release/python-31210/)
+provides a **Windows installer (64-bit)**. Keep a newer installed 3.12 patch release.
 
 ```powershell
-py -3.12 -c "import sys, struct; assert sys.version_info[:3] == (3, 12, 10) and struct.calcsize('P') == 8, 'Use Python 3.12.10 x64'"
-if ($LASTEXITCODE -ne 0) { throw 'Select Python 3.12.10 x64 before continuing.' }
+py -3.12 -c "import sys, struct; assert sys.version_info[:2] == (3, 12) and struct.calcsize('P') == 8, 'Use Python 3.12.x x64'"
+if ($LASTEXITCODE -ne 0) { throw 'Select Python 3.12.x x64 before continuing.' }
 py -3.12 -m venv .venv
 if ($LASTEXITCODE -ne 0) { throw 'Python environment creation failed.' }
 .venv/Scripts/python.exe -m pip install -r requirements-dev.txt
@@ -176,11 +177,12 @@ applications require a validated `deployment-profile.json`; they do not read an
 `.env` file from the installation directory. Build profiles cannot contain keys or tokens.
 For hot reload, the frontend proxy defaults to port 8766; managed instances default to 8765.
 
-If the launcher selects another patch version, use the full path to the installed
-3.12.10 `python.exe` for both the check and venv creation. Recreate an existing venv
-with that interpreter; installing Python alone does not change its runtime. See the
-[build guide](packaging/README.md#prerequisites) for packaging and the security
-tradeoff of this baseline.
+If the launcher cannot find the intended Python 3.12 x64 installation, use its full
+`python.exe` path for both the check and venv creation. Existing venvs keep their
+original interpreter; recreate one when changing that interpreter. Python 3.13 and
+later are outside this documented setup. Installer builds use a separately reviewed
+Python 3.12.10 runtime and matching license snapshot; see the
+[build guide](packaging/README.md#prerequisites) for packaging and its security tradeoff.
 
 Run `.venv/Scripts/python.exe -m pytest -q` for isolated regression tests. See
 [testing](docs/meeting-notes-test.md) for browser and packaged application checks.

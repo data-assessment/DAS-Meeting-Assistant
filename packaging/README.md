@@ -23,7 +23,14 @@ can exceed Windows path limits while Inno Setup reads nested dependency notices.
 Use the [official Python 3.12.10 Windows installer (64-bit)](https://www.python.org/ftp/python/3.12.10/python-3.12.10-amd64.exe)
 from the [release page](https://www.python.org/downloads/release/python-31210/).
 Create a fresh virtual environment as shown in the [development instructions](../README.md#development).
-Check `.venv\Scripts\python.exe --version` before installing the pinned dependencies.
+Those instructions accept Python 3.12.x for source execution. For packaging, select
+3.12.10 explicitly and check the venv before installing the pinned dependencies:
+
+```powershell
+& .\.venv\Scripts\python.exe -c "import sys, struct; assert sys.version_info[:3] == (3, 12, 10) and struct.calcsize('P') == 8, 'Installer builds require Python 3.12.10 x64'"
+if ($LASTEXITCODE -ne 0) { throw 'Create the packaging venv with Python 3.12.10 x64.' }
+```
+
 Do not reuse a venv created with 3.12.14. The build accepts an explicit interpreter
 with `-PythonExe C:\path\to\venv\Scripts\python.exe`.
 
