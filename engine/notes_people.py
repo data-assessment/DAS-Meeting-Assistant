@@ -8,7 +8,7 @@ from dataclasses import dataclass, field
 import requests
 from engine.notes_schema import Person
 from engine.graph_auth import signed_in_username, get_token_for_scopes
-from engine.notes_i18n import t
+from engine.notes_i18n import localize, t
 
 SCOPES = ["Calendars.Read"]
 
@@ -44,7 +44,8 @@ def calendar_context(review):
 
 def meeting_title(review):
     context = calendar_context(review)
-    return (context or {}).get("title") or review.title
+    # A fallback title ("Kalendertermin") is a message: shown in the language being rendered.
+    return localize((context or {}).get("title")) or review.title
 
 
 def meeting_start(review):
@@ -92,7 +93,9 @@ def reconcile_owners(review):
 def restore_candidates(values):
     result = []
     for c in values[:20]:
-        value = {key: str(c.get(key) or "")[:500] for key in ("id", "title", "start", "end", "organizer", "response")}
+        # str() keeps a restored fallback-title message; only overlong values are cut (and become plain text).
+        value = {key: text if len(text := str(c.get(key) or "")) <= 500 else text[:500]
+                 for key in ("id", "title", "start", "end", "organizer", "response")}
         value["people"] = [Person.model_validate(p).model_copy(update={"source": "calendar"}).model_dump() for p in c.get("people", [])[:500]]
         if value["id"]: result.append(value)
     return result

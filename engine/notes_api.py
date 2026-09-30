@@ -93,7 +93,7 @@ def install(app):
             return {"ok": True}
         except Exception:
             if notes.credential_error:
-                return {"ok": False, "error": notes.credential_error}
+                return {"ok": False, "error": localize(notes.credential_error)}
             return {"ok": False, "error": t("api.errors.invalidSettingsManaged") if notes.managed else t("api.errors.invalidSettingsDirect")}
 
     @api.post("/api/notes/finish-setup")

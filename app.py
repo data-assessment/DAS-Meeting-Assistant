@@ -132,10 +132,16 @@ class AppState:
 
 
 def _ui_language(data: dict) -> str:
-    """The saved app language, else the Windows display language. Saved on its own, outside
-    meeting_notes_options, so neither an unknown value nor an older release can reject it."""
-    value = data.get("ui_language")
-    return value if value in notes_i18n.LANGUAGES else notes_i18n.system_language()
+    """The saved app language. Saved on its own, outside meeting_notes_options, so neither an
+    unknown value nor an older release can reject it. Without one, a new installation starts
+    in the Windows display language; an existing one keeps German, its language so far."""
+    options = data.get("meeting_notes_options")
+    legacy = options.get("uiLanguage") if isinstance(options, dict) else None  # early builds of this feature
+    for value in (data.get("ui_language"), legacy):
+        if value in notes_i18n.LANGUAGES:
+            return value
+    existing = any(key.startswith("meeting_notes_") for key in data)
+    return "de" if existing else notes_i18n.system_language()
 
 
 STATE = AppState()
@@ -189,7 +195,7 @@ def state_payload() -> dict:
     return {
         "type": "state",
         "notesEnabled": NOTES.enabled,
-        "notesError": NOTES.error,
+        "notesError": notes_i18n.localize(NOTES.error),
         "notesCount": len(NOTES.reviews),
         "active": STATE.active,
         "title": STATE.title,
@@ -435,7 +441,8 @@ def _apply_settings(data: dict) -> None:
         "meeting_notes_onboarding_complete", True) is True
     if isinstance(data.get("meeting_notes_enabled"), bool):
         try:
-            NOTES.configure({**(data.get("meeting_notes_options") or {}), "enabled": data["meeting_notes_enabled"]})
+            options = {k: v for k, v in (data.get("meeting_notes_options") or {}).items() if k != "uiLanguage"}
+            NOTES.configure({**options, "enabled": data["meeting_notes_enabled"]})
         except Exception:
             NOTES.enabled = data["meeting_notes_enabled"]  # never fall back to file recording
     NOTES.set_ui_language(_ui_language(data))
@@ -475,14 +482,18 @@ _tray_language = None
 
 
 def _refresh_tray_language() -> None:
-    """The Windows tray builds its menu once; rebuild it when the app language changed."""
+    """Texts fixed when created: the tray menu (Windows builds it once), its tooltip and the
+    settings window title. Refresh them when the app language changed."""
     global _tray_language
     language = notes_i18n.app_language()
     if not STATE.tray or language == _tray_language:
         return
     try:
         STATE.tray.update_menu()
-        _tray_language = language  # only once rebuilt, so a failed rebuild is retried
+        _refresh_tray()
+        if STATE.settings_window:
+            STATE.settings_window.set_title(f"{APP_DISPLAY_NAME} · " + t("settings.title"))
+        _tray_language = language  # only once refreshed, so a failed refresh is retried
     except Exception:
         pass
 
@@ -1787,7 +1798,7 @@ async def manual_start() -> dict:
         )
     else:
         await _begin_meeting(manual=True, trigger="manual start")
-    return {"ok": STATE.active, "error": NOTES.error if not STATE.active else ""}
+    return {"ok": STATE.active, "error": notes_i18n.localize(NOTES.error) if not STATE.active else ""}
 
 
 @api.post("/api/stop")
@@ -3107,11 +3118,11 @@ def _refresh_tray() -> None:
     STATE.tray.icon = _recording_icon() if STATE.active else _load_icon()
     n = len(STATE.jobs)
     if STATE.active:
-        status = "Recording…" + (f" · {n} processing" if n else "")
+        status = t("tray.status.recordingProcessing", count=n) if n else t("tray.status.recording")
     elif n:
-        status = f"Processing {n} transcript{'s' if n != 1 else ''}…"
+        status = t("tray.status.processing", count=n)
     else:
-        status = "Idle"
+        status = t("tray.status.idle")
     STATE.tray.title = f"{APP_DISPLAY_NAME} ({status})"
 
 
@@ -3160,20 +3171,20 @@ def run_tray() -> None:
     items = [
         # default + invisible: left-clicking the tray icon shows the window,
         # without a redundant "Show window" entry in the menu.
-        pystray.MenuItem("Show window", _on_show, default=True, visible=False),
+        pystray.MenuItem(lambda item: t("tray.showWindow"), _on_show, default=True, visible=False),
         pystray.MenuItem(f"{APP_DISPLAY_NAME} {config.VERSION}", _noop, enabled=False),
         pystray.Menu.SEPARATOR,
         pystray.MenuItem(lambda item: t("tray.pastMeetings"), _on_notes_history,
                          visible=lambda item: NOTES.enabled),
         pystray.MenuItem(lambda item: t("tray.settings"), _on_settings),
-        pystray.MenuItem("Documentation...", _on_docs, visible=lambda item: not NOTES.enabled),
+        pystray.MenuItem(lambda item: t("tray.documentation"), _on_docs, visible=lambda item: not NOTES.enabled),
         pystray.Menu.SEPARATOR,
-        pystray.MenuItem("Quit", _on_quit),
+        pystray.MenuItem(lambda item: t("tray.quit"), _on_quit),
     ]
     STATE.tray = pystray.Icon(
         "transcriber",
         _load_icon(),
-        f"{APP_DISPLAY_NAME} (Idle)",
+        f"{APP_DISPLAY_NAME} ({t('tray.status.idle')})",
         pystray.Menu(*items),
     )
     global _tray_language
@@ -3219,7 +3230,7 @@ def _rescue_recording() -> None:
     if NOTES.current:
         NOTES.current.session.stop()
         NOTES.current.clear_raw()
-        NOTES.current.error = "Verarbeitung unterbrochen; Rohtext verworfen."
+        NOTES.current.error = t("notes.errors.processingInterrupted")
         NOTES.current.status = "Abgebrochen"
         NOTES.current.ended = datetime.datetime.now().isoformat()
         NOTES.current.expires = time.monotonic() + 24 * 60 * 60

@@ -37,8 +37,9 @@ def _catalog(language):
             _catalogs[language] = json.loads(path.read_text(encoding="utf-8"))
         except (OSError, ValueError) as exc:
             # A damaged install must still reach its own error message; keys are the last resort.
+            # Not cached: a file briefly locked (e.g. by a virus scan) is read again next time.
             print(f"locale catalog {language} unavailable:", exc)
-            _catalogs[language] = {}
+            return {}
     return _catalogs[language]
 
 
@@ -140,6 +141,9 @@ def localize(value):
     """`value` in the current language: stored messages are translated again, other values kept.
     Works on nested dicts and lists, e.g. a meeting's OneNote state."""
     if isinstance(value, Message):
+        if not any(_lookup(value.key, lang) is not None for lang in LANGUAGES) and not any(
+                _lookup(f"{value.key}_{form}", lang) is not None for lang in LANGUAGES for form in ("one", "other")):
+            return value  # key renamed or removed in a later release: keep the stored text
         return t(value.key, **{name: localize(param) for name, param in value.params.items()})
     if isinstance(value, dict):
         return {key: localize(item) for key, item in value.items()}
@@ -156,10 +160,16 @@ def _encode(value):
     return value
 
 
-def _decode(value):
-    if isinstance(value, dict) and set(value) == {"text", "message", "params"} and isinstance(value["params"], dict):
-        return Message(value["text"], value["message"], {name: _decode(param) for name, param in value["params"].items()})
-    return value
+def _decode(value, depth=0):
+    """Meeting files are user data: only well-formed entries become messages again."""
+    if (isinstance(value, dict) and set(value) == {"text", "message", "params"} and depth < 4
+            and isinstance(value["text"], str) and isinstance(value["message"], str)
+            and isinstance(value["params"], dict) and all(isinstance(name, str) for name in value["params"])):
+        return Message(value["text"], value["message"],
+                       {name: _decode(param, depth + 1) for name, param in value["params"].items()})
+    if isinstance(value, dict):
+        return str(value.get("text", ""))  # a malformed nested parameter keeps only its text
+    return value if isinstance(value, (str, int, float)) else str(value)
 
 
 def persist(data):
@@ -186,7 +196,9 @@ def restore(data, messages):
             for part in parents:
                 node = node[part]
             if node[last] == entry["text"]:
-                node[last] = _decode({k: entry[k] for k in ("text", "message", "params")})
-        except (KeyError, IndexError, TypeError, ValueError):
+                message = _decode({k: entry[k] for k in ("text", "message", "params")})
+                if isinstance(message, Message):
+                    node[last] = message
+        except (KeyError, IndexError, TypeError, ValueError, AttributeError):
             continue  # a message that no longer fits the data stays plain text
     return data

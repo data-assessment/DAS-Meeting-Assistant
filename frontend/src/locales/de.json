@@ -215,10 +215,12 @@
   "settings": {
     "meetingLanguage": "Meeting-Sprache",
     "meetingLanguageHint": "Gesprochene Sprache für die Spracherkennung",
+    "meetingLanguageCustom": "Sprachcode, z. B. de-CH",
     "languages": {
       "german": "Deutsch",
       "english": "Englisch",
-      "french": "Französisch"
+      "french": "Französisch",
+      "other": "Andere …"
     },
     "microphone": "Mikrofon",
     "teamsPlayback": "Teams-Wiedergabe / Headset",

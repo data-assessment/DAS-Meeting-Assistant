@@ -389,7 +389,10 @@ class MixedCapture:
         if dropped:
             missing = max(1, round(dropped / RATE))
             notes.append(t("speech.summary.missingAudio", seconds=missing))
-        return " ".join(notes)
+        # Kept as messages (not " ".join), so the note can be shown again in another language.
+        if len(notes) == 2:
+            return t("speech.summary.both", first=notes[0], second=notes[1])
+        return notes[0] if notes else ""
 
     def _emit_until(self, end):
         while data := self.mixer.take_until(end):

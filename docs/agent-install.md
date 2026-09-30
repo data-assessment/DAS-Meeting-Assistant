@@ -270,13 +270,16 @@ features, not the separate Meeting Notes calendar-context feature.
   "auto_start": false,
   "live_on": false,
   "meeting_notes_enabled": true,
-  "meeting_notes_options": { "language": "de-DE" }
+  "meeting_notes_options": { "language": "de-DE" },
+  "ui_language": "de"
 }
 ```
 
-Choose the requested recognition language (for example `en-US` instead). The current
-summary prompt produces German notes; do not promise translated summaries merely
-because the recognition language changes. Blank Azure options are completed next.
+`language` is the spoken (recognition) language, for example `en-US` instead.
+`ui_language` (`de` or `en`) is the app language: interface texts and the language of the
+generated notes, fixed per meeting when it starts. Set it to what the user asked for;
+without it a new installation starts in the Windows display language. Blank Azure
+options are completed next.
 
 If Graph access is not yet available, omit the two ID settings and keep automatic
 start off. Manual Meeting Notes can still be configured and tested using Azure keys;
@@ -305,14 +308,14 @@ and English (English labels in parentheses).
 | UI label | Configuration field | Required value |
 | --- | --- | --- |
 | Meeting-Notizen statt Dateiaufzeichnung (Meeting notes instead of file recording) | `enabled` | `true` |
-| Meeting-Sprache (Meeting language), above the Azure connections | `language` | Spoken locale, e.g. `de-DE`; free text such as `de-CH` is allowed |
-| Speech-Region | `region` | Actual Speech region identifier, e.g. `westeurope` |
-| Speech-Schlüssel | `speechKey` | Key for that Speech resource |
-| Textmodell-Endpunkt | `endpoint` | HTTPS resource root, e.g. `https://<resource>.openai.azure.com` |
+| Meeting-Sprache (Meeting language), above the Azure connections | `language` | Spoken locale, e.g. `de-DE`; for others such as `de-CH` choose **Andere …** (Other …) and enter the code |
+| Speech-Region (Speech region) | `region` | Actual Speech region identifier, e.g. `westeurope` |
+| Speech-Schlüssel (Speech key) | `speechKey` | Key for that Speech resource |
+| Textmodell-Endpunkt (Text model endpoint) | `endpoint` | HTTPS resource root, e.g. `https://<resource>.openai.azure.com` |
 | Deployment | `model` | The actual deployed chat-model **deployment name** |
-| Textmodell-Schlüssel | `chatKey` | Key for that text-model resource |
-| Mikrofon | `mic` | Exact device name selected from the enumerated list |
-| Teams-Wiedergabe / Headset | `loopback` | Loopback of the output device actually used by Teams |
+| Textmodell-Schlüssel (Text model key) | `chatKey` | Key for that text-model resource |
+| Mikrofon (Microphone) | `mic` | Exact device name selected from the enumerated list |
+| Teams-Wiedergabe / Headset (Teams playback / headset) | `loopback` | Loopback of the output device actually used by Teams |
 
 Save. Do not start capture yet. Keys are encrypted using Windows current-user DPAPI
 in `azure-notes.dpapi` in the Community data directory. Other options are saved in

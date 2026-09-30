@@ -159,8 +159,9 @@ function LanguageSwitch() {
     const list = items(), index = list.indexOf(document.activeElement as HTMLButtonElement)
     const move = { ArrowDown: index + 1, ArrowUp: index - 1, Home: 0, End: list.length - 1 }[e.key]
     if (e.key === 'Escape' && open) { e.preventDefault(); close() }
+    else if (e.key === 'Tab' && open) setOpen(false)  // also Shift+Tab back onto the toggle
     else if (move !== undefined && open) { e.preventDefault(); list[(move + list.length) % list.length]?.focus() }
-    else if (e.key === 'ArrowDown' && !open) { e.preventDefault(); setError(''); setOpen(true) }
+    else if (e.key === 'ArrowDown' && !open && !busy) { e.preventDefault(); setError(''); setOpen(true) }
   }
   async function choose(language: AppLanguage) {
     close()
@@ -320,17 +321,23 @@ function BackButton({ back, backTo }: Pick<SettingsProps, 'back' | 'backTo'>) {
   return <button className="back" onClick={back}>{backTo === 'history' ? t('settings.backToMeetings') : t('settings.backToMeeting')}</button>
 }
 
-// Community keeps free text (any locale such as de-CH or it-IT) with suggestions; Managed offers a fixed list.
+// Always a list of the common languages. Community also offers "Other …" with a text field for
+// any locale such as de-CH or it-IT; Managed keeps the fixed list.
 function MeetingLanguageSelect({ value, onChange, free = false }: { value: string; onChange: (value: string) => void; free?: boolean }) {
-  const label = t('settings.meetingLanguage'), suggestions = useId()
+  const label = t('settings.meetingLanguage'), customLabel = t('settings.meetingLanguageCustom')
   const known = [['de-DE', t('settings.languages.german')], ['en-US', t('settings.languages.english')], ['fr-FR', t('settings.languages.french')]]
-  return <label>{label}{free
-    ? <><input aria-label={label} list={suggestions} autoComplete="off" maxLength={16} value={value} onChange={e => onChange(e.target.value)} />
-      <datalist id={suggestions}>{known.map(([code, name]) => <option key={code} value={code}>{name}</option>)}</datalist></>
-    : <select aria-label={label} value={value} onChange={e => onChange(e.target.value)}>
+  const listed = known.some(([code]) => code === value)
+  const [other, setOther] = useState(free && !listed)
+  const custom = free && (other || !listed)
+  return <>
+    <label>{label}<select aria-label={label} value={custom ? 'other' : value}
+      onChange={e => { if (e.target.value === 'other') setOther(true); else { setOther(false); onChange(e.target.value) } }}>
       {known.map(([code, name]) => <option key={code} value={code}>{name}</option>)}
-      {!known.some(([code]) => code === value) && <option value={value}>{value}</option>}
-    </select>}<span className="quiet">{t('settings.meetingLanguageHint')}</span></label>
+      {free ? <option value="other">{t('settings.languages.other')}</option>
+        : !listed && <option value={value}>{value}</option>}
+    </select><span className="quiet">{t('settings.meetingLanguageHint')}</span></label>
+    {custom && <label>{customLabel}<input aria-label={customLabel} autoComplete="off" maxLength={16} value={value} onChange={e => onChange(e.target.value)} /></label>}
+  </>
 }
 
 function Settings(props: SettingsProps) {
@@ -478,7 +485,8 @@ export function MeetingNotes() {
       setConnectionError('')
       if ((data.uiRequest ?? 0) !== sequence.current) {
         sequence.current = data.uiRequest ?? 0
-        setScreen(data.uiView || 'meeting'); setSelected(null)
+        // Opened by the app (tray, onboarding): settings then return to the current meeting.
+        setScreen(data.uiView || 'meeting'); setSelected(null); setReturnTo({ screen: 'meeting', selected: null })
       }
     } catch (e) { if (mounted.current) setConnectionError(errorText(e)) }
     finally { fetching.current = false }

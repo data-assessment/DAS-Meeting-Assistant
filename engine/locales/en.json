@@ -166,6 +166,7 @@
       "startFailedManaged": "Meeting notes could not start. Please check the DAS sign-in and audio devices in the settings.",
       "startFailedDirect": "Meeting notes could not start. Check the devices, region and both Azure accesses in the Meeting Notes window.",
       "completionFailed": "Completing the meeting failed; raw transcript discarded.",
+      "processingInterrupted": "Processing was interrupted; raw transcript discarded.",
       "windowShowFailed": "The meeting window could not be shown. Open it from the tray icon.",
       "windowOpenFailed": "The meeting window could not be opened.",
       "interrupted": "Meeting notes were interrupted. No audio file was created."
@@ -289,7 +290,8 @@
     "summary": {
       "lostUntilEnd": "Audio recording was interrupted during the meeting; afterwards no audio device was available. The notes only cover the meeting up to that point.",
       "interrupted": "Audio recording was interrupted {{times}}× during the meeting; about {{seconds}} s without sound. The notes cover the time before and after.",
-      "missingAudio": "About {{seconds}} s of audio are missing due to a delay."
+      "missingAudio": "About {{seconds}} s of audio are missing due to a delay.",
+      "both": "{{first}} {{second}}"
     }
   },
   "startup": {
@@ -304,6 +306,16 @@
   },
   "tray": {
     "pastMeetings": "Previous meetings",
-    "settings": "Settings…"
+    "settings": "Settings…",
+    "showWindow": "Show window",
+    "documentation": "Documentation…",
+    "quit": "Quit",
+    "status": {
+      "idle": "Idle",
+      "recording": "Recording…",
+      "recordingProcessing": "Recording… · {{count}} processing",
+      "processing_one": "Processing 1 transcript…",
+      "processing_other": "Processing {{count}} transcripts…"
+    }
   }
 }

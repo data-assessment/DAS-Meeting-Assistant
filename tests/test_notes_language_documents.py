@@ -85,7 +85,7 @@ def test_meetings_saved_by_older_releases_are_german(notes):
 def test_summary_prompt_uses_the_meeting_language(monkeypatch):
     from engine import meeting_notes
     seen = []
-    monkeypatch.setattr(meeting_notes, "generate_draft", lambda text, provider: seen.append(meeting_notes.system_prompt()) or {})
+    monkeypatch.setattr(meeting_notes, "generate_draft", lambda text, provider, language: seen.append(meeting_notes.system_prompt(language)) or {})
     review = SimpleNamespace(language="de", provider={})
     notes_i18n.set_language("en")
     asyncio.run(meeting_notes.review_draft(review, "text"))

@@ -166,6 +166,7 @@
       "startFailedManaged": "Meeting-Notizen konnten nicht starten. Bitte in den Einstellungen die DAS-Anmeldung und Audiogeräte prüfen.",
       "startFailedDirect": "Meeting-Notizen konnten nicht starten. Im Fenster Meeting-Notizen Geräte, Region und beide Azure-Zugänge prüfen.",
       "completionFailed": "Meeting-Abschluss fehlgeschlagen; Rohtext verworfen.",
+      "processingInterrupted": "Verarbeitung unterbrochen; Rohtext verworfen.",
       "windowShowFailed": "Meeting-Fenster konnte nicht eingeblendet werden. Über das Tray-Symbol öffnen.",
       "windowOpenFailed": "Meeting-Fenster konnte nicht geöffnet werden.",
       "interrupted": "Meeting-Notizen wurden unterbrochen. Keine Audiodatei angelegt."
@@ -289,7 +290,8 @@
     "summary": {
       "lostUntilEnd": "Audioaufnahme während des Meetings unterbrochen; danach war kein Audiogerät verfügbar. Die Notizen reichen nur bis zu dieser Stelle.",
       "interrupted": "Audioaufnahme während des Meetings {{times}}× unterbrochen; ca. {{seconds}} s ohne Ton. Die Notizen umfassen die Zeit davor und danach.",
-      "missingAudio": "Wegen einer Verzögerung fehlen ca. {{seconds}} s Audio."
+      "missingAudio": "Wegen einer Verzögerung fehlen ca. {{seconds}} s Audio.",
+      "both": "{{first}} {{second}}"
     }
   },
   "startup": {
@@ -304,6 +306,16 @@
   },
   "tray": {
     "pastMeetings": "Frühere Meetings",
-    "settings": "Einstellungen…"
+    "settings": "Einstellungen…",
+    "showWindow": "Fenster anzeigen",
+    "documentation": "Dokumentation…",
+    "quit": "Beenden",
+    "status": {
+      "idle": "Bereit",
+      "recording": "Aufnahme läuft …",
+      "recordingProcessing": "Aufnahme läuft … · {{count}} in Verarbeitung",
+      "processing_one": "1 Transkript wird verarbeitet …",
+      "processing_other": "{{count}} Transkripte werden verarbeitet …"
+    }
   }
 }

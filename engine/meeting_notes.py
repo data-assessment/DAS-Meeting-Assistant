@@ -3,7 +3,6 @@
 Community uses local Azure credentials; Managed uses packaged routing and user tokens.
 """
 import asyncio
-import contextvars
 import datetime as dt
 import json
 import hashlib
@@ -124,20 +123,17 @@ oder Fristen erraten. Unbekannte Felder leer lassen; questions nur nach den enge
 Regeln zur Aufgabenstellung oben. Vorschläge nicht als Beschluss darstellen. Keine Inhalte erfinden.
 """
 
-# Notes language of the draft being generated. Only the prompt reads it: messages raised
-# while drafting (e.g. unreachable service) stay in the current app language.
-_draft_language = contextvars.ContextVar("draft_language", default=None)
-
-def system_prompt():
+def system_prompt(language="de"):
     """The rules stay German; only the output language follows the meeting's notes language."""
-    if (_draft_language.get() or notes_i18n.language()) == "en":
+    if language == "en":
         return SYSTEM.replace("Erstelle knappe deutsche Meeting-Notizen", "Erstelle knappe englische Meeting-Notizen", 1) + (
             "AUSGABESPRACHE: Alle Textwerte (summary, decisions, openQuestions, Aufgaben, "
             "Sachfragen und Optionen) auf Englisch schreiben, auch wenn das Gespräch auf Deutsch geführt wurde.\n")
     return SYSTEM
 
-def generate_draft(transcript, provider):
-    """Managed routing always comes from the profile, never a saved local key."""
+def generate_draft(transcript, provider, language="de"):
+    """Managed routing always comes from the profile, never a saved local key. `language` is
+    the meeting's notes language; messages raised here stay in the current app language."""
     from engine import notes_cloud
     for name in ("openai", "httpx", "httpcore"):
         logging.getLogger(name).setLevel(logging.WARNING)
@@ -148,7 +144,7 @@ def generate_draft(transcript, provider):
                 http_client=httpx.Client(trust_env=False, follow_redirects=False))
     with client_context as client:
         result = client.chat.completions.create(model=notes_cloud.summary_model() if managed else provider["model"],
-            messages=[{"role": "system", "content": system_prompt()}, {"role": "user", "content": transcript}],
+            messages=[{"role": "system", "content": system_prompt(language)}, {"role": "user", "content": transcript}],
             response_format={"type": "json_object"}, max_completion_tokens=12000, store=False)
     if not result.choices or result.choices[0].finish_reason != "stop":
         raise ValueError("Unvollständige Antwort")
@@ -169,12 +165,7 @@ def generate_draft(transcript, provider):
     return draft.model_dump()
 
 async def review_draft(review, text):
-    # to_thread copies the context, so the summary is written in the meeting's language.
-    token = _draft_language.set(review.language)
-    try:
-        return await asyncio.to_thread(generate_draft, text, review.provider.copy())
-    finally:
-        _draft_language.reset(token)
+    return await asyncio.to_thread(generate_draft, text, review.provider.copy(), review.language)
 
 @dataclass
 class Review:
@@ -260,7 +251,7 @@ class Review:
                 "calendarSelected": bool(self.calendar_selected), "calendarAccessNeeded": self.calendar_access_needed,
                 "calendarNote": localize(self.calendar_note),
                 "calendarContext": calendar_context(self),
-                "calendarCandidates": [{k:c.get(k, "") for k in ("id","title","start","end","response")} for c in self.calendar_candidates]}
+                "calendarCandidates": [{k: localize(c.get(k, "")) for k in ("id","title","start","end","response")} for c in self.calendar_candidates]}
 
 class Notes:
     def __init__(self, folder):
@@ -566,6 +557,8 @@ class Notes:
                 if path.stat().st_size > 8000000:
                     raise ValueError("Size limit")
                 data = json.loads(path.read_text(encoding="utf-8"))
+                if not isinstance(data, dict):
+                    raise ValueError("Invalid notes file")
                 data = notes_i18n.restore(data, data.get("messages"))
                 meeting_id = str(uuid.UUID(data["meetingId"]))
                 if path.name != "Meeting-Notizen-" + meeting_id + ".json" or data.get("schemaVersion") not in (1, 2, 3, 4, 5, 6, 7, 8, 9):
@@ -626,7 +619,8 @@ class Notes:
                     if not backup.exists(): path.replace(backup)
                 if review.onenote.get("status") == "saved" and not review.store_error:
                     self.onenote.cleanup_document(review)
-            except (OSError, ValueError, KeyError, TypeError):
+            except (OSError, ValueError, KeyError, TypeError, AttributeError, RecursionError):
+                # One damaged meeting file must never keep the app from starting.
                 self.error = t("notes.errors.noteLoadFailed")
 
     def export(self, review_id, data):

@@ -58,7 +58,7 @@ def finish(notes, review):
 def test_stop_automatically_saves_derived_notes_without_raw_files(notes, monkeypatch, tmp_path):
     monkeypatch.chdir(tmp_path)
     calls = []
-    def generate(text, provider):
+    def generate(text, provider, language="de"):
         calls.append((text, provider))
         return json.loads(json.dumps(DRAFT))
     monkeypatch.setattr(mn, "generate_draft", generate)
@@ -81,7 +81,7 @@ def test_stop_automatically_saves_derived_notes_without_raw_files(notes, monkeyp
 def test_success_clears_raw_but_keeps_results(notes, monkeypatch):
     review = start(notes)
     calls = []
-    def generate(text, provider):
+    def generate(text, provider, language="de"):
         calls.append((text, provider))
         return DRAFT.copy()
     monkeypatch.setattr(mn, "generate_draft", generate)
@@ -333,7 +333,7 @@ def test_stale_editor_cannot_overwrite_newer_changes(notes):
 
 def test_live_notes_are_incremental_saved_readonly_and_finalized(notes, monkeypatch):
     calls = []
-    def generate(text, provider):
+    def generate(text, provider, language="de"):
         calls.append(text)
         return json.loads(json.dumps(DRAFT))
     monkeypatch.setattr(mn, "generate_draft", generate)

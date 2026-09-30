@@ -102,8 +102,8 @@ Teams. Starte sie mit dem Einverständnis der Beteiligten.
 
 Notizen entstehen in der App-Sprache (Deutsch oder Englisch), die beim Start des
 Meetings gilt; jedes Meeting behält diese Sprache. Die getrennte Meeting-Sprache sagt
-nur der Spracherkennung, welche Sprache gesprochen wird. Ohne gespeicherte Auswahl
-folgt die App-Sprache der Windows-Anzeigesprache.
+nur der Spracherkennung, welche Sprache gesprochen wird. Eine neue Installation startet
+in der Windows-Anzeigesprache; eine bestehende bleibt Deutsch, bis du umschaltest.
 Weitere Einzelheiten: [Data handling](../README.md#data-handling).
 
 ## Über DAS und Mitarbeit

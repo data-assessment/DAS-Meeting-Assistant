@@ -1,19 +1,9 @@
 const { chromium } = require('playwright');
 const assert = require('node:assert/strict');
-const http = require('node:http');
-const fs = require('node:fs');
-const path = require('node:path');
+const serveDist = require('./serve-dist.cjs');
 
 (async () => {
-  const root = path.resolve(__dirname, '../dist');
-  const server = http.createServer((req, res) => {
-    const name = new URL(req.url, 'http://localhost').pathname;
-    const file = path.join(root, name === '/' ? 'index.html' : name);
-    if (!file.startsWith(root + path.sep) || !fs.existsSync(file)) { res.writeHead(404); return res.end(); }
-    res.setHeader('Content-Type', file.endsWith('.js') ? 'text/javascript' : file.endsWith('.css') ? 'text/css' : 'text/html');
-    res.end(fs.readFileSync(file));
-  });
-  await new Promise(resolve => server.listen(0, '127.0.0.1', resolve));
+  const server = await serveDist();
   let browser;
   try {
     browser = await chromium.launch({ channel: 'msedge', headless: true });
@@ -144,6 +134,10 @@ const path = require('node:path');
     assert.equal(await page.getByRole('menu').count(), 0, 'tabbing out closes the menu');
     await englishToggle.focus();
     await page.keyboard.press('Enter');
+    await page.keyboard.press('Shift+Tab');
+    assert.equal(await page.getByRole('menu').count(), 0, 'Shift+Tab back onto the toggle closes the menu');
+    await englishToggle.focus();
+    await page.keyboard.press('Enter');
     await page.keyboard.press('Home');
     assert.equal(await focused(), 'Deutsch');
     await page.keyboard.press('Enter');
@@ -160,11 +154,15 @@ const path = require('node:path');
     await page.locator('.history-row').filter({hasText:'Kickoff'}).getByRole('button').click();
     await page.getByRole('heading', {name:'Kickoff', exact:true}).waitFor();
     await page.getByRole('button', {name:'Einstellungen', exact:true}).click();
-    // Community keeps a free meeting language, e.g. Swiss German.
+    // The common languages are always listed; Community adds "Other …" for e.g. Swiss German.
     const meetingLanguage = page.getByLabel('Meeting-Sprache', {exact:true});
-    assert.equal(await meetingLanguage.evaluate(element => element.tagName), 'INPUT');
-    await meetingLanguage.fill('de-CH');
-    assert.equal(await meetingLanguage.inputValue(), 'de-CH');
+    assert.deepEqual(await meetingLanguage.locator('option').allTextContents(), ['Deutsch', 'Englisch', 'Französisch', 'Andere …']);
+    await meetingLanguage.selectOption('en-US');
+    assert.equal(await page.getByLabel('Sprachcode, z. B. de-CH').count(), 0);
+    await meetingLanguage.selectOption('other');
+    await page.getByLabel('Sprachcode, z. B. de-CH').fill('de-CH');
+    assert.equal(await meetingLanguage.inputValue(), 'other');
+    assert.equal(await page.getByLabel('Sprachcode, z. B. de-CH').inputValue(), 'de-CH');
     await page.getByRole('button', {name:'Zurück zum Meeting', exact:true}).click();
     await page.getByRole('heading', {name:'Kickoff', exact:true}).waitFor();
     assert.deepEqual(errors, []);

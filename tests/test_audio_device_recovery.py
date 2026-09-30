@@ -246,7 +246,7 @@ def wait(condition, seconds=3):
 
 def test_meeting_summary_covers_the_time_after_the_headset_was_unplugged(notes, monkeypatch):
     machine, recognizers, summarized = Machine(), [], []
-    def generate(text, provider):
+    def generate(text, provider, language="de"):
         summarized.append(text)
         return dict(DRAFT)
     monkeypatch.setattr(mn, "generate_draft", generate)

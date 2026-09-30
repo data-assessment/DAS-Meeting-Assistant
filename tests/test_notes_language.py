@@ -116,10 +116,8 @@ def test_configure_validation_message_follows_app_language(notes):
 
 
 def test_system_prompt_keeps_german_rules_and_switches_output_language():
-    notes_i18n.set_language("de")
-    assert mn.system_prompt() == mn.SYSTEM
-    notes_i18n.set_language("en")
-    prompt = mn.system_prompt()
+    assert mn.system_prompt("de") == mn.SYSTEM
+    prompt = mn.system_prompt("en")
     assert prompt != mn.SYSTEM
     assert "auf Englisch schreiben" in prompt
     assert "englische Meeting-Notizen" in prompt
@@ -176,16 +174,71 @@ def test_unknown_saved_language_keeps_the_other_options(api, monkeypatch):
     assert notes_i18n.language() == "de"
 
 
-def test_without_a_saved_choice_the_windows_display_language_is_used(api, monkeypatch):
+def test_a_new_installation_starts_in_the_windows_display_language(api, monkeypatch):
+    app, _, _ = api
+    monkeypatch.setattr(notes_i18n, "system_language", lambda: "en")
+    assert app._ui_language({}) == "en"
+
+
+def test_an_existing_installation_keeps_german_until_the_user_switches(api, monkeypatch):
     app, _, _ = api
     monkeypatch.setattr(notes_i18n, "system_language", lambda: "en")
     app._apply_settings({"meeting_notes_enabled": True, "meeting_notes_options": {"language": "en-US"}})
-    assert notes_i18n.language() == "en"
+    assert notes_i18n.language() == "de"  # no silent switch of UI and notes after an update
+
+
+def test_settings_from_early_builds_keep_their_options_and_language(api):
+    app, _, _ = api
+    app._apply_settings({"meeting_notes_enabled": True,
+                         "meeting_notes_options": {"language": "en-US", "mic": "Headset", "uiLanguage": "en"}})
+    assert app.NOTES.options["mic"] == "Headset" and notes_i18n.language() == "en"
+
+
+def test_a_damaged_meeting_file_is_skipped_instead_of_stopping_the_app(tmp_path):
+    folder = tmp_path / "notes"
+    (folder / ".app-state").mkdir(parents=True)
+    import uuid
+    for content in ("null", "[]", json.dumps({"meetingId": str(uuid.uuid4()), "messages": [
+            {"path": ["title"], "text": "x", "message": 7, "params": {}}]})):
+        (folder / ".app-state" / f"Meeting-Notizen-{uuid.uuid4()}.json").write_text(content, encoding="utf-8")
+    notes = mn.Notes(folder)
+    try:
+        assert notes.error == "Eine gespeicherte Notiz konnte nicht geladen werden. Die Datei bleibt unverändert im Speicherordner."
+    finally:
+        notes.shutdown()
+
+
+def test_restore_ignores_malformed_and_deeply_nested_messages():
+    nested = {"text": "x", "message": "a", "params": {}}
+    for _ in range(600):
+        nested = {"text": "x", "message": "a", "params": {"p": nested}}
+    data = notes_i18n.restore({"a": "x", "b": "y"}, [
+        {"path": ["a"], "text": "x", "message": 7, "params": {}},
+        {"path": ["b"], "text": "y", **{k: v for k, v in nested.items() if k != "text"}}])
+    assert type(data["a"]) is str and isinstance(data["b"], notes_i18n.Message)
+
+
+def test_a_message_whose_key_was_removed_keeps_its_stored_text():
+    old = notes_i18n.Message("Alter Text", "notes.errors.renamedLongAgo", {})
+    assert notes_i18n.localize(old) == "Alter Text"
+
+
+def test_the_combined_capture_note_can_be_shown_again_in_another_language():
+    from engine.speech.mixed import MixedCapture
+    capture = MixedCapture.__new__(MixedCapture)
+    capture.interruptions, capture.silent_since, capture.silent_seconds = 1, None, 3
+    capture.mixer = type("Mixer", (), {"dropped_samples": 16000 * 2})()
+    note = capture.summary()
+    assert isinstance(note, notes_i18n.Message)
+    notes_i18n.set_language("en")
+    assert notes_i18n.localize(note).startswith("Audio recording was interrupted 1× during the meeting")
+    assert notes_i18n.localize(note).endswith("About 2 s of audio are missing due to a delay.")
 
 
 def test_errors_raised_while_drafting_use_the_app_language(monkeypatch):
     from types import SimpleNamespace
-    def fail(text, provider):
+    def fail(text, provider, language):
+        assert language == "de"  # the meeting's language reaches the prompt
         raise RuntimeError(t("cloud.errors.signIn"))
     monkeypatch.setattr(mn, "generate_draft", fail)
     notes_i18n.set_language("en")

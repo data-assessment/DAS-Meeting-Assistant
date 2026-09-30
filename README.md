@@ -79,8 +79,8 @@ The desktop client does not require a DAS service subscription. Speech recogniti
 and summarization use cloud services, so this is not an offline AI application.
 Notes are written in the app language (German or English) chosen when the meeting
 starts; each meeting keeps that language. The separate meeting language only tells
-speech recognition which language is spoken. Without a saved choice, the app language
-follows the Windows display language.
+speech recognition which language is spoken. A new installation starts in the Windows
+display language; an existing installation stays German until you switch.
 
 ## Install with your AI agent
 
