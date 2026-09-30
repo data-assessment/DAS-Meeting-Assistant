@@ -24,6 +24,10 @@ async function request(url: string, body?: unknown) {
 }
 const post = (url: string, body: unknown = {}) => request(url, body)
 const errorText = (e: unknown) => e instanceof Error ? e.message : 'Aktion fehlgeschlagen.'
+// Manual start needs no Teams presence, so Zoom and other PC audio can be captured too.
+const canStart = (state: NotesState) => state.enabled && !state.active && (state.options.managed === true
+  ? state.options.setupComplete === true && state.options.onboardingComplete === true
+  : state.options.hasSpeechKey === true && state.options.hasChatKey === true)
 
 // Serialize explicit size changes so rapid toggles cannot finish out of order.
 let windowFit = Promise.resolve()
@@ -190,6 +194,7 @@ function ReviewPanel({ review, visible, current, state, history, configure, refr
     </>}>
     <div className="notes-status"><span className={'status-label' + (statusError ? ' notes-error' : '')}><span className="status-dot" />{title}</span>
       {live && <><span className="notes-time">{elapsed(review.started)}</span><button disabled={actionBusy} onClick={() => void action('/api/stop')}>Stoppen</button></>}
+      {current && !live && canStart(state) && <button className="notes-start" disabled={actionBusy} onClick={() => void action('/api/start')}>Neues Meeting starten</button>}
     </div>
     <h1>{review.displayTitle || review.title}</h1><div className="meeting-date">Aufzeichnung: {new Date(review.started).toLocaleString('de-DE', { dateStyle: 'medium', timeStyle: 'short' })}</div>
     <NotesOneNote id={review.id} value={oneNote} complete={complete} ended={!!review.ended} savedLocally={!!review.savedPath && !saveError} revision={review.revision} disabled={edit.saving || edit.blocked || !!saveError || !!connectionError} refresh={refresh}
@@ -393,11 +398,14 @@ export function MeetingNotes() {
     const heading = !state ? 'Verbindung zum Client …' : !state.enabled ? 'Meeting-Notizen einrichten' : missing ? managed ? 'DAS-Zugang einrichten' : 'Azure-Zugang fehlt' : !state.autoStart ? 'Automatischer Start ist aus' : health ? 'Teams-Verbindung fehlt' : state.autoStartSuppressed ? 'Für diesen Anruf pausiert' : 'Bereit für Teams-Anrufe'
     return <Popup storage={state?.storagePath || ''} onHistory={history} saved="Ohne gemerktes Kundenziel: Auf diesem PC" onFolder={() => void action('/api/notes/open-folder')} onClose={() => void action('/api/notes/close')}>
       <div className="notes-status"><span className="status-label"><span className="status-dot" />{heading}</span></div>
-      {connectionError || message || state?.error ? <p className="notice" role="alert">{connectionError || message || state?.error}</p> : <p className="quiet">{state?.enabled && !missing && state.autoStart && !health && !state.autoStartSuppressed ? 'Beim nächsten Teams-Anruf entstehen hier automatisch Ihre Notizen.' : 'Die Erfassung kann erst starten, wenn die Verbindung bereit ist.'}</p>}
+      {connectionError || message || state?.error ? <p className="notice" role="alert">{connectionError || message || state?.error}</p> : <p className="quiet">{state?.enabled && !missing && state.autoStart && !health && !state.autoStartSuppressed ? 'Beim nächsten Teams-Anruf entstehen hier automatisch Ihre Notizen. Andere Gespräche, z. B. Zoom, mit „Jetzt starten“ erfassen.' : state && canStart(state) ? 'Mit „Jetzt starten“ werden Mikrofon und PC-Wiedergabe sofort erfasst, z. B. für Zoom.' : 'Die Erfassung kann erst starten, wenn die Verbindung bereit ist.'}</p>}
       {state && (!state.enabled || missing) ? <button className="primary" onClick={configure}>Zugang einrichten</button>
-        : state && !state.autoStart ? <button className="primary" onClick={() => void action('/api/auto-start/on')}>Automatischen Start einschalten</button>
-        : state && health ? <button className="primary" onClick={() => void action(managed ? '/api/notes/connect' : '/api/sign-in')}>Mit Microsoft anmelden</button>
-        : state && (state.autoStartSuppressed || state.error) ? <button onClick={configure}>Einstellungen öffnen</button> : null}
+        : state && <div className="notes-start-actions">
+          {canStart(state) && <button className="primary" onClick={() => void action('/api/start')}>Jetzt starten</button>}
+          {!state.autoStart ? <button onClick={() => void action('/api/auto-start/on')}>Automatischen Start einschalten</button>
+            : health ? <button onClick={() => void action(managed ? '/api/notes/connect' : '/api/sign-in')}>Mit Microsoft anmelden</button>
+            : (state.autoStartSuppressed || state.error) ? <button onClick={configure}>Einstellungen öffnen</button> : null}
+        </div>}
     </Popup>
   }
   return <>
