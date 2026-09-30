@@ -10,6 +10,8 @@ besonders praktische automatische Start hinzu, auch bei extern organisierten Mee
 Du nutzt deine eigenen Azure-Ressourcen und speicherst die Notizen auf deinem PC
 oder in OneNote.
 
+*Kein eigenes Azure-Abonnement? Wir richten den Assistenten für dich ein und betreiben ihn: [data-assessment.com/meeting-assistent](https://www.data-assessment.com/meeting-assistent "https://www.data-assessment.com/meeting-assistent")*
+
 [English](../README.md) · [Installation für KI-Agenten](agent-install.md) ·
 [Data Assessment Solutions](https://www.data-assessment.com/)
 
@@ -62,7 +64,6 @@ sind derzeit überwiegend deutschsprachig.*
 Die Testversion 0.40.15 enthält Installer, SHA-256-Prüfsumme und Installationshinweise.
 Python, Node.js und Git werden dafür nicht benötigt. Der Installer ist unsigniert;
 der externe Installationstest auf einem frischen Windows-PC steht noch aus.
-Solange das Repo privat ist, brauchst du zum Download ein GitHub-Konto mit Repo-Zugriff.
 
 Gib einem KI-Agenten mit Zugriff auf deinen Windows-PC diesen Auftrag:
 

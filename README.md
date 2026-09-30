@@ -9,6 +9,8 @@ audio devices. Teams meetings and Teams Phone calls add the convenience of autom
 start, including meetings hosted by external organizations. Bring your own Azure
 resources and save notes on your PC or in OneNote.
 
+*No Azure subscription of your own? We can set up and run the assistant for you: [data-assessment.com/en/meeting-assistant](https://www.data-assessment.com/en/meeting-assistant "https://www.data-assessment.com/en/meeting-assistant")*
+
 [Install with your AI agent](#install-with-your-ai-agent) ·
 [Deutsch](docs/README.de.md) · [Data handling](#data-handling) ·
 [About DAS](#about-data-assessment-solutions)
@@ -85,8 +87,7 @@ alone does not change the summary language.
 **[Download the Community installer preview for Windows x64](https://github.com/data-assessment/DAS-Meeting-Assistant/releases/tag/v0.40.16-community-preview.1).**
 Version 0.40.15 includes an installer, SHA-256 checksum and setup instructions.
 No Python, Node.js or Git build tools are needed. This test release is unsigned;
-clean external Windows onboarding is still being validated. While this repository
-is private, downloads require a GitHub account with repository access.
+clean external Windows onboarding is still being validated.
 
 Give an agent that can operate your Windows computer this repository link and say:
 
