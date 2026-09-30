@@ -151,10 +151,17 @@ For business enquiries, use the [DAS contact page](https://www.data-assessment.c
 
 ## Development
 
-Use Windows, Python 3.12.14 and Node.js:
+Use Windows, **Python 3.12.x (64-bit)** and Node.js 22 LTS. An existing 3.12 x64
+installation can be used for development and source execution; no exact patch
+version is required. If Python is missing, the
+[official Python 3.12.10 Windows download](https://www.python.org/downloads/release/python-31210/)
+provides a **Windows installer (64-bit)**. Keep a newer installed 3.12 patch release.
 
 ```powershell
-python -m venv .venv
+py -3.12 -c "import sys, struct; assert sys.version_info[:2] == (3, 12) and struct.calcsize('P') == 8, 'Use Python 3.12.x x64'"
+if ($LASTEXITCODE -ne 0) { throw 'Select Python 3.12.x x64 before continuing.' }
+py -3.12 -m venv .venv
+if ($LASTEXITCODE -ne 0) { throw 'Python environment creation failed.' }
 .venv/Scripts/python.exe -m pip install -r requirements-dev.txt
 Copy-Item .env.example .env
 # Configure your own Microsoft application and Azure resources in .env / Settings.
@@ -169,6 +176,13 @@ Source development without a deployment profile defaults to Community. Packaged
 applications require a validated `deployment-profile.json`; they do not read an
 `.env` file from the installation directory. Build profiles cannot contain keys or tokens.
 For hot reload, the frontend proxy defaults to port 8766; managed instances default to 8765.
+
+If the launcher cannot find the intended Python 3.12 x64 installation, use its full
+`python.exe` path for both the check and venv creation. Existing venvs keep their
+original interpreter; recreate one when changing that interpreter. Python 3.13 and
+later are outside this documented setup. Installer builds use a separately reviewed
+Python 3.12.10 runtime and matching license snapshot; see the
+[build guide](packaging/README.md#prerequisites) for packaging and its security tradeoff.
 
 Run `.venv/Scripts/python.exe -m pytest -q` for isolated regression tests. See
 [testing](docs/meeting-notes-test.md) for browser and packaged application checks.

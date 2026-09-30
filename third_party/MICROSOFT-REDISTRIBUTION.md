@@ -26,11 +26,16 @@ Original agreements are collected in `upstream/msvc/`.
 |---|---|---|
 | MSVCP140.dll | 14.50.35719.0 | V14/2026 |
 | MSVCP140_CODECVT_IDS.dll | 14.50.35719.0 | V14/2026 |
-| VCRUNTIME140.dll | 14.44.35211.0 | 2015–2022 |
-| VCRUNTIME140_1.dll | 14.44.35211.0 | 2015–2022 |
+| VCRUNTIME140.dll (Python 3.12.10) | 14.42.34438.0 | 2015–2022 |
+| VCRUNTIME140_1.dll (Python 3.12.10) | 14.42.34438.0 | 2015–2022 |
 | NumPy's renamed msvcp140 DLL | 14.40.33810.0 | 2015–2022 |
 
-Hashes and native provenance are in [runtime-provenance.json](upstream/msvc/runtime-provenance.json).
+The current Python DLL hashes and public download sources are in
+[python-runtime.json](python-runtime.json). The earlier 0.40.9 build, including
+Python 3.12.14's 14.44 runtime, remains documented as historical evidence in
+[runtime-provenance.json](upstream/msvc/runtime-provenance.json). The System32 and
+NumPy runtime inputs are unchanged in the 3.12.10 validation build; each build's
+`component-inventory.json` records its actual bundled bytes.
 Pin official runtime sources for future builds; a changing operating-system installation
 is not by itself a reproducible source. Python and NumPy licenses do not replace the
 separate Microsoft conditions for these DLLs.

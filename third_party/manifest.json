@@ -1,5 +1,5 @@
 {
-  "python_version": "3.12.14",
+  "python_version": "3.12.10",
   "pyinstaller_version": "6.21.0",
   "packages": [
     {
@@ -548,7 +548,7 @@
     "licenses/python/httpx/httpx-0.28.1.dist-info/licenses/LICENSE.md": "4ec59d544f12b5f539a3a716fd321ac58ccd8030b465221f2c880200cdf28d8d",
     "licenses/python/idna/idna-3.18.dist-info/licenses/LICENSE.md": "1a9a4f0e3d479a27240ddd59a9137a66ab4a0f9dfdc8ca6188cc0bfd85187f04",
     "licenses/python/jiter/jiter-0.15.0.dist-info/licenses/LICENSE": "e65c152aa65deaaa52019855bf1bbce4a0d592a048cb523b6ca691965741241e",
-    "licenses/python/LICENSE.txt": "886a0ead2d89030ee62dbff52b04e47ab91998341295bb9c56fb952b4e081c7a",
+    "licenses/python/LICENSE.txt": "e502c6b880ff58d614901495a9009c136539cd0b1e2a2abb8fc00b934c203419",
     "licenses/python/msal/msal-1.37.0.dist-info/licenses/LICENSE": "b9e1c9b3b348a58186dd4fc69c994cf26c0ded0d91ebe4bd201e6f7d05ead8ec",
     "licenses/python/numpy/numpy/_core/include/numpy/random/LICENSE.txt": "d544761558b510866c21f7e8a2d5716fca76e0b98117e3b6b86314db7244d150",
     "licenses/python/numpy/numpy/ma/LICENSE": "d78dbb208b80d92b4d333e41a4baae50d12444f46e53199fa7726a91de6e2da7",
@@ -601,11 +601,12 @@
     "licenses/python/uvicorn/uvicorn-0.49.0.dist-info/licenses/LICENSE.md": "efe1acf3e62fb99c288b0ec73e5a773b7268ef4320fe757ea994214e4b63c371",
     "licenses/python/watchfiles/watchfiles-1.2.0.dist-info/licenses/LICENSE": "2d40a03346bded8daa4bd22d23825a6f2568a0820fbef76ac05bae534421e189",
     "licenses/python/websockets/websockets-16.0.dist-info/licenses/LICENSE": "0f44514998aca209d3482d10204a8adf2aa4296ff157a36a5c0922f2280632d3",
-    "microsoft-consent/microsoft-components.de.rtf": "f7172696bb38c3632e2a3e6caf74e33d775e3b759533e74e9c902a29c4b84a92",
-    "microsoft-consent/microsoft-components.en.rtf": "20cc1fab0e7543b8d8d2bbc16f1bddd5c571e7fbd534b038364fa8a77cb95174",
-    "microsoft-consent/packet.json": "bbd89162f58de1578a11684b8fd95b00aeb3df1df4dfd1b11e39ddb25a9d88c8",
-    "MICROSOFT-REDISTRIBUTION.md": "fd88502baced5b2fbf758b274859e5fc9c7a056451462a6760ca29425349fc9b",
-    "README.md": "8cee265076ef930de14399fd5bce4015115d2b9823ed7c23d7c2b6399e262aa7",
+    "microsoft-consent/microsoft-components.de.rtf": "823b247ff9ebeb1c60a9a655a59392213a8fa312a25960e69b3f9e9384d74ed0",
+    "microsoft-consent/microsoft-components.en.rtf": "0f3940fa194892db76725dd62898b95f9763fe1095494ec6f02cbff33e7fc27a",
+    "microsoft-consent/packet.json": "905a42391bd2a9e5cd0319e56df4f8a190d8f28c3d026b5209fd6afd19008c7f",
+    "MICROSOFT-REDISTRIBUTION.md": "92f10bb6d7fdc3bbdbffde8d9f59b735f5f936398d352ea314741b7177bea495",
+    "python-runtime.json": "5fc967caa5fd8c1e5d95cb2f5fe0ca2dcfb47e35fbf993e018b81218519ba464",
+    "README.md": "4b245cb000c24e2a74bb338a30aed5576be63b5fa9006d146a7a393e12b0dc62",
     "REBUILD.md": "836c8131250a1f4117d5d3a5d8469f41fd8e5aef5475c8d6c56e5fbab5a68bcc",
     "rust-manifest.json": "3a45ef860525fe8e78bfd5b40800c123a6f076e373cfa538a36578203d7132cb",
     "sources/certifi-2026.6.17.tar.gz": "024c88eeec92ca068db80f02b8b07c9cef7b9fe261d1d535abfd5abd6f6af432",
@@ -617,6 +618,7 @@
     "upstream/cryptography/LICENSE": "3e0c7c091a948b82533ba98fd7cbb40432d6f1a9acbf85f5922d2f99a93ae6bb",
     "upstream/cryptography/LICENSE.APACHE": "aac73b3148f6d1d7111dbca32099f68d26c644c6813ae1e4f05f6579aa2663fe",
     "upstream/cryptography/LICENSE.BSD": "602c4c7482de6479dd2e9793cda275e5e63d773dacd1eca689232ab7008fb4fb",
+    "upstream/expat/2.7.1-COPYING": "31b15de82aa19a845156169a17a5488bf597e561b2c318d159ed583139b25e87",
     "upstream/libjpeg-turbo/3.1.4.1-LICENSE.md": "e10114e6e40f3d0311c401ca25245ac5ef459a43c20f976fd63f03e816f5741f",
     "upstream/libjpeg-turbo/3.1.4.1-README.ijg": "75815e3bf6484201a3c3d17a1bbf10f2e8e3237f84df10a2357ea896db2a81d6",
     "upstream/libtiff/4.7.1-LICENSE.md": "0e27c2382d7b8147972bbb746e04059a1152c8d0fda9d03ef1399d1a433c4ade",
@@ -638,6 +640,7 @@
     "upstream/msvc/vs2022-proenterprise-license.docx": "9c0cd52b20db9d081854c75bd1b50c75514b8f8cb09c8cad15e89d90b97b5bf3",
     "upstream/msvc/vs2022-proenterprise-license.txt": "03c500028ab18cdd29bc117ad82a3391eec052ff89cc6d98d05ce7645c9d8b06",
     "upstream/openjpeg/2.5.4-LICENSE": "a6af136f3e15038a666b61f376612a07d9a4e48cb7c01adbf3e33b3f14ab49b6",
+    "upstream/openssl/3.0.16-LICENSE.txt": "7d5450cb2d142651b8afa315b5f238efc805dad827d91ba367d8516bc9d49e7a",
     "upstream/openssl/3.5.8-LICENSE.txt": "7d5450cb2d142651b8afa315b5f238efc805dad827d91ba367d8516bc9d49e7a",
     "upstream/openssl/4.0.1-LICENSE.txt": "7d5450cb2d142651b8afa315b5f238efc805dad827d91ba367d8516bc9d49e7a",
     "upstream/pillow/docs/COPYING": "d44ce2bbf81806be0eb34ec0ecb0cb013ccd56a94057daf214fb7381adde8f0c",
@@ -654,6 +657,7 @@
     "upstream/pyaudiowpatch/PyAudio-copyright-header.txt": "148b121dc373e8ee859932818dc0ff9922563262763808b1953b12d3d4598174",
     "upstream/pystray/COPYING": "1e4d0c2eb111b851de12d7b2737195b950fae3620d2a23a474ce8d46e1d2e4b6",
     "upstream/pystray/COPYING.LGPL": "e583ee8a64cd2ae744422bf76a1295838acae3698347f3a2af07462ddfaf0d2d",
+    "upstream/python/3.12.10-amd64.spdx.json": "1905207f988375b65dccbe3a1aafb22cc96b03f7826a4867c1b34006c214e571",
     "upstream/rust/ahash-0.8.12/LICENSE-APACHE": "a60eea817514531668d7e00765731449fe14d059d3249e0bc93b36de45f759f2",
     "upstream/rust/ahash-0.8.12/LICENSE-MIT": "0444c6991eead6822f7b9102e654448d51624431119546492e8b231db42c48bb",
     "upstream/rust/aho-corasick-1.1.3/COPYING": "01c266bced4a434da0051174d6bee16a4c82cf634e2679b6155d40d75012390f",
@@ -1160,9 +1164,10 @@
     "upstream/tqdm/LICENCE": "fcff87c3a47ce8028a8512aa182d4fcf0ad1c90544ee75cf9b343684cac194de",
     "upstream/webview2/LICENSE.txt": "0af8f1b807512aae39c2ac1aa4d0cae65cabecb6fd554b8439a5162a0d6eca55",
     "upstream/webview2/NOTICE.txt": "106423785c5b7eba0a8e61d1837f2132e9c828e20ad530f565d981c1df60dd90",
+    "upstream/xz/5.2.5-COPYING": "bcb02973ef6e87ea73d331b3a80df7748407f17efdb784b61b47e0e610d3bb5c",
     "upstream/xz/5.8.3-COPYING": "616a3ad264ce29b8f1cb97e53037b139d406899ca8d1f799651e17bfa09830b8",
     "upstream/xz/5.8.3-COPYING.0BSD": "0b01625d853911cd0e2e088dcfb743261034a091bb379246cb25a14cc4c74bf1",
     "upstream/zlib-ng/2.3.3-LICENSE.md": "6c9f0d975b41afaa34d22f55bb8986ce69e5cb7ad327cb2b28820cd425edf5ee",
-    "upstream-provenance.json": "57296df5345886121e20870fe191b7a93bf3f857598388fc73e1258bd1929136"
+    "upstream-provenance.json": "ce3fc5271eabeae4ea2e88468229958564d605cc3cae15d3cfc4756da3112aa7"
   }
 }

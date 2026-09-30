@@ -26,7 +26,7 @@ native files in that distribution. Build tools are not application dependencies.
 | NumPy / Pillow / cryptography | Package licenses, including collected notices for native dependencies |
 | React and its runtime dependencies | Complete MIT licenses from the frontend lockfile's production packages |
 | PyInstaller | Unmodified bootloader/loader under its distribution exception; runtime hooks under their stated terms |
-| Microsoft Visual C++ runtime | 14.50 uses V14/2026 terms; Python's 14.44 and NumPy's 14.40 use 2015–2022 terms. Separate Visual Studio distribution grant; [review and exact mapping](third_party/MICROSOFT-REDISTRIBUTION.md) |
+| Microsoft Visual C++ runtime | 14.50 uses V14/2026 terms; Python's 14.42 and NumPy's 14.40 use 2015–2022 terms. Separate Visual Studio distribution grant; [review and exact mapping](third_party/MICROSOFT-REDISTRIBUTION.md) |
 
 The Edge WebView2 browser runtime and Windows/.NET Framework are system
 prerequisites. They are not installed or relicensed by this source repository.

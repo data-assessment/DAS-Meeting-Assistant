@@ -228,5 +228,29 @@
     "resolved_url": "https://learn.microsoft.com/en-us/cpp/windows/latest-supported-vc-redist?view=msvc-170",
     "sha256": "920610a5f275cdf6cec29a94f3f38311b0b2960facda771fb9df2370244bdfef",
     "retrieved_on": "2026-09-22"
+  },
+  {
+    "file": "upstream/openssl/3.0.16-LICENSE.txt",
+    "url": "https://raw.githubusercontent.com/openssl/openssl/openssl-3.0.16/LICENSE.txt",
+    "sha256": "7d5450cb2d142651b8afa315b5f238efc805dad827d91ba367d8516bc9d49e7a",
+    "retrieved_on": "2026-09-30"
+  },
+  {
+    "file": "upstream/xz/5.2.5-COPYING",
+    "url": "https://raw.githubusercontent.com/tukaani-project/xz/v5.2.5/COPYING",
+    "sha256": "bcb02973ef6e87ea73d331b3a80df7748407f17efdb784b61b47e0e610d3bb5c",
+    "retrieved_on": "2026-09-30"
+  },
+  {
+    "file": "upstream/python/3.12.10-amd64.spdx.json",
+    "url": "https://www.python.org/ftp/python/3.12.10/python-3.12.10-amd64.exe.spdx.json",
+    "sha256": "1905207f988375b65dccbe3a1aafb22cc96b03f7826a4867c1b34006c214e571",
+    "retrieved_on": "2026-09-30"
+  },
+  {
+    "file": "upstream/expat/2.7.1-COPYING",
+    "url": "https://raw.githubusercontent.com/libexpat/libexpat/refs/tags/R_2_7_1/expat/COPYING",
+    "sha256": "31b15de82aa19a845156169a17a5488bf597e561b2c318d159ed583139b25e87",
+    "retrieved_on": "2026-09-30"
   }
 ]
