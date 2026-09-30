@@ -1,10 +1,10 @@
-import { useEffect, useId, useRef, useState, type ReactNode } from 'react'
+import { createContext, useContext, useEffect, useId, useReducer, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
 import './meeting-notes.css'
 import { NotesOneNote, oneNoteSavedLabel, type OneNoteState } from './NotesOneNote'
 import { NotesCalendar, type CalendarContext, type CalendarCandidate } from './NotesCalendar'
 
 import { NotesTasks, unresolved, type Draft, type Person, type Task } from './NotesTasks'
-import { appLanguage, cancelAppLanguage, chooseAppLanguage, setAppLanguage, t, tIn, uiLocale, type AppLanguage } from './i18n'
+import { appLanguage, cancelAppLanguage, chooseAppLanguage, setAppLanguage, subscribeAppLanguage, t, tIn, uiLocale, type AppLanguage } from './i18n'
 type Review = { displayTitle?: string; language?: string; onenote?: OneNoteState; calendarContext?: CalendarContext | null; calendarSelected?: boolean; calendarAccessNeeded?: boolean; calendarNote?: string; calendarCandidates?: CalendarCandidate[]; peopleAccessNeeded?: boolean; people: Person[]; peopleNote: string; id: string; title: string; started: string; ended: string; status: string; error: string; warning: string;
   draft: Draft | null; tasksEditable?: boolean; busy: boolean; canSummarize: boolean; sourceCharacters: number; savedPath: string;
   documentName?: string; savedAt: string; storeError: string; revision: number; phase: string; editable: boolean; autoRetry: boolean }
@@ -108,11 +108,13 @@ function useDraft(review: Review) {
   return { draft, change, saving, error, savedAt, blocked: blocked.current, retry: () => { blocked.current = false; void flush() } }
 }
 
-// Set by MeetingNotes; lets the always-visible navigation controls act without prop drilling.
-let refreshNotes: () => Promise<void> = async () => {}
-let openSettings: (() => void) | null = null
+// Provided by MeetingNotes to the always-visible navigation controls in every Popup.
+const Navigation = createContext<{ refresh: () => Promise<void>; openSettings: (() => void) | null }>({
+  refresh: async () => {}, openSettings: null,
+})
 
 function SettingsButton() {
+  const { openSettings } = useContext(Navigation)
   if (!openSettings) return null
   const label = t('navigation.settings')
   return <button className="settings-button" title={label} aria-label={label} onClick={openSettings}>
@@ -140,37 +142,53 @@ function FlagGB() {
 // Language names stay in their own language, so the switch is readable in either UI language.
 const LANGUAGES = [['de', 'Deutsch', FlagDE], ['en', 'English', FlagGB]] as const
 function LanguageSwitch() {
+  const { refresh } = useContext(Navigation)
   const [busy, setBusy] = useState(false), [open, setOpen] = useState(false), [error, setError] = useState('')
-  const root = useRef<HTMLDivElement>(null)
+  const root = useRef<HTMLDivElement>(null), toggle = useRef<HTMLButtonElement>(null)
+  const items = () => [...(root.current?.querySelectorAll<HTMLButtonElement>('[role=menuitemradio]') ?? [])]
   useEffect(() => {
     if (!open) return
+    // Menu keyboard pattern: focus the checked item on open; close on a click outside.
+    items().find(item => item.getAttribute('aria-checked') === 'true')?.focus()
     const outside = (e: MouseEvent) => { if (!root.current?.contains(e.target as Node)) setOpen(false) }
-    const escape = (e: KeyboardEvent) => { if (e.key === 'Escape') setOpen(false) }
-    document.addEventListener('mousedown', outside); document.addEventListener('keydown', escape)
-    return () => { document.removeEventListener('mousedown', outside); document.removeEventListener('keydown', escape) }
+    document.addEventListener('mousedown', outside)
+    return () => document.removeEventListener('mousedown', outside)
   }, [open])
+  function close() { setOpen(false); toggle.current?.focus() }
+  function keys(e: KeyboardEvent) {
+    const list = items(), index = list.indexOf(document.activeElement as HTMLButtonElement)
+    const move = { ArrowDown: index + 1, ArrowUp: index - 1, Home: 0, End: list.length - 1 }[e.key]
+    if (e.key === 'Escape' && open) { e.preventDefault(); close() }
+    else if (move !== undefined && open) { e.preventDefault(); list[(move + list.length) % list.length]?.focus() }
+    else if (e.key === 'ArrowDown' && !open) { e.preventDefault(); setError(''); setOpen(true) }
+  }
   async function choose(language: AppLanguage) {
-    setOpen(false)
+    close()
     const previous = appLanguage()
-    if (language === previous) return
+    if (language === previous || busy) return
     setBusy(true); setError('')
     chooseAppLanguage(language)
     try { await post('/api/notes/ui-language', { language }) }
     catch (e) { cancelAppLanguage(previous); setError(errorText(e)) }
-    finally { setBusy(false); await refreshNotes() }
+    finally { setBusy(false); await refresh() }
   }
   const [, currentLabel, CurrentFlag] = LANGUAGES.find(([value]) => value === appLanguage()) ?? LANGUAGES[0]
   const label = t('navigation.appLanguage')
-  return <div className="language-switch" ref={root}>
-    <button className="language-toggle" title={`${label}: ${currentLabel}`} aria-label={`${label}: ${currentLabel}`} aria-haspopup="menu" aria-expanded={open} disabled={busy} onClick={() => { setError(''); setOpen(value => !value) }}>
-      <CurrentFlag /><svg className="language-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" /></svg>
-    </button>
-    {/* Language names stay in their own language, so the choice is readable in either UI language. */}
-    {open && <div className="language-menu" role="menu" aria-label={label}>
-      {LANGUAGES.map(([value, name, Flag]) => <button key={value} role="menuitemradio" aria-checked={appLanguage() === value} onClick={() => void choose(value)}><Flag /><span>{name}</span></button>)}
-    </div>}
+  return <>
+    <div className="language-switch" ref={root} onKeyDown={keys}
+      onBlur={e => { if (open && !root.current?.contains(e.relatedTarget as Node)) setOpen(false) }}>
+      {/* aria-disabled instead of disabled while saving, so keyboard focus stays on the toggle. */}
+      <button ref={toggle} className="language-toggle" title={`${label}: ${currentLabel}`} aria-label={`${label}: ${currentLabel}`} aria-haspopup="menu" aria-expanded={open} aria-disabled={busy}
+        onClick={() => { if (busy) return; setError(''); setOpen(value => !value) }}>
+        <CurrentFlag /><svg className="language-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" /></svg>
+      </button>
+      {open && <div className="language-menu" role="menu" aria-label={label}>
+        {LANGUAGES.map(([value, name, Flag]) => <button key={value} role="menuitemradio" tabIndex={-1} aria-checked={appLanguage() === value} onClick={() => void choose(value)}><Flag /><span>{name}</span></button>)}
+      </div>}
+    </div>
+    {/* In the flow of the bar, so a failed save never covers the content below. */}
     {error && <p className="notes-error language-error" role="alert">{error}</p>}
-  </div>
+  </>
 }
 
 function Popup({ children, storage, saved, error, onFolder, onHistory, documentName, oneNote, onOneNote, footer, onClose, closeDisabled, expanded = false }: {
@@ -296,20 +314,30 @@ function ReviewPanel({ review, visible, current, state, history, configure, refr
   </Popup>
 }
 
-type SettingsProps = { state: NotesState; back: () => void; refresh: () => void; history: () => void }
+type SettingsProps = { state: NotesState; back: () => void; backTo: Screen; refresh: () => void; history: () => void }
 
-function MeetingLanguageSelect({ value, onChange }: { value: string; onChange: (value: string) => void }) {
-  return <label>{t('settings.meetingLanguage')}<select aria-label={t('settings.meetingLanguage')} value={value} onChange={e => onChange(e.target.value)}>
-    <option value="de-DE">{t('settings.languages.german')}</option><option value="en-US">{t('settings.languages.english')}</option><option value="fr-FR">{t('settings.languages.french')}</option>
-    {!['de-DE', 'en-US', 'fr-FR'].includes(value) && <option value={value}>{value}</option>}
-  </select><span className="quiet">{t('settings.meetingLanguageHint')}</span></label>
+function BackButton({ back, backTo }: Pick<SettingsProps, 'back' | 'backTo'>) {
+  return <button className="back" onClick={back}>{backTo === 'history' ? t('settings.backToMeetings') : t('settings.backToMeeting')}</button>
+}
+
+// Community keeps free text (any locale such as de-CH or it-IT) with suggestions; Managed offers a fixed list.
+function MeetingLanguageSelect({ value, onChange, free = false }: { value: string; onChange: (value: string) => void; free?: boolean }) {
+  const label = t('settings.meetingLanguage'), suggestions = useId()
+  const known = [['de-DE', t('settings.languages.german')], ['en-US', t('settings.languages.english')], ['fr-FR', t('settings.languages.french')]]
+  return <label>{label}{free
+    ? <><input aria-label={label} list={suggestions} autoComplete="off" maxLength={16} value={value} onChange={e => onChange(e.target.value)} />
+      <datalist id={suggestions}>{known.map(([code, name]) => <option key={code} value={code}>{name}</option>)}</datalist></>
+    : <select aria-label={label} value={value} onChange={e => onChange(e.target.value)}>
+      {known.map(([code, name]) => <option key={code} value={code}>{name}</option>)}
+      {!known.some(([code]) => code === value) && <option value={value}>{value}</option>}
+    </select>}<span className="quiet">{t('settings.meetingLanguageHint')}</span></label>
 }
 
 function Settings(props: SettingsProps) {
   return props.state.options.managed === true ? <ManagedSettings {...props} /> : <CommunitySettings {...props} />
 }
 
-function ManagedSettings({ state, refresh, history }: SettingsProps) {
+function ManagedSettings({ state, back, backTo, refresh, history }: SettingsProps) {
   const signedIn = state.options.setupComplete === true
   const finished = state.options.onboardingComplete === true
   const [form, setForm] = useState(() => ({
@@ -349,6 +377,8 @@ function ManagedSettings({ state, refresh, history }: SettingsProps) {
         {pending === 'save' ? t('common.pleaseWait') : state.active ? t('common.close') : t('common.done')}
       </button>}
     </>}>
+    {/* After setup, settings are also opened from a meeting (gear): leave them without "Fertig". */}
+    {finished && signedIn && !busy && <BackButton back={back} backTo={backTo} />}
     <p className="setup-step">{finished ? 'DAS Meeting Assistant' : signedIn ? t('setup.stepFinish') : t('setup.stepSignIn')}</p>
     <h1>{signedIn ? finished ? t('navigation.settings') : t('setup.signedIn') : t('setup.welcome')}</h1>
     {error && <p className="notice" role="alert">{error}</p>}
@@ -384,7 +414,7 @@ function ManagedSettings({ state, refresh, history }: SettingsProps) {
   </Popup>
 }
 
-function CommunitySettings({ state, back, refresh, history }: SettingsProps) {
+function CommunitySettings({ state, back, backTo, refresh, history }: SettingsProps) {
   const [form, setForm] = useState<Record<string, string>>(() => ({ region: 'westeurope', language: 'de-DE', mic: '', loopback: '', endpoint: '', model: '',
     ...Object.fromEntries(Object.entries(state.options).filter(([k, v]) => ['region','language','mic','loopback','endpoint','model'].includes(k) && typeof v === 'string')), speechKey: '', chatKey: '' }) as Record<string, string>)
   const [enabled, setEnabled] = useState(state.enabled)
@@ -399,7 +429,7 @@ function CommunitySettings({ state, back, refresh, history }: SettingsProps) {
     catch (e) { setMessage(errorText(e)) } finally { setBusy(false) }
   }
   return <Popup storage={state.storagePath} onHistory={history} saved={t('settings.storageLocation')} onFolder={() => void post('/api/notes/open-folder').catch(e => setMessage(errorText(e)))}>
-    <button className="back" onClick={back}>{t('settings.backToMeeting')}</button><h1>{t('navigation.settings')}</h1>
+    <BackButton back={back} backTo={backTo} /><h1>{t('navigation.settings')}</h1>
     {(message || state.options.credentialError) && <p className="notice" role="alert">{message || state.options.credentialError}</p>}
     {state.active && <p className="notice">{t('settings.changeAfterMeeting')}</p>}
     <button disabled={busy} onClick={() => post(`/api/auto-start/${state.autoStart ? 'off' : 'on'}`).then(refresh).catch(e => setMessage(errorText(e)))}>{state.autoStart ? t('settings.turnOffAutoStart') : t('common.turnOnAutoStart')}</button>
@@ -410,7 +440,7 @@ function CommunitySettings({ state, back, refresh, history }: SettingsProps) {
           {devices.filter(d => d.loopback === (source === 'loopback')).map((d, i) => <option value={d.name} key={i}>{d.name}</option>)}
         </select></label>)}
       <button onClick={load}>{t('settings.reloadDevices')}</button>
-      <MeetingLanguageSelect value={form.language} onChange={language => setForm({ ...form, language })} />
+      <MeetingLanguageSelect free value={form.language} onChange={language => setForm({ ...form, language })} />
       <h2>{t('settings.azureConnections')}</h2>
       {(['region', 'speechKey', 'endpoint', 'model', 'chatKey'] as const).map(key => <label key={key}>{{region:t('settings.speechRegion'),speechKey:t('settings.speechKey'),endpoint:t('settings.textModelEndpoint'),model:t('settings.deployment'),chatKey:t('settings.textModelKey')}[key]}
         <input type={key.endsWith('Key') ? 'password' : 'text'} autoComplete="off" value={form[key]} maxLength={2048}
@@ -453,22 +483,26 @@ export function MeetingNotes() {
     } catch (e) { if (mounted.current) setConnectionError(errorText(e)) }
     finally { fetching.current = false }
   }
-  refreshNotes = refresh
+  const [, rerender] = useReducer((n: number) => n + 1, 0)
+  useEffect(() => subscribeAppLanguage(rerender), [])
   useEffect(() => {
     mounted.current = true; void refresh()
     const timer = window.setInterval(refresh, 1000)
     return () => { mounted.current = false; window.clearInterval(timer) }
   }, [])
+  // Settings return to where they were opened from, including a meeting picked in the history.
+  const [returnTo, setReturnTo] = useState<{ screen: Screen; selected: string | null }>({ screen: 'meeting', selected: null })
   const history = () => { setMessage(''); setSearch(''); setScreen('history') }
-  const configure = () => { setMessage(''); setScreen('settings') }
+  const configure = () => { setMessage(''); setReturnTo({ screen: screen === 'settings' ? 'meeting' : screen, selected }); setScreen('settings') }
   const back = () => { setMessage(''); setScreen('meeting'); setSelected(null) }
+  const closeSettings = () => { setMessage(''); setScreen(returnTo.screen); setSelected(returnTo.selected) }
   // Set before children render, so every screen of this pass uses the saved app language.
   setAppLanguage(state?.options.uiLanguage)
   const currentId = state?.currentId || state?.reviews[0]?.id
   const displayedId = selected || currentId
   const needsSetup = state?.options.managed === true && (!state.options.setupComplete || !state.options.onboardingComplete)
   const visibleScreen = needsSetup ? 'settings' : screen
-  openSettings = state && visibleScreen !== 'settings' ? configure : null
+  const navigation = { refresh, openSettings: state && visibleScreen !== 'settings' ? configure : null }
   const historyReviews = state?.reviews.filter(r => (r.title + ' ' + new Date(r.started).toLocaleDateString(uiLocale())).toLocaleLowerCase().includes(search.toLocaleLowerCase())) || []
   async function action(url: string) { try { await post(url); setMessage(''); await refresh() } catch (e) { setMessage(errorText(e)) } }
   const idle = () => {
@@ -488,12 +522,12 @@ export function MeetingNotes() {
         </div>}
     </Popup>
   }
-  return <>
+  return <Navigation.Provider value={navigation}>
     {state?.reviews.map(review => <ReviewPanel key={review.id} review={review} state={state}
       visible={visibleScreen === 'meeting' && review.id === displayedId} current={!selected} configure={configure} refresh={refresh} connectionError={connectionError}
       history={history} />)}
     {visibleScreen === 'meeting' && !state?.reviews.some(r => r.id === displayedId) && idle()}
-    {visibleScreen === 'settings' && state && <Settings state={state} back={back} refresh={refresh} history={history} />}
+    {visibleScreen === 'settings' && state && <Settings state={state} back={closeSettings} backTo={returnTo.screen} refresh={refresh} history={history} />}
     {visibleScreen === 'history' && state && <Popup storage={state.storagePath} saved={t('history.savedNotes')} onFolder={() => void action('/api/notes/open-folder')}>
       <button className="back" onClick={back}>{t('history.toCurrent')}</button><h1>{t('navigation.allMeetings')}</h1>
       <label>{t('history.search')}<input type="search" value={search} onChange={e => setSearch(e.target.value)} placeholder={t('history.searchPlaceholder')} /></label>
@@ -506,5 +540,5 @@ export function MeetingNotes() {
         {(r.error || r.storeError) && <p className="notes-error">{r.storeError ? t('common.notSaved') : t('history.incomplete')}</p>}</div>
         <button onClick={() => { setSelected(r.id); setScreen('meeting') }}>{t('common.open')}</button></div>)}
     </Popup>}
-  </>
+  </Navigation.Provider>
 }

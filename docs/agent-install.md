@@ -296,15 +296,17 @@ with the quoted absolute `app.py` as its argument, the checkout as working direc
 and `favicon.ico` as icon. Keep the checkout and venv in place. Use hidden background
 launches for helpers; do not enable Windows login autostart by default.
 
-Open the Meeting Notes window from the tray. Its Community settings must expose
-**Meeting-Notizen statt Dateiaufzeichnung** and the Azure fields below. A managed
-“DAS sign-in” setup instead means the wrong distribution/profile is running.
+Open the Meeting Notes window from the tray (or the gear in its top bar). Its Community
+settings must expose **Meeting-Notizen statt Dateiaufzeichnung** and the fields below.
+A managed “DAS sign-in” setup instead means the wrong distribution/profile is running.
+Labels are shown in the app language; the flag in the top bar switches between German
+and English (English labels in parentheses).
 
 | UI label | Configuration field | Required value |
 | --- | --- | --- |
-| Meeting-Notizen statt Dateiaufzeichnung | `enabled` | `true` |
+| Meeting-Notizen statt Dateiaufzeichnung (Meeting notes instead of file recording) | `enabled` | `true` |
+| Meeting-Sprache (Meeting language), above the Azure connections | `language` | Spoken locale, e.g. `de-DE`; free text such as `de-CH` is allowed |
 | Speech-Region | `region` | Actual Speech region identifier, e.g. `westeurope` |
-| Sprache | `language` | Supported locale, e.g. `de-DE` |
 | Speech-Schlüssel | `speechKey` | Key for that Speech resource |
 | Textmodell-Endpunkt | `endpoint` | HTTPS resource root, e.g. `https://<resource>.openai.azure.com` |
 | Deployment | `model` | The actual deployed chat-model **deployment name** |

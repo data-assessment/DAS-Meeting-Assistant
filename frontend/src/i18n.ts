@@ -28,8 +28,15 @@ export function setAppLanguage(saved: unknown) {
   if (pending && normalize(saved) === pending) pending = null
   apply(pending ?? normalize(saved))
 }
-export function chooseAppLanguage(value: AppLanguage) { pending = value; apply(value) }
-export function cancelAppLanguage(previous: AppLanguage) { pending = null; apply(previous) }
+// A choice re-renders the whole window at once, not only the switch; polls re-render anyway.
+const listeners = new Set<() => void>()
+export function subscribeAppLanguage(listener: () => void) {
+  listeners.add(listener)
+  return () => { listeners.delete(listener) }
+}
+const notify = () => listeners.forEach(listener => listener())
+export function chooseAppLanguage(value: AppLanguage) { pending = value; apply(value); notify() }
+export function cancelAppLanguage(previous: AppLanguage) { pending = null; apply(previous); notify() }
 
 function lookup(key: string, language: AppLanguage): string | undefined {
   let node: string | Messages | undefined = catalogs[language]
@@ -42,7 +49,7 @@ export function tIn(language: unknown, key: string, params?: Params) {
   const lang = normalize(language)
   const plural = params && typeof params.count === 'number' ? lookup(`${key}_${params.count === 1 ? 'one' : 'other'}`, lang) : undefined
   const text = plural ?? lookup(key, lang) ?? key
-  return params ? text.replace(/\{\{(\w+)\}\}/g, (match, name) => name in params ? String(params[name]) : match) : text
+  return params ? text.replace(/\{\{(\w+)\}\}/g, (match, name) => Object.prototype.hasOwnProperty.call(params, name) ? String(params[name]) : match) : text
 }
 
 export const t = (key: string, params?: Params) => tIn(current, key, params)

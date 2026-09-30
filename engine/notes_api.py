@@ -4,7 +4,8 @@ import json
 import os
 from fastapi import Request
 from fastapi.responses import JSONResponse
-from engine.notes_i18n import t
+from engine import notes_i18n
+from engine.notes_i18n import localize, t
 
 
 def install(app):
@@ -37,7 +38,7 @@ def install(app):
         notes.sweep()
         current = notes.current
         return {"ok": True, "enabled": notes.enabled, "options": notes.public_options(),
-                "active": app.STATE.active, "autoStart": app.STATE.auto_start, "error": notes.error,
+                "active": app.STATE.active, "autoStart": app.STATE.auto_start, "error": localize(notes.error),
                 "health": app.STATE.health, "autoStartSuppressed": app.STATE.autostart_suppressed,
                 "capture": current.session.snapshot() if current else None,
                 "currentId": current.id if current else None,
@@ -59,7 +60,7 @@ def install(app):
     async def ui_language(request: Request):
         # App language only: allowed during a meeting, unlike device and access settings.
         notes = app.NOTES
-        previous = notes.options["uiLanguage"]
+        previous = notes_i18n.app_language()
         try:
             data = await body(request)
             notes.set_ui_language(data.get("language") if isinstance(data, dict) else None)
@@ -118,7 +119,6 @@ def install(app):
             app._save_settings(strict=True)
         except Exception:
             notes.options, notes.enabled, notes.onboarding_complete, app.STATE.auto_start = previous
-            notes.set_ui_language(notes.options["uiLanguage"])  # configure() already switched it
             return {"ok": False, "error": t("api.errors.settingsSaveFailed")}
         notes.error = ""
         app.STATE.autostart_suppressed = False

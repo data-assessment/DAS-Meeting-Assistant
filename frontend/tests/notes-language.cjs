@@ -23,7 +23,7 @@ const path = require('node:path');
       currentId:null, autoStart:true, error:'', uiView:'meeting', uiRequest:1,
       options:{managed:false, hasSpeechKey:true, hasChatKey:true, language:'de-DE', uiLanguage:'de'}, reviews:[] };
     const saved = [];
-    let failSave = false, stalePolls = 0, holdState = false;
+    let failSave = false, stalePolls = 0, holdState = false, saveDelay = 0;
     await page.route('**/api/**', async route => {
       const url = new URL(route.request().url());
       if (url.pathname === '/api/notes') {
@@ -34,6 +34,7 @@ const path = require('node:path');
       }
       if (url.pathname === '/api/notes/devices') return route.fulfill({ json:{ok:true, devices:[]} });
       if (url.pathname === '/api/notes/ui-language') {
+        if (saveDelay) await new Promise(resolve => setTimeout(resolve, saveDelay));
         if (failSave) return route.fulfill({ json:{ok:false, error:'The language could not be saved. Check the storage location and try again.'} });
         const { language } = route.request().postDataJSON();
         saved.push(language); state.options.uiLanguage = language;
@@ -69,8 +70,12 @@ const path = require('node:path');
     failSave = true;
     await page.getByRole('button', {name:'App language: English', exact:true}).click();
     await page.getByRole('menuitemradio', {name:'Deutsch'}).click();
-    await page.getByRole('alert').filter({hasText:'could not be saved'}).waitFor();
+    const alert = page.getByRole('alert').filter({hasText:'could not be saved'});
+    await alert.waitFor();
     await page.getByRole('heading', {name:'Settings', exact:true}).waitFor();
+    // Shown inside the top bar, not over the content below it.
+    const bar = await page.locator('nav.notes-navigation').boundingBox(), box = await alert.boundingBox();
+    assert.ok(box.y >= bar.y && box.y + box.height <= bar.y + bar.height + 1, 'error stays inside the bar');
     assert.deepEqual(saved, ['en']);
     failSave = false;
 
@@ -110,8 +115,60 @@ const path = require('node:path');
     const editor = page.getByRole('textbox', {name:'Zusammenfassung direkt bearbeiten'});
     await editor.waitFor();
     assert.equal(await editor.inputValue(), 'Scope agreed.\n\nDecisions\n- Start the pilot.\n\nOpen questions\n- Budget owner?');
+
+    // A choice switches the whole window at once, while the save is still running.
+    saveDelay = 1500;
+    await page.getByRole('button', {name:'App-Sprache: Deutsch', exact:true}).click();
+    await page.getByRole('menuitemradio', {name:'English'}).click();
+    await page.getByRole('heading', {name:'Summary', exact:true}).waitFor({timeout: 700});
+    assert.deepEqual(saved, ['en', 'de'], 'the save is still pending');
+    await page.waitForFunction(() => document.querySelector('.language-toggle')?.getAttribute('aria-disabled') === 'false');
+    assert.deepEqual(saved, ['en', 'de', 'en']);
+    saveDelay = 0;
+
+    // Keyboard: Enter opens with the checked item focused, arrows move, Escape returns to the toggle,
+    // Tab leaves and closes, choosing keeps focus on the toggle.
+    const englishToggle = page.getByRole('button', {name:'App language: English', exact:true});
+    const focused = () => page.evaluate(() => document.activeElement?.textContent || document.activeElement?.getAttribute('aria-label'));
+    await englishToggle.focus();
+    await page.keyboard.press('Enter');
+    assert.equal(await focused(), 'English');
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await focused(), 'Deutsch');
+    await page.keyboard.press('Escape');
+    assert.equal(await page.getByRole('menu').count(), 0);
+    assert.equal(await focused(), 'App language: English');
+    await page.keyboard.press('ArrowDown');
+    assert.equal(await page.getByRole('menu').count(), 1);
+    await page.keyboard.press('Tab');
+    assert.equal(await page.getByRole('menu').count(), 0, 'tabbing out closes the menu');
+    await englishToggle.focus();
+    await page.keyboard.press('Enter');
+    await page.keyboard.press('Home');
+    assert.equal(await focused(), 'Deutsch');
+    await page.keyboard.press('Enter');
+    await page.getByRole('button', {name:'App-Sprache: Deutsch', exact:true}).waitFor();
+    assert.equal(await focused(), 'App-Sprache: Deutsch');
+
+    // Settings opened with the gear return to where they came from, including a meeting picked in the history.
+    state.reviews = [{ ...state.reviews[0], id:'m0', title:'Wochenrunde', language:'de' }, state.reviews[0]];
+    await page.getByRole('button', {name:'Alle Meetings', exact:true}).click();
+    await page.getByRole('heading', {name:'Alle Meetings', exact:true}).waitFor();
+    await page.getByRole('button', {name:'Einstellungen', exact:true}).click();
+    await page.getByRole('button', {name:'Zurück zu allen Meetings', exact:true}).click();
+    await page.getByRole('heading', {name:'Alle Meetings', exact:true}).waitFor();
+    await page.locator('.history-row').filter({hasText:'Kickoff'}).getByRole('button').click();
+    await page.getByRole('heading', {name:'Kickoff', exact:true}).waitFor();
+    await page.getByRole('button', {name:'Einstellungen', exact:true}).click();
+    // Community keeps a free meeting language, e.g. Swiss German.
+    const meetingLanguage = page.getByLabel('Meeting-Sprache', {exact:true});
+    assert.equal(await meetingLanguage.evaluate(element => element.tagName), 'INPUT');
+    await meetingLanguage.fill('de-CH');
+    assert.equal(await meetingLanguage.inputValue(), 'de-CH');
+    await page.getByRole('button', {name:'Zurück zum Meeting', exact:true}).click();
+    await page.getByRole('heading', {name:'Kickoff', exact:true}).waitFor();
     assert.deepEqual(errors, []);
-    console.log('Language UI passed: flag dropdown, Escape, switch to English with saved choice, settings gear, separate meeting language, failed save, stale poll, initial language, meeting-language notes headings.');
+    console.log('Language UI passed: flag dropdown, Escape, switch to English with saved choice, settings gear, separate meeting language, failed save inside the bar, stale poll, initial language, meeting-language notes headings, immediate switch, keyboard menu, settings return, free Community meeting language.');
   } finally {
     holdState = false; // release a held state request, so a failed assertion cannot hang the close
     if (browser) await browser.close();

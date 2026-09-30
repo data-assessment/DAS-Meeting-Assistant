@@ -245,7 +245,6 @@
       "changeAfterStop": "Einstellungen erst nach Stop ändern.",
       "invalid": "Ungültige Einstellungen.",
       "selectMeetingLanguage": "Bitte eine Sprache wie de-DE oder en-US auswählen.",
-      "selectAppLanguage": "Bitte Deutsch oder Englisch als App-Sprache auswählen.",
       "textModelKey": "Azure-Textmodell: Schlüssel und Deployment eintragen.",
       "reselectDevices": "Mikrofon und Teams-Wiedergabegerät erneut auswählen."
     }

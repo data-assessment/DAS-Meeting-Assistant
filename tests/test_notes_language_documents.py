@@ -180,3 +180,33 @@ def test_english_legacy_owner_uncertainty_is_an_owner_question():
         {"title": "A", "owner": "", "recipient": "", "due": "", "uncertainty": "Owner missing."},
         {"title": "B", "owner": "", "recipient": "", "due": "", "uncertainty": "Zuständigkeit fehlt."}]})
     assert [task.questions[0].field for task in draft.tasks] == ["owner", "owner"]
+
+
+@pytest.mark.parametrize("language, summary_heading", [("de", "Tasks"), ("en", "Aufgaben")])
+def test_other_language_heading_in_the_summary_does_not_block_task_sync(setup, monkeypatch, language, summary_heading):
+    notes, review = setup
+    review.language = language
+    review.draft["summary"] = "Intro\n\n## " + summary_heading + "\n- was discussed"
+    choose(notes, review)
+    asyncio.run(notes.onenote.publish(review, review.revision))
+    published = FakeGraph.created[0][1]
+    assert "<h2>" + summary_heading + "</h2>" in published  # both headings are on the page
+    remote = Remote(published)
+    monkeypatch.setattr(FakeGraph, "get", lambda self, url: remote.get(url), raising=False)
+    monkeypatch.setattr(FakeGraph, "update_tasks", lambda self, url, commands: remote.update(url, commands), raising=False)
+    edit(notes, review, owner="Customer", ownerId="p")
+    sync(notes, review)
+    assert review.onenote["taskSync"]["status"] == "saved", review.onenote["taskSync"]
+    assert "Customer" in remote.main().text
+
+
+def test_messages_in_a_document_follow_the_meeting_language(notes):
+    notes_i18n.set_language("en")
+    review = start(notes); finish(notes, review)
+    notes_i18n.set_language("de")  # switched during the meeting; the notices arise in German
+    review.warning = notes_i18n.t("speech.notices.resumed")
+    review.error = notes_i18n.t("notes.errors.completionFailed")
+    text = render(review)
+    assert "> Capture note: Audio recording resumed after a short interruption." in text
+    assert "> Processing note: Completing the meeting failed; raw transcript discarded." in text
+    assert "Audioaufnahme" not in text and "Rohtext" not in text

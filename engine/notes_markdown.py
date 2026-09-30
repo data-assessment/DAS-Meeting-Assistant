@@ -2,7 +2,7 @@
 import datetime as dt
 import re
 from pathlib import Path
-from engine.notes_i18n import in_review_language, t
+from engine.notes_i18n import in_review_language, localize, t
 from engine.notes_schema import Draft
 
 def plain(value):
@@ -56,6 +56,7 @@ def render(review):
             if q["field"] == "owner": continue
             answer = q["answer"] or (task["recipient"] if q["field"] == "recipient" else "")
             lines += ["  - " + plain(q["label"]) + " " + (plain(answer) or unclear)]
-    if review.warning: lines += ["", "> " + t("document.labels.captureNote") + ": " + plain(review.warning)]
-    if review.error: lines += ["", "> " + t("document.labels.processingNote") + ": " + plain(review.error)]
+    # Stored messages are translated again, so the notes stay in the meeting's language.
+    if review.warning: lines += ["", "> " + t("document.labels.captureNote") + ": " + plain(localize(review.warning))]
+    if review.error: lines += ["", "> " + t("document.labels.processingNote") + ": " + plain(localize(review.error))]
     return "\n".join(lines).rstrip() + "\n"

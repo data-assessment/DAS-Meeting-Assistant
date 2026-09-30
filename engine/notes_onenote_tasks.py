@@ -72,13 +72,17 @@ class Element:
 
 
 class Page(HTMLParser):
-    def __init__(self, content, meeting_id):
+    def __init__(self, content, meeting_id, heading=None):
         super().__init__(convert_charrefs=True)
         self.root = self.current = Element()
         self.elements = []
         self.feed(content)
         markers = [e for e in self.elements if e.attrs.get("data-id") == "meeting-" + meeting_id]
         headings = [e for e in self.elements if e.tag == "h2" and normalize(e.text()) in task_headings()]
+        # The page's own heading wins, so a summary heading in the other language
+        # ("## Tasks" on a German page) is not taken for the task section.
+        own = [e for e in headings if heading and normalize(e.text()) == heading]
+        headings = own or headings
         if len(markers) != 1 or len(headings) != 1 or self.elements.index(headings[0]) < self.elements.index(markers[0]):
             raise Conflict()
         self.heading = headings[0]
@@ -145,13 +149,13 @@ class Page(HTMLParser):
         return value
 
 
-def plan(content, meeting_id, before, after, *, reconcile=False):
+def plan(content, meeting_id, before, after, *, reconcile=False, heading=None):
     """Return a minimal patch or, for an uncertain write, only verify its result.
 
     Uncertain writes are never reissued. A read must confirm every changed line
     before another update can run. This also covers partially applied batches.
     """
-    page = Page(content, meeting_id)
+    page = Page(content, meeting_id, heading)
     changed = {key for key in before.keys() | after.keys() if before.get(key) != after.get(key)}
     nodes, replacements, inserts = {}, [], []
     used = set()

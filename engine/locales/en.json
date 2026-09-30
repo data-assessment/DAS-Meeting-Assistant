@@ -245,7 +245,6 @@
       "changeAfterStop": "Change settings only after stopping.",
       "invalid": "Invalid settings.",
       "selectMeetingLanguage": "Please select a language such as de-DE or en-US.",
-      "selectAppLanguage": "Please select German or English as the app language.",
       "textModelKey": "Azure text model: enter the key and deployment.",
       "reselectDevices": "Select the microphone and Teams playback device again."
     }

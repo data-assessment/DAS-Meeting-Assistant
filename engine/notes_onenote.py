@@ -17,7 +17,7 @@ from urllib.parse import quote, urlsplit
 import requests
 from engine import mdfmt, suggest, notes_onenote_tasks as task_sync
 from engine.graph_auth import get_token_for_scopes
-from engine.notes_i18n import in_review_language, t
+from engine.notes_i18n import in_review_language, localize, t
 from engine.notes_schema import Draft
 
 GRAPH = "https://graph.microsoft.com/v1.0"
@@ -170,6 +170,11 @@ def task_lines(review):
 
 
 @in_review_language
+def task_heading(review):
+    return t("document.headings.tasks")
+
+
+@in_review_language
 def page_html(review, author):
     draft = Draft.model_validate(review.draft).model_dump()
     esc = lambda value: html.escape(str(value or ""))
@@ -188,7 +193,7 @@ def page_html(review, author):
     # Task sync finds this heading in every language (task_sync.task_headings).
     parts.append("<h2>" + t("document.headings.tasks") + "</h2>")
     parts.extend(task_sync.paragraph(key, line) for key, line in task_sync.snapshot(draft).items())
-    if review.warning: parts.append("<p>" + t("document.labels.captureNote") + ": " + esc(review.warning) + "</p>")
+    if review.warning: parts.append("<p>" + t("document.labels.captureNote") + ": " + esc(localize(review.warning)) + "</p>")
     return "<!DOCTYPE html><html><head><title>" + esc(title) + "</title></head><body>" + "".join(parts) + "</body></html>"
 
 
@@ -543,7 +548,8 @@ class Publisher:
                     raise ValueError(t("oneNote.errors.wrongAccount"))
                 url = self.page_content_url(state)
                 response = await asyncio.to_thread(graph.get, url + "?includeIDs=true")
-                commands = task_sync.plan(response.text, review.id, before, after, reconcile=uncertain)
+                commands = task_sync.plan(response.text, review.id, before, after, reconcile=uncertain,
+                                          heading=task_heading(review))
                 if review.discarded or self.notes.closed:
                     return
                 if commands:

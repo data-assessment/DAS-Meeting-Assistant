@@ -233,6 +233,7 @@
     "reopenLater": "You can reopen settings later from the app icon next to the Windows clock.",
     "storageLocation": "Storage location for meeting notes",
     "backToMeeting": "Back to meeting",
+    "backToMeetings": "Back to all meetings",
     "changeAfterMeeting": "Devices and access can be changed after the meeting.",
     "turnOffAutoStart": "Turn off automatic start",
     "notesInsteadOfRecording": "Meeting notes instead of file recording",

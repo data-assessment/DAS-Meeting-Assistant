@@ -235,11 +235,15 @@ class Review:
         return "\n".join(f"[{s.audio_offset:.1f}s {s.speaker}] {s.text}" for s in segments)
 
     def public(self):
+        """UI state: stored messages are translated again into the current app language."""
         from engine.notes_people import calendar_context, meeting_heading
-        return {"id": self.id, "title": self.title, "displayTitle": meeting_heading(self), "language": self.language,
+        localize = notes_i18n.localize
+        with notes_i18n.using(self.language):
+            display_title = meeting_heading(self)  # the same title as the meeting's document
+        return {"id": self.id, "title": self.title, "displayTitle": display_title, "language": self.language,
                 "started": self.started, "ended": self.ended,
-                "status": self.status, "error": self.error,
-                "warning": self.warning or getattr(self.session, "error", "") or getattr(self.session, "notice", ""),
+                "status": self.status, "error": localize(self.error),
+                "warning": localize(self.warning or getattr(self.session, "error", "") or getattr(self.session, "notice", "")),
                 "draft": self.draft, "busy": self.busy,
                 "tasksEditable": self.draft is not None and not self.discarded and self.onenote.get("status") not in ("preparing", "sending", "uncertain"),
                 "canSummarize": bool(self.raw_deadline > time.monotonic() and not self.busy),
@@ -247,14 +251,14 @@ class Review:
                 "sourceCharacters": self.session.transcript.characters,
                 "endpoint": self.provider.get("endpoint", ""), "model": self.provider.get("model", ""),
                 "savedPath": self.document_path, "documentName": self.document_name, "savedAt": self.saved_at,
-                "storeError": self.store_error, "revision": self.revision, "phase": self.phase,
+                "storeError": localize(self.store_error), "revision": self.revision, "phase": self.phase,
                 "editable": bool(self.draft is not None and self.ended and not self.busy and not self.raw_deadline and self.onenote.get("status") not in ("preparing", "sending", "uncertain", "saved")),
-                "onenote": self.onenote,
+                "onenote": localize(self.onenote),
                 "autoRetry": bool(self.retry_at), "edited": self.edited,
-                "people": self.people, "peopleNote": self.people_note,
+                "people": self.people, "peopleNote": localize(self.people_note),
                 "peopleAccessNeeded": self.people_access_needed,
                 "calendarSelected": bool(self.calendar_selected), "calendarAccessNeeded": self.calendar_access_needed,
-                "calendarNote": self.calendar_note,
+                "calendarNote": localize(self.calendar_note),
                 "calendarContext": calendar_context(self),
                 "calendarCandidates": [{k:c.get(k, "") for k in ("id","title","start","end","response")} for c in self.calendar_candidates]}
 
@@ -270,8 +274,9 @@ class Notes:
         self.setup_complete = False
         self.onboarding_complete = False
         self.setup_busy = False
-        # language = meeting (speech recognition) language; uiLanguage = app language.
-        self.options = {"region": "westeurope", "language": "de-DE", "uiLanguage": "de", "mic": "", "loopback": "",
+        # language = meeting (speech recognition) language. The app language belongs to
+        # notes_i18n and is saved on its own, so it can never invalidate these options.
+        self.options = {"region": "westeurope", "language": "de-DE", "mic": "", "loopback": "",
                         "endpoint": "", "model": "", "speechKey": "", "chatKey": ""}
         self.reviews = {}
         self.current = None
@@ -286,9 +291,10 @@ class Notes:
         return {k: v for k, v in self.options.items() if not k.endswith("Key")} | {
             "hasSpeechKey": bool(self.options["speechKey"]), "hasChatKey": bool(self.options["chatKey"]),
             "speechKeySaved": self.credentials_saved["speechKey"], "chatKeySaved": self.credentials_saved["chatKey"],
-            "credentialError": self.credential_error,
+            "credentialError": notes_i18n.localize(self.credential_error),
             "managed": self.managed, "setupComplete": self.setup_complete,
-            "onboardingComplete": self.onboarding_complete, "setupBusy": self.setup_busy}
+            "onboardingComplete": self.onboarding_complete, "setupBusy": self.setup_busy,
+            "uiLanguage": notes_i18n.app_language()}
 
     @property
     def ready(self):
@@ -329,10 +335,10 @@ class Notes:
         self.credentials_saved = {k: bool(options[k]) for k in ("speechKey", "chatKey")}
         self.credential_error = ""
 
-    def set_ui_language(self, value):
+    @staticmethod
+    def set_ui_language(value):
         if value not in notes_i18n.LANGUAGES:
             raise ValueError("Unsupported app language")
-        self.options["uiLanguage"] = value
         notes_i18n.set_language(value)
 
     def configure(self, data):
@@ -346,14 +352,12 @@ class Notes:
                 continue
             if not isinstance(value, str) or len(value) > 2048 or any(ord(c) < 32 for c in value):
                 raise ValueError(t("settings.errors.invalid"))
-            if self.managed and key not in {"language", "uiLanguage", "mic", "loopback"}:
+            if self.managed and key not in {"language", "mic", "loopback"}:
                 continue  # Ignore old direct-service options during upgrades.
             if not key.endswith("Key") or value:
                 options[key] = value.strip()
         if not re.fullmatch(r"[a-z]{2,3}-[A-Za-z]{2,4}", options["language"]):
             raise ValueError(t("settings.errors.selectMeetingLanguage"))
-        if options["uiLanguage"] not in notes_i18n.LANGUAGES:
-            raise ValueError(t("settings.errors.selectAppLanguage"))
         if options["region"] != self.options["region"] and not data.get("speechKey"):
             options["speechKey"] = ""
         if options["endpoint"] != self.options["endpoint"] and not data.get("chatKey"):
@@ -364,7 +368,6 @@ class Notes:
             if options[key] != self.options[key] or options[binding] != self.options[binding]:
                 self.credentials_saved[key] = False
         self.options, self.enabled, self.error = options, data["enabled"], ""
-        notes_i18n.set_language(options["uiLanguage"])
         if self.managed:
             self.options.update(region="", endpoint="", model="", speechKey="", chatKey="")
         # Failed summaries can be retried using corrected connection settings.
@@ -409,7 +412,7 @@ class Notes:
         session = session_factory("Nicht zugeordnet")
         session.TEST_SECONDS = 120 * 60
         session.transcript.max_segments = 5000
-        review = Review(session, title, started, provider, language=notes_i18n.language())
+        review = Review(session, title, started, provider, language=notes_i18n.app_language())
         review.onenote.update(autoSave=True, selection="default")
         if config.AI_MODE == "entra":
             from engine.ai_auth import UserTokenCredential
@@ -530,7 +533,9 @@ class Notes:
                    "calendarPeople": review.people, "peopleNote": review.people_note,
                    **(Draft.model_validate(review.draft).model_dump() if review.draft is not None else {})}
         target = self.state_folder / ("Meeting-Notizen-" + str(uuid.UUID(review.id)) + ".json")
-        content = json.dumps(payload, ensure_ascii=False, indent=2)
+        # Messages stay readable text; their keys go alongside, to show them in another language later.
+        payload, messages = notes_i18n.persist(payload)
+        content = json.dumps({**payload, "messages": messages}, ensure_ascii=False, indent=2)
         try:
             target.parent.mkdir(parents=True, exist_ok=True)
             temp = target.with_suffix(".tmp")
@@ -561,6 +566,7 @@ class Notes:
                 if path.stat().st_size > 8000000:
                     raise ValueError("Size limit")
                 data = json.loads(path.read_text(encoding="utf-8"))
+                data = notes_i18n.restore(data, data.get("messages"))
                 meeting_id = str(uuid.UUID(data["meetingId"]))
                 if path.name != "Meeting-Notizen-" + meeting_id + ".json" or data.get("schemaVersion") not in (1, 2, 3, 4, 5, 6, 7, 8, 9):
                     raise ValueError("Invalid notes file")

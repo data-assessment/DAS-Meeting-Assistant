@@ -131,14 +131,16 @@ class AppState:
         self.quitting = False                 # set true only on a real Quit
 
 
-def _saved_ui_language():
-    options = settings_store.load().get("meeting_notes_options")
-    return options.get("uiLanguage") if isinstance(options, dict) else None
+def _ui_language(data: dict) -> str:
+    """The saved app language, else the Windows display language. Saved on its own, outside
+    meeting_notes_options, so neither an unknown value nor an older release can reject it."""
+    value = data.get("ui_language")
+    return value if value in notes_i18n.LANGUAGES else notes_i18n.system_language()
 
 
 STATE = AppState()
-# Before Notes loads the history, so its messages are already in the saved app language.
-notes_i18n.set_language(_saved_ui_language())
+# Before Notes loads the history, so its messages are already in the app language.
+notes_i18n.set_language(_ui_language(settings_store.load()))
 NOTES = Notes(os.path.join(paths.data_dir(), "Meeting-Notizen"))
 _NOTES_WINDOW_LOCK = threading.RLock()
 
@@ -414,6 +416,7 @@ def _persistable_settings() -> dict:
         "meeting_notes_onboarding_complete": NOTES.onboarding_complete,
         "meeting_notes_access_mode": config.AI_MODE,
         "meeting_notes_options": {k: v for k, v in NOTES.options.items() if not k.endswith("Key")},
+        "ui_language": notes_i18n.app_language(),
         "live_on": STATE.live_on,
         "auto_start": STATE.auto_start,
         "win_w": STATE.win_w,
@@ -435,11 +438,7 @@ def _apply_settings(data: dict) -> None:
             NOTES.configure({**(data.get("meeting_notes_options") or {}), "enabled": data["meeting_notes_enabled"]})
         except Exception:
             NOTES.enabled = data["meeting_notes_enabled"]  # never fall back to file recording
-    # Independent of the other options: an invalid saved option must not reset the language.
-    options = data.get("meeting_notes_options")
-    saved_language = options.get("uiLanguage") if isinstance(options, dict) else None
-    if saved_language in notes_i18n.LANGUAGES:
-        NOTES.set_ui_language(saved_language)
+    NOTES.set_ui_language(_ui_language(data))
     NOTES.load_credentials()
     if isinstance(data.get("live_on"), bool):
         STATE.live_on = data["live_on"]
@@ -478,12 +477,12 @@ _tray_language = None
 def _refresh_tray_language() -> None:
     """The Windows tray builds its menu once; rebuild it when the app language changed."""
     global _tray_language
-    language = notes_i18n.language()
+    language = notes_i18n.app_language()
     if not STATE.tray or language == _tray_language:
         return
-    _tray_language = language
     try:
         STATE.tray.update_menu()
+        _tray_language = language  # only once rebuilt, so a failed rebuild is retried
     except Exception:
         pass
 
@@ -2907,7 +2906,7 @@ def _show_notes_window(view: str = "meeting", activate: bool = True) -> None:
             return
         try:
             window = webview.create_window(APP_DISPLAY_NAME,
-                url=_ui_url("?view=notes&lang=" + notes_i18n.language()),
+                url=_ui_url("?view=notes&lang=" + notes_i18n.app_language()),
                 width=680, height=750, min_size=(360, 400), resizable=True,
                 hidden=True, on_top=False, focus=False, text_select=True)
             STATE.notes_window = window
@@ -3178,7 +3177,7 @@ def run_tray() -> None:
         pystray.Menu(*items),
     )
     global _tray_language
-    _tray_language = notes_i18n.language()
+    _tray_language = notes_i18n.app_language()
     STATE.tray.run()
 
 

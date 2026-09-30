@@ -95,12 +95,14 @@
 @media(max-width:480px){.notes-content{padding:18px}.task-selection{align-items:flex-start}.notes-task{padding:12px}.tasks-heading{flex-wrap:wrap}.meeting-notes h1{font-size:20px}.summary-heading-copy{gap:2px}.summary-heading{gap:8px}.summary-card{padding:14px;grid-template-rows:58px 44px minmax(0,1fr)}.summary-heading-copy .inline-save{font-size:11px;text-align:left}.meeting-notes .summary-size-toggle{min-width:96px;padding:8px}.summary-expanded .summary-card{height:480px}}
 
 /* Mirrors the footer: a closed bar, so scrolled content never runs up against its controls. */
-.notes-navigation{border-bottom:1px solid var(--notes-line);padding:12px 20px;display:flex;justify-content:flex-end;align-items:center;gap:12px;flex-shrink:0;background:#fff}
+.notes-navigation{border-bottom:1px solid var(--notes-line);padding:12px 20px;display:flex;flex-wrap:wrap;justify-content:flex-end;align-items:center;gap:8px 12px;flex-shrink:0;background:#fff}
 .language-switch{position:relative;margin-right:auto}
 .meeting-notes .language-toggle{display:flex;align-items:center;gap:6px;padding:8px 10px}
 .language-switch svg:not(.language-chevron){display:block;width:26px;height:16px;border-radius:2px;box-shadow:0 0 0 1px var(--notes-line)}
 .language-chevron{color:var(--notes-muted);transition:transform .15s}
-.language-error{position:absolute;top:calc(100% + 4px);left:0;z-index:10;width:max-content;max-width:320px;margin:0;padding:6px 10px;background:#fff;border:1px solid var(--notes-line);border-radius:6px;font-size:12px}
+/* Its own line at the end of the bar, so it never covers the content below. */
+.language-error{order:1;flex-basis:100%;margin:0;font-size:12px}
+.meeting-notes .language-toggle[aria-disabled="true"]{opacity:.6;cursor:progress}
 .language-toggle[aria-expanded="true"] .language-chevron{transform:rotate(180deg)}
 .language-menu{position:absolute;top:calc(100% + 4px);left:0;z-index:10;min-width:150px;padding:4px;background:#fff;border:1px solid var(--notes-line);border-radius:6px;box-shadow:0 6px 18px rgba(32,48,57,.14)}
 .meeting-notes .language-menu button{display:flex;align-items:center;gap:10px;width:100%;padding:7px 10px;border:0;border-radius:4px;background:none;text-align:left;font-weight:400}
