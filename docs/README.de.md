@@ -58,7 +58,7 @@ sind derzeit überwiegend deutschsprachig.*
 
 ## Mit deinem KI-Agenten installieren
 
-**[Community-Installer für Windows x64 herunterladen](https://github.com/data-assessment/DAS-Meeting-Assistant/releases/tag/v0.40.15-community-preview.1).**
+**[Community-Installer für Windows x64 herunterladen](https://github.com/data-assessment/DAS-Meeting-Assistant/releases/tag/v0.40.16-community-preview.1).**
 Die Testversion 0.40.15 enthält Installer, SHA-256-Prüfsumme und Installationshinweise.
 Python, Node.js und Git werden dafür nicht benötigt. Der Installer ist unsigniert;
 der externe Installationstest auf einem frischen Windows-PC steht noch aus.
