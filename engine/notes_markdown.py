@@ -2,7 +2,7 @@
 import datetime as dt
 import re
 from pathlib import Path
-from engine.notes_i18n import tr
+from engine.notes_i18n import t
 from engine.notes_schema import Draft
 
 def plain(value):
@@ -18,7 +18,7 @@ def document_name(review, folder, reserved=()):
     try: stamp = meeting_start(review).strftime("%Y-%m-%d %H-%M-%S")
     except ValueError: stamp = "Meeting"
     title = re.sub(r'[<>:"/\\|?*\x00-\x1f]', " ", meeting_title(review))
-    title = re.sub(r"\s+", " ", title).strip(" .")[:80].rstrip(" .") or tr("Teams-Gespräch", "Teams call")
+    title = re.sub(r"\s+", " ", title).strip(" .")[:80].rstrip(" .") or t("document.fallbackTitle")
     stem = stamp + " – " + title
     name, number = stem + ".md", 1
     reserved = {n.casefold() for n in reserved}
@@ -30,30 +30,30 @@ def render(review):
     draft = Draft.model_validate(review.draft).model_dump()
     try: started = dt.datetime.fromisoformat(review.started).strftime("%d.%m.%Y, %H:%M")
     except ValueError: started = plain(review.started)
-    status = (tr("Abgeschlossen", "Complete") if review.phase == "complete"
-              else tr("Vorläufig – Gespräch läuft", "Preliminary – meeting in progress") if not review.ended
-              else tr("Vorläufig – Abschluss noch nicht vollständig", "Preliminary – finalization not yet complete"))
-    unclear = tr("Noch zu klären", "To be clarified")
+    status = (t("document.status.complete") if review.phase == "complete"
+              else t("document.status.inProgress") if not review.ended
+              else t("document.status.finalizing"))
+    unclear = t("document.labels.toBeClarified")
     from engine.notes_people import meeting_heading
-    lines = ["# " + plain(meeting_heading(review)), "", f"**Meeting:** {started}  ", f"**{tr('Stand', 'Status')}:** {status}"]
+    lines = ["# " + plain(meeting_heading(review)), "", f"**Meeting:** {started}  ", f"**{t('document.labels.status')}:** {status}"]
     from engine.notes_people import invitation_lines
     invitation = invitation_lines(review)
     if invitation:
-        lines += ["", "## " + tr("Outlook-Einladung", "Outlook invitation"), ""] + [plain(line) + "  " for line in invitation]
-    lines += ["", "## " + tr("Zusammenfassung", "Summary"), "", draft["summary"].strip()]
-    for heading, key in ((tr("Entscheidungen", "Decisions"), "decisions"), (tr("Offene Fragen", "Open questions"), "openQuestions")):
+        lines += ["", "## " + t("document.headings.invitation"), ""] + [plain(line) + "  " for line in invitation]
+    lines += ["", "## " + t("document.headings.summary"), "", draft["summary"].strip()]
+    for heading, key in ((t("document.headings.decisions"), "decisions"), (t("document.headings.openQuestions"), "openQuestions")):
         if draft[key].strip(): lines += ["", "## " + heading, "", draft[key].strip()]
-    tasks = [t for t in draft["tasks"] if t["included"]]
-    lines += ["", "## " + tr("Aufgaben", "Tasks"), ""]
-    if not tasks: lines += [tr("Keine Aufgaben ausgewählt.", "No tasks selected.")]
+    tasks = [task for task in draft["tasks"] if task["included"]]
+    lines += ["", "## " + t("document.headings.tasks"), ""]
+    if not tasks: lines += [t("document.noTasks")]
     for task in tasks:
-        lines += ["- [ ] " + plain(task["title"]), "  - " + tr("Verantwortlich", "Owner") + ": " + (plain(task["owner"]) or unclear)]
-        for label, key in ((tr("Empfänger", "Recipient"), "recipient"), (tr("Termin", "Due"), "due")):
+        lines += ["- [ ] " + plain(task["title"]), "  - " + t("document.labels.owner") + ": " + (plain(task["owner"]) or unclear)]
+        for label, key in ((t("document.labels.recipient"), "recipient"), (t("document.labels.due"), "due")):
             if task[key].strip(): lines += ["  - " + label + ": " + plain(task[key])]
         for q in task["questions"]:
             if q["field"] == "owner": continue
             answer = q["answer"] or (task["recipient"] if q["field"] == "recipient" else "")
             lines += ["  - " + plain(q["label"]) + " " + (plain(answer) or unclear)]
-    if review.warning: lines += ["", "> " + tr("Hinweis zur Erfassung", "Capture note") + ": " + plain(review.warning)]
-    if review.error: lines += ["", "> " + tr("Hinweis zur Verarbeitung", "Processing note") + ": " + plain(review.error)]
+    if review.warning: lines += ["", "> " + t("document.labels.captureNote") + ": " + plain(review.warning)]
+    if review.error: lines += ["", "> " + t("document.labels.processingNote") + ": " + plain(review.error)]
     return "\n".join(lines).rstrip() + "\n"

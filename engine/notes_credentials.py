@@ -4,7 +4,7 @@ from ctypes import wintypes
 import json
 import os
 from pathlib import Path
-from engine.notes_i18n import tr
+from engine.notes_i18n import t
 
 class CredentialError(Exception):
     pass
@@ -13,7 +13,7 @@ class Blob(ctypes.Structure):
     _fields_ = [("size", wintypes.DWORD), ("data", ctypes.POINTER(ctypes.c_ubyte))]
 
 def crypt(value, purpose, decrypt=False):
-    if os.name != "nt": raise CredentialError(tr("Windows-Schlüsselablage nicht verfügbar.", "Windows key storage not available."))
+    if os.name != "nt": raise CredentialError(t("credentials.errors.keyStorageUnavailable"))
     source_buffer = ctypes.create_string_buffer(value)
     entropy_buffer = ctypes.create_string_buffer(purpose.encode("utf-8"))
     source = Blob(len(value), ctypes.cast(source_buffer, ctypes.POINTER(ctypes.c_ubyte)))
@@ -25,8 +25,7 @@ def crypt(value, purpose, decrypt=False):
     fn.restype = wintypes.BOOL
     # CRYPTPROTECT_UI_FORBIDDEN only; never CRYPTPROTECT_LOCAL_MACHINE.
     if not fn(ctypes.byref(source), None, ctypes.byref(entropy), None, None, 1, ctypes.byref(output)):
-        raise CredentialError(tr("Azure-Zugänge konnten nicht ver- oder entschlüsselt werden.",
-                                 "Azure credentials could not be encrypted or decrypted."))
+        raise CredentialError(t("credentials.errors.cryptFailed"))
     try:
         return ctypes.string_at(output.data, output.size)
     finally:
@@ -49,8 +48,7 @@ class CredentialStore:
             temp.write_bytes(encrypted)
             temp.replace(self.path)
         except Exception:
-            raise CredentialError(tr("Azure-Zugänge nicht gespeichert. Windows-Schlüsselablage oder Speicherort prüfen.",
-                                     "Azure credentials not saved. Check the Windows key storage or storage location.")) from None
+            raise CredentialError(t("credentials.errors.notSaved")) from None
 
     def load(self):
         if not self.path.exists(): return None
@@ -62,5 +60,4 @@ class CredentialStore:
             if any(not isinstance(v, str) or len(v) > 2048 for k,v in data.items() if k != "version"): raise ValueError()
             return data
         except Exception:
-            raise CredentialError(tr("Gespeicherte Azure-Zugänge konnten nicht geladen werden. In Einstellungen erneut eintragen.",
-                                     "Saved Azure credentials could not be loaded. Enter them again in the settings.")) from None
+            raise CredentialError(t("credentials.errors.loadFailed")) from None

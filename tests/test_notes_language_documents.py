@@ -92,6 +92,13 @@ def test_task_sync_recognizes_german_and_english_pages(setup, monkeypatch, page_
     assert len(remote.writes) == 1 and "Customer" in remote.main().text
 
 
+def test_task_headings_come_from_the_catalog_in_every_language():
+    assert ts.task_headings() == notes_i18n.variants("document.headings.tasks") == ("Aufgaben", "Tasks")
+    notes_i18n.set_language("en")
+    assert notes_i18n.t("document.headings.tasks") == "Tasks"
+    assert ts.task_headings() == ("Aufgaben", "Tasks")
+
+
 def test_task_page_without_recognized_heading_still_fails_closed():
     content = ('<html><body><p id="m" data-id="meeting-x">x</p><h2 id="h">Tâches</h2>'
                '<p id="p" data-id="tasks-empty">Keine Aufgaben ausgewählt.</p></body></html>')
@@ -110,4 +117,4 @@ def test_english_legacy_owner_uncertainty_is_an_owner_question():
     draft = Draft.model_validate({"summary": "", "decisions": "", "openQuestions": "", "tasks": [
         {"title": "A", "owner": "", "recipient": "", "due": "", "uncertainty": "Owner missing."},
         {"title": "B", "owner": "", "recipient": "", "due": "", "uncertainty": "Zuständigkeit fehlt."}]})
-    assert [t.questions[0].field for t in draft.tasks] == ["owner", "owner"]
+    assert [task.questions[0].field for task in draft.tasks] == ["owner", "owner"]

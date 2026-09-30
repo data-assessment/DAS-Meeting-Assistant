@@ -8,7 +8,7 @@ from openai import AzureOpenAI
 
 import config
 from engine.ai_auth import gateway_token
-from engine.notes_i18n import tr
+from engine.notes_i18n import t
 
 
 class AccessDenied(RuntimeError):
@@ -32,20 +32,17 @@ def speech_credential() -> SpeechCredential:
     try:
         token = gateway_token(interactive=False)
     except Exception:
-        raise AccessDenied(tr("Bitte in den Einstellungen mit Microsoft anmelden.", "Please sign in with Microsoft in the settings.")) from None
+        raise AccessDenied(t("cloud.errors.signIn")) from None
     try:
         with httpx.Client(trust_env=False, follow_redirects=False, timeout=15) as client:
             response = client.post(config.USAGE_SERVICE_ENDPOINT.rstrip('/') + '/speech/session',
                                    headers={"Authorization": "Bearer " + token}, json={})
         if response.status_code in (401, 403):
-            raise AccessDenied(tr("DAS-Zugang fehlt oder ist abgelaufen. Bitte erneut anmelden; gegebenenfalls muss DAS Ihre Organisation freischalten.",
-                                  "DAS access is missing or has expired. Please sign in again; DAS may need to enable your organization."))
+            raise AccessDenied(t("cloud.errors.accessMissing"))
         if response.status_code in (404, 503):
-            raise ServiceUnavailable(tr("Der DAS-Sprachdienst ist noch nicht bereit. Bitte an den DAS-Support wenden.",
-                                        "The DAS speech service is not ready yet. Please contact DAS support."))
+            raise ServiceUnavailable(t("cloud.errors.speechNotReady"))
         if response.status_code != 200:
-            raise ServiceUnavailable(tr("Der DAS-Sprachdienst ist vorübergehend nicht erreichbar.",
-                                        "The DAS speech service is temporarily unavailable."))
+            raise ServiceUnavailable(t("cloud.errors.speechUnavailable"))
         data = response.json()
         region, value, ttl = data.get('region'), data.get('authorizationToken'), data.get('expiresIn')
         if (not isinstance(region, str) or not re.fullmatch(r'[a-z][a-z0-9]{1,39}', region)
@@ -57,8 +54,7 @@ def speech_credential() -> SpeechCredential:
     except (AccessDenied, ServiceUnavailable):
         raise
     except Exception:
-        raise ServiceUnavailable(tr("DAS-Sprachzugang konnte nicht geladen werden. Verbindung prüfen und erneut versuchen.",
-                                    "DAS speech access could not be loaded. Check the connection and try again.")) from None
+        raise ServiceUnavailable(t("cloud.errors.speechAccessFailed")) from None
 
 
 def summary_client():
@@ -73,7 +69,7 @@ def summary_client():
 
 def summary_model():
     if not config.SUMMARY_MODELS:
-        raise RuntimeError(tr("DAS-Zusammenfassungen sind noch nicht konfiguriert.", "DAS summaries are not configured yet."))
+        raise RuntimeError(t("cloud.errors.summariesNotConfigured"))
     return config.SUMMARY_MODELS[0]
 
 
@@ -91,8 +87,7 @@ def check_access():
         if not result.choices:
             raise ValueError()
     except Exception:
-        raise RuntimeError(tr("DAS-Zusammenfassungen sind nicht erreichbar oder für Ihr Konto nicht freigeschaltet. Bitte an den DAS-Support wenden.",
-                              "DAS summaries are not reachable or not enabled for your account. Please contact DAS support.")) from None
+        raise RuntimeError(t("cloud.errors.summariesUnreachable")) from None
 
 
 def check_speech_access():
@@ -126,8 +121,7 @@ def check_speech_access():
         if not ended.wait(15) or not connected.is_set() or failed.is_set():
             raise RuntimeError()
     except Exception:
-        raise RuntimeError(tr("DAS-Spracherkennung ist nicht erreichbar oder für Ihr Firmenkonto nicht freigeschaltet. Bitte an den DAS-Support wenden.",
-                              "DAS speech recognition is not reachable or not enabled for your work account. Please contact DAS support.")) from None
+        raise RuntimeError(t("cloud.errors.speechRecognitionUnreachable")) from None
     finally:
         stream.close()
         if transcriber is not None:

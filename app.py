@@ -40,7 +40,7 @@ from engine.meeting import write_transcript
 from engine.meeting_notes import Notes
 from engine.local_ui import LocalUI, StartupError, INSTANCE_HEADER, validate_assets
 from engine import notes_i18n
-from engine.notes_i18n import tr
+from engine.notes_i18n import t
 
 FRONTEND_DIST = paths.resource_path("frontend", "dist")
 ICON_PATH = paths.resource_path("favicon.ico")
@@ -920,16 +920,14 @@ async def _begin_meeting(
     if STATE.active or STATE.notes_starting:
         return
     if NOTES.managed and not NOTES.ready:
-        NOTES.error = tr("Bitte zuerst mit Microsoft anmelden und die Einrichtung mit „Fertig“ abschließen.",
-                         "Please sign in with Microsoft first and complete the setup with “Done”.")
+        NOTES.error = t("notes.errors.setupFirst")
         STATE.autostart_suppressed = True
         _show_notes_window("settings", activate=True)
         await broadcast()
         return
     if NOTES.enabled:
         if any(r.status == "Azure-Abschluss" and r.busy for r in NOTES.reviews.values()):
-            NOTES.error = tr("Bitte den Audio-Abschluss des vorherigen Meetings abwarten.",
-                             "Please wait until the audio of the previous meeting has been completed.")
+            NOTES.error = t("notes.errors.waitForPreviousAudio")
             await broadcast()
             return
         STATE.notes_starting = True
@@ -940,10 +938,7 @@ async def _begin_meeting(
             from engine.notes_calls import schedule_people
             schedule_people(NOTES, review)
         except Exception:
-            NOTES.error = (tr("Meeting-Notizen konnten nicht starten. Bitte in den Einstellungen die DAS-Anmeldung und Audiogeräte prüfen.",
-                              "Meeting notes could not start. Please check the DAS sign-in and audio devices in the settings.")
-                           if NOTES.managed else tr("Meeting-Notizen konnten nicht starten. Im Fenster Meeting-Notizen Geräte, Region und beide Azure-Zugänge prüfen.",
-                                                    "Meeting notes could not start. Check the devices, region and both Azure accesses in the Meeting Notes window."))
+            NOTES.error = t("notes.errors.startFailedManaged") if NOTES.managed else t("notes.errors.startFailedDirect")
             STATE.autostart_suppressed = True
             _show_notes_window(activate=True)
             await broadcast()
@@ -1050,8 +1045,7 @@ async def _finish_notes(review) -> None:
     try:
         await NOTES.finish(review)
     except Exception:
-        review.error = tr("Meeting-Abschluss fehlgeschlagen; Rohtext verworfen.",
-                          "Completing the meeting failed; raw transcript discarded.")
+        review.error = t("notes.errors.completionFailed")
         review.busy = False
         review.clear_raw()
     await broadcast()
@@ -2879,8 +2873,7 @@ def _present_notes_window(activate: bool) -> None:
         present(window, activate)
         _fit_notes_window(STATE.notes_content_height)
     except Exception:
-        NOTES.error = tr("Meeting-Fenster konnte nicht eingeblendet werden. Über das Tray-Symbol öffnen.",
-                         "The meeting window could not be shown. Open it from the tray icon.")
+        NOTES.error = t("notes.errors.windowShowFailed")
 
 
 def _show_notes_window(view: str = "meeting", activate: bool = True) -> None:
@@ -2926,7 +2919,7 @@ def _show_notes_window(view: str = "meeting", activate: bool = True) -> None:
             window.events.closed += closed
             window.events.resized += resized
         except Exception:
-            NOTES.error = tr("Meeting-Fenster konnte nicht geöffnet werden.", "The meeting window could not be opened.")
+            NOTES.error = t("notes.errors.windowOpenFailed")
 
 
 def _hide_notes_window() -> None:
@@ -2970,7 +2963,7 @@ def _show_settings_window() -> None:
             STATE.settings_window = None
     try:
         win = webview.create_window(
-            f"{APP_DISPLAY_NAME} · " + tr("Einstellungen", "Settings"),
+            f"{APP_DISPLAY_NAME} · " + t("settings.title"),
             url=url,
             width=760,
             height=720,
@@ -3159,9 +3152,9 @@ def run_tray() -> None:
         pystray.MenuItem("Show window", _on_show, default=True, visible=False),
         pystray.MenuItem(f"{APP_DISPLAY_NAME} {config.VERSION}", _noop, enabled=False),
         pystray.Menu.SEPARATOR,
-        pystray.MenuItem(lambda item: tr("Frühere Meetings", "Previous meetings"), _on_notes_history,
+        pystray.MenuItem(lambda item: t("tray.pastMeetings"), _on_notes_history,
                          visible=lambda item: NOTES.enabled),
-        pystray.MenuItem(lambda item: tr("Einstellungen…", "Settings…"), _on_settings),
+        pystray.MenuItem(lambda item: t("tray.settings"), _on_settings),
         pystray.MenuItem("Documentation...", _on_docs, visible=lambda item: not NOTES.enabled),
         pystray.Menu.SEPARATOR,
         pystray.MenuItem("Quit", _on_quit),
@@ -3225,8 +3218,7 @@ def _rescue_recording() -> None:
         STATE.active = False
         STATE.started_at = None
         STATE.phase = "idle"
-        NOTES.error = tr("Meeting-Notizen wurden unterbrochen. Keine Audiodatei angelegt.",
-                         "Meeting notes were interrupted. No audio file was created.")
+        NOTES.error = t("notes.errors.interrupted")
         return
     recorder, STATE.recorder = STATE.recorder, None
     # Both of these belong to the dead loop; touching them from this thread
@@ -3297,7 +3289,7 @@ async def _finalize_rescued() -> None:
 def _serve_once(*, background: bool = True) -> None:
     endpoint = STATE.local_ui
     if endpoint is None:
-        raise StartupError(tr("Die lokale Verbindung wurde nicht vorbereitet.", "The local connection was not prepared."))
+        raise StartupError(t("startup.errors.connectionNotPrepared"))
     cfg = uvicorn.Config(api, host=endpoint.host, port=endpoint.port, log_level="warning",
                          lifespan="auto" if background else "off")
     server = uvicorn.Server(cfg)
@@ -3481,8 +3473,7 @@ def _run_app() -> None:
 def _ui_smoke_test() -> None:
     """Verify the bundled HTML over real HTTP without GUI, sign-in or capture."""
     if not os.getenv("VOICE_TRANSCRIBER_DATA_ROOT"):
-        raise StartupError(tr("Für den Starttest ist ein getrenntes App-Datenverzeichnis erforderlich.",
-                              "The startup test requires a separate app data directory."))
+        raise StartupError(t("startup.errors.separateDataDir"))
     digest = validate_assets(FRONTEND_DIST)
     endpoint = LocalUI(config.HOST, config.PORT, allow_fallback=True)
     STATE.local_ui = endpoint
@@ -3535,7 +3526,7 @@ def main() -> None:
     except StartupError as exc:
         print(f"startup failed: {exc}")
         if os.name == "nt":
-            ctypes.windll.user32.MessageBoxW(None, str(exc), tr(f"{APP_DISPLAY_NAME} konnte nicht starten", f"{APP_DISPLAY_NAME} could not start"), 0x10)
+            ctypes.windll.user32.MessageBoxW(None, str(exc), t("startup.errors.title", app=APP_DISPLAY_NAME), 0x10)
         raise SystemExit(1) from exc
     finally:
         instance.release()

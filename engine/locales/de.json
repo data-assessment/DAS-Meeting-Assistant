@@ -1,0 +1,306 @@
+{
+  "api": {
+    "errors": {
+      "foreignOrigin": "Fremder Ursprung nicht erlaubt.",
+      "jsonRequired": "JSON erforderlich.",
+      "inputTooLarge": "Eingabe zu groß.",
+      "audioDevicesLoadFailed": "Audiogeräte konnten nicht geladen werden.",
+      "languageChangeFailed": "Sprache konnte nicht geändert werden.",
+      "signInFirst": "Bitte zuerst mit Microsoft anmelden.",
+      "invalidSettingsManaged": "Einstellungen ungültig. Sprache und Eingaben prüfen.",
+      "invalidSettingsDirect": "Einstellungen ungültig. Direkten Azure-Endpunkt und Eingaben prüfen.",
+      "invalidSettings": "Einstellungen ungültig. Bitte Eingaben prüfen.",
+      "changeAfterMeeting": "Einstellungen erst nach dem Meeting ändern.",
+      "settingsSaveFailed": "Einstellungen konnten nicht gespeichert werden. Bitte Eingaben prüfen und erneut versuchen.",
+      "setupSaved": "Einrichtung gespeichert. Bitte das Fenster über das × schließen.",
+      "dasSignInUnavailable": "DAS-Anmeldung ist nur in der DAS-Version verfügbar.",
+      "endMeetingFirst": "Bitte das laufende Meeting zuerst beenden.",
+      "dasSignInRunning": "Die DAS-Anmeldung läuft bereits.",
+      "microsoftSignInIncomplete": "Microsoft-Anmeldung wurde nicht abgeschlossen.",
+      "dasSignInFailed": "DAS-Anmeldung nicht abgeschlossen. Bitte erneut versuchen oder den DAS-Support kontaktieren.",
+      "keyRemoveFailed": "Schlüssel konnte nicht entfernt werden. Aufnahme beenden und erneut versuchen.",
+      "windowResizeFailed": "Fenstergröße konnte nicht angepasst werden.",
+      "folderOpenFailed": "Speicherordner konnte nicht geöffnet werden.",
+      "meetingGone": "Meeting nicht mehr verfügbar.",
+      "rawAlreadyDiscarded": "Rohtext bereits verworfen oder Verarbeitung läuft schon.",
+      "oneNoteUnreachable": "OneNote nicht erreichbar. Bitte verbinden oder erneut versuchen.",
+      "oneNoteSectionsFailed": "OneNote-Abschnitte konnten nicht geladen werden.",
+      "storageSaveFailed": "Speicherort konnte nicht gesichert werden. Bitte erneut versuchen.",
+      "oneNoteUnreachableDraftKept": "OneNote nicht erreichbar. Ihr Entwurf bleibt lokal gesichert.",
+      "tasksCheckFailed": "Aufgaben konnten nicht geprüft werden. Bitte erneut versuchen.",
+      "oneNoteLinkUnavailable": "OneNote-Link nicht verfügbar. Bitte OneNote direkt öffnen.",
+      "meetingUnavailable": "Meeting nicht verfügbar.",
+      "calendarAccess": "Kalenderzugriff nicht freigegeben.",
+      "calendarAccessCheck": "Kalenderzugriff nicht freigegeben. Microsoft-Anmeldung oder Organisationsfreigabe prüfen.",
+      "appointmentAssignFailed": "Termin konnte nicht zugeordnet werden. Personen erneut laden.",
+      "teamsAccess": "Teams-Zugriff nicht freigegeben. Je nach Organisation muss ein Administrator Chat.Read erlauben. Personen können weiterhin manuell ergänzt werden.",
+      "nothingToCopy": "Noch keine Notizen zum Kopieren vorhanden.",
+      "clipboardUnavailable": "Zwischenablage nicht verfügbar. Bitte erneut versuchen.",
+      "changeNotApplied": "Änderung nicht übernommen. Eingabe prüfen und erneut versuchen.",
+      "changeConflict": "Änderung nicht übernommen. Notizen eventuell anderweitig geändert oder Eingabe ungültig. Änderungen kopieren und Fenster neu öffnen.",
+      "finishFirst": "Bitte zuerst Aufnahme oder Verarbeitung beenden."
+    }
+  },
+  "calendar": {
+    "fallbackTitle": "Kalendertermin",
+    "notes": {
+      "unavailable": "Kalender gerade nicht erreichbar. Neuer Versuch automatisch.",
+      "accessMissing": "Kalenderzugriff fehlt.",
+      "tooManyEvents": "Zu viele zeitgleiche Outlook-Termine. Bitte den Kalender prüfen.",
+      "severalMatches": "Mehrere Termine passen. Bitte den Termin auswählen.",
+      "noMatch": "Keine passende Kalendereinladung gefunden."
+    },
+    "errors": {
+      "editedInOneNote": "Diese Notizen werden in OneNote bearbeitet.",
+      "eventUnavailable": "Termin nicht mehr verfügbar",
+      "alreadyAssigned": "Termin bereits zugeordnet"
+    }
+  },
+  "calls": {
+    "notes": {
+      "callAmbiguous": "Anruf nicht eindeutig erkannt. Kontakte aus Einzel-, Gruppen- und Meeting-Chats stehen zur Auswahl; ihre Teilnahme ist nicht bestätigt.",
+      "chatPeopleOnly": "Personen aus dem Meeting-Chat stehen zur Auswahl. Bestätigte Anrufteilnehmer können nach Gesprächsende verfügbar werden.",
+      "participantsUnavailable": "Anrufteilnehmer gerade nicht verfügbar. Personen können ergänzt werden."
+    }
+  },
+  "cloud": {
+    "errors": {
+      "signIn": "Bitte in den Einstellungen mit Microsoft anmelden.",
+      "accessMissing": "DAS-Zugang fehlt oder ist abgelaufen. Bitte erneut anmelden; gegebenenfalls muss DAS Ihre Organisation freischalten.",
+      "speechNotReady": "Der DAS-Sprachdienst ist noch nicht bereit. Bitte an den DAS-Support wenden.",
+      "speechUnavailable": "Der DAS-Sprachdienst ist vorübergehend nicht erreichbar.",
+      "speechAccessFailed": "DAS-Sprachzugang konnte nicht geladen werden. Verbindung prüfen und erneut versuchen.",
+      "summariesNotConfigured": "DAS-Zusammenfassungen sind noch nicht konfiguriert.",
+      "summariesUnreachable": "DAS-Zusammenfassungen sind nicht erreichbar oder für Ihr Konto nicht freigeschaltet. Bitte an den DAS-Support wenden.",
+      "speechRecognitionUnreachable": "DAS-Spracherkennung ist nicht erreichbar oder für Ihr Firmenkonto nicht freigeschaltet. Bitte an den DAS-Support wenden."
+    }
+  },
+  "credentials": {
+    "errors": {
+      "keyStorageUnavailable": "Windows-Schlüsselablage nicht verfügbar.",
+      "cryptFailed": "Azure-Zugänge konnten nicht ver- oder entschlüsselt werden.",
+      "notSaved": "Azure-Zugänge nicht gespeichert. Windows-Schlüsselablage oder Speicherort prüfen.",
+      "loadFailed": "Gespeicherte Azure-Zugänge konnten nicht geladen werden. In Einstellungen erneut eintragen."
+    }
+  },
+  "document": {
+    "fallbackTitle": "Teams-Gespräch",
+    "noTasks": "Keine Aufgaben ausgewählt.",
+    "status": {
+      "complete": "Abgeschlossen",
+      "inProgress": "Vorläufig – Gespräch läuft",
+      "finalizing": "Vorläufig – Abschluss noch nicht vollständig"
+    },
+    "headings": {
+      "invitation": "Outlook-Einladung",
+      "summary": "Zusammenfassung",
+      "decisions": "Entscheidungen",
+      "openQuestions": "Offene Fragen",
+      "tasks": "Aufgaben"
+    },
+    "labels": {
+      "status": "Stand",
+      "owner": "Verantwortlich",
+      "ownerToBeClarified": "Verantwortlich: noch zu klären",
+      "recipient": "Empfänger",
+      "due": "Termin",
+      "toBeClarified": "Noch zu klären",
+      "captureNote": "Hinweis zur Erfassung",
+      "processingNote": "Hinweis zur Verarbeitung"
+    },
+    "invitation": {
+      "meeting": "Outlook-Termin",
+      "organizer": "Organisiert von",
+      "attendees": "Teilnehmer laut Outlook-Einladung:"
+    }
+  },
+  "edits": {
+    "warnings": {
+      "taskLimit": "Weitere Aufgabenvorschläge konnten nicht aufgenommen werden: maximal 40 pro Gespräch."
+    },
+    "errors": {
+      "notesUnavailable": "Notizen nicht verfügbar",
+      "unknownField": "Unbekanntes Feld",
+      "operationRequired": "Operation erforderlich",
+      "operationChanged": "Operation verändert",
+      "invalidTasks": "Ungültige Aufgaben",
+      "invalidTask": "Ungültige Aufgabe",
+      "invalidPeople": "Ungültige Personen",
+      "manualOnly": "Nur manuelle Ergänzungen",
+      "summaryUpdating": "Zusammenfassung wird aktualisiert",
+      "invalidSummary": "Ungültige Zusammenfassung"
+    }
+  },
+  "notes": {
+    "people": {
+      "loading": "Personen werden geladen …",
+      "noCalendarData": "Keine Kalenderdaten für dieses gespeicherte Meeting."
+    },
+    "errors": {
+      "alreadyActive": "Meeting-Notizen sind bereits aktiv oder werden beendet.",
+      "rawDiscarded": "Rohtext verworfen; vorhandener Zwischenstand bleibt erhalten.",
+      "shuttingDown": "Meeting-Notizen werden beendet.",
+      "noCompleteRecording": "Keine vollständige Aufnahme verfügbar. Geräte, Eingangspegel und Speech-Zugang prüfen.",
+      "rawUnavailable": "Rohtext nicht verfügbar oder Verarbeitung läuft bereits.",
+      "summaryIncomplete": "Zusammenfassung noch nicht vollständig. Textmodell nicht erreichbar oder Antwort ungültig.",
+      "rawExpired": "Abschluss unvollständig. Rohtext nach 15 Minuten verworfen; vorhandene Notizen bleiben erhalten.",
+      "resultUnavailable": "Ergebnis nicht mehr verfügbar.",
+      "finishFirst": "Bitte erst Aufnahme oder Verarbeitung beenden.",
+      "reviewTaskChanges": "Bitte zuerst die Aufgabenänderungen in OneNote prüfen.",
+      "notSaved": "Noch nicht gespeichert. Speicherort nicht beschreibbar oder Datenträger voll. Automatischer neuer Versuch in 10 Sekunden.",
+      "historyLoadFailed": "Gespeicherte Meetings konnten nicht geladen werden. Speicherort prüfen.",
+      "closedBeforeCompletion": "Programm vor Meeting-Abschluss beendet. Dies ist der zuletzt gespeicherte Zwischenstand.",
+      "noteLoadFailed": "Eine gespeicherte Notiz konnte nicht geladen werden. Die Datei bleibt unverändert im Speicherordner.",
+      "stillUpdating": "Notizen werden noch automatisch aktualisiert.",
+      "invalidNotes": "Ungültige Notizen.",
+      "changedElsewhere": "Die Notizen wurden anderweitig geändert. Fenster neu öffnen und Änderungen abgleichen.",
+      "meetingUnavailable": "Meeting nicht verfügbar",
+      "editingInOneNote": "Diese Notizen werden in OneNote bearbeitet.",
+      "interimDelayed": "Zwischenstand verzögert. Erfassung läuft weiter; erneuter Versuch automatisch.",
+      "setupFirst": "Bitte zuerst mit Microsoft anmelden und die Einrichtung mit „Fertig“ abschließen.",
+      "waitForPreviousAudio": "Bitte den Audio-Abschluss des vorherigen Meetings abwarten.",
+      "startFailedManaged": "Meeting-Notizen konnten nicht starten. Bitte in den Einstellungen die DAS-Anmeldung und Audiogeräte prüfen.",
+      "startFailedDirect": "Meeting-Notizen konnten nicht starten. Im Fenster Meeting-Notizen Geräte, Region und beide Azure-Zugänge prüfen.",
+      "completionFailed": "Meeting-Abschluss fehlgeschlagen; Rohtext verworfen.",
+      "windowShowFailed": "Meeting-Fenster konnte nicht eingeblendet werden. Über das Tray-Symbol öffnen.",
+      "windowOpenFailed": "Meeting-Fenster konnte nicht geöffnet werden.",
+      "interrupted": "Meeting-Notizen wurden unterbrochen. Keine Audiodatei angelegt."
+    }
+  },
+  "oneNote": {
+    "page": {
+      "notesBy": "Notizen von {{name}}"
+    },
+    "defaults": {
+      "section": "Abschnitt",
+      "sectionGroup": "Gruppe",
+      "customerNotebook": "Kundennotizbuch"
+    },
+    "errors": {
+      "uncertain": "Übertragung noch nicht bestätigt. Bitte OneNote prüfen und den Status erneut prüfen. Es wird keine weitere Seite angelegt.",
+      "unreachable": "OneNote nicht erreichbar. Ihre Notizen bleiben lokal gesichert. Bitte erneut versuchen.",
+      "wrongAccount": "Bitte mit dem Microsoft-Konto des gewählten Notizbuchs anmelden.",
+      "storageUnavailable": "Übertragung nicht gestartet: lokaler Speicher nicht verfügbar.",
+      "meetingUnavailable": "Meeting nicht mehr verfügbar.",
+      "readFailed": "OneNote konnte nicht gelesen werden (HTTP {{status}}). Anmeldung und Zugriffsrechte prüfen.",
+      "invalidDestination": "Ungültiges OneNote-Ziel.",
+      "notConnected": "Bitte OneNote verbinden. Ihre Organisation muss den Zugriff auf geteilte Notizbücher erlauben.",
+      "listTooLarge": "OneNote-Liste zu umfangreich. Bitte einen genaueren Zielbereich konfigurieren.",
+      "sectionsTooLarge": "OneNote-Abschnittsstruktur zu umfangreich.",
+      "reloadNotebooks": "Notizbücher bitte erneut laden.",
+      "accountChanged": "Microsoft-Konto geändert. Notizbücher erneut laden.",
+      "transferStarted": "Übertragung bereits gestartet. Ziel kann nicht mehr geändert werden.",
+      "chooseLocation": "Speicherort auswählen.",
+      "chooseNotebookAndSection": "Notizbuch und Abschnitt auswählen.",
+      "locationNotSaved": "Speicherort konnte nicht lokal gesichert werden.",
+      "selectionNotSaved": "Auswahl konnte nicht gespeichert werden. Bitte erneut versuchen.",
+      "notFinalized": "Bitte den Abschluss der Notizen abwarten.",
+      "notesChanged": "Notizen wurden geändert. Bitte den aktuellen Stand prüfen und erneut speichern.",
+      "chooseLocationFirst": "Bitte zuerst den OneNote-Speicherort wählen.",
+      "notesOrLocationChanged": "Notizen oder Speicherort geändert. Bitte erneut speichern.",
+      "sectionUnavailable": "OneNote-Abschnitt nicht mehr verfügbar. Ihre Notizen bleiben lokal gesichert. Bitte Ziel ändern.",
+      "pageRejected": "OneNote hat die Ablage abgelehnt (HTTP {{status}}). Zugriff prüfen und erneut versuchen.",
+      "localStatusPending": "In OneNote gespeichert; lokaler Status noch nicht gesichert. Bitte Client geöffnet lassen.",
+      "tasksRejected": "Aufgaben konnten nicht aktualisiert werden (HTTP {{status}}). Bitte Zugriff prüfen und erneut versuchen.",
+      "taskChangeUnconfirmed": "OneNote hat die Aufgabenänderung noch nicht bestätigt. Bitte den Status prüfen.",
+      "tasksUnreachable": "OneNote nicht erreichbar. Ihre Aufgabenänderungen bleiben lokal gesichert. Bitte erneut versuchen.",
+      "taskConflict": "Diese Aufgabe wurde in OneNote geändert oder konnte nicht eindeutig zugeordnet werden. Ihre Korrektur bleibt lokal gesichert. Bitte die Aufgabe in OneNote prüfen und dort ergänzen.",
+      "taskChangePending": "Die Aufgabenänderung ist noch nicht bestätigt. Ihre Korrektur bleibt lokal gesichert. Bitte OneNote öffnen oder den Status später erneut prüfen. Es wird nichts erneut übertragen."
+    },
+    "warnings": {
+      "personalNotebooks": "Persönliche Notizbücher konnten nicht geladen werden.",
+      "groupMemberships": "Gruppenmitgliedschaften konnten nicht geladen werden. Bitte erneut laden.",
+      "groupNotebooks": "Einige Gruppen-Notizbücher konnten nicht geladen werden. Bitte erneut laden oder Zugriffsrechte prüfen.",
+      "sharePointNotebooks": "Einige SharePoint-Notizbücher konnten nicht geladen werden. Zugriffsrechte oder konfigurierte Sites prüfen.",
+      "sharePointConsent": "Für konfigurierte SharePoint-Sites fehlt die Freigabe. Über ‚SharePoint verbinden‘ erteilen."
+    },
+    "notices": {
+      "conflictingRules": "Mehrere unterschiedliche Kundenziele gefunden. Dieses Meeting wird auf diesem PC gespeichert; Sie können OneNote wählen.",
+      "missingSection": "Zum gemerkten Kundennotizbuch fehlt der Abschnitt. Bitte das OneNote-Ziel einmal bestätigen. Bis dahin wird lokal gespeichert.",
+      "sectionUnavailable": "Der gemerkte OneNote-Abschnitt ist nicht verfügbar. Dieses Meeting wird auf diesem PC gespeichert.",
+      "checkFailed": "Das gemerkte OneNote-Ziel konnte nicht geprüft werden. Dieses Meeting wird auf diesem PC gespeichert. Bitte OneNote-Ziel prüfen."
+    },
+    "reasons": {
+      "rememberedForDomains": "Für Termine mit {{domains}} gemerkt.",
+      "selectedForMeeting": "Für dieses Meeting ausgewählt",
+      "rememberedForDomain": "Für diese Kundendomäne gemerkt",
+      "matchesEmailDomain": "Passend zur E-Mail-Domäne {{domain}}",
+      "lastUsed": "Zuletzt verwendet",
+      "chosenForMeeting": "Für dieses Meeting gewählt."
+    },
+    "local": {
+      "changedFileKept": "Eine lokal veränderte Datei wurde zusätzlich beibehalten.",
+      "fileNotRemoved": "In OneNote gespeichert. Die lokale Datei konnte noch nicht entfernt werden."
+    }
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "errors": {
+      "directEndpoint": "Direkten Azure-Ressourcenendpunkt eintragen, ohne API-Pfad oder Gateway.",
+      "removeKeyAfterStop": "Einstellungen erst nach Stop ändern",
+      "changeAfterStop": "Einstellungen erst nach Stop ändern.",
+      "invalid": "Ungültige Einstellungen.",
+      "selectMeetingLanguage": "Bitte eine Sprache wie de-DE oder en-US auswählen.",
+      "selectAppLanguage": "Bitte Deutsch oder Englisch als App-Sprache auswählen.",
+      "textModelKey": "Azure-Textmodell: Schlüssel und Deployment eintragen.",
+      "reselectDevices": "Mikrofon und Teams-Wiedergabegerät erneut auswählen."
+    }
+  },
+  "speech": {
+    "sources": {
+      "microphone": "Mikrofon",
+      "playback": "Wiedergabe"
+    },
+    "errors": {
+      "region": "Bitte die Azure-Region eintragen, zum Beispiel westeurope.",
+      "key": "Bitte einen gültigen Speech-Ressourcenschlüssel eintragen.",
+      "language": "Bitte eine Sprache wie de-DE oder en-US eintragen.",
+      "localName": "Bitte einen lokalen Namen mit höchstens 80 Zeichen eintragen.",
+      "dasNotConfigured": "DAS-Sprachdienst ist nicht konfiguriert.",
+      "dasRegionChanged": "DAS-Sprachregion wurde geändert. Meeting-Erfassung erneut starten.",
+      "dasAccessExpired": "DAS-Zugang abgelaufen oder nicht mehr freigeschaltet. Bitte erneut anmelden.",
+      "dasRenewFailed": "DAS-Sprachzugang konnte nicht verlängert werden. Vorhandene Notizen werden abgeschlossen.",
+      "selectDevices": "Mikrofon und Wiedergabegerät auswählen.",
+      "alreadyStarted": "Diese Sitzung wurde bereits gestartet.",
+      "audioProcessingFailed": "Audioverarbeitung fehlgeschlagen.",
+      "transcriptLimitOrProcessing": "Transkriptlimit oder Verarbeitungsfehler; Sitzung wird beendet.",
+      "azureEndedEarly": "Azure hat die Sitzung vorzeitig beendet.",
+      "azureSourceManaged": "Azure-Fehler bei {{source}}. DAS-Anmeldung, Netzwerk und Speech-Berechtigung prüfen.",
+      "azureSourceKey": "Azure-Fehler bei {{source}}. Region, Schlüssel, Netzwerk und Speech-Berechtigung prüfen.",
+      "deviceInactive": "Audiogerät nicht mehr aktiv; Sitzung wird beendet.",
+      "testLimit": "Testlimit von {{minutes}} Minuten erreicht.",
+      "startFailed": "Start oder Verarbeitung fehlgeschlagen. Geräte, Region und Speech-Zugang prüfen.",
+      "devicesCloseFailed": "Audiogeräte konnten nicht vollständig geschlossen werden.",
+      "completionUnconfirmed": "Azure-Abschluss nicht rechtzeitig bestätigt; letzte Wörter können fehlen.",
+      "sessionEndTimeout": "Azure-Sitzung nicht rechtzeitig beendet.",
+      "bufferFull": "Audiopuffer voll; Sitzung wird beendet.",
+      "invalidAudioFormat": "Ungültiges Audioformat; Sitzung wird beendet.",
+      "transcriptLimit": "Transkriptlimit erreicht; Sitzung wird beendet."
+    },
+    "notices": {
+      "captureLost": "Audioaufnahme unterbrochen. Sie läuft weiter, sobald wieder ein Mikrofon und ein Wiedergabegerät verfügbar sind.",
+      "processingBlocked": "Die Verarbeitung war mehrere Sekunden blockiert; ein Teil des Audios aus dieser Zeit fehlt in den Notizen. Die Aufnahme läuft weiter.",
+      "deviceChanged": "Audiogerät gewechselt. Die Aufnahme läuft weiter mit Mikrofon „{{microphone}}“ und Wiedergabe „{{playback}}“.",
+      "resumed": "Audioaufnahme nach kurzer Unterbrechung fortgesetzt."
+    },
+    "summary": {
+      "lostUntilEnd": "Audioaufnahme während des Meetings unterbrochen; danach war kein Audiogerät verfügbar. Die Notizen reichen nur bis zu dieser Stelle.",
+      "interrupted": "Audioaufnahme während des Meetings {{times}}× unterbrochen; ca. {{seconds}} s ohne Ton. Die Notizen umfassen die Zeit davor und danach.",
+      "missingAudio": "Wegen einer Verzögerung fehlen ca. {{seconds}} s Audio."
+    }
+  },
+  "startup": {
+    "errors": {
+      "title": "{{app}} konnte nicht starten",
+      "interfaceMissing": "Die Programmoberfläche fehlt oder ist unvollständig. Bitte den Installer erneut ausführen.",
+      "connectionFailed": "Die lokale Verbindung konnte nicht gestartet werden. Bitte DAS Meeting Assistant beenden und erneut starten. Falls der Fehler bleibt, die lokale Port-Einstellung prüfen lassen.",
+      "interfaceFailed": "Die Programmoberfläche konnte nicht gestartet werden. Bitte DAS Meeting Assistant erneut starten. Falls der Fehler bleibt, den Installer erneut ausführen.",
+      "connectionNotPrepared": "Die lokale Verbindung wurde nicht vorbereitet.",
+      "separateDataDir": "Für den Starttest ist ein getrenntes App-Datenverzeichnis erforderlich."
+    }
+  },
+  "tray": {
+    "pastMeetings": "Frühere Meetings",
+    "settings": "Einstellungen…"
+  }
+}

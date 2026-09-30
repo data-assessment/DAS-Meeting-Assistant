@@ -1,8 +1,79 @@
 """App language (uiLanguage) for Meeting Notes messages and the summary output."""
+import json
+import re
+from pathlib import Path
+
 import pytest
 
 from engine import meeting_notes as mn
 from engine import notes_i18n
+from engine.notes_i18n import t
+
+ROOT = Path(__file__).resolve().parent.parent
+# Literal keys only: t("a.b") / t('a.b'); template keys (t(`...${x}`)) are dynamic and skipped.
+PY_KEY = re.compile(r"""(?<![\w.])(?:notes_i18n\.)?t\(\s*(["'])([^"'\\]+)\1""")
+TSX_KEY = re.compile(r"""(?<![\w.])t\(\s*(["'])([^"'\\]+)\1""")
+
+
+def _leaves(node, trail=""):
+    keys = set()
+    for key, value in node.items():
+        keys |= _leaves(value, f"{trail}{key}.") if isinstance(value, dict) else {trail + key}
+    return keys
+
+
+def _catalog_keys(folder):
+    return {lang: _leaves(json.loads((folder / f"{lang}.json").read_text(encoding="utf-8"))) for lang in ("de", "en")}
+
+
+def _missing(pattern, files, keys):
+    """Keys used in `files` that exist in neither form (plain or _one/_other) in a catalog."""
+    missing = []
+    for path in files:
+        for match in pattern.finditer(path.read_text(encoding="utf-8")):
+            key = match.group(2)
+            for lang, known in keys.items():
+                if key not in known and not {f"{key}_one", f"{key}_other"} <= known:
+                    missing.append(f"{path.relative_to(ROOT).as_posix()}: {key} ({lang})")
+    return missing
+
+
+@pytest.mark.parametrize("folder", [ROOT / "engine" / "locales", ROOT / "frontend" / "src" / "locales"])
+def test_catalogs_have_identical_key_sets(folder):
+    keys = _catalog_keys(folder)
+    assert keys["de"], folder
+    assert keys["de"] - keys["en"] == set(), "missing in en"
+    assert keys["en"] - keys["de"] == set(), "missing in de"
+
+
+def test_backend_keys_used_in_code_exist_in_both_catalogs():
+    files = [*sorted((ROOT / "engine").rglob("*.py")), ROOT / "app.py"]
+    assert _missing(PY_KEY, files, _catalog_keys(ROOT / "engine" / "locales")) == []
+
+
+def test_frontend_keys_used_in_code_exist_in_both_catalogs():
+    files = sorted((ROOT / "frontend" / "src").rglob("*.tsx"))
+    assert _missing(TSX_KEY, files, _catalog_keys(ROOT / "frontend" / "src" / "locales")) == []
+
+
+def test_t_fills_placeholders_and_selects_plurals(monkeypatch):
+    monkeypatch.setitem(notes_i18n._catalogs, "de", {"demo": {
+        "greeting": "Hallo {{name}}, {{missing}}", "items_one": "{{count}} Eintrag", "items_other": "{{count}} Einträge"}})
+    assert t("demo.greeting", name="Ada") == "Hallo Ada, {{missing}}"
+    assert t("demo.items", count=1) == "1 Eintrag"
+    assert t("demo.items", count=0) == "0 Einträge"
+    assert t("demo.items", count=3) == "3 Einträge"
+    assert t("demo.unknown") == "demo.unknown"
+
+
+def test_t_renders_catalog_texts_with_parameters():
+    assert t("speech.notices.deviceChanged", microphone="Headset", playback="Lautsprecher") == (
+        "Audiogerät gewechselt. Die Aufnahme läuft weiter mit Mikrofon „Headset“ und Wiedergabe „Lautsprecher“.")
+    assert t("speech.errors.testLimit", minutes=120) == "Testlimit von 120 Minuten erreicht."
+    notes_i18n.set_language("en")
+    assert t("speech.errors.azureSourceKey", source=t("speech.sources.playback")) == (
+        "Azure error on playback. Check the region, key, network and Speech permission.")
+    assert notes_i18n.variants("tray.pastMeetings") == ("Frühere Meetings", "Previous meetings")
 
 
 @pytest.fixture(autouse=True)

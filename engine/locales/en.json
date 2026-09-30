@@ -1,0 +1,306 @@
+{
+  "api": {
+    "errors": {
+      "foreignOrigin": "Foreign origin not allowed.",
+      "jsonRequired": "JSON required.",
+      "inputTooLarge": "Input too large.",
+      "audioDevicesLoadFailed": "Audio devices could not be loaded.",
+      "languageChangeFailed": "The language could not be changed.",
+      "signInFirst": "Please sign in with Microsoft first.",
+      "invalidSettingsManaged": "Invalid settings. Check the language and inputs.",
+      "invalidSettingsDirect": "Invalid settings. Check the direct Azure endpoint and inputs.",
+      "invalidSettings": "Invalid settings. Please check your inputs.",
+      "changeAfterMeeting": "Change settings only after the meeting.",
+      "settingsSaveFailed": "Settings could not be saved. Please check your inputs and try again.",
+      "setupSaved": "Setup saved. Please close the window using the ×.",
+      "dasSignInUnavailable": "DAS sign-in is only available in the DAS edition.",
+      "endMeetingFirst": "Please end the current meeting first.",
+      "dasSignInRunning": "DAS sign-in is already in progress.",
+      "microsoftSignInIncomplete": "Microsoft sign-in was not completed.",
+      "dasSignInFailed": "DAS sign-in not completed. Please try again or contact DAS support.",
+      "keyRemoveFailed": "The key could not be removed. Stop the recording and try again.",
+      "windowResizeFailed": "The window size could not be adjusted.",
+      "folderOpenFailed": "The storage folder could not be opened.",
+      "meetingGone": "Meeting no longer available.",
+      "rawAlreadyDiscarded": "Raw transcript already discarded or processing already running.",
+      "oneNoteUnreachable": "OneNote not reachable. Please connect or try again.",
+      "oneNoteSectionsFailed": "OneNote sections could not be loaded.",
+      "storageSaveFailed": "The storage location could not be saved. Please try again.",
+      "oneNoteUnreachableDraftKept": "OneNote not reachable. Your draft remains saved locally.",
+      "tasksCheckFailed": "Tasks could not be checked. Please try again.",
+      "oneNoteLinkUnavailable": "OneNote link not available. Please open OneNote directly.",
+      "meetingUnavailable": "Meeting not available.",
+      "calendarAccess": "Calendar access not granted.",
+      "calendarAccessCheck": "Calendar access not granted. Check the Microsoft sign-in or your organization's approval.",
+      "appointmentAssignFailed": "The appointment could not be assigned. Reload people.",
+      "teamsAccess": "Teams access not granted. Depending on your organization, an administrator must allow Chat.Read. People can still be added manually.",
+      "nothingToCopy": "No notes to copy yet.",
+      "clipboardUnavailable": "Clipboard not available. Please try again.",
+      "changeNotApplied": "Change not applied. Check your input and try again.",
+      "changeConflict": "Change not applied. The notes may have been changed elsewhere or the input is invalid. Copy your changes and reopen the window.",
+      "finishFirst": "Please finish the recording or processing first."
+    }
+  },
+  "calendar": {
+    "fallbackTitle": "Calendar event",
+    "notes": {
+      "unavailable": "Calendar currently unavailable. Retrying automatically.",
+      "accessMissing": "Calendar access missing.",
+      "tooManyEvents": "Too many simultaneous Outlook meetings. Please check the calendar.",
+      "severalMatches": "Several meetings match. Please select the meeting.",
+      "noMatch": "No matching calendar invitation found."
+    },
+    "errors": {
+      "editedInOneNote": "These notes are being edited in OneNote.",
+      "eventUnavailable": "Meeting no longer available",
+      "alreadyAssigned": "Meeting already assigned"
+    }
+  },
+  "calls": {
+    "notes": {
+      "callAmbiguous": "Call not identified unambiguously. Contacts from one-on-one, group and meeting chats are available; their attendance is not confirmed.",
+      "chatPeopleOnly": "People from the meeting chat are available. Confirmed call participants may become available after the meeting ends.",
+      "participantsUnavailable": "Call participants currently unavailable. People can be added manually."
+    }
+  },
+  "cloud": {
+    "errors": {
+      "signIn": "Please sign in with Microsoft in the settings.",
+      "accessMissing": "DAS access is missing or has expired. Please sign in again; DAS may need to enable your organization.",
+      "speechNotReady": "The DAS speech service is not ready yet. Please contact DAS support.",
+      "speechUnavailable": "The DAS speech service is temporarily unavailable.",
+      "speechAccessFailed": "DAS speech access could not be loaded. Check the connection and try again.",
+      "summariesNotConfigured": "DAS summaries are not configured yet.",
+      "summariesUnreachable": "DAS summaries are not reachable or not enabled for your account. Please contact DAS support.",
+      "speechRecognitionUnreachable": "DAS speech recognition is not reachable or not enabled for your work account. Please contact DAS support."
+    }
+  },
+  "credentials": {
+    "errors": {
+      "keyStorageUnavailable": "Windows key storage not available.",
+      "cryptFailed": "Azure credentials could not be encrypted or decrypted.",
+      "notSaved": "Azure credentials not saved. Check the Windows key storage or storage location.",
+      "loadFailed": "Saved Azure credentials could not be loaded. Enter them again in the settings."
+    }
+  },
+  "document": {
+    "fallbackTitle": "Teams call",
+    "noTasks": "No tasks selected.",
+    "status": {
+      "complete": "Complete",
+      "inProgress": "Preliminary – meeting in progress",
+      "finalizing": "Preliminary – finalization not yet complete"
+    },
+    "headings": {
+      "invitation": "Outlook invitation",
+      "summary": "Summary",
+      "decisions": "Decisions",
+      "openQuestions": "Open questions",
+      "tasks": "Tasks"
+    },
+    "labels": {
+      "status": "Status",
+      "owner": "Owner",
+      "ownerToBeClarified": "Owner: to be clarified",
+      "recipient": "Recipient",
+      "due": "Due",
+      "toBeClarified": "To be clarified",
+      "captureNote": "Capture note",
+      "processingNote": "Processing note"
+    },
+    "invitation": {
+      "meeting": "Outlook meeting",
+      "organizer": "Organized by",
+      "attendees": "Attendees per Outlook invitation:"
+    }
+  },
+  "edits": {
+    "warnings": {
+      "taskLimit": "Further task suggestions could not be added: at most 40 per meeting."
+    },
+    "errors": {
+      "notesUnavailable": "Notes not available",
+      "unknownField": "Unknown field",
+      "operationRequired": "Operation required",
+      "operationChanged": "Operation changed",
+      "invalidTasks": "Invalid tasks",
+      "invalidTask": "Invalid task",
+      "invalidPeople": "Invalid people",
+      "manualOnly": "Manual additions only",
+      "summaryUpdating": "Summary is being updated",
+      "invalidSummary": "Invalid summary"
+    }
+  },
+  "notes": {
+    "people": {
+      "loading": "Loading people …",
+      "noCalendarData": "No calendar data for this saved meeting."
+    },
+    "errors": {
+      "alreadyActive": "Meeting notes are already active or shutting down.",
+      "rawDiscarded": "Raw transcript discarded; the existing interim notes are kept.",
+      "shuttingDown": "Meeting notes are shutting down.",
+      "noCompleteRecording": "No complete recording available. Check the devices, input level and Speech access.",
+      "rawUnavailable": "Raw transcript not available or processing already running.",
+      "summaryIncomplete": "Summary not yet complete. Text model unreachable or response invalid.",
+      "rawExpired": "Completion incomplete. Raw transcript discarded after 15 minutes; existing notes are kept.",
+      "resultUnavailable": "Result no longer available.",
+      "finishFirst": "Please finish the recording or processing first.",
+      "reviewTaskChanges": "Please review the task changes in OneNote first.",
+      "notSaved": "Not saved yet. Storage location not writable or disk full. Retrying automatically in 10 seconds.",
+      "historyLoadFailed": "Saved meetings could not be loaded. Check the storage location.",
+      "closedBeforeCompletion": "The app was closed before the meeting was completed. These are the last saved interim notes.",
+      "noteLoadFailed": "A saved note could not be loaded. The file remains unchanged in the storage folder.",
+      "stillUpdating": "Notes are still being updated automatically.",
+      "invalidNotes": "Invalid notes.",
+      "changedElsewhere": "The notes were changed elsewhere. Reopen the window and reconcile the changes.",
+      "meetingUnavailable": "Meeting not available",
+      "editingInOneNote": "These notes are being edited in OneNote.",
+      "interimDelayed": "Interim notes delayed. Capture continues; retrying automatically.",
+      "setupFirst": "Please sign in with Microsoft first and complete the setup with “Done”.",
+      "waitForPreviousAudio": "Please wait until the audio of the previous meeting has been completed.",
+      "startFailedManaged": "Meeting notes could not start. Please check the DAS sign-in and audio devices in the settings.",
+      "startFailedDirect": "Meeting notes could not start. Check the devices, region and both Azure accesses in the Meeting Notes window.",
+      "completionFailed": "Completing the meeting failed; raw transcript discarded.",
+      "windowShowFailed": "The meeting window could not be shown. Open it from the tray icon.",
+      "windowOpenFailed": "The meeting window could not be opened.",
+      "interrupted": "Meeting notes were interrupted. No audio file was created."
+    }
+  },
+  "oneNote": {
+    "page": {
+      "notesBy": "Notes by {{name}}"
+    },
+    "defaults": {
+      "section": "Section",
+      "sectionGroup": "Group",
+      "customerNotebook": "Customer notebook"
+    },
+    "errors": {
+      "uncertain": "Transfer not yet confirmed. Please check OneNote and check the status again. No further page will be created.",
+      "unreachable": "OneNote is not reachable. Your notes remain saved locally. Please try again.",
+      "wrongAccount": "Please sign in with the Microsoft account of the selected notebook.",
+      "storageUnavailable": "Transfer not started: local storage not available.",
+      "meetingUnavailable": "Meeting no longer available.",
+      "readFailed": "OneNote could not be read (HTTP {{status}}). Check sign-in and access rights.",
+      "invalidDestination": "Invalid OneNote destination.",
+      "notConnected": "Please connect OneNote. Your organization must allow access to shared notebooks.",
+      "listTooLarge": "OneNote list too large. Please configure a more specific destination.",
+      "sectionsTooLarge": "OneNote section structure too large.",
+      "reloadNotebooks": "Please reload the notebooks.",
+      "accountChanged": "Microsoft account changed. Reload the notebooks.",
+      "transferStarted": "Transfer already started. The destination can no longer be changed.",
+      "chooseLocation": "Choose a storage location.",
+      "chooseNotebookAndSection": "Choose a notebook and section.",
+      "locationNotSaved": "The storage location could not be saved locally.",
+      "selectionNotSaved": "The selection could not be saved. Please try again.",
+      "notFinalized": "Please wait until the notes are finalized.",
+      "notesChanged": "The notes were changed. Please review the current version and save again.",
+      "chooseLocationFirst": "Please choose the OneNote location first.",
+      "notesOrLocationChanged": "Notes or storage location changed. Please save again.",
+      "sectionUnavailable": "OneNote section no longer available. Your notes remain saved locally. Please change the destination.",
+      "pageRejected": "OneNote rejected the page (HTTP {{status}}). Check access and try again.",
+      "localStatusPending": "Saved in OneNote; local status not yet saved. Please keep the client open.",
+      "tasksRejected": "Tasks could not be updated (HTTP {{status}}). Please check access and try again.",
+      "taskChangeUnconfirmed": "OneNote has not yet confirmed the task change. Please check the status.",
+      "tasksUnreachable": "OneNote is not reachable. Your task changes remain saved locally. Please try again.",
+      "taskConflict": "This task was changed in OneNote or could not be matched unambiguously. Your correction remains saved locally. Please check the task in OneNote and complete it there.",
+      "taskChangePending": "The task change is not yet confirmed. Your correction remains saved locally. Please open OneNote or check the status again later. Nothing will be sent again."
+    },
+    "warnings": {
+      "personalNotebooks": "Personal notebooks could not be loaded.",
+      "groupMemberships": "Group memberships could not be loaded. Please reload.",
+      "groupNotebooks": "Some group notebooks could not be loaded. Please reload or check access rights.",
+      "sharePointNotebooks": "Some SharePoint notebooks could not be loaded. Check access rights or configured sites.",
+      "sharePointConsent": "Consent is missing for configured SharePoint sites. Grant it via ‘Connect SharePoint’."
+    },
+    "notices": {
+      "conflictingRules": "Several different customer destinations found. This meeting is saved on this PC; you can choose OneNote.",
+      "missingSection": "The remembered customer notebook has no section. Please confirm the OneNote destination once. Until then, notes are saved locally.",
+      "sectionUnavailable": "The remembered OneNote section is not available. This meeting is saved on this PC.",
+      "checkFailed": "The remembered OneNote destination could not be checked. This meeting is saved on this PC. Please check the OneNote destination."
+    },
+    "reasons": {
+      "rememberedForDomains": "Remembered for meetings with {{domains}}.",
+      "selectedForMeeting": "Selected for this meeting",
+      "rememberedForDomain": "Remembered for this customer domain",
+      "matchesEmailDomain": "Matches the email domain {{domain}}",
+      "lastUsed": "Last used",
+      "chosenForMeeting": "Chosen for this meeting."
+    },
+    "local": {
+      "changedFileKept": "A locally changed file was kept as well.",
+      "fileNotRemoved": "Saved in OneNote. The local file could not be removed yet."
+    }
+  },
+  "settings": {
+    "title": "Settings",
+    "errors": {
+      "directEndpoint": "Enter the direct Azure resource endpoint, without an API path or gateway.",
+      "removeKeyAfterStop": "Change settings only after stopping",
+      "changeAfterStop": "Change settings only after stopping.",
+      "invalid": "Invalid settings.",
+      "selectMeetingLanguage": "Please select a language such as de-DE or en-US.",
+      "selectAppLanguage": "Please select German or English as the app language.",
+      "textModelKey": "Azure text model: enter the key and deployment.",
+      "reselectDevices": "Select the microphone and Teams playback device again."
+    }
+  },
+  "speech": {
+    "sources": {
+      "microphone": "microphone",
+      "playback": "playback"
+    },
+    "errors": {
+      "region": "Please enter the Azure region, for example westeurope.",
+      "key": "Please enter a valid Speech resource key.",
+      "language": "Please enter a language such as de-DE or en-US.",
+      "localName": "Please enter a local name with at most 80 characters.",
+      "dasNotConfigured": "The DAS speech service is not configured.",
+      "dasRegionChanged": "The DAS speech region changed. Start the meeting capture again.",
+      "dasAccessExpired": "DAS access expired or is no longer enabled. Please sign in again.",
+      "dasRenewFailed": "DAS speech access could not be renewed. Existing notes are being completed.",
+      "selectDevices": "Select a microphone and a playback device.",
+      "alreadyStarted": "This session has already been started.",
+      "audioProcessingFailed": "Audio processing failed.",
+      "transcriptLimitOrProcessing": "Transcript limit or processing error; the session is ending.",
+      "azureEndedEarly": "Azure ended the session early.",
+      "azureSourceManaged": "Azure error on {{source}}. Check the DAS sign-in, network and Speech permission.",
+      "azureSourceKey": "Azure error on {{source}}. Check the region, key, network and Speech permission.",
+      "deviceInactive": "Audio device no longer active; the session is ending.",
+      "testLimit": "Test limit of {{minutes}} minutes reached.",
+      "startFailed": "Start or processing failed. Check the devices, region and Speech access.",
+      "devicesCloseFailed": "Audio devices could not be closed completely.",
+      "completionUnconfirmed": "Azure did not confirm completion in time; the last words may be missing.",
+      "sessionEndTimeout": "Azure session did not end in time.",
+      "bufferFull": "Audio buffer full; the session is ending.",
+      "invalidAudioFormat": "Invalid audio format; the session is ending.",
+      "transcriptLimit": "Transcript limit reached; the session is ending."
+    },
+    "notices": {
+      "captureLost": "Audio recording interrupted. It resumes as soon as a microphone and a playback device are available again.",
+      "processingBlocked": "Processing was blocked for several seconds; part of the audio from that time is missing from the notes. Recording continues.",
+      "deviceChanged": "Audio device changed. Recording continues with microphone “{{microphone}}” and playback “{{playback}}”.",
+      "resumed": "Audio recording resumed after a short interruption."
+    },
+    "summary": {
+      "lostUntilEnd": "Audio recording was interrupted during the meeting; afterwards no audio device was available. The notes only cover the meeting up to that point.",
+      "interrupted": "Audio recording was interrupted {{times}}× during the meeting; about {{seconds}} s without sound. The notes cover the time before and after.",
+      "missingAudio": "About {{seconds}} s of audio are missing due to a delay."
+    }
+  },
+  "startup": {
+    "errors": {
+      "title": "{{app}} could not start",
+      "interfaceMissing": "The app interface is missing or incomplete. Please run the installer again.",
+      "connectionFailed": "The local connection could not be started. Please quit DAS Meeting Assistant and start it again. If the error persists, have the local port setting checked.",
+      "interfaceFailed": "The app interface could not be started. Please start DAS Meeting Assistant again. If the error persists, run the installer again.",
+      "connectionNotPrepared": "The local connection was not prepared.",
+      "separateDataDir": "The startup test requires a separate app data directory."
+    }
+  },
+  "tray": {
+    "pastMeetings": "Previous meetings",
+    "settings": "Settings…"
+  }
+}

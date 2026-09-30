@@ -18,13 +18,13 @@ async function request(url: string, body?: unknown) {
   const response = await fetch(url, body === undefined ? { cache: 'no-store' } : {
     method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
   })
-  if (!response.ok) throw new Error(t('Client nicht erreichbar. Änderungen bleiben in diesem Fenster erhalten.', 'Client not reachable. Changes are kept in this window.'))
+  if (!response.ok) throw new Error(t('errors.clientUnreachableChangesKept'))
   const data = await response.json()
-  if (data.ok === false) throw new Error(data.error || t('Aktion fehlgeschlagen.', 'Action failed.'))
+  if (data.ok === false) throw new Error(data.error || t('errors.actionFailed'))
   return data
 }
 const post = (url: string, body: unknown = {}) => request(url, body)
-const errorText = (e: unknown) => e instanceof Error ? e.message : t('Aktion fehlgeschlagen.', 'Action failed.')
+const errorText = (e: unknown) => e instanceof Error ? e.message : t('errors.actionFailed')
 // Manual start needs no Teams presence, so Zoom and other PC audio can be captured too.
 const canStart = (state: NotesState) => state.enabled && !state.active && (state.options.managed === true
   ? state.options.setupComplete === true && state.options.onboardingComplete === true
@@ -114,7 +114,7 @@ let openSettings: (() => void) | null = null
 
 function SettingsButton() {
   if (!openSettings) return null
-  const label = t('Einstellungen', 'Settings')
+  const label = t('navigation.settings')
   return <button className="settings-button" title={label} aria-label={label} onClick={openSettings}>
     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false">
       <circle cx="12" cy="12" r="3" />
@@ -157,7 +157,7 @@ function LanguageSwitch() {
     finally { setBusy(false) }
   }
   const [, currentLabel, CurrentFlag] = LANGUAGES.find(([value]) => value === appLanguage()) ?? LANGUAGES[0]
-  const label = t('App-Sprache', 'App language')
+  const label = t('navigation.appLanguage')
   return <div className="language-switch" ref={root}>
     <button className="language-toggle" title={`${label}: ${currentLabel}`} aria-label={`${label}: ${currentLabel}`} aria-haspopup="menu" aria-expanded={open} disabled={busy} onClick={() => setOpen(value => !value)}>
       <CurrentFlag /><svg className="language-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" /></svg>
@@ -179,15 +179,15 @@ function Popup({ children, storage, saved, error, onFolder, onHistory, documentN
   }, [expanded])
   const folder = storage.split(/[\\/]/).filter(Boolean).pop() || 'Meeting-Notizen'
   return <main className={'meeting-notes' + (expanded ? ' summary-expanded' : '')}>
-    <nav className="notes-navigation" aria-label={t('Meeting-Navigation', 'Meeting navigation')}><LanguageSwitch />{onHistory && <button onClick={onHistory}>{t('Alle Meetings', 'All meetings')}</button>}<SettingsButton /></nav>
+    <nav className="notes-navigation" aria-label={t('navigation.label')}><LanguageSwitch />{onHistory && <button onClick={onHistory}>{t('navigation.allMeetings')}</button>}<SettingsButton /></nav>
     <div className="notes-scroll"><div className="notes-content">{children}</div></div>
     <footer className="notes-footer">{footer !== undefined ? footer : <>
       <div className="storage-copy"><div className={error ? 'notes-error' : 'storage-status'} role="status">{saved}</div>
-        <div className="storage-location">{oneNote?.mode === 'onenote' ? `OneNote · ${oneNote.target?.bookName || t('Ziel noch wählen', 'Choose destination')}` : t(`Auf diesem PC · Ordner „${folder}“`, `On this PC · Folder “${folder}”`)}</div>
+        <div className="storage-location">{oneNote?.mode === 'onenote' ? `OneNote · ${oneNote.target?.bookName || t('meeting.storage.chooseDestination')}` : t('meeting.storage.localFolder', { folder })}</div>
         {documentName && oneNote?.mode !== 'onenote' && <div className="storage-filename" title={documentName}>{documentName}</div>}
       </div>
-      <div className="onenote-actions">{oneNote?.mode === 'onenote' ? oneNote.status === 'saved' && <button onClick={onOneNote}>{t('OneNote öffnen', 'Open OneNote')}</button> : <button onClick={onFolder}>{t('Ordner öffnen', 'Open folder')}</button>}
-        {onClose && <button className="primary" disabled={closeDisabled} onClick={onClose}>{t('Meeting-Fenster schließen', 'Close meeting window')}</button>}</div>
+      <div className="onenote-actions">{oneNote?.mode === 'onenote' ? oneNote.status === 'saved' && <button onClick={onOneNote}>{t('common.openOneNote')}</button> : <button onClick={onFolder}>{t('common.openFolder')}</button>}
+        {onClose && <button className="primary" disabled={closeDisabled} onClick={onClose}>{t('common.closeMeetingWindow')}</button>}</div>
     </>}</footer>
   </main>
 }
@@ -227,12 +227,12 @@ function ReviewPanel({ review, visible, current, state, history, configure, refr
   const saveError = edit.error || review.storeError
   const count = d?.tasks.filter(unresolved).length || 0
   const selected = d?.tasks.filter(t => t.included !== false).length || 0
-  const title = connectionError ? t('Client nicht erreichbar', 'Client not reachable') : live ? t('Meeting läuft', 'Meeting in progress') : finalizing ? t('Verarbeitung läuft …', 'Processing …') : complete ? t('Notizen fertig', 'Notes ready') : t('Abschluss unvollständig', 'Completion incomplete')
+  const title = connectionError ? t('meeting.status.clientUnreachable') : live ? t('meeting.status.inProgress') : finalizing ? t('meeting.status.processing') : complete ? t('meeting.status.notesReady') : t('meeting.status.incomplete')
   const statusError = !!connectionError || (!live && !finalizing && !complete)
-  const saved = !saveError && oneNote.mode === 'onenote' ? published ? oneNoteSavedLabel(oneNote) : ['preparing', 'sending'].includes(oneNote.status) ? t('Wird in OneNote gespeichert …', 'Saving to OneNote …') : oneNote.status === 'uncertain' ? t('Lokal gesichert · OneNote noch nicht bestätigt', 'Saved locally · OneNote not yet confirmed') : oneNote.error ? t('Lokal gesichert · Noch nicht in OneNote gespeichert', 'Saved locally · Not yet saved to OneNote') : complete ? t('Automatische OneNote-Ablage wird gestartet …', 'Starting automatic save to OneNote …') : t('Entwurf gesichert · OneNote-Ablage nach Meeting-Ende', 'Draft saved · Saved to OneNote after the meeting') : saveError ? t('Noch nicht gespeichert', 'Not saved yet') : edit.saving ? t('Änderungen werden gespeichert …', 'Saving changes …') : !d ? t('Notizen werden automatisch gespeichert', 'Notes are saved automatically') : live || finalizing ? t('✓ Vorläufige Notizen gespeichert', '✓ Preliminary notes saved') : t('✓ Auf diesem PC gespeichert', '✓ Saved on this PC')
+  const saved = !saveError && oneNote.mode === 'onenote' ? published ? oneNoteSavedLabel(oneNote) : ['preparing', 'sending'].includes(oneNote.status) ? t('meeting.save.savingToOneNote') : oneNote.status === 'uncertain' ? t('common.savedLocallyOneNoteUnconfirmed') : oneNote.error ? t('meeting.save.savedLocallyNotInOneNote') : complete ? t('meeting.save.startingOneNoteSave') : t('meeting.save.draftSavedOneNoteLater') : saveError ? t('meeting.save.notSavedYet') : edit.saving ? t('common.savingChanges') : !d ? t('meeting.save.savedAutomatically') : live || finalizing ? t('meeting.save.preliminarySaved') : t('meeting.save.savedOnPc')
   const savedTime = edit.savedAt ? new Date(edit.savedAt).toLocaleTimeString(uiLocale(), { hour: '2-digit', minute: '2-digit', second: '2-digit' }) : ''
-  const saveLabel = saveError ? t('Nicht gespeichert', 'Not saved') : edit.saving ? t('Speichert …', 'Saving …') : savedTime ? t(`Gespeichert um ${savedTime}`, `Saved at ${savedTime}`) : t('Wird automatisch gespeichert', 'Saved automatically')
-  const summaryStatus = published ? t('Abgelegter Stand · Weitere Änderungen direkt in OneNote', 'Saved version · Make further changes directly in OneNote') : (issue && !complete) ? t('Verarbeitung prüfen', 'Check processing') : finalizing ? t('Finale Zusammenfassung wird erstellt …', 'Creating final summary …') : d ? complete ? t('Text direkt bearbeiten. Jede Änderung wird automatisch gespeichert.', 'Edit the text directly. Every change is saved automatically.') : t('Wird laufend aktualisiert. Nach Abschluss bearbeitbar.', 'Updated continuously. Editable once complete.') : live ? t('Gespräch wird verarbeitet …', 'Processing conversation …') : t('Keine Zusammenfassung verfügbar.', 'No summary available.')
+  const saveLabel = saveError ? t('common.notSaved') : edit.saving ? t('summary.saving') : savedTime ? t('summary.savedAt', { time: savedTime }) : t('summary.savedAutomatically')
+  const summaryStatus = published ? t('summary.status.savedVersion') : (issue && !complete) ? t('summary.status.checkProcessing') : finalizing ? t('summary.status.creatingFinal') : d ? complete ? t('summary.status.editDirectly') : t('summary.status.updatedContinuously') : live ? t('summary.status.processingConversation') : t('summary.status.noneAvailable')
   async function action(url: string) {
     setActionBusy(true); setMessage('')
     try { await post(url); refresh() } catch (e) { setMessage(errorText(e)) }
@@ -244,23 +244,23 @@ function ReviewPanel({ review, visible, current, state, history, configure, refr
     catch (e) { setCopyState(errorText(e)); setCopyError(true) }
   }
   const notices = <>
-    {connectionError && <div className="notice" role="alert">{t('Der aktuelle Stand kann gerade nicht bestätigt werden. Die Verbindung wird automatisch erneut geprüft.', 'The current state cannot be confirmed right now. The connection is checked again automatically.')}</div>}
-    {!!saveError && <div className="notice" role="alert"><strong>{t('Notizen noch nicht gespeichert.', 'Notes not saved yet.')}</strong><p>{saveError}</p>{edit.blocked && <button onClick={edit.retry}>{t('Erneut versuchen', 'Try again')}</button>}</div>}
+    {connectionError && <div className="notice" role="alert">{t('meeting.notices.connectionUnconfirmed')}</div>}
+    {!!saveError && <div className="notice" role="alert"><strong>{t('common.notesNotSaved')}</strong><p>{saveError}</p>{edit.blocked && <button onClick={edit.retry}>{t('common.retry')}</button>}</div>}
     {(review.error || review.warning || message) && <div className="notice" role="alert"><p>{message || review.error || review.warning}</p>
-      {review.autoRetry ? <p>{t('Ein neuer Versuch startet automatisch.', 'A new attempt starts automatically.')}</p> : review.canSummarize && <button disabled={review.busy} onClick={() => void action(`/api/notes/${review.id}/summarize`)}>{t('Erneut versuchen', 'Try again')}</button>}</div>}
-    {current && state.error && <div className="notice" role="alert"><p>{state.error}</p><button onClick={configure}>{t('Einstellungen öffnen', 'Open settings')}</button></div>}
-    {current && state.health !== 'ok' && !connectionError && <div className="notice" role="alert"><p>{t('Der Teams-Status ist nicht erreichbar. Das Anrufende kann nicht zuverlässig erkannt werden.', 'Teams status is not reachable. The end of the call cannot be detected reliably.')}</p>{state.health === 'auth' && <button onClick={() => void action('/api/sign-in')}>{t('Mit Microsoft anmelden', 'Sign in with Microsoft')}</button>}</div>}
+      {review.autoRetry ? <p>{t('meeting.notices.autoRetry')}</p> : review.canSummarize && <button disabled={review.busy} onClick={() => void action(`/api/notes/${review.id}/summarize`)}>{t('common.retry')}</button>}</div>}
+    {current && state.error && <div className="notice" role="alert"><p>{state.error}</p><button onClick={configure}>{t('common.openSettings')}</button></div>}
+    {current && state.health !== 'ok' && !connectionError && <div className="notice" role="alert"><p>{t('meeting.notices.teamsUnreachable')}</p>{state.health === 'auth' && <button onClick={() => void action('/api/sign-in')}>{t('common.signInWithMicrosoft')}</button>}</div>}
   </>
   return <Popup expanded={expanded} storage={state.storagePath} saved={saved} onHistory={history} onFolder={() => void action('/api/notes/open-folder')}
     footer={<>
-      <span className={saveError ? 'notes-error' : 'quiet'} role="status">{saveError ? t('Notizen noch nicht gespeichert.', 'Notes not saved yet.') : edit.saving ? t('Änderungen werden gespeichert …', 'Saving changes …') : live ? t('Aufnahme läuft beim Schließen im Hintergrund weiter.', 'Recording continues in the background when you close.') : finalizing ? t('Verarbeitung läuft beim Schließen im Hintergrund weiter.', 'Processing continues in the background when you close.') : saved}</span>
-      <button className="primary" disabled={edit.saving || edit.blocked} onClick={() => void action('/api/notes/close')}>{t('Meeting-Fenster schließen', 'Close meeting window')}</button>
+      <span className={saveError ? 'notes-error' : 'quiet'} role="status">{saveError ? t('common.notesNotSaved') : edit.saving ? t('common.savingChanges') : live ? t('meeting.footer.recordingContinues') : finalizing ? t('meeting.footer.processingContinues') : saved}</span>
+      <button className="primary" disabled={edit.saving || edit.blocked} onClick={() => void action('/api/notes/close')}>{t('common.closeMeetingWindow')}</button>
     </>}>
     <div className="notes-status"><span className={'status-label' + (statusError ? ' notes-error' : '')}><span className="status-dot" />{title}</span>
-      {live && <><span className="notes-time">{elapsed(review.started)}</span><button disabled={actionBusy} onClick={() => void action('/api/stop')}>{t('Stoppen', 'Stop')}</button></>}
-      {current && !live && canStart(state) && <button className="notes-start" disabled={actionBusy} onClick={() => void action('/api/start')}>{t('Neues Meeting starten', 'Start new meeting')}</button>}
+      {live && <><span className="notes-time">{elapsed(review.started)}</span><button disabled={actionBusy} onClick={() => void action('/api/stop')}>{t('meeting.stop')}</button></>}
+      {current && !live && canStart(state) && <button className="notes-start" disabled={actionBusy} onClick={() => void action('/api/start')}>{t('meeting.startNew')}</button>}
     </div>
-    <h1>{review.displayTitle || review.title}</h1><div className="meeting-date">{t('Aufzeichnung:', 'Recording:')} {new Date(review.started).toLocaleString(uiLocale(), { dateStyle: 'medium', timeStyle: 'short' })}</div>
+    <h1>{review.displayTitle || review.title}</h1><div className="meeting-date">{t('meeting.recording')} {new Date(review.started).toLocaleString(uiLocale(), { dateStyle: 'medium', timeStyle: 'short' })}</div>
     <NotesOneNote id={review.id} value={oneNote} complete={complete} ended={!!review.ended} savedLocally={!!review.savedPath && !saveError} revision={review.revision} disabled={edit.saving || edit.blocked || !!saveError || !!connectionError} refresh={refresh}
       storage={state.storagePath} documentName={review.documentName} onFolder={() => void action('/api/notes/open-folder')} />
     <NotesCalendar key={review.id} id={review.id} selected={review.calendarSelected} context={review.calendarContext}
@@ -268,23 +268,23 @@ function ReviewPanel({ review, visible, current, state, history, configure, refr
       locked={['preparing', 'sending', 'uncertain', 'saved'].includes(oneNote.status)} refresh={refresh} />
     {notices}
     <div>
-      <section className="summary-card" aria-label={t('Zusammenfassung', 'Summary')}>
-        <div className="summary-heading"><div className="summary-heading-copy"><h2>{live ? t('Laufende Zusammenfassung', 'Live summary') : t('Zusammenfassung', 'Summary')}</h2>{d && (review.editable ? <span className={saveError ? 'notes-error inline-save' : 'inline-save'} role="status">{saveLabel}</span> : <span className="provisional">{published ? t('In OneNote', 'In OneNote') : complete ? t('Übertragung', 'Transferring') : t('Vorläufig', 'Preliminary')}</span>)}</div>
-          {d && <button className="summary-size-toggle" aria-expanded={expanded} aria-controls={`summary-${review.id}`} onClick={() => setExpanded(value => !value)}><ResizeIcon expanded={expanded} />{expanded ? t('Verkleinern', 'Collapse') : t('Vergrößern', 'Expand')}</button>}
+      <section className="summary-card" aria-label={t('summary.title')}>
+        <div className="summary-heading"><div className="summary-heading-copy"><h2>{live ? t('summary.live') : t('summary.title')}</h2>{d && (review.editable ? <span className={saveError ? 'notes-error inline-save' : 'inline-save'} role="status">{saveLabel}</span> : <span className="provisional">{published ? t('summary.inOneNote') : complete ? t('summary.transferring') : t('summary.preliminary')}</span>)}</div>
+          {d && <button className="summary-size-toggle" aria-expanded={expanded} aria-controls={`summary-${review.id}`} onClick={() => setExpanded(value => !value)}><ResizeIcon expanded={expanded} />{expanded ? t('summary.collapse') : t('summary.expand')}</button>}
         </div>
         <div className="summary-state" role="status">{!issue && (finalizing || (!d && live)) && <Spinner />}{summaryStatus}</div>
-        <div className="summary-body" id={`summary-${review.id}`}>{d ? (review.editable ? <textarea className="summary-inline-editor" aria-label={t('Zusammenfassung direkt bearbeiten', 'Edit summary directly')} value={documentText(d)} maxLength={64000} onChange={e => edit.change(current => ({ ...current, summary: e.target.value, decisions: '', openQuestions: '' }))} /> : <p className="notes-summary">{documentText(d)}</p>) : <p className="quiet">{live ? t('Die Zusammenfassung erscheint hier automatisch.', 'The summary appears here automatically.') : finalizing ? t('Es liegt noch kein Zwischenstand vor. Bitte warten Sie auf den Abschluss.', 'No interim result yet. Please wait for processing to finish.') : t('Vorhandene Aufgabenvorschläge bleiben erhalten.', 'Existing suggested tasks are kept.')}</p>}</div>
+        <div className="summary-body" id={`summary-${review.id}`}>{d ? (review.editable ? <textarea className="summary-inline-editor" aria-label={t('summary.editLabel')} value={documentText(d)} maxLength={64000} onChange={e => edit.change(current => ({ ...current, summary: e.target.value, decisions: '', openQuestions: '' }))} /> : <p className="notes-summary">{documentText(d)}</p>) : <p className="quiet">{live ? t('summary.appearsAutomatically') : finalizing ? t('summary.noInterim') : t('summary.tasksKept')}</p>}</div>
       </section>
-      <div className="tasks-heading"><h2>{t('Aufgabenvorschläge', 'Suggested tasks')}</h2>{d && !!d.tasks.length && <span>{t(`${selected} von ${d.tasks.length} ausgewählt`, `${selected} of ${d.tasks.length} selected`)}</span>}</div>
-      {!d?.tasks.length && <p className="quiet">{live || finalizing ? t('Noch keine Vorschläge. Vereinbarte Aufgaben erscheinen hier automatisch.', 'No suggestions yet. Agreed tasks appear here automatically.') : t('Keine Nacharbeit vereinbart.', 'No follow-up agreed.')}</p>}
-      {!!d?.tasks.length && <p className="quiet tasks-help">{published ? t('Verantwortliche und Angaben können Sie hier ergänzen. Änderungen werden automatisch in OneNote gespeichert; abhaken können Sie die Aufgaben dort.', 'You can add owners and details here. Changes are saved to OneNote automatically; you can tick off the tasks there.') : t('Ausgewählte Aufgaben bleiben in Ihrer Aufgabenliste. Sie können Vorschläge abwählen.', 'Selected tasks stay in your task list. You can deselect suggestions.')}</p>}
-      {complete && count > 0 && <p className="task-attention">{t(`Bei ${count === 1 ? 'einer ausgewählten Aufgabe fehlen' : `${count} ausgewählten Aufgaben fehlen`} noch Angaben.`, count === 1 ? 'One selected task is still missing details.' : `${count} selected tasks are still missing details.`)}</p>}
+      <div className="tasks-heading"><h2>{t('meeting.tasks.title')}</h2>{d && !!d.tasks.length && <span>{t('meeting.tasks.selectedOf', { selected, total: d.tasks.length })}</span>}</div>
+      {!d?.tasks.length && <p className="quiet">{live || finalizing ? t('meeting.tasks.noneYet') : t('meeting.tasks.noFollowUp')}</p>}
+      {!!d?.tasks.length && <p className="quiet tasks-help">{published ? t('meeting.tasks.helpPublished') : t('meeting.tasks.helpLocal')}</p>}
+      {complete && count > 0 && <p className="task-attention">{t('meeting.tasks.missingDetails', { count })}</p>}
       {d && <NotesTasks draft={d} people={review.people || []} peopleNote={review.peopleNote || ''} editable={review.tasksEditable ?? true} expanded change={edit.change} />}
-      {!!d?.tasks.length && !published && <button disabled={actionBusy} onClick={() => void action(`/api/notes/${review.id}/people-refresh`)}>{t('Personen erneut laden', 'Reload people')}</button>}
-      {!!d?.tasks.length && !published && review.peopleAccessNeeded && <div className="notice"><p>{t('Teilnehmer fehlen in der Auswahl? Mit Teams-Zugriff kann der Client Anrufereignisse und Namen ermitteln. Microsoft verlangt dafür Leserechte auf Ihre Chats.', 'Participants missing from the list? With Teams access, the client can identify call events and names. Microsoft requires read access to your chats for this.')}</p><button disabled={actionBusy} onClick={() => void action(`/api/notes/${review.id}/people-connect`)}>{t('Teams-Personen verbinden', 'Connect Teams people')}</button></div>}
-      {d && <div className="notes-copy"><button disabled={edit.saving || edit.blocked || copyState === copying} onClick={() => void copyNotes()}>{t('Notizen kopieren', 'Copy notes')}</button>
-        <span className="quiet">{t('Zusammenfassung und ausgewählte Aufgaben', 'Summary and selected tasks')}</span>
-        {copyState && <p className={copyError ? 'notes-error' : 'copy-success'} role={copyError ? 'alert' : 'status'}>{copyState === copying ? t('Wird kopiert …', 'Copying …') : copyState === copied ? t('Kopiert · Notizen und ausgewählte Aufgaben sind in der Zwischenablage.', 'Copied · Notes and selected tasks are on the clipboard.') : copyState}</p>}</div>}
+      {!!d?.tasks.length && !published && <button disabled={actionBusy} onClick={() => void action(`/api/notes/${review.id}/people-refresh`)}>{t('meeting.tasks.reloadPeople')}</button>}
+      {!!d?.tasks.length && !published && review.peopleAccessNeeded && <div className="notice"><p>{t('meeting.tasks.peopleAccessHint')}</p><button disabled={actionBusy} onClick={() => void action(`/api/notes/${review.id}/people-connect`)}>{t('meeting.tasks.connectPeople')}</button></div>}
+      {d && <div className="notes-copy"><button disabled={edit.saving || edit.blocked || copyState === copying} onClick={() => void copyNotes()}>{t('meeting.copy.action')}</button>
+        <span className="quiet">{t('meeting.copy.hint')}</span>
+        {copyState && <p className={copyError ? 'notes-error' : 'copy-success'} role={copyError ? 'alert' : 'status'}>{copyState === copying ? t('meeting.copy.copying') : copyState === copied ? t('meeting.copy.copied') : copyState}</p>}</div>}
     </div>
   </Popup>
 }
@@ -292,10 +292,10 @@ function ReviewPanel({ review, visible, current, state, history, configure, refr
 type SettingsProps = { state: NotesState; back: () => void; refresh: () => void; history: () => void }
 
 function MeetingLanguageSelect({ value, onChange }: { value: string; onChange: (value: string) => void }) {
-  return <label>{t('Meeting-Sprache', 'Meeting language')}<select aria-label={t('Meeting-Sprache', 'Meeting language')} value={value} onChange={e => onChange(e.target.value)}>
-    <option value="de-DE">{t('Deutsch', 'German')}</option><option value="en-US">{t('Englisch', 'English')}</option><option value="fr-FR">{t('Französisch', 'French')}</option>
+  return <label>{t('settings.meetingLanguage')}<select aria-label={t('settings.meetingLanguage')} value={value} onChange={e => onChange(e.target.value)}>
+    <option value="de-DE">{t('settings.languages.german')}</option><option value="en-US">{t('settings.languages.english')}</option><option value="fr-FR">{t('settings.languages.french')}</option>
     {!['de-DE', 'en-US', 'fr-FR'].includes(value) && <option value={value}>{value}</option>}
-  </select><span className="quiet">{t('Gesprochene Sprache für die Spracherkennung', 'Spoken language for speech recognition')}</span></label>
+  </select><span className="quiet">{t('settings.meetingLanguageHint')}</span></label>
 }
 
 function Settings(props: SettingsProps) {
@@ -336,43 +336,43 @@ function ManagedSettings({ state, refresh, history }: SettingsProps) {
     onHistory={finished && signedIn && !busy ? history : undefined}
     footer={<>
       <p className="quiet setup-footer-copy">{signedIn
-        ? t('Das Fenster wird geschlossen. Die App läuft im Infobereich neben der Windows-Uhr weiter.', 'The window closes. The app keeps running in the notification area next to the Windows clock.')
-        : t('Erst nach der Anmeldung und „Fertig“ können Meeting-Notizen starten.', 'Meeting notes can start only after you sign in and click “Done”.')}</p>
+        ? t('setup.closesToTray')
+        : t('setup.signInFirst')}</p>
       {signedIn && <button className="primary" disabled={busy} onClick={() => void finish()}>
-        {pending === 'save' ? t('Bitte warten …', 'Please wait …') : state.active ? t('Schließen', 'Close') : t('Fertig', 'Done')}
+        {pending === 'save' ? t('common.pleaseWait') : state.active ? t('common.close') : t('common.done')}
       </button>}
     </>}>
-    <p className="setup-step">{finished ? 'DAS Meeting Assistant' : signedIn ? t('Schritt 2 von 2 · Abschließen', 'Step 2 of 2 · Finish') : t('Schritt 1 von 2 · Anmelden', 'Step 1 of 2 · Sign in')}</p>
-    <h1>{signedIn ? finished ? t('Einstellungen', 'Settings') : t('Anmeldung erfolgreich', 'Signed in successfully') : t('Willkommen bei DAS Meeting Assistant', 'Welcome to DAS Meeting Assistant')}</h1>
+    <p className="setup-step">{finished ? 'DAS Meeting Assistant' : signedIn ? t('setup.stepFinish') : t('setup.stepSignIn')}</p>
+    <h1>{signedIn ? finished ? t('navigation.settings') : t('setup.signedIn') : t('setup.welcome')}</h1>
     {error && <p className="notice" role="alert">{error}</p>}
     {!signedIn ? <>
-      <p>{t('Melden Sie sich mit Ihrem Microsoft-Firmenkonto an, um DAS Meeting Assistant zu nutzen. Die Anmeldung ist erforderlich.', 'Sign in with your Microsoft work account to use DAS Meeting Assistant. Signing in is required.')}</p>
-      <p className="quiet">{t('Die Microsoft-Anmeldung öffnet sich bei Bedarf im Browser. Kehren Sie danach zu diesem Fenster zurück.', 'Microsoft sign-in opens in your browser if needed. Return to this window afterwards.')}</p>
-      <button className="primary" disabled={busy} onClick={() => void signIn()}>{busy ? t('Bitte warten …', 'Please wait …') : t('Mit Microsoft anmelden', 'Sign in with Microsoft')}</button>
-      {busy && <p className="setup-progress" role="status"><Spinner /> {t('Anmeldung und DAS-Zugang werden geprüft …', 'Checking sign-in and DAS access …')}</p>}
-      <p className="quiet">{t('Wenn Sie dieses Fenster jetzt schließen, bleibt die Einrichtung unvollständig. Sie können sie über das App-Symbol neben der Windows-Uhr fortsetzen.', 'If you close this window now, setup stays incomplete. You can continue it from the app icon next to the Windows clock.')}</p>
+      <p>{t('setup.signInIntro')}</p>
+      <p className="quiet">{t('setup.browserHint')}</p>
+      <button className="primary" disabled={busy} onClick={() => void signIn()}>{busy ? t('common.pleaseWait') : t('common.signInWithMicrosoft')}</button>
+      {busy && <p className="setup-progress" role="status"><Spinner /> {t('setup.checking')}</p>}
+      <p className="quiet">{t('setup.incompleteHint')}</p>
     </> : <>
-      <p className="setup-success" role="status">{t('✓ Microsoft-Anmeldung und DAS-Zugang sind bereit.', '✓ Microsoft sign-in and DAS access are ready.')}</p>
-      {state.active ? <p className="notice">{t('Ein Meeting läuft. Einstellungen können danach geändert werden. Sie können dieses Fenster schließen; die Erfassung läuft weiter.', 'A meeting is in progress. Settings can be changed afterwards. You can close this window; capture continues.')}</p>
-        : <p>{t('Sie können die Einstellungen beibehalten und direkt auf „Fertig“ klicken.', 'You can keep the settings and click “Done” right away.')}</p>}
-      <p className="quiet">{form.autoStart ? t('Meeting-Notizen starten bei erkannten Teams-Anrufen automatisch.', 'Meeting notes start automatically when a Teams call is detected.') : t('Der automatische Start ist ausgeschaltet. Sie können ihn unter „Einstellungen anpassen“ einschalten.', 'Automatic start is off. You can turn it on under “Adjust settings”.')}</p>
+      <p className="setup-success" role="status">{t('setup.ready')}</p>
+      {state.active ? <p className="notice">{t('setup.meetingInProgress')}</p>
+        : <p>{t('setup.keepSettings')}</p>}
+      <p className="quiet">{form.autoStart ? t('setup.autoStartOn') : t('setup.autoStartOff')}</p>
       <details className="setup-options" onToggle={e => { if (e.currentTarget.open) void loadDevices() }}>
-        <summary>{t('Einstellungen anpassen', 'Adjust settings')} <span>{t('optional', 'optional')}</span></summary>
+        <summary>{t('settings.adjust')} <span>{t('settings.optional')}</span></summary>
         <fieldset disabled={state.active || busy}>
-          <label className="checkbox"><input type="checkbox" checked={form.autoStart} onChange={e => setForm({ ...form, autoStart: e.target.checked })} />{t('Bei Teams-Anrufen automatisch starten', 'Start automatically for Teams calls')}</label>
-          {(['mic', 'loopback'] as const).map(source => <label key={source}>{source === 'mic' ? t('Mikrofon', 'Microphone') : t('Teams-Wiedergabe / Headset', 'Teams playback / headset')}
-            <select aria-label={source === 'mic' ? t('Mikrofon', 'Microphone') : t('Teams-Wiedergabe / Headset', 'Teams playback / headset')} value={form[source]} onChange={e => setForm({ ...form, [source]: e.target.value })}>
-              <option value="">{t('Windows-Standardgerät', 'Windows default device')}</option>
-              {form[source] && !devices.some(d => d.loopback === (source === 'loopback') && d.name === form[source]) && <option value={form[source]}>{form[source]}{t(' (aktuell nicht verfügbar)', ' (currently unavailable)')}</option>}
+          <label className="checkbox"><input type="checkbox" checked={form.autoStart} onChange={e => setForm({ ...form, autoStart: e.target.checked })} />{t('settings.autoStartTeams')}</label>
+          {(['mic', 'loopback'] as const).map(source => <label key={source}>{source === 'mic' ? t('settings.microphone') : t('settings.teamsPlayback')}
+            <select aria-label={source === 'mic' ? t('settings.microphone') : t('settings.teamsPlayback')} value={form[source]} onChange={e => setForm({ ...form, [source]: e.target.value })}>
+              <option value="">{t('settings.windowsDefaultDevice')}</option>
+              {form[source] && !devices.some(d => d.loopback === (source === 'loopback') && d.name === form[source]) && <option value={form[source]}>{form[source]}{t('settings.currentlyUnavailable')}</option>}
               {devices.filter(d => d.loopback === (source === 'loopback')).map((d, i) => <option value={d.name} key={i}>{d.name}</option>)}
             </select></label>)}
-          <button onClick={() => void loadDevices()}>{t('Geräte neu laden', 'Reload devices')}</button>
+          <button onClick={() => void loadDevices()}>{t('settings.reloadDevices')}</button>
           <MeetingLanguageSelect value={form.language} onChange={language => setForm({ ...form, language })} />
-          <button onClick={() => void signIn()}>{t('DAS-Verbindung erneut prüfen', 'Check DAS connection again')}</button>
-          <p className="quiet">{t('DAS stellt die Sprachverarbeitung und Zusammenfassungen bereit. Audio und Transkript werden vom Client nicht als Dateien gespeichert.', 'DAS provides speech processing and summaries. The client does not save audio or transcripts as files.')}</p>
+          <button onClick={() => void signIn()}>{t('settings.checkDasConnection')}</button>
+          <p className="quiet">{t('settings.dasPrivacy')}</p>
         </fieldset>
       </details>
-      <p className="quiet">{t('Einstellungen können Sie später über das App-Symbol neben der Windows-Uhr wieder öffnen.', 'You can reopen settings later from the app icon next to the Windows clock.')}</p>
+      <p className="quiet">{t('settings.reopenLater')}</p>
     </>}
   </Popup>
 }
@@ -391,32 +391,32 @@ function CommunitySettings({ state, back, refresh, history }: SettingsProps) {
     try { await post('/api/notes/configure', { enabled, ...form }); refresh(); back() }
     catch (e) { setMessage(errorText(e)) } finally { setBusy(false) }
   }
-  return <Popup storage={state.storagePath} onHistory={history} saved={t('Speicherort für Meeting-Notizen', 'Storage location for meeting notes')} onFolder={() => void post('/api/notes/open-folder').catch(e => setMessage(errorText(e)))}>
-    <button className="back" onClick={back}>{t('Zurück zum Meeting', 'Back to meeting')}</button><h1>{t('Einstellungen', 'Settings')}</h1>
+  return <Popup storage={state.storagePath} onHistory={history} saved={t('settings.storageLocation')} onFolder={() => void post('/api/notes/open-folder').catch(e => setMessage(errorText(e)))}>
+    <button className="back" onClick={back}>{t('settings.backToMeeting')}</button><h1>{t('navigation.settings')}</h1>
     {(message || state.options.credentialError) && <p className="notice" role="alert">{message || state.options.credentialError}</p>}
-    {state.active && <p className="notice">{t('Geräte und Zugänge können nach dem Meeting geändert werden.', 'Devices and access can be changed after the meeting.')}</p>}
-    <button disabled={busy} onClick={() => post(`/api/auto-start/${state.autoStart ? 'off' : 'on'}`).then(refresh).catch(e => setMessage(errorText(e)))}>{state.autoStart ? t('Automatischen Start ausschalten', 'Turn off automatic start') : t('Automatischen Start einschalten', 'Turn on automatic start')}</button>
+    {state.active && <p className="notice">{t('settings.changeAfterMeeting')}</p>}
+    <button disabled={busy} onClick={() => post(`/api/auto-start/${state.autoStart ? 'off' : 'on'}`).then(refresh).catch(e => setMessage(errorText(e)))}>{state.autoStart ? t('settings.turnOffAutoStart') : t('common.turnOnAutoStart')}</button>
     <fieldset disabled={state.active || busy}>
-      <label className="checkbox"><input type="checkbox" checked={enabled} onChange={e => setEnabled(e.target.checked)} />{t('Meeting-Notizen statt Dateiaufzeichnung', 'Meeting notes instead of file recording')}</label>
-      {(['mic', 'loopback'] as const).map(source => <label key={source}>{source === 'mic' ? t('Mikrofon', 'Microphone') : t('Teams-Wiedergabe / Headset', 'Teams playback / headset')}
-        <select value={form[source]} onChange={e => setForm({ ...form, [source]: e.target.value })}><option value="">{t('Windows-Standardgerät', 'Windows default device')}</option>
+      <label className="checkbox"><input type="checkbox" checked={enabled} onChange={e => setEnabled(e.target.checked)} />{t('settings.notesInsteadOfRecording')}</label>
+      {(['mic', 'loopback'] as const).map(source => <label key={source}>{source === 'mic' ? t('settings.microphone') : t('settings.teamsPlayback')}
+        <select value={form[source]} onChange={e => setForm({ ...form, [source]: e.target.value })}><option value="">{t('settings.windowsDefaultDevice')}</option>
           {devices.filter(d => d.loopback === (source === 'loopback')).map((d, i) => <option value={d.name} key={i}>{d.name}</option>)}
         </select></label>)}
-      <button onClick={load}>{t('Geräte neu laden', 'Reload devices')}</button>
+      <button onClick={load}>{t('settings.reloadDevices')}</button>
       <MeetingLanguageSelect value={form.language} onChange={language => setForm({ ...form, language })} />
-      <h2>{t('Azure-Verbindungen', 'Azure connections')}</h2>
-      {(['region', 'speechKey', 'endpoint', 'model', 'chatKey'] as const).map(key => <label key={key}>{{region:t('Speech-Region', 'Speech region'),speechKey:t('Speech-Schlüssel', 'Speech key'),endpoint:t('Textmodell-Endpunkt', 'Text model endpoint'),model:t('Deployment', 'Deployment'),chatKey:t('Textmodell-Schlüssel', 'Text model key')}[key]}
+      <h2>{t('settings.azureConnections')}</h2>
+      {(['region', 'speechKey', 'endpoint', 'model', 'chatKey'] as const).map(key => <label key={key}>{{region:t('settings.speechRegion'),speechKey:t('settings.speechKey'),endpoint:t('settings.textModelEndpoint'),model:t('settings.deployment'),chatKey:t('settings.textModelKey')}[key]}
         <input type={key.endsWith('Key') ? 'password' : 'text'} autoComplete="off" value={form[key]} maxLength={2048}
-          placeholder={key.endsWith('Key') && state.options[key === 'speechKey' ? 'hasSpeechKey' : 'hasChatKey'] ? state.options[key + 'Saved'] ? t('Verschlüsselt gespeichert · leer lassen zum Beibehalten', 'Saved encrypted · leave empty to keep') : t('Für diesen Lauf geladen · mit Einstellungen speichern', 'Loaded for this session · save with settings') : ''}
+          placeholder={key.endsWith('Key') && state.options[key === 'speechKey' ? 'hasSpeechKey' : 'hasChatKey'] ? state.options[key + 'Saved'] ? t('settings.keySavedEncrypted') : t('settings.keyLoadedForSession') : ''}
           onChange={e => setForm({ ...form, [key]: e.target.value })} />
       </label>)}
       {<div className="notes-more">{(['speechKey', 'chatKey'] as const).map(key => state.options[key === 'speechKey' ? 'hasSpeechKey' : 'hasChatKey'] && <button key={key} onClick={async () => {
         setBusy(true)
-        try { await post('/api/notes/credentials/remove', { key }); setForm(f => ({ ...f, [key]: '' })); refresh(); setMessage(t('Schlüssel entfernt.', 'Key removed.')) }
+        try { await post('/api/notes/credentials/remove', { key }); setForm(f => ({ ...f, [key]: '' })); refresh(); setMessage(t('settings.keyRemoved')) }
         catch (e) { setMessage(errorText(e)) } finally { setBusy(false) }
-      }}>{key === 'speechKey' ? t('Speech-Schlüssel entfernen', 'Remove speech key') : t('Textmodell-Schlüssel entfernen', 'Remove text model key')}</button>)}</div>}
-      <p className="quiet">{t('Schlüssel werden mit Windows verschlüsselt im eigenen Benutzerprofil gespeichert und beim Start geladen. Zwischenstände und Abschlussnotizen werden direkt in Azure erstellt. Audio und Transkript werden nicht als Dateien gespeichert.', 'Keys are encrypted with Windows, saved in your own user profile and loaded at startup. Interim results and final notes are created directly in Azure. Audio and transcripts are not saved as files.')}</p>
-      <button className="primary" onClick={configure}>{t('Einstellungen übernehmen', 'Apply settings')}</button>
+      }}>{key === 'speechKey' ? t('settings.removeSpeechKey') : t('settings.removeTextModelKey')}</button>)}</div>}
+      <p className="quiet">{t('settings.keysPrivacy')}</p>
+      <button className="primary" onClick={configure}>{t('settings.apply')}</button>
     </fieldset>
   </Popup>
 }
@@ -468,16 +468,16 @@ export function MeetingNotes() {
     const managed = state?.options.managed === true
     const missing = state && (managed ? !state.options.setupComplete : !state.options.hasSpeechKey || !state.options.hasChatKey)
     const health = state?.health && state.health !== 'ok'
-    const heading = !state ? t('Verbindung zum Client …', 'Connecting to client …') : !state.enabled ? t('Meeting-Notizen einrichten', 'Set up meeting notes') : missing ? managed ? t('DAS-Zugang einrichten', 'Set up DAS access') : t('Azure-Zugang fehlt', 'Azure access missing') : !state.autoStart ? t('Automatischer Start ist aus', 'Automatic start is off') : health ? t('Teams-Verbindung fehlt', 'Teams connection missing') : state.autoStartSuppressed ? t('Für diesen Anruf pausiert', 'Paused for this call') : t('Bereit für Teams-Anrufe', 'Ready for Teams calls')
-    return <Popup storage={state?.storagePath || ''} onHistory={history} saved={t('Ohne gemerktes Kundenziel: Auf diesem PC', 'Without a remembered customer destination: On this PC')} onFolder={() => void action('/api/notes/open-folder')} onClose={() => void action('/api/notes/close')}>
+    const heading = !state ? t('idle.connecting') : !state.enabled ? t('idle.setUpNotes') : missing ? managed ? t('idle.setUpDas') : t('idle.azureMissing') : !state.autoStart ? t('idle.autoStartOff') : health ? t('idle.teamsMissing') : state.autoStartSuppressed ? t('idle.paused') : t('idle.ready')
+    return <Popup storage={state?.storagePath || ''} onHistory={history} saved={t('idle.fallbackDestination')} onFolder={() => void action('/api/notes/open-folder')} onClose={() => void action('/api/notes/close')}>
       <div className="notes-status"><span className="status-label"><span className="status-dot" />{heading}</span></div>
-      {connectionError || message || state?.error ? <p className="notice" role="alert">{connectionError || message || state?.error}</p> : <p className="quiet">{state?.enabled && !missing && state.autoStart && !health && !state.autoStartSuppressed ? t('Beim nächsten Teams-Anruf entstehen hier automatisch Ihre Notizen. Andere Gespräche, z. B. Zoom, mit „Jetzt starten“ erfassen.', 'Your notes appear here automatically during the next Teams call. Capture other conversations, e.g. Zoom, with “Start now”.') : state && canStart(state) ? t('Mit „Jetzt starten“ werden Mikrofon und PC-Wiedergabe sofort erfasst, z. B. für Zoom.', '“Start now” captures the microphone and PC playback immediately, e.g. for Zoom.') : t('Die Erfassung kann erst starten, wenn die Verbindung bereit ist.', 'Capture can start only once the connection is ready.')}</p>}
-      {state && (!state.enabled || missing) ? <button className="primary" onClick={configure}>{t('Zugang einrichten', 'Set up access')}</button>
+      {connectionError || message || state?.error ? <p className="notice" role="alert">{connectionError || message || state?.error}</p> : <p className="quiet">{state?.enabled && !missing && state.autoStart && !health && !state.autoStartSuppressed ? t('idle.hintReady') : state && canStart(state) ? t('idle.hintManual') : t('idle.hintNotReady')}</p>}
+      {state && (!state.enabled || missing) ? <button className="primary" onClick={configure}>{t('idle.setUpAccess')}</button>
         : state && <div className="notes-start-actions">
-          {canStart(state) && <button className="primary" onClick={() => void action('/api/start')}>{t('Jetzt starten', 'Start now')}</button>}
-          {!state.autoStart ? <button onClick={() => void action('/api/auto-start/on')}>{t('Automatischen Start einschalten', 'Turn on automatic start')}</button>
-            : health ? <button onClick={() => void action(managed ? '/api/notes/connect' : '/api/sign-in')}>{t('Mit Microsoft anmelden', 'Sign in with Microsoft')}</button>
-            : (state.autoStartSuppressed || state.error) ? <button onClick={configure}>{t('Einstellungen öffnen', 'Open settings')}</button> : null}
+          {canStart(state) && <button className="primary" onClick={() => void action('/api/start')}>{t('idle.startNow')}</button>}
+          {!state.autoStart ? <button onClick={() => void action('/api/auto-start/on')}>{t('common.turnOnAutoStart')}</button>
+            : health ? <button onClick={() => void action(managed ? '/api/notes/connect' : '/api/sign-in')}>{t('common.signInWithMicrosoft')}</button>
+            : (state.autoStartSuppressed || state.error) ? <button onClick={configure}>{t('common.openSettings')}</button> : null}
         </div>}
     </Popup>
   }
@@ -487,17 +487,17 @@ export function MeetingNotes() {
       history={history} />)}
     {visibleScreen === 'meeting' && !state?.reviews.some(r => r.id === displayedId) && idle()}
     {visibleScreen === 'settings' && state && <Settings state={state} back={back} refresh={refresh} history={history} />}
-    {visibleScreen === 'history' && state && <Popup storage={state.storagePath} saved={t('Gespeicherte Meeting-Notizen', 'Saved meeting notes')} onFolder={() => void action('/api/notes/open-folder')}>
-      <button className="back" onClick={back}>{t('Zum aktuellen Meeting', 'To current meeting')}</button><h1>{t('Alle Meetings', 'All meetings')}</h1>
-      <label>{t('Meeting suchen', 'Search meetings')}<input type="search" value={search} onChange={e => setSearch(e.target.value)} placeholder={t('Titel oder Datum', 'Title or date')} /></label>
+    {visibleScreen === 'history' && state && <Popup storage={state.storagePath} saved={t('history.savedNotes')} onFolder={() => void action('/api/notes/open-folder')}>
+      <button className="back" onClick={back}>{t('history.toCurrent')}</button><h1>{t('navigation.allMeetings')}</h1>
+      <label>{t('history.search')}<input type="search" value={search} onChange={e => setSearch(e.target.value)} placeholder={t('history.searchPlaceholder')} /></label>
       {message && <p className="notice">{message}</p>}
-      {!state.reviews.length && <p className="quiet">{t('Noch keine gespeicherten Meetings.', 'No saved meetings yet.')}</p>}
-      {state.reviews.length >= 100 && <p className="quiet">{t('Die letzten 100 Meetings. Ältere Dokumente finden Sie über „Ordner öffnen“.', 'The last 100 meetings. Find older documents via “Open folder”.')}</p>}
-      {!!state.reviews.length && !historyReviews.length && <p className="quiet">{t('Kein Meeting mit diesem Titel oder Datum gefunden.', 'No meeting found with this title or date.')}</p>}
+      {!state.reviews.length && <p className="quiet">{t('history.empty')}</p>}
+      {state.reviews.length >= 100 && <p className="quiet">{t('history.last100')}</p>}
+      {!!state.reviews.length && !historyReviews.length && <p className="quiet">{t('history.noMatch')}</p>}
       {historyReviews.map(r => <div className="history-row" key={r.id}><div><strong>{r.title}</strong><p className="quiet">{new Date(r.started).toLocaleString(uiLocale())}</p>
-        <p className="quiet">{r.onenote?.status === 'saved' ? t('In OneNote gespeichert', 'Saved to OneNote') : r.onenote?.mode === 'onenote' ? r.onenote.error || r.onenote.status === 'uncertain' ? t('Lokal gesichert · OneNote noch nicht bestätigt', 'Saved locally · OneNote not yet confirmed') : t('OneNote-Ablage ausstehend', 'OneNote save pending') : r.ended && r.phase === 'complete' && !r.storeError ? t('Auf diesem PC gespeichert', 'Saved on this PC') : t('Vorläufige Notizen', 'Preliminary notes')}</p>
-        {(r.error || r.storeError) && <p className="notes-error">{r.storeError ? t('Nicht gespeichert', 'Not saved') : t('Unvollständig', 'Incomplete')}</p>}</div>
-        <button onClick={() => { setSelected(r.id); setScreen('meeting') }}>{t('Öffnen', 'Open')}</button></div>)}
+        <p className="quiet">{r.onenote?.status === 'saved' ? t('history.savedToOneNote') : r.onenote?.mode === 'onenote' ? r.onenote.error || r.onenote.status === 'uncertain' ? t('common.savedLocallyOneNoteUnconfirmed') : t('history.oneNotePending') : r.ended && r.phase === 'complete' && !r.storeError ? t('history.savedOnPc') : t('history.preliminary')}</p>
+        {(r.error || r.storeError) && <p className="notes-error">{r.storeError ? t('common.notSaved') : t('history.incomplete')}</p>}</div>
+        <button onClick={() => { setSelected(r.id); setScreen('meeting') }}>{t('common.open')}</button></div>)}
     </Popup>}
   </>
 }
