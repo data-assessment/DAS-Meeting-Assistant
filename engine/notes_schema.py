@@ -55,7 +55,7 @@ class Draft(BaseModel):
                 task.id = str(uuid.uuid5(uuid.NAMESPACE_URL, f"task:{i}:{task.title}"))
             if task.uncertainty.strip() and not task.questions:
                 # Legacy text is preserved, not rewritten into invented choices.
-                field = "owner" if re.fullmatch(r"(?i)(zuständigkeit|verantwortliche person|person) (fehlt|unklar|nicht genannt)[.!]?", task.uncertainty.strip()) else "context"
+                field = "owner" if re.fullmatch(r"(?i)(zuständigkeit|verantwortliche person|person) (fehlt|unklar|nicht genannt)[.!]?|(owner|responsible person|person) (missing|unclear|not named)[.!]?", task.uncertainty.strip()) else "context"
                 task.questions = [Question(label=task.uncertainty, field=field)]
             for j, question in enumerate(task.questions):
                 if not question.id:

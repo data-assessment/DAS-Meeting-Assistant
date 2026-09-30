@@ -7,12 +7,18 @@ replace the page body, summary, or an unrecognized/externally changed paragraph.
 import hashlib
 import html
 from html.parser import HTMLParser
+from engine.notes_i18n import tr
+
+# Parsed, not emitted: pages created in either app language keep synchronizing.
+TASK_HEADINGS = ("Aufgaben", "Tasks")
 
 
 class Conflict(ValueError):
     def __init__(self):
-        super().__init__("Diese Aufgabe wurde in OneNote geändert oder konnte nicht eindeutig zugeordnet werden. "
-                         "Ihre Korrektur bleibt lokal gesichert. Bitte die Aufgabe in OneNote prüfen und dort ergänzen.")
+        super().__init__(tr("Diese Aufgabe wurde in OneNote geändert oder konnte nicht eindeutig zugeordnet werden. "
+                            "Ihre Korrektur bleibt lokal gesichert. Bitte die Aufgabe in OneNote prüfen und dort ergänzen.",
+                            "This task was changed in OneNote or could not be matched unambiguously. "
+                            "Your correction remains saved locally. Please check the task in OneNote and complete it there."))
 
 
 def snapshot(draft):
@@ -21,19 +27,20 @@ def snapshot(draft):
         if not task["included"]:
             continue
         prefix = "task-" + hashlib.sha256(task["id"].encode()).hexdigest()[:24]
-        detail = [task["title"], task["owner"] or "Verantwortlich: noch zu klären"]
+        detail = [task["title"], task["owner"] or tr("Verantwortlich: noch zu klären", "Owner: to be clarified")]
         if task["due"]:
-            detail.append("Termin: " + task["due"])
+            detail.append(tr("Termin", "Due") + ": " + task["due"])
         lines[prefix] = {"text": " — ".join(detail), "todo": True}
         if task["recipient"]:
-            lines[prefix + "-recipient"] = {"text": "Empfänger: " + task["recipient"], "todo": False}
+            lines[prefix + "-recipient"] = {"text": tr("Empfänger", "Recipient") + ": " + task["recipient"], "todo": False}
         for question in task["questions"]:
             if question["field"] != "owner":
-                answer = question["answer"] or (task["recipient"] if question["field"] == "recipient" else "") or "Noch zu klären"
+                answer = (question["answer"] or (task["recipient"] if question["field"] == "recipient" else "")
+                          or tr("Noch zu klären", "To be clarified"))
                 key = prefix + "-" + hashlib.sha256(question["id"].encode()).hexdigest()[:16]
                 lines[key] = {"text": question["label"] + " " + answer, "todo": False}
     if not lines:
-        lines["tasks-empty"] = {"text": "Keine Aufgaben ausgewählt.", "todo": False}
+        lines["tasks-empty"] = {"text": tr("Keine Aufgaben ausgewählt.", "No tasks selected."), "todo": False}
     return lines
 
 
@@ -71,7 +78,7 @@ class Page(HTMLParser):
         self.elements = []
         self.feed(content)
         markers = [e for e in self.elements if e.attrs.get("data-id") == "meeting-" + meeting_id]
-        headings = [e for e in self.elements if e.tag == "h2" and normalize(e.text()) == "Aufgaben"]
+        headings = [e for e in self.elements if e.tag == "h2" and normalize(e.text()) in TASK_HEADINGS]
         if len(markers) != 1 or len(headings) != 1 or self.elements.index(headings[0]) < self.elements.index(markers[0]):
             raise Conflict()
         self.heading = headings[0]
@@ -159,8 +166,10 @@ def plan(content, meeting_id, before, after, *, reconcile=False):
         if page.matches(node, desired):
             continue
         if reconcile:
-            raise ValueError("Die Aufgabenänderung ist noch nicht bestätigt. Ihre Korrektur bleibt lokal gesichert. "
-                             "Bitte OneNote öffnen oder den Status später erneut prüfen. Es wird nichts erneut übertragen.")
+            raise ValueError(tr("Die Aufgabenänderung ist noch nicht bestätigt. Ihre Korrektur bleibt lokal gesichert. "
+                                "Bitte OneNote öffnen oder den Status später erneut prüfen. Es wird nichts erneut übertragen.",
+                                "The task change is not yet confirmed. Your correction remains saved locally. "
+                                "Please open OneNote or check the status again later. Nothing will be sent again."))
         if not page.matches(node, old):
             raise Conflict()
         if node is not None:

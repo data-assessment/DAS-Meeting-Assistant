@@ -17,25 +17,50 @@ from urllib.parse import quote, urlsplit
 import requests
 from engine import mdfmt, suggest, notes_onenote_tasks as task_sync
 from engine.graph_auth import get_token_for_scopes
+from engine.notes_i18n import tr
 from engine.notes_schema import Draft
 
 GRAPH = "https://graph.microsoft.com/v1.0"
 SCOPES = ["User.Read", "Notes.ReadWrite.All"]
-UNCERTAIN = "Übertragung noch nicht bestätigt. Bitte OneNote prüfen und den Status erneut prüfen. Es wird keine weitere Seite angelegt."
 LOCKED = ("preparing", "sending", "uncertain", "saved")
+
+
+def uncertain_message():
+    return tr("Übertragung noch nicht bestätigt. Bitte OneNote prüfen und den Status erneut prüfen. Es wird keine weitere Seite angelegt.",
+              "Transfer not yet confirmed. Please check OneNote and check the status again. No further page will be created.")
+
+
+def unreachable_message():
+    return tr("OneNote nicht erreichbar. Ihre Notizen bleiben lokal gesichert. Bitte erneut versuchen.",
+              "OneNote is not reachable. Your notes remain saved locally. Please try again.")
+
+
+def account_message():
+    return tr("Bitte mit dem Microsoft-Konto des gewählten Notizbuchs anmelden.",
+              "Please sign in with the Microsoft account of the selected notebook.")
+
+
+def storage_message():
+    return tr("Übertragung nicht gestartet: lokaler Speicher nicht verfügbar.",
+              "Transfer not started: local storage not available.")
+
+
+def unavailable_message():
+    return tr("Meeting nicht mehr verfügbar.", "Meeting no longer available.")
 
 
 class GraphReadError(ValueError):
     def __init__(self, status):
         self.status = status
-        super().__init__(f"OneNote konnte nicht gelesen werden (HTTP {status}). Anmeldung und Zugriffsrechte prüfen.")
+        super().__init__(tr(f"OneNote konnte nicht gelesen werden (HTTP {status}). Anmeldung und Zugriffsrechte prüfen.",
+                            f"OneNote could not be read (HTTP {status}). Check sign-in and access rights."))
 
 
 def graph_url(value):
     parsed = urlsplit(value)
     if (parsed.scheme != "https" or parsed.netloc != "graph.microsoft.com"
             or not parsed.path.startswith("/v1.0/") or parsed.fragment):
-        raise ValueError("Ungültiges OneNote-Ziel.")
+        raise ValueError(tr("Ungültiges OneNote-Ziel.", "Invalid OneNote destination."))
     return value
 
 
@@ -48,7 +73,8 @@ class Graph:
     def __init__(self, interactive=False):
         token = get_token_for_scopes(SCOPES, interactive=interactive)
         if not token:
-            raise ValueError("Bitte OneNote verbinden. Ihre Organisation muss den Zugriff auf geteilte Notizbücher erlauben.")
+            raise ValueError(tr("Bitte OneNote verbinden. Ihre Organisation muss den Zugriff auf geteilte Notizbücher erlauben.",
+                                "Please connect OneNote. Your organization must allow access to shared notebooks."))
         self.headers = {"Authorization": "Bearer " + token}
         self.user = self.get(GRAPH + "/me?$select=id,displayName,userPrincipalName").json()
         self.account = self.user["id"] + ":" + self.user.get("userPrincipalName", "").casefold()
@@ -63,7 +89,8 @@ class Graph:
         result, seen = [], set()
         while url:
             if url in seen or len(seen) >= 100:
-                raise ValueError("OneNote-Liste zu umfangreich. Bitte einen genaueren Zielbereich konfigurieren.")
+                raise ValueError(tr("OneNote-Liste zu umfangreich. Bitte einen genaueren Zielbereich konfigurieren.",
+                                    "OneNote list too large. Please configure a more specific destination."))
             seen.add(url)
             data = self.get(url).json()
             result.extend(data.get("value", []))
@@ -77,7 +104,7 @@ class Graph:
         try:
             books.extend(onenote._notebook_payload(b) for b in self.collection(GRAPH + "/me/onenote/notebooks?includeSharedNotebooks=true"))
         except (GraphReadError, requests.RequestException):
-            warnings.append("Persönliche Notizbücher konnten nicht geladen werden.")
+            warnings.append(tr("Persönliche Notizbücher konnten nicht geladen werden.", "Personal notebooks could not be loaded."))
         # User.Read exposes own memberships, sometimes with only type and ID.
         # Null group names/types must not hide accessible group notebooks.
         try:
@@ -85,7 +112,8 @@ class Graph:
                       if g.get("@odata.type") == "#microsoft.graph.group" and g.get("id")}
         except (GraphReadError, requests.RequestException):
             groups = {}
-            warnings.append("Gruppenmitgliedschaften konnten nicht geladen werden. Bitte erneut laden.")
+            warnings.append(tr("Gruppenmitgliedschaften konnten nicht geladen werden. Bitte erneut laden.",
+                               "Group memberships could not be loaded. Please reload."))
 
         def group_books(group):
             try:
@@ -106,15 +134,18 @@ class Graph:
         for extra, failed in results:
             books.extend(extra)
         if any(failed for _, failed in results):
-            warnings.append("Einige Gruppen-Notizbücher konnten nicht geladen werden. Bitte erneut laden oder Zugriffsrechte prüfen.")
+            warnings.append(tr("Einige Gruppen-Notizbücher konnten nicht geladen werden. Bitte erneut laden oder Zugriffsrechte prüfen.",
+                               "Some group notebooks could not be loaded. Please reload or check access rights."))
         if config.ONENOTE_SITE_PATHS:
             token = graph_auth.get_token_for_scopes(SCOPES + ["Sites.Read.All"], interactive=False)
             if token:
                 extra, site_warnings = onenote._site_notebooks({"Authorization": "Bearer " + token})
                 books.extend(extra)
-                if site_warnings: warnings.append("Einige SharePoint-Notizbücher konnten nicht geladen werden. Zugriffsrechte oder konfigurierte Sites prüfen.")
+                if site_warnings: warnings.append(tr("Einige SharePoint-Notizbücher konnten nicht geladen werden. Zugriffsrechte oder konfigurierte Sites prüfen.",
+                                                     "Some SharePoint notebooks could not be loaded. Check access rights or configured sites."))
             else:
-                warnings.append("Für konfigurierte SharePoint-Sites fehlt die Freigabe. Über ‚SharePoint verbinden‘ erteilen.")
+                warnings.append(tr("Für konfigurierte SharePoint-Sites fehlt die Freigabe. Über ‚SharePoint verbinden‘ erteilen.",
+                                   "Consent is missing for configured SharePoint sites. Grant it via ‘Connect SharePoint’."))
         unique = {}
         for book in books:
             if book.get("sectionsUrl"):
@@ -127,14 +158,14 @@ class Graph:
         result, seen = [], set()
         def walk(url, prefix="", depth=0):
             if url in seen or depth > 8 or len(seen) >= 100:
-                raise ValueError("OneNote-Abschnittsstruktur zu umfangreich.")
+                raise ValueError(tr("OneNote-Abschnittsstruktur zu umfangreich.", "OneNote section structure too large."))
             seen.add(url)
             for section in self.collection(url):
                 if section.get("pagesUrl") and section.get("id"):
-                    result.append({"id": section["id"], "name": prefix + section.get("displayName", "Abschnitt"),
+                    result.append({"id": section["id"], "name": prefix + section.get("displayName", tr("Abschnitt", "Section")),
                                    "pagesUrl": graph_url(section["pagesUrl"])})
             for group in self.collection(url.rsplit("/sections", 1)[0] + "/sectionGroups"):
-                walk(group["sectionsUrl"], prefix + group.get("displayName", "Gruppe") + " › ", depth + 1)
+                walk(group["sectionsUrl"], prefix + group.get("displayName", tr("Gruppe", "Group")) + " › ", depth + 1)
         walk(graph_url(book["sectionsUrl"]))
         return sorted(result, key=lambda s: s["name"].casefold())
 
@@ -168,18 +199,19 @@ def page_html(review, author):
     stamp = dt.datetime.fromisoformat(review.started).strftime("%d.%m.%Y · %H:%M")
     from engine.notes_people import meeting_heading
     title = meeting_heading(review)
-    parts = [f'<p data-id="meeting-{review.id}">{esc(stamp)} · Notizen von {esc(author)}</p>']
+    parts = [f'<p data-id="meeting-{review.id}">{esc(stamp)} · {tr("Notizen von", "Notes by")} {esc(author)}</p>']
     from engine.notes_people import invitation_lines
     invitation = invitation_lines(review)
     if invitation:
-        parts.append("<h2>Outlook-Einladung</h2>")
+        parts.append("<h2>" + tr("Outlook-Einladung", "Outlook invitation") + "</h2>")
         parts.extend("<p>" + esc(line) + "</p>" for line in invitation)
-    parts.extend(["<h2>Zusammenfassung</h2>", mdfmt.to_html(draft["summary"])])
-    for heading, key in (("Entscheidungen", "decisions"), ("Offene Fragen", "openQuestions")):
+    parts.extend(["<h2>" + tr("Zusammenfassung", "Summary") + "</h2>", mdfmt.to_html(draft["summary"])])
+    for heading, key in ((tr("Entscheidungen", "Decisions"), "decisions"), (tr("Offene Fragen", "Open questions"), "openQuestions")):
         if draft[key]: parts.extend([f"<h2>{heading}</h2>", mdfmt.to_html(draft[key])])
-    parts.append("<h2>Aufgaben</h2>")
+    # Task sync finds this heading in either language (task_sync.TASK_HEADINGS).
+    parts.append("<h2>" + tr("Aufgaben", "Tasks") + "</h2>")
     parts.extend(task_sync.paragraph(key, line) for key, line in task_sync.snapshot(draft).items())
-    if review.warning: parts.append("<p>Hinweis zur Erfassung: " + esc(review.warning) + "</p>")
+    if review.warning: parts.append("<p>" + tr("Hinweis zur Erfassung", "Capture note") + ": " + esc(review.warning) + "</p>")
     return "<!DOCTYPE html><html><head><title>" + esc(title) + "</title></head><body>" + "".join(parts) + "</body></html>"
 
 
@@ -270,7 +302,7 @@ class Publisher:
                 await self.publish(review, review.revision)
         except Exception as exc:
             if not review.discarded and not self.notes.closed:
-                review.onenote["error"] = str(exc) if isinstance(exc, ValueError) else "OneNote nicht erreichbar. Ihre Notizen bleiben lokal gesichert. Bitte erneut versuchen."
+                review.onenote["error"] = str(exc) if isinstance(exc, ValueError) else unreachable_message()
                 self.notes.persist(review)
 
     async def resolve_default(self, review, own_domains):
@@ -293,22 +325,27 @@ class Publisher:
             rules = [self.remembered(prefs, d) for d in domains if d in prefs.get("domains", {})]
             identities = {(r.get("book"), r.get("sectionId")) for r in rules}
             if len(identities) > 1:
-                notice = "Mehrere unterschiedliche Kundenziele gefunden. Dieses Meeting wird auf diesem PC gespeichert; Sie können OneNote wählen."
+                notice = tr("Mehrere unterschiedliche Kundenziele gefunden. Dieses Meeting wird auf diesem PC gespeichert; Sie können OneNote wählen.",
+                            "Several different customer destinations found. This meeting is saved on this PC; you can choose OneNote.")
             elif rules:
                 rule = rules[0]
                 if not rule.get("sectionId"):
-                    notice = "Zum gemerkten Kundennotizbuch fehlt der Abschnitt. Bitte das OneNote-Ziel einmal bestätigen. Bis dahin wird lokal gespeichert."
+                    notice = tr("Zum gemerkten Kundennotizbuch fehlt der Abschnitt. Bitte das OneNote-Ziel einmal bestätigen. Bis dahin wird lokal gespeichert.",
+                                "The remembered customer notebook has no section. Please confirm the OneNote destination once. Until then, notes are saved locally.")
                 else:
                     sections = await asyncio.to_thread(graph.sections, {"sectionsUrl": rule["book"]})
                     section = next((s for s in sections if s["id"] == rule["sectionId"]), None)
                     if section:
                         target = rule | {"account": graph.account, "sectionName": section["name"], "pagesUrl": section["pagesUrl"]}
-                        target.setdefault("bookName", "Kundennotizbuch")
-                        reason = "Für Termine mit " + ", ".join(d for d in domains if d in prefs.get("domains", {})) + " gemerkt."
+                        target.setdefault("bookName", tr("Kundennotizbuch", "Customer notebook"))
+                        remembered = ", ".join(d for d in domains if d in prefs.get("domains", {}))
+                        reason = tr("Für Termine mit " + remembered + " gemerkt.", "Remembered for meetings with " + remembered + ".")
                     else:
-                        notice = "Der gemerkte OneNote-Abschnitt ist nicht verfügbar. Dieses Meeting wird auf diesem PC gespeichert."
+                        notice = tr("Der gemerkte OneNote-Abschnitt ist nicht verfügbar. Dieses Meeting wird auf diesem PC gespeichert.",
+                                    "The remembered OneNote section is not available. This meeting is saved on this PC.")
         except Exception:
-            notice = "Das gemerkte OneNote-Ziel konnte nicht geprüft werden. Dieses Meeting wird auf diesem PC gespeichert. Bitte OneNote-Ziel prüfen."
+            notice = tr("Das gemerkte OneNote-Ziel konnte nicht geprüft werden. Dieses Meeting wird auf diesem PC gespeichert. Bitte OneNote-Ziel prüfen.",
+                        "The remembered OneNote destination could not be checked. This meeting is saved on this PC. Please check the OneNote destination.")
         # People and manual choices may change while Graph is loading.
         if review.onenote is not state or review.people != people or self.preferences != preferences or review.discarded or self.notes.closed:
             return False
@@ -343,16 +380,16 @@ class Publisher:
         book, reason = "", ""
         current = review.onenote.get("target", {})
         if current.get("account") == graph.account:
-            book, reason = current.get("book", ""), "Für dieses Meeting ausgewählt"
+            book, reason = current.get("book", ""), tr("Für dieses Meeting ausgewählt", "Selected for this meeting")
         elif len(learned) == 1:
-            book, reason = learned.pop(), "Für diese Kundendomäne gemerkt"
+            book, reason = learned.pop(), tr("Für diese Kundendomäne gemerkt", "Remembered for this customer domain")
         else:
             candidates = suggest.by_domain(context, [b | {"id": b["sectionsUrl"]} for b in books])
             matches = {c.value for c in candidates}
             if len(matches) == 1 and len(context.domains) == 1:
-                book, reason = matches.pop(), "Passend zur E-Mail-Domäne " + context.domains[0]
+                book, reason = matches.pop(), tr("Passend zur E-Mail-Domäne ", "Matches the email domain ") + context.domains[0]
             elif not context.domains:
-                book, reason = prefs.get("lastBook", ""), "Zuletzt verwendet"
+                book, reason = prefs.get("lastBook", ""), tr("Zuletzt verwendet", "Last used")
         if not any(b["sectionsUrl"] == book for b in books): book, reason = "", ""
         domain = context.domains[0] if len(context.domains) == 1 else ""
         return {"account": graph.account, "notebooks": books, "suggestedBook": book, "reason": reason,
@@ -362,9 +399,10 @@ class Publisher:
 
     async def load_sections(self, account, book_url):
         book = next((b for b in self.catalogs.get(account, []) if b["sectionsUrl"] == book_url), None)
-        if not book: raise ValueError("Notizbücher bitte erneut laden.")
+        if not book: raise ValueError(tr("Notizbücher bitte erneut laden.", "Please reload the notebooks."))
         graph = await asyncio.to_thread(Graph)
-        if graph.account != account: raise ValueError("Microsoft-Konto geändert. Notizbücher erneut laden.")
+        if graph.account != account: raise ValueError(tr("Microsoft-Konto geändert. Notizbücher erneut laden.",
+                                                         "Microsoft account changed. Reload the notebooks."))
         sections = await asyncio.to_thread(graph.sections, book)
         self.sections[(account, book_url)] = sections
         remembered = self.preferences["accounts"].get(account, {}).get("sections", {}).get(book_url, "")
@@ -372,24 +410,25 @@ class Publisher:
 
     def select(self, review, data, own_domains):
         if review.onenote.get("status") in LOCKED:
-            raise ValueError("Übertragung bereits gestartet. Ziel kann nicht mehr geändert werden.")
+            raise ValueError(tr("Übertragung bereits gestartet. Ziel kann nicht mehr geändert werden.",
+                                "Transfer already started. The destination can no longer be changed."))
         mode = data.get("mode")
-        if mode not in ("local", "onenote"): raise ValueError("Speicherort auswählen.")
+        if mode not in ("local", "onenote"): raise ValueError(tr("Speicherort auswählen.", "Choose a storage location."))
         target = {}
         if mode == "onenote":
             account, book_url = data.get("account"), data.get("book")
             book = next((b for b in self.catalogs.get(account, []) if b["sectionsUrl"] == book_url), None)
             section = next((s for s in self.sections.get((account, book_url), []) if s["id"] == data.get("section")), None)
-            if not book or not section: raise ValueError("Notizbuch und Abschnitt auswählen.")
+            if not book or not section: raise ValueError(tr("Notizbuch und Abschnitt auswählen.", "Choose a notebook and section."))
             target = {"account": account, "book": book_url, "bookName": book["label"], "sectionId": section["id"],
                       "sectionName": section["name"], "pagesUrl": section["pagesUrl"], "webUrl": web_url(book.get("webUrl"))}
         old = review.onenote
         review.onenote = {"mode": mode, "target": target, "status": "ready", "autoSave": True,
-                          "selection": "manual", "reason": "Für dieses Meeting gewählt.",
+                          "selection": "manual", "reason": tr("Für dieses Meeting gewählt.", "Chosen for this meeting."),
                           "finalized": self.complete(review)}
         if not self.notes.persist(review):
             review.onenote = old
-            raise ValueError("Speicherort konnte nicht lokal gesichert werden.")
+            raise ValueError(tr("Speicherort konnte nicht lokal gesichert werden.", "The storage location could not be saved locally."))
         previous_preferences = copy.deepcopy(self.preferences)
         if target:
             prefs = self.preferences["accounts"].setdefault(target["account"], {})
@@ -408,7 +447,8 @@ class Publisher:
             self.preferences = previous_preferences
             review.onenote = old
             self.notes.persist(review)
-            raise ValueError("Auswahl konnte nicht gespeichert werden. Bitte erneut versuchen.")
+            raise ValueError(tr("Auswahl konnte nicht gespeichert werden. Bitte erneut versuchen.",
+                                "The selection could not be saved. Please try again."))
 
     async def publish(self, review, revision):
         try:
@@ -417,7 +457,7 @@ class Publisher:
             state = review.onenote
             if state.get("status") == "preparing": state["status"] = "ready"
             if not review.discarded and not self.notes.closed:
-                state["error"] = str(exc) if isinstance(exc, ValueError) else "OneNote nicht erreichbar. Ihre Notizen bleiben lokal gesichert. Bitte erneut versuchen."
+                state["error"] = str(exc) if isinstance(exc, ValueError) else unreachable_message()
                 self.notes.persist(review)
             raise
 
@@ -426,61 +466,65 @@ class Publisher:
         async with lock:
             state = review.onenote
             if state.get("status") == "saved": return
-            if review.discarded or self.notes.closed: raise ValueError("Meeting nicht mehr verfügbar.")
+            if review.discarded or self.notes.closed: raise ValueError(unavailable_message())
             if not review.ended or review.busy or review.phase != "complete" or review.raw_deadline or review.draft is None:
-                raise ValueError("Bitte den Abschluss der Notizen abwarten.")
+                raise ValueError(tr("Bitte den Abschluss der Notizen abwarten.", "Please wait until the notes are finalized."))
             if type(revision) is not int or revision != review.revision:
-                raise ValueError("Notizen wurden geändert. Bitte den aktuellen Stand prüfen und erneut speichern.")
+                raise ValueError(tr("Notizen wurden geändert. Bitte den aktuellen Stand prüfen und erneut speichern.",
+                                    "The notes were changed. Please review the current version and save again."))
             target = state.get("target", {})
             if state.get("mode") != "onenote" or not target.get("pagesUrl"):
-                raise ValueError("Bitte zuerst den OneNote-Speicherort wählen.")
+                raise ValueError(tr("Bitte zuerst den OneNote-Speicherort wählen.", "Please choose the OneNote location first."))
             reconcile = state.get("status") in ("sending", "uncertain")
             if not reconcile:
                 state.update(status="preparing", error="")
                 if not self.notes.persist(review):
-                    raise ValueError("Übertragung nicht gestartet: lokaler Speicher nicht verfügbar.")
+                    raise ValueError(storage_message())
             graph = await asyncio.to_thread(Graph)
-            if graph.account != target["account"]: raise ValueError("Bitte mit dem Microsoft-Konto des gewählten Notizbuchs anmelden.")
+            if graph.account != target["account"]: raise ValueError(account_message())
             if reconcile:
                 page = await asyncio.to_thread(graph.find, target, "meeting-" + review.id, state.get("attemptedAt", ""))
                 if page:
                     self.saved(review, page)
                     return
-                state.update(status="uncertain", error=UNCERTAIN)
+                state.update(status="uncertain", error=uncertain_message())
                 self.notes.persist(review)
-                raise ValueError(UNCERTAIN)
+                raise ValueError(uncertain_message())
             # Recheck after sign-in yielded: edits or destination changes may have arrived.
             if review.revision != revision or review.onenote is not state or review.discarded or self.notes.closed:
-                raise ValueError("Notizen oder Speicherort geändert. Bitte erneut speichern.")
+                raise ValueError(tr("Notizen oder Speicherort geändert. Bitte erneut speichern.",
+                                    "Notes or storage location changed. Please save again."))
             # Validate the actual remembered section before writing, even when
             # it was selected earlier in the meeting or restored after a restart.
             sections = await asyncio.to_thread(graph.sections, {"sectionsUrl": target["book"]})
             section = next((s for s in sections if s["id"] == target["sectionId"]), None)
             if not section:
-                raise ValueError("OneNote-Abschnitt nicht mehr verfügbar. Ihre Notizen bleiben lokal gesichert. Bitte Ziel ändern.")
+                raise ValueError(tr("OneNote-Abschnitt nicht mehr verfügbar. Ihre Notizen bleiben lokal gesichert. Bitte Ziel ändern.",
+                                    "OneNote section no longer available. Your notes remain saved locally. Please change the destination."))
             if review.discarded or self.notes.closed:
-                raise ValueError("Meeting nicht mehr verfügbar.")
+                raise ValueError(unavailable_message())
             target["pagesUrl"] = section["pagesUrl"]
             content = page_html(review, graph.user.get("displayName") or graph.user.get("userPrincipalName", ""))
             state.update(status="sending", error="", taskBase=task_sync.snapshot(review.draft),
                          attemptedAt=dt.datetime.now(dt.timezone.utc).isoformat())
             if not self.notes.persist(review):
                 state.update(status="ready")
-                raise ValueError("Übertragung nicht gestartet: lokaler Speicher nicht verfügbar.")
+                raise ValueError(storage_message())
             try:
                 response = await asyncio.to_thread(graph.create, target, content)
                 if response.status_code in (200, 201):
                     self.saved(review, response.json())
                     return
                 if 400 <= response.status_code < 500 and response.status_code != 408:
-                    state.update(status="ready", error=f"OneNote hat die Ablage abgelehnt (HTTP {response.status_code}). Zugriff prüfen und erneut versuchen.")
+                    state.update(status="ready", error=tr(f"OneNote hat die Ablage abgelehnt (HTTP {response.status_code}). Zugriff prüfen und erneut versuchen.",
+                                                          f"OneNote rejected the page (HTTP {response.status_code}). Check access and try again."))
                     self.notes.persist(review)
                     raise ValueError(state["error"])
             except (requests.RequestException, json.JSONDecodeError, KeyError):
                 pass
-            state.update(status="uncertain", error=UNCERTAIN)
+            state.update(status="uncertain", error=uncertain_message())
             self.notes.persist(review)
-            raise ValueError(UNCERTAIN)
+            raise ValueError(uncertain_message())
 
     def saved(self, review, page):
         if not page.get("id"): raise KeyError("Missing page id")
@@ -490,7 +534,8 @@ class Publisher:
         review.onenote.setdefault("taskBase", task_sync.snapshot(review.draft))
         review.onenote.setdefault("taskSync", {"status": "saved"})
         if not self.notes.persist(review):
-            raise ValueError("In OneNote gespeichert; lokaler Status noch nicht gesichert. Bitte Client geöffnet lassen.")
+            raise ValueError(tr("In OneNote gespeichert; lokaler Status noch nicht gesichert. Bitte Client geöffnet lassen.",
+                                "Saved in OneNote; local status not yet saved. Please keep the client open."))
         self.cleanup_document(review)
 
     def prepare_task_edit(self, review):
@@ -530,7 +575,7 @@ class Publisher:
             try:
                 graph = await asyncio.to_thread(Graph)
                 if graph.account != state["target"]["account"]:
-                    raise ValueError("Bitte mit dem Microsoft-Konto des gewählten Notizbuchs anmelden.")
+                    raise ValueError(account_message())
                 url = self.page_content_url(state)
                 response = await asyncio.to_thread(graph.get, url + "?includeIDs=true")
                 commands = task_sync.plan(response.text, review.id, before, after, reconcile=uncertain)
@@ -550,14 +595,18 @@ class Publisher:
                     if response.status_code != 204:
                         if response.status_code in (401, 403, 404, 429):
                             uncertain = False  # Request rejected before changes.
-                            raise ValueError(f"Aufgaben konnten nicht aktualisiert werden (HTTP {response.status_code}). Bitte Zugriff prüfen und erneut versuchen.")
-                        raise ValueError("OneNote hat die Aufgabenänderung noch nicht bestätigt. Bitte den Status prüfen.")
+                            raise ValueError(tr(f"Aufgaben konnten nicht aktualisiert werden (HTTP {response.status_code}). Bitte Zugriff prüfen und erneut versuchen.",
+                                                f"Tasks could not be updated (HTTP {response.status_code}). Please check access and try again."))
+                        raise ValueError(tr("OneNote hat die Aufgabenänderung noch nicht bestätigt. Bitte den Status prüfen.",
+                                            "OneNote has not yet confirmed the task change. Please check the status."))
                 state["taskBase"] = after
                 state["taskSync"] = {"status": "pending" if after != task_sync.snapshot(review.draft) else "saved"}
                 self.notes.persist(review)
             except Exception as exc:
                 status = "uncertain" if uncertain else "conflict" if isinstance(exc, task_sync.Conflict) else "error"
-                error = str(exc) if isinstance(exc, ValueError) else "OneNote nicht erreichbar. Ihre Aufgabenänderungen bleiben lokal gesichert. Bitte erneut versuchen."
+                error = str(exc) if isinstance(exc, ValueError) else tr(
+                    "OneNote nicht erreichbar. Ihre Aufgabenänderungen bleiben lokal gesichert. Bitte erneut versuchen.",
+                    "OneNote is not reachable. Your task changes remain saved locally. Please try again.")
                 state["taskSync"] = {"status": status, "error": error}
                 if uncertain:
                     state["taskSync"]["attempt"] = after
@@ -575,7 +624,8 @@ class Publisher:
         try:
             if path.exists():
                 if not review.document_hash or hashlib.sha256(path.read_bytes()).hexdigest() != review.document_hash:
-                    review.onenote["localNotice"] = "Eine lokal veränderte Datei wurde zusätzlich beibehalten."
+                    review.onenote["localNotice"] = tr("Eine lokal veränderte Datei wurde zusätzlich beibehalten.",
+                                                       "A locally changed file was kept as well.")
                     self.notes.persist(review)
                     return
                 path.unlink()
@@ -584,5 +634,6 @@ class Publisher:
             review.onenote.pop("localNotice", None)
             self.notes.persist(review)
         except OSError:
-            review.onenote["localNotice"] = "In OneNote gespeichert. Die lokale Datei konnte noch nicht entfernt werden."
+            review.onenote["localNotice"] = tr("In OneNote gespeichert. Die lokale Datei konnte noch nicht entfernt werden.",
+                                               "Saved in OneNote. The local file could not be removed yet.")
             self.notes.persist(review)

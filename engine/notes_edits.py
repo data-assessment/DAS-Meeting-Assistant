@@ -4,6 +4,7 @@ import hashlib
 import json
 import re
 from difflib import SequenceMatcher
+from engine.notes_i18n import tr
 from engine.notes_schema import Draft, Person
 
 TASK_FIELDS = {"title", "owner", "ownerId", "recipient", "due", "questions", "included"}
@@ -50,7 +51,8 @@ def merge_generated(review, generated):
         merged.append(task)
     for task in remaining:
         if len(merged) >= 40:
-            review.warning = "Weitere Aufgabenvorschläge konnten nicht aufgenommen werden: maximal 40 pro Gespräch."
+            review.warning = tr("Weitere Aufgabenvorschläge konnten nicht aufgenommen werden: maximal 40 pro Gespräch.",
+                                "Further task suggestions could not be added: at most 40 per meeting.")
             break
         if task["id"] in {t["id"] for t in merged}: continue
         review.task_titles[task["id"]] = [task["title"]]
@@ -61,39 +63,39 @@ def merge_generated(review, generated):
 
 def apply_edit(review, data):
     if review.discarded or review.draft is None or not isinstance(data, dict):
-        raise ValueError("Notizen nicht verfügbar")
+        raise ValueError(tr("Notizen nicht verfügbar", "Notes not available"))
     if set(data) - {"operationId", "tasks", "people", "text"}:
-        raise ValueError("Unbekanntes Feld")
+        raise ValueError(tr("Unbekanntes Feld", "Unknown field"))
     operation = data.get("operationId")
     if not isinstance(operation, str) or not 1 <= len(operation) <= 100:
-        raise ValueError("Operation erforderlich")
+        raise ValueError(tr("Operation erforderlich", "Operation required"))
     digest = hashlib.sha256(json.dumps(data, sort_keys=True).encode("utf-8")).hexdigest()
     if operation in review.edit_operations:
-        if review.edit_operations[operation] != digest: raise ValueError("Operation verändert")
+        if review.edit_operations[operation] != digest: raise ValueError(tr("Operation verändert", "Operation changed"))
         return
     draft = copy.deepcopy(review.draft)
     overrides = copy.deepcopy(review.task_edits)
     patches = data.get("tasks", {})
-    if not isinstance(patches, dict) or len(patches) > 40: raise ValueError("Ungültige Aufgaben")
+    if not isinstance(patches, dict) or len(patches) > 40: raise ValueError(tr("Ungültige Aufgaben", "Invalid tasks"))
     for identity, patch in patches.items():
         task = next((t for t in draft["tasks"] if t["id"] == identity), None)
         if task is None or not isinstance(patch, dict) or set(patch) - TASK_FIELDS:
-            raise ValueError("Ungültige Aufgabe")
+            raise ValueError(tr("Ungültige Aufgabe", "Invalid task"))
         task.update(patch)
         overrides.setdefault(identity, {}).update(copy.deepcopy(patch))
     if "people" in data:
         values = data["people"]
-        if not isinstance(values, list) or len(values) > 100: raise ValueError("Ungültige Personen")
+        if not isinstance(values, list) or len(values) > 100: raise ValueError(tr("Ungültige Personen", "Invalid people"))
         people = {p["id"]: p for p in draft["people"]}
         for value in values:
             person = Person.model_validate(value).model_dump()
-            if person["source"] != "manual": raise ValueError("Nur manuelle Ergänzungen")
+            if person["source"] != "manual": raise ValueError(tr("Nur manuelle Ergänzungen", "Manual additions only"))
             people[person["id"]] = person
         draft["people"] = list(people.values())
     if "text" in data:
-        if not review.public()["editable"]: raise ValueError("Zusammenfassung wird aktualisiert")
+        if not review.public()["editable"]: raise ValueError(tr("Zusammenfassung wird aktualisiert", "Summary is being updated"))
         if not isinstance(data["text"], dict) or set(data["text"]) != TEXT_FIELDS:
-            raise ValueError("Ungültige Zusammenfassung")
+            raise ValueError(tr("Ungültige Zusammenfassung", "Invalid summary"))
         draft.update(data["text"])
     draft = Draft.model_validate(draft).model_dump()
     review.draft, review.task_edits, review.edited = draft, overrides, True

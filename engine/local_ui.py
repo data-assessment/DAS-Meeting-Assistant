@@ -8,6 +8,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 from urllib.request import ProxyHandler, build_opener
+from engine.notes_i18n import tr
 
 INSTANCE_HEADER = "X-Voice-Transcriber-Instance"
 
@@ -49,8 +50,10 @@ def validate_assets(directory):
                 raise ValueError("Missing or invalid UI asset")
         return hashlib.sha256(content).digest()
     except (OSError, ValueError) as exc:
-        raise StartupError("Die Programmoberfläche fehlt oder ist unvollständig. "
-                           "Bitte den Installer erneut ausführen.") from exc
+        raise StartupError(tr("Die Programmoberfläche fehlt oder ist unvollständig. "
+                              "Bitte den Installer erneut ausführen.",
+                              "The app interface is missing or incomplete. "
+                              "Please run the installer again.")) from exc
 
 
 class LocalUI:
@@ -72,9 +75,12 @@ class LocalUI:
             sock.setblocking(False)
         except (OSError, OverflowError) as exc:
             sock.close()
-            raise StartupError("Die lokale Verbindung konnte nicht gestartet werden. "
-                               "Bitte DAS Meeting Assistant beenden und erneut starten. "
-                               "Falls der Fehler bleibt, die lokale Port-Einstellung prüfen lassen.") from exc
+            raise StartupError(tr("Die lokale Verbindung konnte nicht gestartet werden. "
+                                  "Bitte DAS Meeting Assistant beenden und erneut starten. "
+                                  "Falls der Fehler bleibt, die lokale Port-Einstellung prüfen lassen.",
+                                  "The local connection could not be started. "
+                                  "Please quit DAS Meeting Assistant and start it again. "
+                                  "If the error persists, have the local port setting checked.")) from exc
         self.socket = sock
         self.port = sock.getsockname()[1]
         self.host = host
@@ -100,5 +106,7 @@ class LocalUI:
             except (OSError, ValueError):
                 pass
             time.sleep(0.05)
-        raise StartupError("Die Programmoberfläche konnte nicht gestartet werden. "
-                           "Bitte DAS Meeting Assistant erneut starten. Falls der Fehler bleibt, den Installer erneut ausführen.")
+        raise StartupError(tr("Die Programmoberfläche konnte nicht gestartet werden. "
+                              "Bitte DAS Meeting Assistant erneut starten. Falls der Fehler bleibt, den Installer erneut ausführen.",
+                              "The app interface could not be started. "
+                              "Please start DAS Meeting Assistant again. If the error persists, run the installer again."))

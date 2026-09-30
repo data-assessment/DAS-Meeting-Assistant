@@ -8,8 +8,18 @@ from dataclasses import dataclass, field
 import requests
 from engine.notes_schema import Person
 from engine.graph_auth import signed_in_username, get_token_for_scopes
+from engine.notes_i18n import tr
 
 SCOPES = ["Calendars.Read"]
+
+
+def calendar_unavailable():
+    return tr("Kalender gerade nicht erreichbar. Neuer Versuch automatisch.",
+              "Calendar currently unavailable. Retrying automatically.")
+
+
+def calendar_access_missing():
+    return tr("Kalenderzugriff fehlt.", "Calendar access missing.")
 
 @dataclass
 class PeopleResult:
@@ -105,10 +115,10 @@ def invitation_lines(review):
         try:
             start = dt.datetime.fromisoformat(context["start"]).astimezone()
             end = dt.datetime.fromisoformat(context["end"]).astimezone() if context.get("end") else None
-            lines.append("Outlook-Termin: " + start.strftime("%d.%m.%Y, %H:%M") + (" – " + end.strftime("%H:%M") if end else ""))
+            lines.append(tr("Outlook-Termin", "Outlook meeting") + ": " + start.strftime("%d.%m.%Y, %H:%M") + (" – " + end.strftime("%H:%M") if end else ""))
         except ValueError: pass
-    if context.get("organizer"): lines.append("Organisiert von: " + context["organizer"])
-    lines.append("Teilnehmer laut Outlook-Einladung:")
+    if context.get("organizer"): lines.append(tr("Organisiert von", "Organized by") + ": " + context["organizer"])
+    lines.append(tr("Teilnehmer laut Outlook-Einladung:", "Attendees per Outlook invitation:"))
     lines.extend(p["name"] + (" <" + p["email"] + ">" if p.get("email") else "") for p in context["people"])
     return lines
 
@@ -135,7 +145,7 @@ def resolve_people(started):
         username = signed_in_username()
         if username: add(username, username, "self")
     if not headers:
-        return PeopleResult(list(people.values()), "Kalenderzugriff fehlt.", access_needed=True)
+        return PeopleResult(list(people.values()), calendar_access_missing(), access_needed=True)
     try:
         # No attendance or transcript permission is needed for invitation details.
         candidates = list_calendar_candidates(headers, started, started + dt.timedelta(minutes=1), diagnostics=False, online_only=False)
@@ -147,11 +157,12 @@ def resolve_people(started):
         nearby = [c for c in candidates if c.start and c.end and moment(c.start) - dt.timedelta(minutes=5) <= anchor <= moment(c.end) + dt.timedelta(minutes=5)]
         choices = current if current else nearby
         if len(choices) > 20:
-            return PeopleResult(list(people.values()), "Zu viele zeitgleiche Outlook-Termine. Bitte den Kalender prüfen.")
+            return PeopleResult(list(people.values()), tr("Zu viele zeitgleiche Outlook-Termine. Bitte den Kalender prüfen.",
+                                                          "Too many simultaneous Outlook meetings. Please check the calendar."))
         values = []
         for c in choices:
             identity = str(uuid.uuid5(uuid.NAMESPACE_URL, str(getattr(c, "join_url", "")) + str(c.start) + str(getattr(c, "subject", ""))))
-            values.append({"id":identity,"title":str(getattr(c,"subject","") or "Kalendertermin"),"start":c.start,
+            values.append({"id":identity,"title":str(getattr(c,"subject","") or tr("Kalendertermin", "Calendar event")),"start":c.start,
                            "end":c.end,"organizer":getattr(c,"organizer","") or "","response":getattr(c,"response","") or "",
                            "people":[p for v in c.invitees if (p := person(v.get("name"),v.get("email"),"calendar"))]})
         if len(values) == 1:
@@ -159,13 +170,14 @@ def resolve_people(started):
             for p in selected["people"]:
                 if p["id"] not in people: people[p["id"]] = p
             return PeopleResult(list(people.values()), "", selected["title"], values, selected["id"])
-        note = "Mehrere Termine passen. Bitte den Termin auswählen." if values else "Keine passende Kalendereinladung gefunden."
+        note = (tr("Mehrere Termine passen. Bitte den Termin auswählen.", "Several meetings match. Please select the meeting.") if values
+                else tr("Keine passende Kalendereinladung gefunden.", "No matching calendar invitation found."))
         return PeopleResult(list(people.values())[:100], note, candidates=values)
     except requests.HTTPError as exc:
         access = exc.response is not None and exc.response.status_code in (401,403)
-        return PeopleResult(list(people.values()), "Kalenderzugriff fehlt." if access else "Kalender gerade nicht erreichbar. Neuer Versuch automatisch.", access_needed=access)
+        return PeopleResult(list(people.values()), calendar_access_missing() if access else calendar_unavailable(), access_needed=access)
     except Exception:
-        return PeopleResult(list(people.values()), "Kalender gerade nicht erreichbar. Neuer Versuch automatisch.")
+        return PeopleResult(list(people.values()), calendar_unavailable())
 
 async def load_people(notes, review):
     if review.calendar_selected or review.onenote.get("status") in ("preparing", "sending", "uncertain", "saved"): return
@@ -173,7 +185,7 @@ async def load_people(notes, review):
         result = await asyncio.to_thread(resolve_people, dt.datetime.fromisoformat(review.started))
         people, note = result
     except Exception:
-        result = None; people, note = [], "Kalender gerade nicht erreichbar. Neuer Versuch automatisch."
+        result = None; people, note = [], calendar_unavailable()
     if notes.closed or review.discarded or review.calendar_selected or review.onenote.get("status") in ("preparing", "sending", "uncertain", "saved"): return
     from engine.notes_calls import merge_people
     review.calendar_access_needed = getattr(result, "access_needed", False)
@@ -191,12 +203,12 @@ async def load_people(notes, review):
 
 def select_calendar(notes, review, identity):
     if review.onenote.get("status") in ("preparing", "sending", "uncertain", "saved"):
-        raise ValueError("Diese Notizen werden in OneNote bearbeitet.")
+        raise ValueError(tr("Diese Notizen werden in OneNote bearbeitet.", "These notes are being edited in OneNote."))
     selected = next((c for c in review.calendar_candidates if c["id"] == identity), None)
-    if not selected: raise ValueError("Termin nicht mehr verfügbar")
+    if not selected: raise ValueError(tr("Termin nicht mehr verfügbar", "Meeting no longer available"))
     from engine.notes_calls import merge_people
     # Do not silently replace a previously selected invitation.
-    if review.calendar_selected and review.calendar_selected != identity: raise ValueError("Termin bereits zugeordnet")
+    if review.calendar_selected and review.calendar_selected != identity: raise ValueError(tr("Termin bereits zugeordnet", "Meeting already assigned"))
     if review.calendar_selected == identity: return
     review.calendar_selected = identity
     review.revision += 1

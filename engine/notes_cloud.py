@@ -8,6 +8,7 @@ from openai import AzureOpenAI
 
 import config
 from engine.ai_auth import gateway_token
+from engine.notes_i18n import tr
 
 
 class AccessDenied(RuntimeError):
@@ -31,17 +32,20 @@ def speech_credential() -> SpeechCredential:
     try:
         token = gateway_token(interactive=False)
     except Exception:
-        raise AccessDenied("Bitte in den Einstellungen mit Microsoft anmelden.") from None
+        raise AccessDenied(tr("Bitte in den Einstellungen mit Microsoft anmelden.", "Please sign in with Microsoft in the settings.")) from None
     try:
         with httpx.Client(trust_env=False, follow_redirects=False, timeout=15) as client:
             response = client.post(config.USAGE_SERVICE_ENDPOINT.rstrip('/') + '/speech/session',
                                    headers={"Authorization": "Bearer " + token}, json={})
         if response.status_code in (401, 403):
-            raise AccessDenied("DAS-Zugang fehlt oder ist abgelaufen. Bitte erneut anmelden; gegebenenfalls muss DAS Ihre Organisation freischalten.")
+            raise AccessDenied(tr("DAS-Zugang fehlt oder ist abgelaufen. Bitte erneut anmelden; gegebenenfalls muss DAS Ihre Organisation freischalten.",
+                                  "DAS access is missing or has expired. Please sign in again; DAS may need to enable your organization."))
         if response.status_code in (404, 503):
-            raise ServiceUnavailable("Der DAS-Sprachdienst ist noch nicht bereit. Bitte an den DAS-Support wenden.")
+            raise ServiceUnavailable(tr("Der DAS-Sprachdienst ist noch nicht bereit. Bitte an den DAS-Support wenden.",
+                                        "The DAS speech service is not ready yet. Please contact DAS support."))
         if response.status_code != 200:
-            raise ServiceUnavailable("Der DAS-Sprachdienst ist vorübergehend nicht erreichbar.")
+            raise ServiceUnavailable(tr("Der DAS-Sprachdienst ist vorübergehend nicht erreichbar.",
+                                        "The DAS speech service is temporarily unavailable."))
         data = response.json()
         region, value, ttl = data.get('region'), data.get('authorizationToken'), data.get('expiresIn')
         if (not isinstance(region, str) or not re.fullmatch(r'[a-z][a-z0-9]{1,39}', region)
@@ -53,7 +57,8 @@ def speech_credential() -> SpeechCredential:
     except (AccessDenied, ServiceUnavailable):
         raise
     except Exception:
-        raise ServiceUnavailable("DAS-Sprachzugang konnte nicht geladen werden. Verbindung prüfen und erneut versuchen.") from None
+        raise ServiceUnavailable(tr("DAS-Sprachzugang konnte nicht geladen werden. Verbindung prüfen und erneut versuchen.",
+                                    "DAS speech access could not be loaded. Check the connection and try again.")) from None
 
 
 def summary_client():
@@ -68,7 +73,7 @@ def summary_client():
 
 def summary_model():
     if not config.SUMMARY_MODELS:
-        raise RuntimeError("DAS-Zusammenfassungen sind noch nicht konfiguriert.")
+        raise RuntimeError(tr("DAS-Zusammenfassungen sind noch nicht konfiguriert.", "DAS summaries are not configured yet."))
     return config.SUMMARY_MODELS[0]
 
 
@@ -86,7 +91,8 @@ def check_access():
         if not result.choices:
             raise ValueError()
     except Exception:
-        raise RuntimeError("DAS-Zusammenfassungen sind nicht erreichbar oder für Ihr Konto nicht freigeschaltet. Bitte an den DAS-Support wenden.") from None
+        raise RuntimeError(tr("DAS-Zusammenfassungen sind nicht erreichbar oder für Ihr Konto nicht freigeschaltet. Bitte an den DAS-Support wenden.",
+                              "DAS summaries are not reachable or not enabled for your account. Please contact DAS support.")) from None
 
 
 def check_speech_access():
@@ -120,7 +126,8 @@ def check_speech_access():
         if not ended.wait(15) or not connected.is_set() or failed.is_set():
             raise RuntimeError()
     except Exception:
-        raise RuntimeError("DAS-Spracherkennung ist nicht erreichbar oder für Ihr Firmenkonto nicht freigeschaltet. Bitte an den DAS-Support wenden.") from None
+        raise RuntimeError(tr("DAS-Spracherkennung ist nicht erreichbar oder für Ihr Firmenkonto nicht freigeschaltet. Bitte an den DAS-Support wenden.",
+                              "DAS speech recognition is not reachable or not enabled for your work account. Please contact DAS support.")) from None
     finally:
         stream.close()
         if transcriber is not None:

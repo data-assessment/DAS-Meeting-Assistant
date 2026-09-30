@@ -4,19 +4,20 @@ import threading
 import time
 import uuid
 from .core import AudioBuffer, PcmReader, Transcript
+from engine.notes_i18n import tr
 
 def validate(region, key, language, local_name):
     if not re.fullmatch(r"[a-z][a-z0-9]{1,39}", region):
-        raise ValueError("Bitte die Azure-Region eintragen, zum Beispiel westeurope.")
+        raise ValueError(tr("Bitte die Azure-Region eintragen, zum Beispiel westeurope.", "Please enter the Azure region, for example westeurope."))
     if not key.strip() or any(ord(c) < 32 for c in key):
-        raise ValueError("Bitte einen gültigen Speech-Ressourcenschlüssel eintragen.")
+        raise ValueError(tr("Bitte einen gültigen Speech-Ressourcenschlüssel eintragen.", "Please enter a valid Speech resource key."))
     validate_input(language, local_name)
 
 def validate_input(language, local_name):
     if not re.fullmatch(r"[a-z]{2,3}-[A-Za-z]{2,4}", language):
-        raise ValueError("Bitte eine Sprache wie de-DE oder en-US eintragen.")
+        raise ValueError(tr("Bitte eine Sprache wie de-DE oder en-US eintragen.", "Please enter a language such as de-DE or en-US."))
     if not local_name.strip() or len(local_name) > 80 or any(ord(c) < 32 for c in local_name):
-        raise ValueError("Bitte einen lokalen Namen mit höchstens 80 Zeichen eintragen.")
+        raise ValueError(tr("Bitte einen lokalen Namen mit höchstens 80 Zeichen eintragen.", "Please enter a local name with at most 80 characters."))
 
 def wait_future(future, timeout, cancel=None):
     done = threading.Event()
@@ -63,7 +64,7 @@ class Session:
 
     def start_entra(self, endpoint, language, selection, credential):
         if not re.fullmatch(r"https://[A-Za-z0-9-]+\.cognitiveservices\.azure\.com/?", endpoint):
-            raise ValueError("DAS-Sprachdienst ist nicht konfiguriert.")
+            raise ValueError(tr("DAS-Sprachdienst ist nicht konfiguriert.", "The DAS speech service is not configured."))
         validate_input(language, self.transcript.local_name)
         from engine.ai_auth import AZURE_SCOPE
         credential.get_token(AZURE_SCOPE)  # Fail before opening capture if sign-in is missing.
@@ -100,7 +101,7 @@ class Session:
             if self.cancel.is_set():
                 return
             if fresh.region != self._credential.region:
-                raise AccessDenied("DAS-Sprachregion wurde geändert. Meeting-Erfassung erneut starten.")
+                raise AccessDenied(tr("DAS-Sprachregion wurde geändert. Meeting-Erfassung erneut starten.", "The DAS speech region changed. Start the meeting capture again."))
             for _, recognizer in recognizers:
                 try:
                     recognizer.authorization_token = fresh.token
@@ -116,10 +117,10 @@ class Session:
             self._credential = fresh
             self._refresh_at = fresh.expires - 120
         except AccessDenied:
-            self.fail("DAS-Zugang abgelaufen oder nicht mehr freigeschaltet. Bitte erneut anmelden.")
+            self.fail(tr("DAS-Zugang abgelaufen oder nicht mehr freigeschaltet. Bitte erneut anmelden.", "DAS access expired or is no longer enabled. Please sign in again."))
         except Exception:
             if time.monotonic() >= self._credential.expires - 30:
-                self.fail("DAS-Sprachzugang konnte nicht verlängert werden. Vorhandene Notizen werden abgeschlossen.")
+                self.fail(tr("DAS-Sprachzugang konnte nicht verlängert werden. Vorhandene Notizen werden abgeschlossen.", "DAS speech access could not be renewed. Existing notes are being completed."))
             else:
                 self._refresh_at = time.monotonic() + 10
 
@@ -135,10 +136,10 @@ class Session:
 
     def _start(self, region, key, language, selection):
         if set(selection) != {"mic", "loopback"}:
-            raise ValueError("Mikrofon und Wiedergabegerät auswählen.")
+            raise ValueError(tr("Mikrofon und Wiedergabegerät auswählen.", "Select a microphone and a playback device."))
         with self._lock:
             if self.phase != "Bereit":
-                raise ValueError("Diese Sitzung wurde bereits gestartet.")
+                raise ValueError(tr("Diese Sitzung wurde bereits gestartet.", "This session has already been started."))
             self.phase = "Verbindung wird aufgebaut"
         threading.Thread(target=self._run, args=(region, key, language, selection), daemon=True).start()
 
@@ -173,7 +174,7 @@ class Session:
                         try:
                             return self.reader.read(target)
                         except Exception:
-                            self.reader.buffer.on_error("Audioverarbeitung fehlgeschlagen.")
+                            self.reader.buffer.on_error(tr("Audioverarbeitung fehlgeschlagen.", "Audio processing failed."))
                             self.reader.close()
                             return 0
                     def close(self):
@@ -202,7 +203,7 @@ class Session:
                         self.transcript.add(self.transcript_source(src), getattr(event.result, "speaker_id", None),
                             event.result.text, event.result.offset / 10_000_000, final)
                     except Exception:
-                        self.fail("Transkriptlimit oder Verarbeitungsfehler; Sitzung wird beendet.")
+                        self.fail(tr("Transkriptlimit oder Verarbeitungsfehler; Sitzung wird beendet.", "Transcript limit or processing error; the session is ending."))
                 final_signal.connect(receive)
                 partial_signal.connect(lambda event, handler=receive: handler(event, final=False))
                 completed = threading.Event()
@@ -210,15 +211,18 @@ class Session:
                 def stopped(event, completed=completed):
                     completed.set()
                     if not self.cancel.is_set():
-                        self.fail("Azure hat die Sitzung vorzeitig beendet.")
+                        self.fail(tr("Azure hat die Sitzung vorzeitig beendet.", "Azure ended the session early."))
                 def canceled(event, src=source):
                     # EndOfStream during our normal stop is expected, not an error.
                     if self.cancel.is_set() and event.reason != sdk.CancellationReason.Error:
                         return
                     # Never log raw event/error_details: they can contain service/request data.
-                    self.fail("Azure-Fehler bei " + ("Mikrofon" if src == "mic" else "Wiedergabe") +
-                              (". DAS-Anmeldung, Netzwerk und Speech-Berechtigung prüfen." if self._token_credential
-                               else ". Region, Schlüssel, Netzwerk und Speech-Berechtigung prüfen."))
+                    self.fail(tr("Azure-Fehler bei " + ("Mikrofon" if src == "mic" else "Wiedergabe") +
+                                 (". DAS-Anmeldung, Netzwerk und Speech-Berechtigung prüfen." if self._token_credential
+                                  else ". Region, Schlüssel, Netzwerk und Speech-Berechtigung prüfen."),
+                                 "Azure error on " + ("microphone" if src == "mic" else "playback") +
+                                 (". Check the DAS sign-in, network and Speech permission." if self._token_credential
+                                  else ". Check the region, key, network and Speech permission.")))
                 recognizer.session_stopped.connect(stopped)
                 recognizer.canceled.connect(canceled)
                 recognizers.append((source, recognizer))
@@ -236,12 +240,12 @@ class Session:
             while not self.cancel.wait(0.2):
                 self._refresh_credentials(recognizers)
                 if hasattr(self.capture, "healthy") and not self.capture.healthy():
-                    self.fail("Audiogerät nicht mehr aktiv; Sitzung wird beendet.")
+                    self.fail(tr("Audiogerät nicht mehr aktiv; Sitzung wird beendet.", "Audio device no longer active; the session is ending."))
                 if time.monotonic() - started > self.TEST_SECONDS:
-                    self.fail(f"Testlimit von {self.TEST_SECONDS // 60} Minuten erreicht.")
+                    self.fail(tr(f"Testlimit von {self.TEST_SECONDS // 60} Minuten erreicht.", f"Test limit of {self.TEST_SECONDS // 60} minutes reached."))
         except Exception:
             if not self.cancel.is_set():
-                self.fail("Start oder Verarbeitung fehlgeschlagen. Geräte, Region und Speech-Zugang prüfen.")
+                self.fail(tr("Start oder Verarbeitung fehlgeschlagen. Geräte, Region und Speech-Zugang prüfen.", "Start or processing failed. Check the devices, region and Speech access."))
         finally:
             self.phase = "Wird beendet"
             self.cancel.set()
@@ -249,7 +253,7 @@ class Session:
                 try:
                     self.capture.close()
                 except Exception:
-                    self.fail("Audiogeräte konnten nicht vollständig geschlossen werden.")
+                    self.fail(tr("Audiogeräte konnten nicht vollständig geschlossen werden.", "Audio devices could not be closed completely."))
             for buffer in self.buffers.values():
                 if self.error:
                     buffer.discard()
@@ -260,14 +264,14 @@ class Session:
             for event in ended:
                 event.wait(max(0, deadline - time.monotonic()))
             if ended and not self.error and not all(event.is_set() for event in ended):
-                self.fail("Azure-Abschluss nicht rechtzeitig bestätigt; letzte Wörter können fehlen.")
+                self.fail(tr("Azure-Abschluss nicht rechtzeitig bestätigt; letzte Wörter können fehlen.", "Azure did not confirm completion in time; the last words may be missing."))
             for source, recognizer in recognizers:
                 try:
                     future = (recognizer.stop_transcribing_async() if source == "loopback"
                               else recognizer.stop_continuous_recognition_async())
                     wait_future(future, 3)
                 except Exception:
-                    self.fail("Azure-Sitzung nicht rechtzeitig beendet.")
+                    self.fail(tr("Azure-Sitzung nicht rechtzeitig beendet.", "Azure session did not end in time."))
             for reader in readers:
                 reader.close()
             for signal in disconnect:

@@ -5,6 +5,7 @@ import threading
 import time
 import numpy as np
 import soxr
+from engine.notes_i18n import tr
 
 class AudioBuffer:
     """Capture never waits for the cloud. Overflow ends the stream, never drops silently."""
@@ -38,7 +39,7 @@ class AudioBuffer:
                 self.peak = max(self.peak, self._size)
             self._condition.notify_all()
         if failed:
-            self.on_error("Audiopuffer voll; Sitzung wird beendet.")
+            self.on_error(tr("Audiopuffer voll; Sitzung wird beendet.", "Audio buffer full; the session is ending."))
         return not failed
 
     def take(self):
@@ -96,7 +97,7 @@ class PcmReader:
             if data:
                 samples = np.frombuffer(data, dtype="<f4")
                 if len(samples) % self.channels:
-                    self.buffer.on_error("Ungültiges Audioformat; Sitzung wird beendet.")
+                    self.buffer.on_error(tr("Ungültiges Audioformat; Sitzung wird beendet.", "Invalid audio format; the session is ending."))
                     self.closed = True
                     self.buffer.discard()
                     self.pending.clear()
@@ -152,7 +153,7 @@ class Transcript:
                 return False
             if len(text) > 4096 or (final and
                     (self.characters + len(text) > self.max_chars or len(self.finals) >= self.max_segments)):
-                raise ValueError("Transkriptlimit erreicht; Sitzung wird beendet.")
+                raise ValueError(tr("Transkriptlimit erreicht; Sitzung wird beendet.", "Transcript limit reached; the session is ending."))
             item = Segment(self.session_id, source, speaker, float(offset),
                            time.monotonic() - self.started, text)
             if final:

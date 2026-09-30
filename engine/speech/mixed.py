@@ -11,6 +11,7 @@ import time
 import numpy as np
 import soxr
 from .session import Session
+from engine.notes_i18n import tr
 
 RATE = 16000
 BLOCK = 320
@@ -20,10 +21,18 @@ RETURN_INTERVAL = 3.0    # look for the originally selected device while on a fa
 GAP = RATE // 50         # a block starting later than this after its predecessor keeps the pause
 LEAD = RATE // 10        # a source further ahead of its arrival times is played faster
 SPEEDUP = 0.05           # at most 5 % faster, well within what speech recognition tolerates
-LOST_NOTICE = ("Audioaufnahme unterbrochen. Sie läuft weiter, sobald wieder ein "
-               "Mikrofon und ein Wiedergabegerät verfügbar sind.")
-DROP_NOTICE = ("Die Verarbeitung war mehrere Sekunden blockiert; ein Teil des Audios aus "
-               "dieser Zeit fehlt in den Notizen. Die Aufnahme läuft weiter.")
+def lost_notice():
+    return tr("Audioaufnahme unterbrochen. Sie läuft weiter, sobald wieder ein "
+              "Mikrofon und ein Wiedergabegerät verfügbar sind.",
+              "Audio recording interrupted. It resumes as soon as a microphone "
+              "and a playback device are available again.")
+
+
+def drop_notice():
+    return tr("Die Verarbeitung war mehrere Sekunden blockiert; ein Teil des Audios aus "
+              "dieser Zeit fehlt in den Notizen. Die Aufnahme läuft weiter.",
+              "Processing was blocked for several seconds; part of the audio from "
+              "that time is missing from the notes. Recording continues.")
 
 
 def candidate_selections(preferred, current, devices):
@@ -275,7 +284,7 @@ class MixedCapture:
         if self.mixer is not None and self.mixer.dropped_samples > self.reported_drops:
             self.reported_drops = self.mixer.dropped_samples
             print(f"[audio] mix buffer exceeded: {self.reported_drops * 1000 // RATE} ms dropped so far")
-            self.notice = DROP_NOTICE
+            self.notice = drop_notice()
         capture = self.capture
         if capture is not None and not self.lost.is_set() and (
                 not hasattr(capture, "healthy") or capture.healthy()):
@@ -284,7 +293,7 @@ class MixedCapture:
                     self._detach(lost=False)
                     attached = self._attach()
                     if not attached:
-                        self.notice = LOST_NOTICE
+                        self.notice = lost_notice()
                     returned = attached and not self._on_fallback()
                     # Windows can list a device before PortAudio can open it; back off.
                     self.return_interval = RETURN_INTERVAL if returned else min(self.return_interval * 2, 60.0)
@@ -317,7 +326,7 @@ class MixedCapture:
             print("[audio] capture interrupted; reopening devices")
             self.interruptions += 1
             self.return_interval = RETURN_INTERVAL
-            self.notice = LOST_NOTICE
+            self.notice = lost_notice()
         try:
             capture.close()
         except Exception:
@@ -345,11 +354,15 @@ class MixedCapture:
         print(f"[audio] capture reopened: mic {self.current['mic']['name']!r}, "
               f"playback {self.current['loopback']['name']!r}")
         if self._on_fallback():
-            self.notice = ("Audiogerät gewechselt. Die Aufnahme läuft weiter mit Mikrofon „"
-                           + self.current["mic"]["name"] + "“ und Wiedergabe „"
-                           + self.current["loopback"]["name"].removesuffix(" [Loopback]") + "“.")
+            mic = self.current["mic"]["name"]
+            playback = self.current["loopback"]["name"].removesuffix(" [Loopback]")
+            self.notice = tr("Audiogerät gewechselt. Die Aufnahme läuft weiter mit Mikrofon „"
+                             + mic + "“ und Wiedergabe „" + playback + "“.",
+                             "Audio device changed. Recording continues with microphone “"
+                             + mic + "” and playback “" + playback + "”.")
         elif self.interruptions:
-            self.notice = "Audioaufnahme nach kurzer Unterbrechung fortgesetzt."
+            self.notice = tr("Audioaufnahme nach kurzer Unterbrechung fortgesetzt.",
+                             "Audio recording resumed after a short interruption.")
         return True
 
     def _open(self, chosen):
@@ -378,15 +391,23 @@ class MixedCapture:
         """Capture note kept with the finished meeting; empty when nothing was lost."""
         notes = []
         if self.interruptions and self.silent_since is not None:
-            notes.append("Audioaufnahme während des Meetings unterbrochen; danach war kein Audiogerät "
-                         "verfügbar. Die Notizen reichen nur bis zu dieser Stelle.")
+            notes.append(tr("Audioaufnahme während des Meetings unterbrochen; danach war kein Audiogerät "
+                            "verfügbar. Die Notizen reichen nur bis zu dieser Stelle.",
+                            "Audio recording was interrupted during the meeting; afterwards no audio device "
+                            "was available. The notes only cover the meeting up to that point."))
         elif self.interruptions:
-            notes.append(f"Audioaufnahme während des Meetings {self.interruptions}× unterbrochen; ca. "
-                         f"{max(1, round(self.silent_seconds))} s ohne Ton. "
-                         "Die Notizen umfassen die Zeit davor und danach.")
+            silent = max(1, round(self.silent_seconds))
+            notes.append(tr(f"Audioaufnahme während des Meetings {self.interruptions}× unterbrochen; ca. "
+                            f"{silent} s ohne Ton. "
+                            "Die Notizen umfassen die Zeit davor und danach.",
+                            f"Audio recording was interrupted {self.interruptions}× during the meeting; about "
+                            f"{silent} s without sound. "
+                            "The notes cover the time before and after."))
         dropped = self.mixer.dropped_samples if self.mixer is not None else 0
         if dropped:
-            notes.append(f"Wegen einer Verzögerung fehlen ca. {max(1, round(dropped / RATE))} s Audio.")
+            missing = max(1, round(dropped / RATE))
+            notes.append(tr(f"Wegen einer Verzögerung fehlen ca. {missing} s Audio.",
+                            f"About {missing} s of audio are missing due to a delay."))
         return " ".join(notes)
 
     def _emit_until(self, end):
