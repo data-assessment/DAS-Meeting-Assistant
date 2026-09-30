@@ -21,6 +21,7 @@ function apply(value: AppLanguage) {
   current = value
   document.documentElement.lang = current
 }
+apply(current)
 // Called with the saved language from each state poll; undefined until the first poll.
 export function setAppLanguage(saved: unknown) {
   if (saved === undefined && !pending) return
@@ -30,17 +31,21 @@ export function setAppLanguage(saved: unknown) {
 export function chooseAppLanguage(value: AppLanguage) { pending = value; apply(value) }
 export function cancelAppLanguage(previous: AppLanguage) { pending = null; apply(previous) }
 
-function lookup(key: string): string | undefined {
-  let node: string | Messages | undefined = catalogs[current]
+function lookup(key: string, language: AppLanguage): string | undefined {
+  let node: string | Messages | undefined = catalogs[language]
   for (const part of key.split('.')) node = typeof node === 'object' ? node[part] : undefined
   return typeof node === 'string' ? node : undefined
 }
 
-export function t(key: string, params?: Params) {
-  const plural = params && typeof params.count === 'number' ? lookup(`${key}_${params.count === 1 ? 'one' : 'other'}`) : undefined
-  const text = plural ?? lookup(key) ?? key
+// Text in a given language, e.g. a meeting's notes language instead of the app language.
+export function tIn(language: unknown, key: string, params?: Params) {
+  const lang = normalize(language)
+  const plural = params && typeof params.count === 'number' ? lookup(`${key}_${params.count === 1 ? 'one' : 'other'}`, lang) : undefined
+  const text = plural ?? lookup(key, lang) ?? key
   return params ? text.replace(/\{\{(\w+)\}\}/g, (match, name) => name in params ? String(params[name]) : match) : text
 }
+
+export const t = (key: string, params?: Params) => tIn(current, key, params)
 
 // Locale for dates and times shown in the UI.
 export const uiLocale = () => current === 'en' ? 'en-GB' : 'de-DE'

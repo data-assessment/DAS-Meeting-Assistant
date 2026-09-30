@@ -3,6 +3,7 @@
 Community uses local Azure credentials; Managed uses packaged routing and user tokens.
 """
 import asyncio
+import contextvars
 import datetime as dt
 import json
 import hashlib
@@ -123,9 +124,13 @@ oder Fristen erraten. Unbekannte Felder leer lassen; questions nur nach den enge
 Regeln zur Aufgabenstellung oben. Vorschläge nicht als Beschluss darstellen. Keine Inhalte erfinden.
 """
 
+# Notes language of the draft being generated. Only the prompt reads it: messages raised
+# while drafting (e.g. unreachable service) stay in the current app language.
+_draft_language = contextvars.ContextVar("draft_language", default=None)
+
 def system_prompt():
     """The rules stay German; only the output language follows the meeting's notes language."""
-    if notes_i18n.language() == "en":
+    if (_draft_language.get() or notes_i18n.language()) == "en":
         return SYSTEM.replace("Erstelle knappe deutsche Meeting-Notizen", "Erstelle knappe englische Meeting-Notizen", 1) + (
             "AUSGABESPRACHE: Alle Textwerte (summary, decisions, openQuestions, Aufgaben, "
             "Sachfragen und Optionen) auf Englisch schreiben, auch wenn das Gespräch auf Deutsch geführt wurde.\n")
@@ -165,8 +170,11 @@ def generate_draft(transcript, provider):
 
 async def review_draft(review, text):
     # to_thread copies the context, so the summary is written in the meeting's language.
-    with notes_i18n.using(review.language):
+    token = _draft_language.set(review.language)
+    try:
         return await asyncio.to_thread(generate_draft, text, review.provider.copy())
+    finally:
+        _draft_language.reset(token)
 
 @dataclass
 class Review:
@@ -228,7 +236,8 @@ class Review:
 
     def public(self):
         from engine.notes_people import calendar_context, meeting_heading
-        return {"id": self.id, "title": self.title, "displayTitle": meeting_heading(self), "started": self.started, "ended": self.ended,
+        return {"id": self.id, "title": self.title, "displayTitle": meeting_heading(self), "language": self.language,
+                "started": self.started, "ended": self.ended,
                 "status": self.status, "error": self.error,
                 "warning": self.warning or getattr(self.session, "error", "") or getattr(self.session, "notice", ""),
                 "draft": self.draft, "busy": self.busy,

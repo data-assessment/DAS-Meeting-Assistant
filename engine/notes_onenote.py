@@ -173,7 +173,7 @@ def task_lines(review):
 def page_html(review, author):
     draft = Draft.model_validate(review.draft).model_dump()
     esc = lambda value: html.escape(str(value or ""))
-    stamp = dt.datetime.fromisoformat(review.started).strftime("%d.%m.%Y · %H:%M")
+    stamp = dt.datetime.fromisoformat(review.started).strftime(t("document.formats.date") + " · %H:%M")
     from engine.notes_people import meeting_heading
     title = meeting_heading(review)
     parts = [f'<p data-id="meeting-{review.id}">{esc(stamp)} · {t("oneNote.page.notesBy", name=esc(author))}</p>']

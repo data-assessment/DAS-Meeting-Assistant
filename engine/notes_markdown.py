@@ -30,7 +30,7 @@ def document_name(review, folder, reserved=()):
 @in_review_language
 def render(review):
     draft = Draft.model_validate(review.draft).model_dump()
-    try: started = dt.datetime.fromisoformat(review.started).strftime("%d.%m.%Y, %H:%M")
+    try: started = dt.datetime.fromisoformat(review.started).strftime(t("document.formats.date") + ", %H:%M")
     except ValueError: started = plain(review.started)
     status = (t("document.status.complete") if review.phase == "complete"
               else t("document.status.inProgress") if not review.ended

@@ -53,7 +53,7 @@ def meeting_start(review):
 
 
 def meeting_heading(review):
-    return meeting_start(review).strftime("%d.%m.%Y · %H:%M · ") + meeting_title(review)
+    return meeting_start(review).strftime(t("document.formats.date") + " · %H:%M · ") + meeting_title(review)
 
 
 def reconcile_owners(review):
@@ -106,7 +106,7 @@ def invitation_lines(review):
         try:
             start = dt.datetime.fromisoformat(context["start"]).astimezone()
             end = dt.datetime.fromisoformat(context["end"]).astimezone() if context.get("end") else None
-            lines.append(t("document.invitation.meeting") + ": " + start.strftime("%d.%m.%Y, %H:%M") + (" – " + end.strftime("%H:%M") if end else ""))
+            lines.append(t("document.invitation.meeting") + ": " + start.strftime(t("document.formats.date") + ", %H:%M") + (" – " + end.strftime("%H:%M") if end else ""))
         except ValueError: pass
     if context.get("organizer"): lines.append(t("document.invitation.organizer") + ": " + context["organizer"])
     lines.append(t("document.invitation.attendees"))

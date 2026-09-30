@@ -86,6 +86,9 @@
   },
   "document": {
     "fallbackTitle": "Teams call",
+    "formats": {
+      "date": "%Y-%m-%d"
+    },
     "noTasks": "No tasks selected.",
     "status": {
       "complete": "Complete",

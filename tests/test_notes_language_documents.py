@@ -1,6 +1,7 @@
-"""Notes documents and OneNote pages follow the app language; task sync reads both."""
+"""Notes documents and OneNote pages keep their meeting's language; task sync reads both."""
 import asyncio
 import json
+import re
 from pathlib import Path
 from types import SimpleNamespace
 
@@ -40,6 +41,7 @@ def test_markdown_document_in_english(notes):
         assert label in text
     for german in ("Zusammenfassung", "Aufgaben", "Verantwortlich", "Noch zu klären", "Empfänger", "Termin:", "Stand"):
         assert german not in text
+    assert re.search(r"\*\*Meeting:\*\* \d{4}-\d{2}-\d{2}, \d{2}:\d{2}", text)
     for task in review.draft["tasks"]:
         task["included"] = False
     assert "No tasks selected." in render(review)
@@ -53,6 +55,7 @@ def test_markdown_document_in_german(notes):
                   "  - Empfänger: Kunde", "  - Termin: Freitag"):
         assert label in text
     assert "## Tasks" not in text and "Owner:" not in text
+    assert re.search(r"\*\*Meeting:\*\* \d{2}\.\d{2}\.\d{4}, \d{2}:\d{2}", text)
 
 
 def test_saved_document_keeps_the_meeting_language_across_restart(notes, tmp_path):
@@ -95,6 +98,7 @@ def test_onenote_page_and_task_lines_in_both_languages(setup):
     review.language = "en"
     page = no.page_html(review, "Robin")
     assert "Notes by Robin" in page and "<h2>Summary</h2>" in page and "<h2>Tasks</h2>" in page
+    assert "2026-09-16 · 10:00 · Notes by Robin" in page  # unambiguous date for English readers
     # Rendered in the meeting's language without changing the app language.
     assert task["title"] + " — Owner: to be clarified — Due: Freitag" in [line["text"] for line in no.task_lines(review).values()]
     assert notes_i18n.language() == "de"
@@ -108,6 +112,7 @@ def test_onenote_page_and_task_lines_in_both_languages(setup):
     review.language = "de"
     page = no.page_html(review, "Robin")
     assert "Notizen von Robin" in page and "<h2>Zusammenfassung</h2>" in page and "<h2>Aufgaben</h2>" in page
+    assert "16.09.2026 · 10:00 · Notizen von Robin" in page
     assert ts.snapshot({"tasks": []})["tasks-empty"]["text"] == "Keine Aufgaben ausgewählt."
 
 

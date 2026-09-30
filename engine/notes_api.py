@@ -118,6 +118,7 @@ def install(app):
             app._save_settings(strict=True)
         except Exception:
             notes.options, notes.enabled, notes.onboarding_complete, app.STATE.auto_start = previous
+            notes.set_ui_language(notes.options["uiLanguage"])  # configure() already switched it
             return {"ok": False, "error": t("api.errors.settingsSaveFailed")}
         notes.error = ""
         app.STATE.autostart_suppressed = False

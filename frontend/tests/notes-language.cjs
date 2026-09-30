@@ -97,11 +97,25 @@ const path = require('node:path');
     holdState = true;
     await page.goto(`http://127.0.0.1:${server.address().port}/?view=notes&lang=en`);
     await page.getByText('Connecting to client …', {exact:true}).waitFor();
+    assert.equal(await page.evaluate(() => document.documentElement.lang), 'en');
     holdState = false;
+
+    // An English meeting keeps English section headings in its notes, also in the German UI.
+    state.options.uiLanguage = 'de';
+    state.reviews = [{ id:'m1', title:'Kickoff', language:'en', started:'2026-10-09T10:00:00', ended:'2026-10-09T11:00:00',
+      status:'', error:'', warning:'', busy:false, canSummarize:false, sourceCharacters:0, savedPath:'m1.md', savedAt:'',
+      storeError:'', revision:1, phase:'complete', editable:true, autoRetry:false, people:[], peopleNote:'',
+      draft:{ summary:'Scope agreed.', decisions:'- Start the pilot.', openQuestions:'- Budget owner?', people:[], tasks:[] } }];
+    await page.goto(`http://127.0.0.1:${server.address().port}/?view=notes&lang=de`);
+    const editor = page.getByRole('textbox', {name:'Zusammenfassung direkt bearbeiten'});
+    await editor.waitFor();
+    assert.equal(await editor.inputValue(), 'Scope agreed.\n\nDecisions\n- Start the pilot.\n\nOpen questions\n- Budget owner?');
     assert.deepEqual(errors, []);
-    console.log('Language UI passed: flag dropdown, Escape, switch to English with saved choice, settings gear, separate meeting language, failed save, stale poll, initial language.');
+    console.log('Language UI passed: flag dropdown, Escape, switch to English with saved choice, settings gear, separate meeting language, failed save, stale poll, initial language, meeting-language notes headings.');
   } finally {
+    holdState = false; // release a held state request, so a failed assertion cannot hang the close
     if (browser) await browser.close();
     await new Promise(resolve => server.close(resolve));
   }
-})().catch(error => { console.error(error); process.exitCode=1; });
+// Exit explicitly: after a failure, a request still pending in the route handler must not keep node alive.
+})().catch(error => { console.error(error); process.exit(1); });

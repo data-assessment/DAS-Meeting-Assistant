@@ -4,8 +4,8 @@ import { NotesOneNote, oneNoteSavedLabel, type OneNoteState } from './NotesOneNo
 import { NotesCalendar, type CalendarContext, type CalendarCandidate } from './NotesCalendar'
 
 import { NotesTasks, unresolved, type Draft, type Person, type Task } from './NotesTasks'
-import { appLanguage, cancelAppLanguage, chooseAppLanguage, setAppLanguage, t, uiLocale, type AppLanguage } from './i18n'
-type Review = { displayTitle?: string; onenote?: OneNoteState; calendarContext?: CalendarContext | null; calendarSelected?: boolean; calendarAccessNeeded?: boolean; calendarNote?: string; calendarCandidates?: CalendarCandidate[]; peopleAccessNeeded?: boolean; people: Person[]; peopleNote: string; id: string; title: string; started: string; ended: string; status: string; error: string; warning: string;
+import { appLanguage, cancelAppLanguage, chooseAppLanguage, setAppLanguage, t, tIn, uiLocale, type AppLanguage } from './i18n'
+type Review = { displayTitle?: string; language?: string; onenote?: OneNoteState; calendarContext?: CalendarContext | null; calendarSelected?: boolean; calendarAccessNeeded?: boolean; calendarNote?: string; calendarCandidates?: CalendarCandidate[]; peopleAccessNeeded?: boolean; people: Person[]; peopleNote: string; id: string; title: string; started: string; ended: string; status: string; error: string; warning: string;
   draft: Draft | null; tasksEditable?: boolean; busy: boolean; canSummarize: boolean; sourceCharacters: number; savedPath: string;
   documentName?: string; savedAt: string; storeError: string; revision: number; phase: string; editable: boolean; autoRetry: boolean }
 type Screen = 'meeting' | 'settings' | 'history'
@@ -201,8 +201,11 @@ function elapsed(started: string) {
   return `${Math.floor(seconds / 60).toString().padStart(2, '0')}:${(seconds % 60).toString().padStart(2, '0')}`
 }
 
-function documentText(d: Draft) {
-  return [d.summary, d.decisions && 'Entscheidungen\n' + d.decisions, d.openQuestions && 'Offene Fragen\n' + d.openQuestions].filter(Boolean).join('\n\n')
+// Part of the notes themselves (edited and saved back into the summary), so the headings
+// follow the meeting's notes language, not the app language.
+function documentText(d: Draft, language?: string) {
+  return [d.summary, d.decisions && tIn(language, 'summary.sections.decisions') + '\n' + d.decisions,
+    d.openQuestions && tIn(language, 'summary.sections.openQuestions') + '\n' + d.openQuestions].filter(Boolean).join('\n\n')
 }
 function Spinner() { return <span className="notes-spinner" aria-hidden="true" /> }
 function ResizeIcon({ expanded }: { expanded: boolean }) {
@@ -277,7 +280,7 @@ function ReviewPanel({ review, visible, current, state, history, configure, refr
           {d && <button className="summary-size-toggle" aria-expanded={expanded} aria-controls={`summary-${review.id}`} onClick={() => setExpanded(value => !value)}><ResizeIcon expanded={expanded} />{expanded ? t('summary.collapse') : t('summary.expand')}</button>}
         </div>
         <div className="summary-state" role="status">{!issue && (finalizing || (!d && live)) && <Spinner />}{summaryStatus}</div>
-        <div className="summary-body" id={`summary-${review.id}`}>{d ? (review.editable ? <textarea className="summary-inline-editor" aria-label={t('summary.editLabel')} value={documentText(d)} maxLength={64000} onChange={e => edit.change(current => ({ ...current, summary: e.target.value, decisions: '', openQuestions: '' }))} /> : <p className="notes-summary">{documentText(d)}</p>) : <p className="quiet">{live ? t('summary.appearsAutomatically') : finalizing ? t('summary.noInterim') : t('summary.tasksKept')}</p>}</div>
+        <div className="summary-body" id={`summary-${review.id}`}>{d ? (review.editable ? <textarea className="summary-inline-editor" aria-label={t('summary.editLabel')} value={documentText(d, review.language)} maxLength={64000} onChange={e => edit.change(current => ({ ...current, summary: e.target.value, decisions: '', openQuestions: '' }))} /> : <p className="notes-summary">{documentText(d, review.language)}</p>) : <p className="quiet">{live ? t('summary.appearsAutomatically') : finalizing ? t('summary.noInterim') : t('summary.tasksKept')}</p>}</div>
       </section>
       <div className="tasks-heading"><h2>{t('meeting.tasks.title')}</h2>{d && !!d.tasks.length && <span>{t('meeting.tasks.selectedOf', { selected, total: d.tasks.length })}</span>}</div>
       {!d?.tasks.length && <p className="quiet">{live || finalizing ? t('meeting.tasks.noneYet') : t('meeting.tasks.noFollowUp')}</p>}

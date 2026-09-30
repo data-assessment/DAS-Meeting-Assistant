@@ -86,6 +86,9 @@
   },
   "document": {
     "fallbackTitle": "Teams-Gespräch",
+    "formats": {
+      "date": "%d.%m.%Y"
+    },
     "noTasks": "Keine Aufgaben ausgewählt.",
     "status": {
       "complete": "Abgeschlossen",

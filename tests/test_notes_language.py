@@ -1,4 +1,5 @@
 """App language (uiLanguage) for Meeting Notes messages and the summary output."""
+import asyncio
 import json
 import re
 from pathlib import Path
@@ -12,7 +13,8 @@ from engine.notes_i18n import t
 ROOT = Path(__file__).resolve().parent.parent
 # Literal keys only: t("a.b") / t('a.b'); template keys (t(`...${x}`)) are dynamic and skipped.
 PY_KEY = re.compile(r"""(?<![\w.])(?:notes_i18n\.)?t\(\s*(["'])([^"'\\]+)\1""")
-TSX_KEY = re.compile(r"""(?<![\w.])t\(\s*(["'])([^"'\\]+)\1""")
+# Also tIn(language, 'a.b'), which looks a key up in a meeting's notes language.
+TSX_KEY = re.compile(r"""(?<![\w.])(?:t\(|tIn\([^,()]+,)\s*(["'])([^"'\\]+)\1""")
 
 
 def _leaves(node, trail=""):
@@ -162,3 +164,41 @@ def test_saved_language_survives_an_invalid_other_option(api):
                          "meeting_notes_options": {"endpoint": "http://not-https.example", "uiLanguage": "en"}})
     assert app.NOTES.options["endpoint"] == ""  # the saved options were rejected as a whole
     assert notes_i18n.language() == "en"
+
+
+def test_errors_raised_while_drafting_use_the_app_language(monkeypatch):
+    from types import SimpleNamespace
+    def fail(text, provider):
+        raise RuntimeError(t("cloud.errors.signIn"))
+    monkeypatch.setattr(mn, "generate_draft", fail)
+    notes_i18n.set_language("en")
+    review = SimpleNamespace(language="de", provider={})
+    with pytest.raises(RuntimeError, match="Please sign in with Microsoft in the settings."):
+        asyncio.run(mn.review_draft(review, "text"))
+
+
+def test_failed_setup_save_rolls_back_the_app_language(monkeypatch, tmp_path):
+    import config
+    from fastapi.testclient import TestClient
+    import app
+    from engine import settings_store
+    monkeypatch.setattr(config, "AI_MODE", "entra")
+    managed = mn.Notes(tmp_path / "managed")
+    managed.setup_complete = True
+    monkeypatch.setattr(app, "NOTES", managed)
+    monkeypatch.setattr(app, "STATE", app.AppState())
+    monkeypatch.setattr(settings_store, "_PATH", tmp_path)  # A directory cannot be written as a settings file.
+    preferences = dict(enabled=True, language="de-DE", uiLanguage="en", mic="", loopback="", autoStart=False)
+    try:
+        assert not TestClient(app.api).post("/api/notes/finish-setup", json=preferences).json()["ok"]
+        assert managed.options["uiLanguage"] == "de" and notes_i18n.language() == "de"
+    finally:
+        managed.shutdown()
+
+
+def test_public_review_carries_its_notes_language():
+    from types import SimpleNamespace
+    from engine.speech.core import Transcript
+    session = SimpleNamespace(id="m", transcript=Transcript("m", ""), stop=lambda: None)
+    review = mn.Review(session, "Abstimmung", "2026-09-16T10:00:00", {}, language="en")
+    assert review.public()["language"] == "en"
