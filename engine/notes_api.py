@@ -59,12 +59,18 @@ def install(app):
     async def ui_language(request: Request):
         # App language only: allowed during a meeting, unlike device and access settings.
         notes = app.NOTES
+        previous = notes.options["uiLanguage"]
         try:
             data = await body(request)
             notes.set_ui_language(data.get("language") if isinstance(data, dict) else None)
         except Exception:
             return {"ok": False, "error": t("api.errors.languageChangeFailed")}
-        app._save_settings()
+        try:
+            app._save_settings(strict=True)
+        except Exception:
+            # Unsaved, the choice would silently be lost at the next start.
+            notes.set_ui_language(previous)
+            return {"ok": False, "error": t("api.errors.languageNotSaved")}
         await app.broadcast()
         return {"ok": True}
 

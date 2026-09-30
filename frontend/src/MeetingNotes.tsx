@@ -4,7 +4,7 @@ import { NotesOneNote, oneNoteSavedLabel, type OneNoteState } from './NotesOneNo
 import { NotesCalendar, type CalendarContext, type CalendarCandidate } from './NotesCalendar'
 
 import { NotesTasks, unresolved, type Draft, type Person, type Task } from './NotesTasks'
-import { appLanguage, setAppLanguage, t, uiLocale, type AppLanguage } from './i18n'
+import { appLanguage, cancelAppLanguage, chooseAppLanguage, setAppLanguage, t, uiLocale, type AppLanguage } from './i18n'
 type Review = { displayTitle?: string; onenote?: OneNoteState; calendarContext?: CalendarContext | null; calendarSelected?: boolean; calendarAccessNeeded?: boolean; calendarNote?: string; calendarCandidates?: CalendarCandidate[]; peopleAccessNeeded?: boolean; people: Person[]; peopleNote: string; id: string; title: string; started: string; ended: string; status: string; error: string; warning: string;
   draft: Draft | null; tasksEditable?: boolean; busy: boolean; canSummarize: boolean; sourceCharacters: number; savedPath: string;
   documentName?: string; savedAt: string; storeError: string; revision: number; phase: string; editable: boolean; autoRetry: boolean }
@@ -140,7 +140,7 @@ function FlagGB() {
 // Language names stay in their own language, so the switch is readable in either UI language.
 const LANGUAGES = [['de', 'Deutsch', FlagDE], ['en', 'English', FlagGB]] as const
 function LanguageSwitch() {
-  const [busy, setBusy] = useState(false), [open, setOpen] = useState(false)
+  const [busy, setBusy] = useState(false), [open, setOpen] = useState(false), [error, setError] = useState('')
   const root = useRef<HTMLDivElement>(null)
   useEffect(() => {
     if (!open) return
@@ -151,21 +151,25 @@ function LanguageSwitch() {
   }, [open])
   async function choose(language: AppLanguage) {
     setOpen(false)
-    if (language === appLanguage()) return
-    setBusy(true)
-    try { await post('/api/notes/ui-language', { language }); await refreshNotes() } catch { /* The next poll shows the saved language. */ }
-    finally { setBusy(false) }
+    const previous = appLanguage()
+    if (language === previous) return
+    setBusy(true); setError('')
+    chooseAppLanguage(language)
+    try { await post('/api/notes/ui-language', { language }) }
+    catch (e) { cancelAppLanguage(previous); setError(errorText(e)) }
+    finally { setBusy(false); await refreshNotes() }
   }
   const [, currentLabel, CurrentFlag] = LANGUAGES.find(([value]) => value === appLanguage()) ?? LANGUAGES[0]
   const label = t('navigation.appLanguage')
   return <div className="language-switch" ref={root}>
-    <button className="language-toggle" title={`${label}: ${currentLabel}`} aria-label={`${label}: ${currentLabel}`} aria-haspopup="menu" aria-expanded={open} disabled={busy} onClick={() => setOpen(value => !value)}>
+    <button className="language-toggle" title={`${label}: ${currentLabel}`} aria-label={`${label}: ${currentLabel}`} aria-haspopup="menu" aria-expanded={open} disabled={busy} onClick={() => { setError(''); setOpen(value => !value) }}>
       <CurrentFlag /><svg className="language-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" focusable="false"><path d="M6 9l6 6 6-6" /></svg>
     </button>
     {/* Language names stay in their own language, so the choice is readable in either UI language. */}
     {open && <div className="language-menu" role="menu" aria-label={label}>
       {LANGUAGES.map(([value, name, Flag]) => <button key={value} role="menuitemradio" aria-checked={appLanguage() === value} onClick={() => void choose(value)}><Flag /><span>{name}</span></button>)}
     </div>}
+    {error && <p className="notes-error language-error" role="alert">{error}</p>}
   </div>
 }
 

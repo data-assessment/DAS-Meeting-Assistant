@@ -2,12 +2,13 @@
 import datetime as dt
 import re
 from pathlib import Path
-from engine.notes_i18n import t
+from engine.notes_i18n import in_review_language, t
 from engine.notes_schema import Draft
 
 def plain(value):
     return re.sub(r"[\r\n\t]+", " ", value).strip()
 
+@in_review_language
 def document_name(review, folder, reserved=()):
     if review.document_name:
         name = review.document_name
@@ -26,6 +27,7 @@ def document_name(review, folder, reserved=()):
         number += 1; name = f"{stem} ({number}).md"
     return name
 
+@in_review_language
 def render(review):
     draft = Draft.model_validate(review.draft).model_dump()
     try: started = dt.datetime.fromisoformat(review.started).strftime("%d.%m.%Y, %H:%M")

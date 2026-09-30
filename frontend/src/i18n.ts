@@ -10,13 +10,25 @@ type Messages = { [key: string]: string | Messages }
 type Params = Record<string, string | number>
 
 const catalogs: Record<AppLanguage, Messages> = { de, en }
-let current: AppLanguage = 'de'
+const normalize = (value: unknown): AppLanguage => value === 'en' ? 'en' : 'de'
+// The backend opens the window with ?lang=, so the first render before any state poll is right.
+let current: AppLanguage = normalize(new URLSearchParams(window.location.search).get('lang'))
+// A choice the backend has not confirmed yet; a state poll started before it must not undo it.
+let pending: AppLanguage | null = null
 
 export const appLanguage = () => current
-export function setAppLanguage(value: unknown) {
-  current = value === 'en' ? 'en' : 'de'
+function apply(value: AppLanguage) {
+  current = value
   document.documentElement.lang = current
 }
+// Called with the saved language from each state poll; undefined until the first poll.
+export function setAppLanguage(saved: unknown) {
+  if (saved === undefined && !pending) return
+  if (pending && normalize(saved) === pending) pending = null
+  apply(pending ?? normalize(saved))
+}
+export function chooseAppLanguage(value: AppLanguage) { pending = value; apply(value) }
+export function cancelAppLanguage(previous: AppLanguage) { pending = null; apply(previous) }
 
 function lookup(key: string): string | undefined {
   let node: string | Messages | undefined = catalogs[current]

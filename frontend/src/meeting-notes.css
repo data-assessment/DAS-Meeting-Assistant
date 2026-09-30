@@ -100,6 +100,7 @@
 .meeting-notes .language-toggle{display:flex;align-items:center;gap:6px;padding:8px 10px}
 .language-switch svg:not(.language-chevron){display:block;width:26px;height:16px;border-radius:2px;box-shadow:0 0 0 1px var(--notes-line)}
 .language-chevron{color:var(--notes-muted);transition:transform .15s}
+.language-error{position:absolute;top:calc(100% + 4px);left:0;z-index:10;width:max-content;max-width:320px;margin:0;padding:6px 10px;background:#fff;border:1px solid var(--notes-line);border-radius:6px;font-size:12px}
 .language-toggle[aria-expanded="true"] .language-chevron{transform:rotate(180deg)}
 .language-menu{position:absolute;top:calc(100% + 4px);left:0;z-index:10;min-width:150px;padding:4px;background:#fff;border:1px solid var(--notes-line);border-radius:6px;box-shadow:0 6px 18px rgba(32,48,57,.14)}
 .meeting-notes .language-menu button{display:flex;align-items:center;gap:10px;width:100%;padding:7px 10px;border:0;border-radius:4px;background:none;text-align:left;font-weight:400}

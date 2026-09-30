@@ -124,7 +124,7 @@ Regeln zur Aufgabenstellung oben. Vorschläge nicht als Beschluss darstellen. Ke
 """
 
 def system_prompt():
-    """The rules stay German; only the output language follows the app language."""
+    """The rules stay German; only the output language follows the meeting's notes language."""
     if notes_i18n.language() == "en":
         return SYSTEM.replace("Erstelle knappe deutsche Meeting-Notizen", "Erstelle knappe englische Meeting-Notizen", 1) + (
             "AUSGABESPRACHE: Alle Textwerte (summary, decisions, openQuestions, Aufgaben, "
@@ -162,6 +162,11 @@ def generate_draft(transcript, provider):
                 setattr(task, name, "")
                 task.uncertainty = ""
     return draft.model_dump()
+
+async def review_draft(review, text):
+    # to_thread copies the context, so the summary is written in the meeting's language.
+    with notes_i18n.using(review.language):
+        return await asyncio.to_thread(generate_draft, text, review.provider.copy())
 
 @dataclass
 class Review:
@@ -205,6 +210,8 @@ class Review:
     task_titles: dict = field(default_factory=dict)
     edit_operations: dict = field(default_factory=dict, repr=False)
     onenote: dict = field(default_factory=lambda: {"mode": "local", "status": "ready"})
+    # Notes language, fixed when the meeting starts; saved meetings from older releases are German.
+    language: str = "de"
 
     @property
     def id(self):
@@ -257,7 +264,6 @@ class Notes:
         # language = meeting (speech recognition) language; uiLanguage = app language.
         self.options = {"region": "westeurope", "language": "de-DE", "uiLanguage": "de", "mic": "", "loopback": "",
                         "endpoint": "", "model": "", "speechKey": "", "chatKey": ""}
-        notes_i18n.set_language("de")
         self.reviews = {}
         self.current = None
         self.error = ""
@@ -394,7 +400,7 @@ class Notes:
         session = session_factory("Nicht zugeordnet")
         session.TEST_SECONDS = 120 * 60
         session.transcript.max_segments = 5000
-        review = Review(session, title, started, provider)
+        review = Review(session, title, started, provider, language=notes_i18n.language())
         review.onenote.update(autoSave=True, selection="default")
         if config.AI_MODE == "entra":
             from engine.ai_auth import UserTokenCredential
@@ -448,7 +454,7 @@ class Notes:
         review.attempts += 1
         review.status = "Zusammenfassung wird erstellt"
         try:
-            draft = Draft.model_validate(await asyncio.to_thread(generate_draft, text, review.provider.copy())).model_dump()
+            draft = Draft.model_validate(await review_draft(review, text)).model_dump()
             if not review.discarded and not self.closed:
                 merge_generated(review, draft)
                 review.status, review.phase = "Gespräch beendet", "complete"
@@ -504,7 +510,7 @@ class Notes:
         document = render_markdown(review).encode("utf-8") if write_document else None
         document_hash = hashlib.sha256(document).hexdigest() if document is not None else review.document_hash
         document_path = str(markdown) if write_document else review.document_path
-        payload = {"documentHash": document_hash, "documentPath": document_path, "schemaVersion": 9, "onenote": review.onenote, "calendarSelected": review.calendar_selected,
+        payload = {"documentHash": document_hash, "documentPath": document_path, "schemaVersion": 9, "language": review.language, "onenote": review.onenote,"calendarSelected": review.calendar_selected,
                    "calendarCandidates": review.calendar_candidates, "calendarNote": review.calendar_note,
                    "calendarAccessNeeded": review.calendar_access_needed,
                    "documentName": review.document_name, "meetingId": review.id, "title": review.title,
@@ -551,7 +557,8 @@ class Notes:
                     raise ValueError("Invalid notes file")
                 draft = Draft.model_validate({k: data[k] for k in Draft.model_fields if k in data}).model_dump() if data.get("hasDraft", True) else None
                 session = SimpleNamespace(id=meeting_id, transcript=Transcript(meeting_id, ""), stop=lambda: None)
-                review = Review(session, str(data["title"]), str(data["startedAt"]), {})
+                review = Review(session, str(data["title"]), str(data["startedAt"]), {},
+                                language=notes_i18n.normalize(data.get("language")))
                 if isinstance(data.get("onenote"), dict):
                     review.onenote = data["onenote"]
                     if review.onenote.get("taskSync", {}).get("status") == "sending":
@@ -665,7 +672,7 @@ class Notes:
         if review.draft:
             text = "Bisheriger Notizenstand:\n" + json.dumps(review.draft, ensure_ascii=False) + "\n" + text
         try:
-            draft = Draft.model_validate(await asyncio.to_thread(generate_draft, text, review.provider.copy())).model_dump()
+            draft = Draft.model_validate(await review_draft(review, text)).model_dump()
             if not review.discarded and not self.closed:
                 merge_generated(review, draft)
                 review.live_segments = end

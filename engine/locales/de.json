@@ -6,6 +6,7 @@
       "inputTooLarge": "Eingabe zu groß.",
       "audioDevicesLoadFailed": "Audiogeräte konnten nicht geladen werden.",
       "languageChangeFailed": "Sprache konnte nicht geändert werden.",
+      "languageNotSaved": "Sprache konnte nicht gespeichert werden. Speicherort prüfen und erneut versuchen.",
       "signInFirst": "Bitte zuerst mit Microsoft anmelden.",
       "invalidSettingsManaged": "Einstellungen ungültig. Sprache und Eingaben prüfen.",
       "invalidSettingsDirect": "Einstellungen ungültig. Direkten Azure-Endpunkt und Eingaben prüfen.",

@@ -131,7 +131,14 @@ class AppState:
         self.quitting = False                 # set true only on a real Quit
 
 
+def _saved_ui_language():
+    options = settings_store.load().get("meeting_notes_options")
+    return options.get("uiLanguage") if isinstance(options, dict) else None
+
+
 STATE = AppState()
+# Before Notes loads the history, so its messages are already in the saved app language.
+notes_i18n.set_language(_saved_ui_language())
 NOTES = Notes(os.path.join(paths.data_dir(), "Meeting-Notizen"))
 _NOTES_WINDOW_LOCK = threading.RLock()
 
@@ -428,6 +435,11 @@ def _apply_settings(data: dict) -> None:
             NOTES.configure({**(data.get("meeting_notes_options") or {}), "enabled": data["meeting_notes_enabled"]})
         except Exception:
             NOTES.enabled = data["meeting_notes_enabled"]  # never fall back to file recording
+    # Independent of the other options: an invalid saved option must not reset the language.
+    options = data.get("meeting_notes_options")
+    saved_language = options.get("uiLanguage") if isinstance(options, dict) else None
+    if saved_language in notes_i18n.LANGUAGES:
+        NOTES.set_ui_language(saved_language)
     NOTES.load_credentials()
     if isinstance(data.get("live_on"), bool):
         STATE.live_on = data["live_on"]
@@ -2895,7 +2907,7 @@ def _show_notes_window(view: str = "meeting", activate: bool = True) -> None:
             return
         try:
             window = webview.create_window(APP_DISPLAY_NAME,
-                url=_ui_url("?view=notes"),
+                url=_ui_url("?view=notes&lang=" + notes_i18n.language()),
                 width=680, height=750, min_size=(360, 400), resizable=True,
                 hidden=True, on_top=False, focus=False, text_select=True)
             STATE.notes_window = window

@@ -17,7 +17,7 @@ from urllib.parse import quote, urlsplit
 import requests
 from engine import mdfmt, suggest, notes_onenote_tasks as task_sync
 from engine.graph_auth import get_token_for_scopes
-from engine.notes_i18n import t
+from engine.notes_i18n import in_review_language, t
 from engine.notes_schema import Draft
 
 GRAPH = "https://graph.microsoft.com/v1.0"
@@ -162,6 +162,14 @@ class Graph:
                               json=commands, timeout=45, allow_redirects=False)
 
 
+@in_review_language
+def task_lines(review):
+    """Task paragraphs as published: in the meeting's language, so the stored baseline,
+    the page and later corrections always compare like with like."""
+    return task_sync.snapshot(review.draft)
+
+
+@in_review_language
 def page_html(review, author):
     draft = Draft.model_validate(review.draft).model_dump()
     esc = lambda value: html.escape(str(value or ""))
@@ -464,7 +472,7 @@ class Publisher:
                 raise ValueError(t("oneNote.errors.meetingUnavailable"))
             target["pagesUrl"] = section["pagesUrl"]
             content = page_html(review, graph.user.get("displayName") or graph.user.get("userPrincipalName", ""))
-            state.update(status="sending", error="", taskBase=task_sync.snapshot(review.draft),
+            state.update(status="sending", error="", taskBase=task_lines(review),
                          attemptedAt=dt.datetime.now(dt.timezone.utc).isoformat())
             if not self.notes.persist(review):
                 state.update(status="ready")
@@ -489,7 +497,7 @@ class Publisher:
         review.onenote.update(status="saved", pageId=page["id"], error="",
             url=web_url(page.get("links", {}).get("oneNoteWebUrl", {}).get("href", "")))
         # Legacy pending publications may not yet have a task baseline.
-        review.onenote.setdefault("taskBase", task_sync.snapshot(review.draft))
+        review.onenote.setdefault("taskBase", task_lines(review))
         review.onenote.setdefault("taskSync", {"status": "saved"})
         if not self.notes.persist(review):
             raise ValueError(t("oneNote.errors.localStatusPending"))
@@ -498,7 +506,7 @@ class Publisher:
     def prepare_task_edit(self, review):
         if review.onenote.get("status") == "saved" and review.draft is not None:
             # Capture legacy pages before the first local correction.
-            review.onenote.setdefault("taskBase", task_sync.snapshot(review.draft))
+            review.onenote.setdefault("taskBase", task_lines(review))
 
     def tasks_edited(self, review):
         state = review.onenote
@@ -508,7 +516,7 @@ class Publisher:
         # Never discard the reconciliation record of an in-flight/uncertain
         # write, even if more local edits arrive while Graph is responding.
         if sync.get("status") not in ("sending", "uncertain", "conflict"):
-            state["taskSync"] = {"status": "pending" if state["taskBase"] != task_sync.snapshot(review.draft) else "saved"}
+            state["taskSync"] = {"status": "pending" if state["taskBase"] != task_lines(review) else "saved"}
 
     @staticmethod
     def page_content_url(state):
@@ -528,7 +536,7 @@ class Publisher:
                 return
             uncertain = sync.get("status") in ("sending", "uncertain")
             before = copy.deepcopy(state["taskBase"])
-            after = copy.deepcopy(sync["attempt"]) if uncertain else task_sync.snapshot(review.draft)
+            after = copy.deepcopy(sync["attempt"]) if uncertain else task_lines(review)
             try:
                 graph = await asyncio.to_thread(Graph)
                 if graph.account != state["target"]["account"]:
@@ -555,7 +563,7 @@ class Publisher:
                             raise ValueError(t("oneNote.errors.tasksRejected", status=response.status_code))
                         raise ValueError(t("oneNote.errors.taskChangeUnconfirmed"))
                 state["taskBase"] = after
-                state["taskSync"] = {"status": "pending" if after != task_sync.snapshot(review.draft) else "saved"}
+                state["taskSync"] = {"status": "pending" if after != task_lines(review) else "saved"}
                 self.notes.persist(review)
             except Exception as exc:
                 status = "uncertain" if uncertain else "conflict" if isinstance(exc, task_sync.Conflict) else "error"

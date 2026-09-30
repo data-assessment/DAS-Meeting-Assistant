@@ -23,11 +23,18 @@ const path = require('node:path');
       currentId:null, autoStart:true, error:'', uiView:'meeting', uiRequest:1,
       options:{managed:false, hasSpeechKey:true, hasChatKey:true, language:'de-DE', uiLanguage:'de'}, reviews:[] };
     const saved = [];
+    let failSave = false, stalePolls = 0, holdState = false;
     await page.route('**/api/**', async route => {
       const url = new URL(route.request().url());
-      if (url.pathname === '/api/notes') return route.fulfill({ json: state });
+      if (url.pathname === '/api/notes') {
+        while (holdState) await new Promise(resolve => setTimeout(resolve, 50));
+        // A poll that started before the save still carries the previous language.
+        if (stalePolls > 0) { stalePolls--; return route.fulfill({ json: {...state, options: {...state.options, uiLanguage: 'en'}} }); }
+        return route.fulfill({ json: state });
+      }
       if (url.pathname === '/api/notes/devices') return route.fulfill({ json:{ok:true, devices:[]} });
       if (url.pathname === '/api/notes/ui-language') {
+        if (failSave) return route.fulfill({ json:{ok:false, error:'The language could not be saved. Check the storage location and try again.'} });
         const { language } = route.request().postDataJSON();
         saved.push(language); state.options.uiLanguage = language;
       }
@@ -57,8 +64,42 @@ const path = require('node:path');
     await page.getByRole('heading', {name:'Settings', exact:true}).waitFor();
     assert.equal(await page.getByRole('button', {name:'Settings', exact:true}).count(), 0);
     assert.equal(await page.getByLabel('Meeting language', {exact:true}).inputValue(), 'de-DE');
+
+    // A failed save is shown and the language stays as it was.
+    failSave = true;
+    await page.getByRole('button', {name:'App language: English', exact:true}).click();
+    await page.getByRole('menuitemradio', {name:'Deutsch'}).click();
+    await page.getByRole('alert').filter({hasText:'could not be saved'}).waitFor();
+    await page.getByRole('heading', {name:'Settings', exact:true}).waitFor();
+    assert.deepEqual(saved, ['en']);
+    failSave = false;
+
+    // A stale poll answering with the old language does not switch the UI back.
+    // Record every heading text from the click on; the UI must never flip back after switching.
+    await page.evaluate(() => {
+      window.headings = [document.querySelector('h1')?.textContent];
+      const record = () => { const h = document.querySelector('h1')?.textContent; if (h && h !== window.headings.at(-1)) window.headings.push(h) };
+      new MutationObserver(record).observe(document.body, {subtree:true, childList:true, characterData:true});
+    });
+    stalePolls = 3;
+    await page.getByRole('button', {name:'App language: English', exact:true}).click();
+    await page.getByRole('menuitemradio', {name:'Deutsch'}).click();
+    await page.getByRole('heading', {name:'Einstellungen', exact:true}).waitFor();
+    assert.ok(stalePolls > 0, 'the choice must show while stale polls still answer with the old language');
+    // Polls run every second; wait until both stale answers have been rendered.
+    while (stalePolls > 0) await new Promise(resolve => setTimeout(resolve, 100));
+    await new Promise(resolve => setTimeout(resolve, 300));
+    assert.deepEqual(await page.evaluate(() => window.headings), ['Settings', 'Einstellungen']);
+    assert.equal(await page.getByRole('alert').count(), 0);
+    assert.deepEqual(saved, ['en', 'de']);
+
+    // The window URL carries the saved language, so the screen before the first poll matches it.
+    holdState = true;
+    await page.goto(`http://127.0.0.1:${server.address().port}/?view=notes&lang=en`);
+    await page.getByText('Connecting to client …', {exact:true}).waitFor();
+    holdState = false;
     assert.deepEqual(errors, []);
-    console.log('Language UI passed: flag dropdown, Escape, switch to English with saved choice, settings gear, separate meeting language.');
+    console.log('Language UI passed: flag dropdown, Escape, switch to English with saved choice, settings gear, separate meeting language, failed save, stale poll, initial language.');
   } finally {
     if (browser) await browser.close();
     await new Promise(resolve => server.close(resolve));

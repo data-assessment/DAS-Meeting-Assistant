@@ -122,3 +122,43 @@ def test_system_prompt_keeps_german_rules_and_switches_output_language():
     assert prompt != mn.SYSTEM
     assert "auf Englisch schreiben" in prompt
     assert "englische Meeting-Notizen" in prompt
+
+
+def test_t_keeps_intentionally_empty_texts(monkeypatch):
+    monkeypatch.setitem(notes_i18n._catalogs, "de", {"demo": {"suffix": ""}})
+    assert t("demo.suffix") == ""
+
+
+@pytest.fixture
+def api(monkeypatch, tmp_path, notes):
+    from fastapi.testclient import TestClient
+    import app
+    from engine import settings_store
+    monkeypatch.setattr(app, "NOTES", notes)
+    monkeypatch.setattr(app, "STATE", app.AppState())
+    monkeypatch.setattr(settings_store, "_PATH", tmp_path / "settings.json")
+    return app, settings_store, TestClient(app.api)
+
+
+def test_language_choice_is_saved_for_the_next_start(api):
+    app, settings_store, client = api
+    assert client.post("/api/notes/ui-language", json={"language": "en"}).json() == {"ok": True}
+    assert settings_store.load()["meeting_notes_options"]["uiLanguage"] == "en"
+    assert app._saved_ui_language() == "en"
+
+
+def test_unsaved_language_choice_is_reported_and_rolled_back(api, monkeypatch, tmp_path):
+    app, settings_store, client = api
+    monkeypatch.setattr(settings_store, "_PATH", tmp_path)  # A directory cannot be written as a settings file.
+    result = client.post("/api/notes/ui-language", json={"language": "en"}).json()
+    assert result == {"ok": False, "error": "Sprache konnte nicht gespeichert werden. Speicherort prüfen und erneut versuchen."}
+    assert notes_i18n.language() == "de" and app.NOTES.options["uiLanguage"] == "de"
+
+
+def test_saved_language_survives_an_invalid_other_option(api):
+    app, _, _ = api
+    # configure() rejects the endpoint; the language must be restored anyway.
+    app._apply_settings({"meeting_notes_enabled": True,
+                         "meeting_notes_options": {"endpoint": "http://not-https.example", "uiLanguage": "en"}})
+    assert app.NOTES.options["endpoint"] == ""  # the saved options were rejected as a whole
+    assert notes_i18n.language() == "en"
