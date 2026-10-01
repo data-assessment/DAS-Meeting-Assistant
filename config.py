@@ -124,7 +124,9 @@ if not paths.is_frozen() and not _EXPLICIT_PROFILE:
 else:
     for _key, _value in _BUNDLED_ENV_VALUES.items():
         os.environ.setdefault(_key, _value)
-load_dotenv(paths.data_dir() / ".env", override=True)
+# Written by the Settings window, so read literally: free text such as the company context
+# may contain "${...}" that must neither vanish nor pull in another environment variable.
+load_dotenv(paths.data_dir() / ".env", override=True, interpolate=False)
 if _EXPLICIT_PROFILE and not MANAGED_BUILD:
     os.environ["AI_MODE"] = "local"
     for _key in ("AI_GATEWAY_ENDPOINT", "AI_GATEWAY_SCOPE", "AI_CLIENT_ID",

@@ -1,5 +1,6 @@
 """Business dictionary and company context reach speech recognition and the notes model."""
 import asyncio
+import os
 from types import SimpleNamespace as NS
 
 import pytest
@@ -41,6 +42,36 @@ def test_multi_line_context_survives_the_settings_file(tmp_path, monkeypatch):
     assert settings_schema.write_env({"COMPANY_CONTEXT": CONTEXT}) == []  # unchanged on a second save
 
 
+def test_context_with_dollar_braces_stays_literal_through_reload_and_later_saves(tmp_path, monkeypatch):
+    """Quoting alone does not stop python-dotenv's ${...} expansion (both quote styles)."""
+    import importlib
+    import paths
+    text = "Kosten ${UNSET_VARIABLE} und ${EXISTING_VARIABLE} sowie $EXISTING_VARIABLE\nZweite Zeile"
+    monkeypatch.setenv("LOCALAPPDATA", str(tmp_path))
+    monkeypatch.setenv("EXISTING_VARIABLE", "SECRET-VALUE")
+    monkeypatch.delenv("UNSET_VARIABLE", raising=False)
+    monkeypatch.delenv("COMPANY_CONTEXT", raising=False)
+    monkeypatch.setattr(settings_schema, "_ENV_PATH", paths.data_dir() / ".env")
+    try:
+        settings_schema.write_env({"COMPANY_CONTEXT": text})
+        importlib.reload(config)  # what the app does after saving and at the next start
+        assert config.COMPANY_CONTEXT == text
+        settings_schema.write_env({"SUMMARIZE": False})  # an unrelated later save
+        importlib.reload(config)
+        assert config.COMPANY_CONTEXT == text
+        assert dotenv_values(settings_schema._ENV_PATH, interpolate=False)["COMPANY_CONTEXT"] == text
+        assert "SECRET-VALUE" not in settings_schema._ENV_PATH.read_text(encoding="utf-8")
+    finally:
+        # load_dotenv put the file's keys into os.environ; monkeypatch cannot undo keys it
+        # never saw, and a leaked COMPANY_CONTEXT would end up in every later test's prompt.
+        written = dotenv_values(settings_schema._ENV_PATH, interpolate=False) if settings_schema._ENV_PATH.exists() else {}
+        for key in written:
+            os.environ.pop(key, None)
+        monkeypatch.undo()
+        importlib.reload(config)
+    assert config.COMPANY_CONTEXT == ""
+
+
 def test_company_context_is_a_user_setting_in_managed_builds(monkeypatch):
     monkeypatch.setattr(config, "MANAGED_BUILD", True)
     keys = {field["key"] for group in settings_schema._schema_for_installation() for field in group["fields"]}
@@ -72,6 +103,9 @@ def test_legacy_summary_gets_the_same_background(vocabulary, monkeypatch):
 
 
 def test_phrase_list_is_added_to_both_native_recognizers():
+    """The shipped SDK accepts the phrase list for both recognizers (no network involved).
+    apply_phrase_list swallows errors, so its result must be asserted, not just its absence of
+    exceptions. Whether the service then applies it remains to be verified on a real resource."""
     import azure.cognitiveservices.speech as sdk
     speech = sdk.SpeechConfig(subscription="synthetic", region="westeurope")
     stream = sdk.audio.PushAudioInputStream()
@@ -79,7 +113,7 @@ def test_phrase_list_is_added_to_both_native_recognizers():
         audio = sdk.audio.AudioConfig(stream=stream)
         for factory in (sdk.SpeechRecognizer, sdk.transcription.ConversationTranscriber):
             recognizer = factory(speech_config=speech, audio_config=audio)
-            apply_phrase_list(sdk, recognizer, ["decídalo", "Review-Agent"])  # no network involved
+            assert apply_phrase_list(sdk, recognizer, ["decídalo", "Review-Agent"]) is True, factory.__name__
     finally:
         stream.close()
 

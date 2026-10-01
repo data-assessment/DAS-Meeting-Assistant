@@ -264,7 +264,8 @@ def _checked_dictionary(raw) -> list[str]:
 def _env_line_value(value: str) -> str:
     """One .env line per key: text with line breaks, quotes or a comment marker is
     double-quoted with escapes, which python-dotenv decodes back; other values are
-    written unchanged, as before."""
+    written unchanged, as before. Quoting does not stop "${...}" expansion, which is why
+    this file is always read with interpolate=False."""
     if not ("\n" in value or '"' in value or "'" in value or " #" in value):
         return value
     return '"' + value.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n") + '"'
@@ -286,7 +287,8 @@ def write_env(updates: dict) -> list[str]:
             "These settings are controlled by the managed service: "
             + ", ".join(unsupported)
         )
-    existing = {k: v for k, v in dotenv_values(_ENV_PATH).items() if v is not None} \
+    # Literal, like config.py loads it: an expanded "${...}" must not be written back.
+    existing = {k: v for k, v in dotenv_values(_ENV_PATH, interpolate=False).items() if v is not None} \
         if _ENV_PATH.exists() else {}
     for legacy in config.LEGACY_MODEL_KEYS:
         existing.pop(legacy, None)  # migrate away from the old per-resource keys
