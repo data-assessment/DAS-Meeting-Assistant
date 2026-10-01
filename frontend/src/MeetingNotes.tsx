@@ -351,16 +351,18 @@ function CompanyContext() {
   const [terms, setTerms] = useState(''), [context, setContext] = useState('')
   const [loaded, setLoaded] = useState(false), [busy, setBusy] = useState(false)
   const [message, setMessage] = useState(''), [failed, setFailed] = useState(false)
-  useEffect(() => {
-    request('/api/settings').then(data => {
-      setTerms((Array.isArray(data.values?.STT_DICTIONARY) ? data.values.STT_DICTIONARY : []).join('\n'))
-      setContext(String(data.values?.COMPANY_CONTEXT ?? '')); setLoaded(true)
-    }).catch(e => { setMessage(errorText(e)); setFailed(true) })
-  }, [])
+  // Shows what is stored: the backend removes duplicate terms and normalizes spacing.
+  async function load() {
+    const data = await request('/api/settings')
+    setTerms((Array.isArray(data.values?.STT_DICTIONARY) ? data.values.STT_DICTIONARY : []).join('\n'))
+    setContext(String(data.values?.COMPANY_CONTEXT ?? '')); setLoaded(true)
+  }
+  useEffect(() => { load().catch(e => { setMessage(errorText(e)); setFailed(true) }) }, [])
   async function save() {
     setBusy(true); setMessage(''); setFailed(false)
     try {
       await post('/api/settings', { values: { STT_DICTIONARY: terms.split('\n').map(term => term.trim()).filter(Boolean), COMPANY_CONTEXT: context } })
+      await load()
       setMessage(t('settings.context.saved'))
     } catch (e) { setMessage(errorText(e)); setFailed(true) }
     finally { setBusy(false) }

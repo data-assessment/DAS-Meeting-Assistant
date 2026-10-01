@@ -17,10 +17,13 @@ Field types: text | textarea | number | bool | select | combo | list | secret.
 - restart: only takes effect after an app restart.
 - visibleWhenContains {key, value}: only show when another field contains `value`.
 """
+import re
+
 from dotenv import dotenv_values
 
 import config
 import paths
+from engine.notes_i18n import t
 
 _ENV_PATH = paths.data_dir() / ".env"
 
@@ -244,6 +247,20 @@ def _to_env(val) -> str:
     return str(val)
 
 
+def _checked_dictionary(raw) -> list[str]:
+    """The normalized dictionary, or a translated error that names the term to fix."""
+    try:
+        return config.normalize_stt_dictionary(raw, strict=True)
+    except ValueError:
+        candidates = re.split(r"[,\r\n]+", raw) if isinstance(raw, str) else list(raw or [])
+        for value in candidates:
+            term = " ".join(str(value or "").split())
+            if len(term) > config.STT_DICTIONARY_MAX_TERM_LENGTH or any(c in term for c in ",=<>"):
+                raise ValueError(t("settings.errors.dictionaryTerm", term=term[:60],
+                                   max=config.STT_DICTIONARY_MAX_TERM_LENGTH)) from None
+        raise ValueError(t("settings.errors.dictionaryTooMany", max=config.STT_DICTIONARY_MAX_TERMS)) from None
+
+
 def _env_line_value(value: str) -> str:
     """One .env line per key: text with line breaks, quotes or a comment marker is
     double-quoted with escapes, which python-dotenv decodes back; other values are
@@ -278,9 +295,12 @@ def write_env(updates: dict) -> list[str]:
         if key in SECRET_KEYS and (raw is None or raw == ""):
             continue  # "leave unchanged"
         if key == "STT_DICTIONARY":
-            raw = config.normalize_stt_dictionary(raw, strict=True)
+            raw = _checked_dictionary(raw)
         if key == "COMPANY_CONTEXT":
-            raw = config.normalize_company_context(raw, strict=True)
+            try:
+                raw = config.normalize_company_context(raw, strict=True)
+            except ValueError:
+                raise ValueError(t("settings.errors.contextTooLong", max=config.COMPANY_CONTEXT_MAX_LENGTH)) from None
         val = _to_env(raw)
         if existing.get(key) != val:
             changed.append(key)

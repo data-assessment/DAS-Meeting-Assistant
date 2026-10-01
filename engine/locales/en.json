@@ -246,6 +246,9 @@
       "changeAfterStop": "Change settings only after stopping.",
       "invalid": "Invalid settings.",
       "selectMeetingLanguage": "Please select a language such as de-DE or en-US.",
+      "dictionaryTerm": "The term “{{term}}” cannot be saved: at most {{max}} characters and no comma, =, < or >.",
+      "dictionaryTooMany": "The dictionary can hold at most {{max}} terms.",
+      "contextTooLong": "The company context can be at most {{max}} characters long.",
       "textModelKey": "Azure text model: enter the key and deployment.",
       "reselectDevices": "Select the microphone and Teams playback device again."
     }
@@ -285,7 +288,8 @@
       "captureLost": "Audio recording interrupted. It resumes as soon as a microphone and a playback device are available again.",
       "processingBlocked": "Processing was blocked for several seconds; part of the audio from that time is missing from the notes. Recording continues.",
       "deviceChanged": "Audio device changed. Recording continues with microphone “{{microphone}}” and playback “{{playback}}”.",
-      "resumed": "Audio recording resumed after a short interruption."
+      "resumed": "Audio recording resumed after a short interruption.",
+      "dictionaryNotApplied": "The dictionary could not be passed to speech recognition. Recording continues without the important terms."
     },
     "summary": {
       "lostUntilEnd": "Audio recording was interrupted during the meeting; afterwards no audio device was available. The notes only cover the meeting up to that point.",

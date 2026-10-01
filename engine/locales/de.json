@@ -246,6 +246,9 @@
       "changeAfterStop": "Einstellungen erst nach Stop ändern.",
       "invalid": "Ungültige Einstellungen.",
       "selectMeetingLanguage": "Bitte eine Sprache wie de-DE oder en-US auswählen.",
+      "dictionaryTerm": "Der Begriff „{{term}}“ kann nicht gespeichert werden: höchstens {{max}} Zeichen und ohne Komma, =, < oder >.",
+      "dictionaryTooMany": "Das Wörterbuch kann höchstens {{max}} Begriffe enthalten.",
+      "contextTooLong": "Der Unternehmenskontext kann höchstens {{max}} Zeichen lang sein.",
       "textModelKey": "Azure-Textmodell: Schlüssel und Deployment eintragen.",
       "reselectDevices": "Mikrofon und Teams-Wiedergabegerät erneut auswählen."
     }
@@ -285,7 +288,8 @@
       "captureLost": "Audioaufnahme unterbrochen. Sie läuft weiter, sobald wieder ein Mikrofon und ein Wiedergabegerät verfügbar sind.",
       "processingBlocked": "Die Verarbeitung war mehrere Sekunden blockiert; ein Teil des Audios aus dieser Zeit fehlt in den Notizen. Die Aufnahme läuft weiter.",
       "deviceChanged": "Audiogerät gewechselt. Die Aufnahme läuft weiter mit Mikrofon „{{microphone}}“ und Wiedergabe „{{playback}}“.",
-      "resumed": "Audioaufnahme nach kurzer Unterbrechung fortgesetzt."
+      "resumed": "Audioaufnahme nach kurzer Unterbrechung fortgesetzt.",
+      "dictionaryNotApplied": "Das Wörterbuch konnte der Spracherkennung nicht übergeben werden. Die Aufnahme läuft ohne die wichtigen Begriffe weiter."
     },
     "summary": {
       "lostUntilEnd": "Audioaufnahme während des Meetings unterbrochen; danach war kein Audiogerät verfügbar. Die Notizen reichen nur bis zu dieser Stelle.",

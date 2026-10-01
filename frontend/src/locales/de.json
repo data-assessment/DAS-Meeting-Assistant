@@ -241,10 +241,10 @@
       "intro": "Hilft der Spracherkennung und den Notizen, Namen, Produkte und Zusammenhänge richtig zu erfassen. Gilt ab dem nächsten Meeting bzw. der nächsten Zusammenfassung.",
       "dictionary": "Wichtige Begriffe",
       "dictionaryPlaceholder": "z. B.\ndecídalo\nData Assessment Solutions\nReview-Agent",
-      "dictionaryHint": "Ein Begriff pro Zeile, in exakter Schreibweise: Produkte, Kunden, Personen, Fachbegriffe. Höchstens 100.",
+      "dictionaryHint": "Ein Begriff pro Zeile, in exakter Schreibweise: Produkte, Kunden, Personen, Fachbegriffe. Höchstens 100 Begriffe mit je höchstens 80 Zeichen, ohne Komma, =, < oder >.",
       "text": "Über das Unternehmen",
       "textPlaceholder": "z. B. Woran wir arbeiten und mit wem, welche Teams es gibt, welche Werkzeuge wir nutzen.",
-      "textHint": "Wird mit jeder Zusammenfassung an das Textmodell gesendet. {{used}} von {{max}} Zeichen.",
+      "textHint": "Wird mit jeder Zusammenfassung an das Textmodell gesendet, auch mit den Zwischenständen während des Meetings (etwa alle zwei Minuten). {{used}} von {{max}} Zeichen.",
       "save": "Kontext speichern",
       "saved": "✓ Kontext gespeichert."
     },

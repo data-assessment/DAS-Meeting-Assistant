@@ -238,7 +238,8 @@ class Review:
         return {"id": self.id, "title": self.title, "displayTitle": display_title, "language": self.language,
                 "started": self.started, "ended": self.ended,
                 "status": self.status, "error": localize(self.error),
-                "warning": localize(self.warning or getattr(self.session, "error", "") or getattr(self.session, "notice", "")),
+                "warning": localize(self.warning or getattr(self.session, "error", "") or getattr(self.session, "notice", "")
+                                    or getattr(self.session, "dictionary_warning", "")),
                 "draft": self.draft, "busy": self.busy,
                 "tasksEditable": self.draft is not None and not self.discarded and self.onenote.get("status") not in ("preparing", "sending", "uncertain"),
                 "canSummarize": bool(self.raw_deadline > time.monotonic() and not self.busy),
@@ -433,7 +434,8 @@ class Notes:
         review.session.stop()
         done = await asyncio.to_thread(review.session.finished.wait, 25)
         capture_warning = getattr(review.session, "capture_warning", None)
-        review.warning = review.session.error or (capture_warning() if capture_warning else "")
+        review.warning = (review.session.error or (capture_warning() if capture_warning else "")
+                          or getattr(review.session, "dictionary_warning", ""))
         review.status = "Zusammenfassung wird erstellt"
         if review.live_task:
             await asyncio.shield(review.live_task)

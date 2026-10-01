@@ -102,3 +102,35 @@ def test_a_meeting_biases_recognition_towards_the_dictionary(notes, monkeypatch,
     assert phrases == [(recognizers[0], "decídalo"), (recognizers[0], "Review-Agent")]
     notes.current = None
     asyncio.run(notes.finish(review))
+
+
+@pytest.mark.parametrize("language, term_error, context_error", [
+    ("de", "Der Begriff „Müller & Partner, Berlin“ kann nicht gespeichert werden", "höchstens 4000 Zeichen"),
+    ("en", "The term “Müller & Partner, Berlin” cannot be saved", "at most 4000 characters")])
+def test_settings_errors_are_translated_and_name_the_term(tmp_path, monkeypatch, language, term_error, context_error):
+    from engine import notes_i18n
+    monkeypatch.setattr(settings_schema, "_ENV_PATH", tmp_path / ".env")
+    notes_i18n.set_language(language)
+    with pytest.raises(ValueError, match=term_error):
+        settings_schema.write_env({"STT_DICTIONARY": ["decídalo", "Müller & Partner, Berlin"]})
+    with pytest.raises(ValueError, match=context_error):
+        settings_schema.write_env({"COMPANY_CONTEXT": "x" * 4001})
+    with pytest.raises(ValueError, match="100"):
+        settings_schema.write_env({"STT_DICTIONARY": [f"Begriff {i}" for i in range(101)]})
+    assert not (tmp_path / ".env").exists()  # nothing half-written
+
+
+def test_a_failed_dictionary_is_shown_during_and_after_the_meeting(notes, monkeypatch, vocabulary):
+    machine, recognizers = Machine(), []
+    monkeypatch.setattr(mn, "generate_draft", lambda *_: dict(DRAFT))
+    sdk = speech_sdk(recognizers)
+    sdk.PhraseListGrammar = NS(from_recognizer=lambda recognizer: (_ for _ in ()).throw(RuntimeError("unsupported")))
+    factory = lambda name: MixedSession(name, sdk, machine.factory, lambda: list(machine.devices), machine.names)
+    review = notes.start("Test-Meeting", "2026-10-01T10:00:00", [HEADSET_MIC, HEADSET_OUT, LAPTOP_MIC, LAPTOP_OUT], factory)
+    wait(lambda: review.session.phase == "Läuft")
+    warning = "Das Wörterbuch konnte der Spracherkennung nicht übergeben werden"
+    assert warning in review.public()["warning"]  # the meeting still runs, with a visible notice
+    recognizers[0].say("Wir besprechen den Review-Agent.", 1)  # captured despite the warning
+    notes.current = None
+    asyncio.run(notes.finish(review))
+    assert warning in review.warning and review.status == "Gespräch beendet"
