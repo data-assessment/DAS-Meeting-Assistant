@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react'
 interface Field {
   key: string
   label: string
-  type: 'text' | 'number' | 'bool' | 'select' | 'combo' | 'list' | 'secret'
+  type: 'text' | 'textarea' | 'number' | 'bool' | 'select' | 'combo' | 'list' | 'secret'
   options?: string[]
   restart?: boolean
   help?: string
@@ -102,6 +102,8 @@ function FieldInput({ field, value, secretSet, onChange }: {
       )
     case 'number':
       return <input type="number" value={String(value ?? '')} onChange={(e) => onChange(e.target.value)} />
+    case 'textarea':
+      return <textarea rows={6} maxLength={4000} value={String(value ?? '')} onChange={(e) => onChange(e.target.value)} />
     default:
       return <input type="text" value={String(value ?? '')} onChange={(e) => onChange(e.target.value)} />
   }

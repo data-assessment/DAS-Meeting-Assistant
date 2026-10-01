@@ -21,6 +21,7 @@ from openai import OpenAI
 import config
 from engine.speech.mixed import MixedSession
 from engine.speech.session import validate
+from engine.stt_context import summary_background
 from engine import notes_i18n
 from engine.notes_i18n import t
 
@@ -124,12 +125,15 @@ Regeln zur Aufgabenstellung oben. Vorschläge nicht als Beschluss darstellen. Ke
 """
 
 def system_prompt(language="de"):
-    """The rules stay German; only the output language follows the meeting's notes language."""
+    """The rules stay German; only the output language follows the meeting's notes language.
+    Company context and business dictionary are appended as background when configured."""
+    prompt = SYSTEM
     if language == "en":
-        return SYSTEM.replace("Erstelle knappe deutsche Meeting-Notizen", "Erstelle knappe englische Meeting-Notizen", 1) + (
+        prompt = SYSTEM.replace("Erstelle knappe deutsche Meeting-Notizen", "Erstelle knappe englische Meeting-Notizen", 1) + (
             "AUSGABESPRACHE: Alle Textwerte (summary, decisions, openQuestions, Aufgaben, "
             "Sachfragen und Optionen) auf Englisch schreiben, auch wenn das Gespräch auf Deutsch geführt wurde.\n")
-    return SYSTEM
+    background = summary_background()
+    return prompt + ("\n" + background + "\n" if background else "")
 
 def generate_draft(transcript, provider, language="de"):
     """Managed routing always comes from the profile, never a saved local key. `language` is

@@ -92,6 +92,23 @@ def normalize_stt_dictionary(values, *, strict: bool = False) -> list[str]:
     return normalized
 
 
+COMPANY_CONTEXT_MAX_LENGTH = 4000
+
+
+def normalize_company_context(value, *, strict: bool = False) -> str:
+    """Free text with paragraphs: line breaks are kept, other control characters
+    removed, runs of blank lines shortened. ``strict`` reports an overlong text on
+    Settings writes instead of silently cutting it."""
+    text = str(value or "").replace("\r\n", "\n").replace("\r", "\n")
+    text = "".join(char for char in text if char == "\n" or ord(char) >= 32)
+    text = re.sub(r"\n{3,}", "\n\n", "\n".join(line.rstrip() for line in text.split("\n"))).strip()
+    if len(text) > COMPANY_CONTEXT_MAX_LENGTH:
+        if strict:
+            raise ValueError(f"The company context supports at most {COMPANY_CONTEXT_MAX_LENGTH} characters.")
+        text = text[:COMPANY_CONTEXT_MAX_LENGTH].rstrip()
+    return text
+
+
 # Installers contain only a validated public JSON profile. A source checkout
 # without a profile retains .env support for development and existing scripts.
 _DEPLOYMENT_PROFILE = paths.current_profile()
@@ -264,6 +281,9 @@ STT_LANGUAGE = _text_env("STT_LANGUAGE")  # optional ISO hint; "" = auto
 # Per-user vocabulary hints. This key deliberately remains user-controlled in a
 # managed build; only provider identity, routing, and model selection are locked.
 STT_DICTIONARY = normalize_stt_dictionary(os.getenv("STT_DICTIONARY", ""))
+# Background about the user's company (what it does, teams, customers, tools), given to
+# the notes model so summaries name things correctly. User-controlled like the dictionary.
+COMPANY_CONTEXT = normalize_company_context(os.getenv("COMPANY_CONTEXT", ""))
 
 # Failover: an optional second Azure OpenAI connection tried automatically when the
 # primary is unavailable. It is a pure backup CONNECTION — no separate model list.
@@ -391,7 +411,7 @@ MANAGED_ENV_KEYS = [
     "STT_REQUEST_TIMEOUT_SECONDS", "STT_MAX_RETRIES",
     "STT_RETRY_MAX_DELAY_SECONDS",
     "AOAI_ENDPOINT", "AOAI_API_KEY", "AOAI_API_VERSION", "STT_LANGUAGE",
-    "STT_DICTIONARY",
+    "STT_DICTIONARY", "COMPANY_CONTEXT",
     "AOAI_ENDPOINT_2", "AOAI_API_KEY_2", "AOAI_API_VERSION_2",
     "TRANSCRIBE_MODELS", "LIVE_MODELS", "SUMMARY_MODELS", "STT_MODE",
     "STT_REALTIME_DEPLOYMENT", "STT_REALTIME_API_VERSION", "STT_REALTIME_SAMPLE_RATE",

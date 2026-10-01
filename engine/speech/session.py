@@ -5,6 +5,21 @@ import time
 import uuid
 from .core import AudioBuffer, PcmReader, Transcript
 from engine.notes_i18n import t
+from engine.stt_context import dictionary_terms
+
+
+def apply_phrase_list(sdk, recognizer, terms=None):
+    """Bias recognition towards the business dictionary (exact names, products, jargon).
+    Best effort: an unsupported phrase list must never keep a meeting from being captured."""
+    terms = dictionary_terms() if terms is None else terms
+    if not terms:
+        return
+    try:
+        grammar = sdk.PhraseListGrammar.from_recognizer(recognizer)
+        for term in terms:
+            grammar.addPhrase(term)
+    except Exception as exc:
+        print("[speech] business dictionary not applied:", type(exc).__name__)
 
 def validate(region, key, language, local_name):
     if not re.fullmatch(r"[a-z][a-z0-9]{1,39}", region):
@@ -196,6 +211,7 @@ class Session:
                 else:
                     recognizer = sdk.SpeechRecognizer(speech_config=config, audio_config=audio_config)
                     final_signal, partial_signal = recognizer.recognized, recognizer.recognizing
+                apply_phrase_list(sdk, recognizer)
                 def receive(event, src=source, final=True):
                     if event.result.reason not in (sdk.ResultReason.RecognizedSpeech, sdk.ResultReason.RecognizingSpeech):
                         return

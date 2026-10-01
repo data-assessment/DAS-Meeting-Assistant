@@ -50,6 +50,10 @@ available in German and English; pick the app language with the flag in the top 
 
 - **Follow the conversation:** Azure Speech transcribes microphone and meeting
   playback audio; notes and task suggestions update during the meeting.
+- **Teach it your company:** under Settings › Company context, list important terms
+  (products, customers, people, jargon) and describe your company, teams and tools.
+  Speech recognition is biased towards the terms; the notes use both to name things
+  correctly. The text is sent with each summary request to your text model.
 - **Review the result:** edit the summary, select action items and assign owners.
 - **Use Outlook context:** match a calendar invitation to recover the title and
   invited people. An invitation is not proof of attendance.
