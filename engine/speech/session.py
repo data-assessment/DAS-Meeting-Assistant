@@ -5,6 +5,24 @@ import time
 import uuid
 from .core import AudioBuffer, PcmReader, Transcript
 from engine.notes_i18n import t
+from engine.stt_context import dictionary_terms
+
+
+def apply_phrase_list(sdk, recognizer, terms=None):
+    """Bias recognition towards the business dictionary (exact names, products, jargon).
+    Best effort: an unsupported phrase list must never keep a meeting from being captured.
+    Returns False when the dictionary could not be applied, so the caller can tell the user."""
+    terms = dictionary_terms() if terms is None else terms
+    if not terms:
+        return True
+    try:
+        grammar = sdk.PhraseListGrammar.from_recognizer(recognizer)
+        for term in terms:
+            grammar.addPhrase(term)
+        return True
+    except Exception as exc:
+        print("[speech] business dictionary not applied:", type(exc).__name__)
+        return False
 
 def validate(region, key, language, local_name):
     if not re.fullmatch(r"[a-z][a-z0-9]{1,39}", region):
@@ -53,6 +71,8 @@ class Session:
         self.finished = threading.Event()
         self.phase = "Bereit"
         self.error = ""
+        # Shown, not fatal: the meeting is captured, only without the business dictionary.
+        self.dictionary_warning = ""
         self.buffers = {}
         self.capture = None
         self._lock = threading.Lock()
@@ -196,6 +216,8 @@ class Session:
                 else:
                     recognizer = sdk.SpeechRecognizer(speech_config=config, audio_config=audio_config)
                     final_signal, partial_signal = recognizer.recognized, recognizer.recognizing
+                if not apply_phrase_list(sdk, recognizer):
+                    self.dictionary_warning = t("speech.notices.dictionaryNotApplied")
                 def receive(event, src=source, final=True):
                     if event.result.reason not in (sdk.ResultReason.RecognizedSpeech, sdk.ResultReason.RecognizingSpeech):
                         return

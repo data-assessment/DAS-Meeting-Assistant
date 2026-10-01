@@ -8,6 +8,7 @@ and not invent content.
 from dataclasses import dataclass
 
 import config
+from engine.stt_context import summary_background
 
 try:
     from openai import AzureOpenAI
@@ -172,6 +173,9 @@ def summarize(transcript_text: str, attendees: list[dict] | None = None,
     language = language or config.SUMMARY_LANGUAGE
     caveat = _LOCAL_LABEL_CAVEAT if local_speaker_labels else ""
     system = _SYSTEM_PROMPT.format(language=language, speaker_caveat=caveat)
+    background = summary_background()  # appended after format(): braces in user text stay literal
+    if background:
+        system += "\n\n" + background
     names = ", ".join(a.get("name", "") for a in attendees) if attendees else "unbekannt"
     user = f"Teilnehmer: {names}\n\nTranskript:\n{transcript_text}"
 

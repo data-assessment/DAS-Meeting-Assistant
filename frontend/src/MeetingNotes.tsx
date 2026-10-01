@@ -344,6 +344,43 @@ function Settings(props: SettingsProps) {
   return props.state.options.managed === true ? <ManagedSettings {...props} /> : <CommunitySettings {...props} />
 }
 
+// Business dictionary (speech recognition and spelling) and company background for the notes.
+// Saved on its own with the user settings; also editable during a meeting (applies to the next
+// meeting for recognition, to the next summary for the notes).
+function CompanyContext() {
+  const [terms, setTerms] = useState(''), [context, setContext] = useState('')
+  const [loaded, setLoaded] = useState(false), [busy, setBusy] = useState(false)
+  const [message, setMessage] = useState(''), [failed, setFailed] = useState(false)
+  // Shows what is stored: the backend removes duplicate terms and normalizes spacing.
+  async function load() {
+    const data = await request('/api/settings')
+    setTerms((Array.isArray(data.values?.STT_DICTIONARY) ? data.values.STT_DICTIONARY : []).join('\n'))
+    setContext(String(data.values?.COMPANY_CONTEXT ?? '')); setLoaded(true)
+  }
+  useEffect(() => { load().catch(e => { setMessage(errorText(e)); setFailed(true) }) }, [])
+  async function save() {
+    setBusy(true); setMessage(''); setFailed(false)
+    try {
+      await post('/api/settings', { values: { STT_DICTIONARY: terms.split('\n').map(term => term.trim()).filter(Boolean), COMPANY_CONTEXT: context } })
+      await load()
+      setMessage(t('settings.context.saved'))
+    } catch (e) { setMessage(errorText(e)); setFailed(true) }
+    finally { setBusy(false) }
+  }
+  return <section className="company-context" aria-labelledby="company-context-title">
+    <h2 id="company-context-title">{t('settings.context.title')}</h2>
+    <p className="quiet">{t('settings.context.intro')}</p>
+    <label>{t('settings.context.dictionary')}
+      <textarea rows={5} aria-label={t('settings.context.dictionary')} value={terms} disabled={!loaded || busy} placeholder={t('settings.context.dictionaryPlaceholder')} onChange={e => setTerms(e.target.value)} />
+      <span className="quiet">{t('settings.context.dictionaryHint')}</span></label>
+    <label>{t('settings.context.text')}
+      <textarea rows={7} maxLength={4000} aria-label={t('settings.context.text')} value={context} disabled={!loaded || busy} placeholder={t('settings.context.textPlaceholder')} onChange={e => setContext(e.target.value)} />
+      <span className="quiet">{t('settings.context.textHint', { used: context.length, max: 4000 })}</span></label>
+    {message && <p className={failed ? 'notes-error' : 'copy-success'} role={failed ? 'alert' : 'status'}>{message}</p>}
+    <button disabled={!loaded || busy} onClick={() => void save()}>{busy ? t('common.pleaseWait') : t('settings.context.save')}</button>
+  </section>
+}
+
 function ManagedSettings({ state, back, backTo, refresh, history }: SettingsProps) {
   const signedIn = state.options.setupComplete === true
   const finished = state.options.onboardingComplete === true
@@ -416,6 +453,7 @@ function ManagedSettings({ state, back, backTo, refresh, history }: SettingsProp
           <p className="quiet">{t('settings.dasPrivacy')}</p>
         </fieldset>
       </details>
+      <CompanyContext />
       <p className="quiet">{t('settings.reopenLater')}</p>
     </>}
   </Popup>
@@ -462,6 +500,7 @@ function CommunitySettings({ state, back, backTo, refresh, history }: SettingsPr
       <p className="quiet">{t('settings.keysPrivacy')}</p>
       <button className="primary" onClick={configure}>{t('settings.apply')}</button>
     </fieldset>
+    <CompanyContext />
   </Popup>
 }
 
