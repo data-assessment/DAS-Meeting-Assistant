@@ -8,7 +8,7 @@ and not invent content.
 from dataclasses import dataclass
 
 import config
-from engine.stt_context import summary_background
+from engine import prompts
 
 try:
     from openai import AzureOpenAI
@@ -16,50 +16,6 @@ try:
 except Exception as exc:  # pragma: no cover
     AzureOpenAI = None
     _IMPORT_ERROR = exc
-
-
-_SYSTEM_PROMPT = """\
-Du bist ein Assistent, der Meeting-Protokolle aus automatisch erstellten \
-Transkripten verfasst. Das Transkript stammt aus einer Spracherkennung und kann \
-Fehler enthalten (falsch erkannte Wörter, Eigennamen, Satzgrenzen). Interpretiere \
-den Inhalt sinnvoll, rate aber nichts dazu und erfinde keine Fakten. Wenn etwas \
-unklar oder zu kurz für eine Aussage ist, schreibe das ehrlich.
-
-Sprecher sind ggf. als "Speaker A/B/…" markiert. Ordne Aussagen und Aufgaben den \
-genannten Teilnehmern nur dann namentlich zu, wenn es aus dem Kontext eindeutig ist.
-{speaker_caveat}
-Antworte ausschließlich auf {language} und gib reines Markdown mit genau diesen \
-Abschnitten (als ###-Überschriften) in dieser Reihenfolge aus:
-
-### Zusammenfassung
-2–4 Sätze, worum es im Meeting ging und das wichtigste Ergebnis.
-
-### Wichtigste Punkte
-- Stichpunkte mit den zentralen Aussagen/Erkenntnissen.
-
-### Entscheidungen
-- Getroffene Entscheidungen. Falls keine erkennbar: "Keine erkennbar."
-
-### To-dos
-- [ ] Aufgabe — Verantwortlich: <Name oder "offen"> — Frist: <Datum oder "—">
-Falls keine erkennbar: "Keine erkennbar."
-
-### Offene Punkte / Follow-ups
-- Ungeklärte Fragen, Themen für ein Folgetreffen. Falls keine: "Keine erkennbar."
-
-Halte dich kurz und konkret. Keine Einleitung, kein Nachwort — nur die Abschnitte.\
-"""
-
-# Inserted only for multi-chunk transcripts, where diarization ran per ~10-min
-# part and speaker labels are NOT consistent across parts.
-_LOCAL_LABEL_CAVEAT = (
-    "\nWICHTIG: Das Transkript ist in Abschnitte unterteilt (Zeilen \"--- part N ---\"). "
-    "Die Sprecher-Labels gelten nur INNERHALB eines Abschnitts und sind über Abschnitte "
-    "hinweg nicht konsistent: derselbe Buchstabe kann in verschiedenen Abschnitten eine "
-    "andere Person sein, und dieselbe Person kann unter verschiedenen Labels auftauchen. "
-    "Fasse Sprecher daher nicht allein anhand des Labels über Abschnittsgrenzen hinweg "
-    "zusammen.\n"
-)
 
 
 @dataclass
@@ -170,14 +126,8 @@ def summarize(transcript_text: str, attendees: list[dict] | None = None,
     if not transcript_text or not transcript_text.strip():
         return SummaryResult(error="no transcript to summarize")
 
-    language = language or config.SUMMARY_LANGUAGE
-    caveat = _LOCAL_LABEL_CAVEAT if local_speaker_labels else ""
-    system = _SYSTEM_PROMPT.format(language=language, speaker_caveat=caveat)
-    background = summary_background()  # appended after format(): braces in user text stay literal
-    if background:
-        system += "\n\n" + background
-    names = ", ".join(a.get("name", "") for a in attendees) if attendees else "unbekannt"
-    user = f"Teilnehmer: {names}\n\nTranskript:\n{transcript_text}"
+    system = prompts.summary_system(language or config.SUMMARY_LANGUAGE, local_speaker_labels)
+    user = prompts.summary_user(transcript_text, attendees)
 
     out, err = _chat([{"role": "system", "content": system},
                       {"role": "user", "content": user}])
