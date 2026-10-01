@@ -182,6 +182,9 @@ Pop-Location
 Source development without a deployment profile defaults to Community. Packaged
 applications require a validated `deployment-profile.json`; they do not read an
 `.env` file from the installation directory. Build profiles cannot contain keys or tokens.
+The per-user `.env` written by Settings (`%LOCALAPPDATA%/MeetingTranscriber/<profile>/.env`)
+is read literally: `${VAR}` references in it are not expanded, so free text such as the
+company context stays as entered. Only the source-checkout `.env` above still expands them.
 For hot reload, the frontend proxy defaults to port 8766; managed instances default to 8765.
 
 If the launcher cannot find the intended Python 3.12 x64 installation, use its full
