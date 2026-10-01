@@ -21,6 +21,8 @@ from openai import OpenAI
 import config
 from engine.speech.mixed import MixedSession
 from engine.speech.session import validate
+from engine import notes_i18n
+from engine.notes_i18n import t
 
 RAW_TTL = 15 * 60
 REVIEW_TTL = 24 * 60 * 60
@@ -37,7 +39,7 @@ def direct_endpoint(value):
     if (parsed.scheme != "https" or parsed.username or parsed.password or parsed.port
             or parsed.query or parsed.fragment or parsed.path not in ("", "/")
             or not re.fullmatch(r"[a-zA-Z0-9-]+\.(openai\.azure\.com|cognitiveservices\.azure\.com|services\.ai\.azure\.com)", parsed.hostname or "")):
-        raise ValueError("Direkten Azure-Ressourcenendpunkt eintragen, ohne API-Pfad oder Gateway.")
+        raise ValueError(t("settings.errors.directEndpoint"))
     return value.rstrip("/")
 
 SYSTEM = """Erstelle knappe deutsche Meeting-Notizen als JSON, kein Volltranskript.
@@ -121,8 +123,17 @@ oder Fristen erraten. Unbekannte Felder leer lassen; questions nur nach den enge
 Regeln zur Aufgabenstellung oben. Vorschläge nicht als Beschluss darstellen. Keine Inhalte erfinden.
 """
 
-def generate_draft(transcript, provider):
-    """Managed routing always comes from the profile, never a saved local key."""
+def system_prompt(language="de"):
+    """The rules stay German; only the output language follows the meeting's notes language."""
+    if language == "en":
+        return SYSTEM.replace("Erstelle knappe deutsche Meeting-Notizen", "Erstelle knappe englische Meeting-Notizen", 1) + (
+            "AUSGABESPRACHE: Alle Textwerte (summary, decisions, openQuestions, Aufgaben, "
+            "Sachfragen und Optionen) auf Englisch schreiben, auch wenn das Gespräch auf Deutsch geführt wurde.\n")
+    return SYSTEM
+
+def generate_draft(transcript, provider, language="de"):
+    """Managed routing always comes from the profile, never a saved local key. `language` is
+    the meeting's notes language; messages raised here stay in the current app language."""
     from engine import notes_cloud
     for name in ("openai", "httpx", "httpcore"):
         logging.getLogger(name).setLevel(logging.WARNING)
@@ -133,7 +144,7 @@ def generate_draft(transcript, provider):
                 http_client=httpx.Client(trust_env=False, follow_redirects=False))
     with client_context as client:
         result = client.chat.completions.create(model=notes_cloud.summary_model() if managed else provider["model"],
-            messages=[{"role": "system", "content": SYSTEM}, {"role": "user", "content": transcript}],
+            messages=[{"role": "system", "content": system_prompt(language)}, {"role": "user", "content": transcript}],
             response_format={"type": "json_object"}, max_completion_tokens=12000, store=False)
     if not result.choices or result.choices[0].finish_reason != "stop":
         raise ValueError("Unvollständige Antwort")
@@ -152,6 +163,9 @@ def generate_draft(transcript, provider):
                 setattr(task, name, "")
                 task.uncertainty = ""
     return draft.model_dump()
+
+async def review_draft(review, text):
+    return await asyncio.to_thread(generate_draft, text, review.provider.copy(), review.language)
 
 @dataclass
 class Review:
@@ -177,7 +191,7 @@ class Review:
     revision: int = 0
     edited: bool = False
     people: list[dict] = field(default_factory=list)
-    people_note: str = "Personen werden geladen …"
+    people_note: str = field(default_factory=lambda: t("notes.people.loading"))
     people_access_needed: bool = False
     calendar_selected: str = ""
     calendar_candidates: list = field(default_factory=list)
@@ -195,6 +209,8 @@ class Review:
     task_titles: dict = field(default_factory=dict)
     edit_operations: dict = field(default_factory=dict, repr=False)
     onenote: dict = field(default_factory=lambda: {"mode": "local", "status": "ready"})
+    # Notes language, fixed when the meeting starts; saved meetings from older releases are German.
+    language: str = "de"
 
     @property
     def id(self):
@@ -210,10 +226,15 @@ class Review:
         return "\n".join(f"[{s.audio_offset:.1f}s {s.speaker}] {s.text}" for s in segments)
 
     def public(self):
+        """UI state: stored messages are translated again into the current app language."""
         from engine.notes_people import calendar_context, meeting_heading
-        return {"id": self.id, "title": self.title, "displayTitle": meeting_heading(self), "started": self.started, "ended": self.ended,
-                "status": self.status, "error": self.error,
-                "warning": self.warning or getattr(self.session, "error", "") or getattr(self.session, "notice", ""),
+        localize = notes_i18n.localize
+        with notes_i18n.using(self.language):
+            display_title = meeting_heading(self)  # the same title as the meeting's document
+        return {"id": self.id, "title": self.title, "displayTitle": display_title, "language": self.language,
+                "started": self.started, "ended": self.ended,
+                "status": self.status, "error": localize(self.error),
+                "warning": localize(self.warning or getattr(self.session, "error", "") or getattr(self.session, "notice", "")),
                 "draft": self.draft, "busy": self.busy,
                 "tasksEditable": self.draft is not None and not self.discarded and self.onenote.get("status") not in ("preparing", "sending", "uncertain"),
                 "canSummarize": bool(self.raw_deadline > time.monotonic() and not self.busy),
@@ -221,16 +242,16 @@ class Review:
                 "sourceCharacters": self.session.transcript.characters,
                 "endpoint": self.provider.get("endpoint", ""), "model": self.provider.get("model", ""),
                 "savedPath": self.document_path, "documentName": self.document_name, "savedAt": self.saved_at,
-                "storeError": self.store_error, "revision": self.revision, "phase": self.phase,
+                "storeError": localize(self.store_error), "revision": self.revision, "phase": self.phase,
                 "editable": bool(self.draft is not None and self.ended and not self.busy and not self.raw_deadline and self.onenote.get("status") not in ("preparing", "sending", "uncertain", "saved")),
-                "onenote": self.onenote,
+                "onenote": localize(self.onenote),
                 "autoRetry": bool(self.retry_at), "edited": self.edited,
-                "people": self.people, "peopleNote": self.people_note,
+                "people": self.people, "peopleNote": localize(self.people_note),
                 "peopleAccessNeeded": self.people_access_needed,
                 "calendarSelected": bool(self.calendar_selected), "calendarAccessNeeded": self.calendar_access_needed,
-                "calendarNote": self.calendar_note,
+                "calendarNote": localize(self.calendar_note),
                 "calendarContext": calendar_context(self),
-                "calendarCandidates": [{k:c.get(k, "") for k in ("id","title","start","end","response")} for c in self.calendar_candidates]}
+                "calendarCandidates": [{k: localize(c.get(k, "")) for k in ("id","title","start","end","response")} for c in self.calendar_candidates]}
 
 class Notes:
     def __init__(self, folder):
@@ -244,6 +265,8 @@ class Notes:
         self.setup_complete = False
         self.onboarding_complete = False
         self.setup_busy = False
+        # language = meeting (speech recognition) language. The app language belongs to
+        # notes_i18n and is saved on its own, so it can never invalidate these options.
         self.options = {"region": "westeurope", "language": "de-DE", "mic": "", "loopback": "",
                         "endpoint": "", "model": "", "speechKey": "", "chatKey": ""}
         self.reviews = {}
@@ -259,9 +282,10 @@ class Notes:
         return {k: v for k, v in self.options.items() if not k.endswith("Key")} | {
             "hasSpeechKey": bool(self.options["speechKey"]), "hasChatKey": bool(self.options["chatKey"]),
             "speechKeySaved": self.credentials_saved["speechKey"], "chatKeySaved": self.credentials_saved["chatKey"],
-            "credentialError": self.credential_error,
+            "credentialError": notes_i18n.localize(self.credential_error),
             "managed": self.managed, "setupComplete": self.setup_complete,
-            "onboardingComplete": self.onboarding_complete, "setupBusy": self.setup_busy}
+            "onboardingComplete": self.onboarding_complete, "setupBusy": self.setup_busy,
+            "uiLanguage": notes_i18n.app_language()}
 
     @property
     def ready(self):
@@ -295,30 +319,36 @@ class Notes:
 
     def remove_credential(self, key):
         if key not in ("speechKey", "chatKey") or self.current:
-            raise ValueError("Einstellungen erst nach Stop ändern")
+            raise ValueError(t("settings.errors.removeKeyAfterStop"))
         options = self.options | {key: ""}
         self.credentials.save(options)
         self.options = options
         self.credentials_saved = {k: bool(options[k]) for k in ("speechKey", "chatKey")}
         self.credential_error = ""
 
+    @staticmethod
+    def set_ui_language(value):
+        if value not in notes_i18n.LANGUAGES:
+            raise ValueError("Unsupported app language")
+        notes_i18n.set_language(value)
+
     def configure(self, data):
         if self.current:
-            raise ValueError("Einstellungen erst nach Stop ändern.")
+            raise ValueError(t("settings.errors.changeAfterStop"))
         if not isinstance(data, dict) or set(data) - (set(self.options) | {"enabled"}) or type(data.get("enabled")) is not bool:
-            raise ValueError("Ungültige Einstellungen.")
+            raise ValueError(t("settings.errors.invalid"))
         options = self.options.copy()
         for key, value in data.items():
             if key == "enabled":
                 continue
             if not isinstance(value, str) or len(value) > 2048 or any(ord(c) < 32 for c in value):
-                raise ValueError("Ungültige Einstellungen.")
+                raise ValueError(t("settings.errors.invalid"))
             if self.managed and key not in {"language", "mic", "loopback"}:
                 continue  # Ignore old direct-service options during upgrades.
             if not key.endswith("Key") or value:
                 options[key] = value.strip()
         if not re.fullmatch(r"[a-z]{2,3}-[A-Za-z]{2,4}", options["language"]):
-            raise ValueError("Bitte eine Sprache wie de-DE oder en-US auswählen.")
+            raise ValueError(t("settings.errors.selectMeetingLanguage"))
         if options["region"] != self.options["region"] and not data.get("speechKey"):
             options["speechKey"] = ""
         if options["endpoint"] != self.options["endpoint"] and not data.get("chatKey"):
@@ -339,13 +369,13 @@ class Notes:
     def start(self, title, started, devices, session_factory=MixedSession):
         self.sweep()
         if self.closed or self.current:
-            raise ValueError("Meeting-Notizen sind bereits aktiv oder werden beendet.")
+            raise ValueError(t("notes.errors.alreadyActive"))
         # User attention must never be a gate for the next automatic meeting.
         # Bound raw retry buffers separately from saved notes/history.
         pending = [r for r in self.reviews.values() if r.raw_deadline and not r.busy]
         for old in pending[:-4]:
             old.clear_raw()
-            old.error = "Rohtext verworfen; vorhandener Zwischenstand bleibt erhalten."
+            old.error = t("notes.errors.rawDiscarded")
             old.retry_at = 0
             self.persist(old)
         for old in list(self.reviews.values()):
@@ -361,19 +391,19 @@ class Notes:
             validate(o["region"], o["speechKey"], o["language"], "Nicht zugeordnet")
             endpoint = direct_endpoint(o["endpoint"])
             if not o["chatKey"] or not re.fullmatch(r"[A-Za-z0-9_.-]{1,120}", o["model"]):
-                raise ValueError("Azure-Textmodell: Schlüssel und Deployment eintragen.")
+                raise ValueError(t("settings.errors.textModelKey"))
             provider = {"endpoint": endpoint, "key": o["chatKey"], "model": o["model"]}
         selected = {}
         for source in ("mic", "loopback"):
             matches = [d for d in devices if bool(d.get("isLoopbackDevice")) == (source == "loopback")
                        and (d["name"] == o[source] if o[source] else d.get("isSystemDefault"))]
             if len(matches) != 1:
-                raise ValueError("Mikrofon und Teams-Wiedergabegerät erneut auswählen.")
+                raise ValueError(t("settings.errors.reselectDevices"))
             selected[source] = matches[0]
         session = session_factory("Nicht zugeordnet")
         session.TEST_SECONDS = 120 * 60
         session.transcript.max_segments = 5000
-        review = Review(session, title, started, provider)
+        review = Review(session, title, started, provider, language=notes_i18n.app_language())
         review.onenote.update(autoSave=True, selection="default")
         if config.AI_MODE == "entra":
             from engine.ai_auth import UserTokenCredential
@@ -384,7 +414,7 @@ class Notes:
             session.start(o["region"], o["speechKey"], o["language"], selected)
         if self.closed:
             session.stop()
-            raise ValueError("Meeting-Notizen werden beendet.")
+            raise ValueError(t("notes.errors.shuttingDown"))
         self.current = review
         self.reviews[review.id] = review
         self.error = ""
@@ -408,7 +438,7 @@ class Notes:
             review.clear_raw()
             return
         if not done or not review.session.transcript.characters:
-            review.error = "Keine vollständige Aufnahme verfügbar. Geräte, Eingangspegel und Speech-Zugang prüfen."
+            review.error = t("notes.errors.noCompleteRecording")
             review.status, review.phase = "Unvollständig", "incomplete"
             review.clear_raw()
             self.persist(review)
@@ -418,7 +448,7 @@ class Notes:
     async def summarize(self, review):
         self.sweep()
         if review.discarded or review.busy or self.closed or not review.raw_deadline:
-            raise ValueError("Rohtext nicht verfügbar oder Verarbeitung läuft bereits.")
+            raise ValueError(t("notes.errors.rawUnavailable"))
         text = review.source_text()
         if review.draft:
             text = "Bisheriger Notizenstand (IDs beibehalten):\n" + json.dumps(review.draft, ensure_ascii=False) + "\nVollständiges Gespräch für den Abschluss:\n" + text
@@ -427,7 +457,7 @@ class Notes:
         review.attempts += 1
         review.status = "Zusammenfassung wird erstellt"
         try:
-            draft = Draft.model_validate(await asyncio.to_thread(generate_draft, text, review.provider.copy())).model_dump()
+            draft = Draft.model_validate(await review_draft(review, text)).model_dump()
             if not review.discarded and not self.closed:
                 merge_generated(review, draft)
                 review.status, review.phase = "Gespräch beendet", "complete"
@@ -437,7 +467,7 @@ class Notes:
         except Exception:
             if not review.discarded:
                 review.status = "Erneuter Versuch nötig"
-                review.error = "Zusammenfassung noch nicht vollständig. Textmodell nicht erreichbar oder Antwort ungültig."
+                review.error = t("notes.errors.summaryIncomplete")
                 review.phase = "incomplete"
                 if review.attempts < 3 and review.raw_deadline > time.monotonic():
                     review.retry_at = time.monotonic() + (15 if review.attempts == 1 else 60)
@@ -453,7 +483,7 @@ class Notes:
             if review.raw_deadline and now >= review.raw_deadline:
                 review.clear_raw()
                 review.retry_at = 0
-                review.error = "Abschluss unvollständig. Rohtext nach 15 Minuten verworfen; vorhandene Notizen bleiben erhalten."
+                review.error = t("notes.errors.rawExpired")
                 self.persist(review)
             if review.store_error and now >= review.store_retry:
                 self.persist(review)
@@ -461,11 +491,11 @@ class Notes:
     def discard(self, review_id):
         review = self.reviews.get(review_id)
         if review is None:
-            raise ValueError("Ergebnis nicht mehr verfügbar.")
+            raise ValueError(t("notes.errors.resultUnavailable"))
         if review is self.current or review.busy or review.onenote.get("status") in ("preparing", "sending", "uncertain"):
-            raise ValueError("Bitte erst Aufnahme oder Verarbeitung beenden.")
+            raise ValueError(t("notes.errors.finishFirst"))
         if review.onenote.get("taskSync", {}).get("status", "saved") != "saved":
-            raise ValueError("Bitte zuerst die Aufgabenänderungen in OneNote prüfen.")
+            raise ValueError(t("notes.errors.reviewTaskChanges"))
         self.reviews.pop(review_id)
         review.discarded, review.draft = True, None
         review.clear_raw()
@@ -483,7 +513,7 @@ class Notes:
         document = render_markdown(review).encode("utf-8") if write_document else None
         document_hash = hashlib.sha256(document).hexdigest() if document is not None else review.document_hash
         document_path = str(markdown) if write_document else review.document_path
-        payload = {"documentHash": document_hash, "documentPath": document_path, "schemaVersion": 9, "onenote": review.onenote, "calendarSelected": review.calendar_selected,
+        payload = {"documentHash": document_hash, "documentPath": document_path, "schemaVersion": 9, "language": review.language, "onenote": review.onenote,"calendarSelected": review.calendar_selected,
                    "calendarCandidates": review.calendar_candidates, "calendarNote": review.calendar_note,
                    "calendarAccessNeeded": review.calendar_access_needed,
                    "documentName": review.document_name, "meetingId": review.id, "title": review.title,
@@ -494,7 +524,9 @@ class Notes:
                    "calendarPeople": review.people, "peopleNote": review.people_note,
                    **(Draft.model_validate(review.draft).model_dump() if review.draft is not None else {})}
         target = self.state_folder / ("Meeting-Notizen-" + str(uuid.UUID(review.id)) + ".json")
-        content = json.dumps(payload, ensure_ascii=False, indent=2)
+        # Messages stay readable text; their keys go alongside, to show them in another language later.
+        payload, messages = notes_i18n.persist(payload)
+        content = json.dumps({**payload, "messages": messages}, ensure_ascii=False, indent=2)
         try:
             target.parent.mkdir(parents=True, exist_ok=True)
             temp = target.with_suffix(".tmp")
@@ -506,7 +538,7 @@ class Notes:
                 temp_md.replace(markdown)
                 review.document_path, review.document_hash = document_path, document_hash
         except OSError:
-            review.store_error = "Noch nicht gespeichert. Speicherort nicht beschreibbar oder Datenträger voll. Automatischer neuer Versuch in 10 Sekunden."
+            review.store_error = t("notes.errors.notSaved")
             review.store_retry = time.monotonic() + 10
             return None
         review.saved_path, review.saved_at, review.store_error = str(target), saved_at, ""
@@ -518,19 +550,23 @@ class Notes:
         try:
             files = sorted([*self.folder.glob("Meeting-Notizen-*.json"), *self.state_folder.glob("Meeting-Notizen-*.json")], key=lambda p: p.stat().st_mtime)[-HISTORY_LIMIT:]
         except OSError:
-            self.error = "Gespeicherte Meetings konnten nicht geladen werden. Speicherort prüfen."
+            self.error = t("notes.errors.historyLoadFailed")
             return
         for path in files:
             try:
                 if path.stat().st_size > 8000000:
                     raise ValueError("Size limit")
                 data = json.loads(path.read_text(encoding="utf-8"))
+                if not isinstance(data, dict):
+                    raise ValueError("Invalid notes file")
+                data = notes_i18n.restore(data, data.get("messages"))
                 meeting_id = str(uuid.UUID(data["meetingId"]))
                 if path.name != "Meeting-Notizen-" + meeting_id + ".json" or data.get("schemaVersion") not in (1, 2, 3, 4, 5, 6, 7, 8, 9):
                     raise ValueError("Invalid notes file")
                 draft = Draft.model_validate({k: data[k] for k in Draft.model_fields if k in data}).model_dump() if data.get("hasDraft", True) else None
                 session = SimpleNamespace(id=meeting_id, transcript=Transcript(meeting_id, ""), stop=lambda: None)
-                review = Review(session, str(data["title"]), str(data["startedAt"]), {})
+                review = Review(session, str(data["title"]), str(data["startedAt"]), {},
+                                language=notes_i18n.normalize(data.get("language")))
                 if isinstance(data.get("onenote"), dict):
                     review.onenote = data["onenote"]
                     if review.onenote.get("taskSync", {}).get("status") == "sending":
@@ -548,13 +584,13 @@ class Notes:
                 review.calendar_candidates = restore_candidates(data.get("calendarCandidates", []))
                 review.calendar_note = str(data.get("calendarNote", ""))
                 review.calendar_access_needed = bool(data.get("calendarAccessNeeded", False))
-                review.people_note = str(data.get("peopleNote", "Keine Kalenderdaten für dieses gespeicherte Meeting."))
+                review.people_note = str(data.get("peopleNote", t("notes.people.noCalendarData")))
                 review.ended = str(data.get("endedAt") or data.get("savedAt") or data["startedAt"])
                 review.phase = data.get("phase", "complete")
                 review.error = str(data.get("error", ""))
                 if review.phase == "live":
                     review.phase = "incomplete"
-                    review.error = "Programm vor Meeting-Abschluss beendet. Dies ist der zuletzt gespeicherte Zwischenstand."
+                    review.error = t("notes.errors.closedBeforeCompletion")
                 review.status = "Gespräch beendet" if review.phase == "complete" else "Unvollständig"
                 review.draft, review.warning = draft, str(data.get("captureWarning", ""))
                 review.revision = int(data.get("revision", 0))
@@ -583,22 +619,23 @@ class Notes:
                     if not backup.exists(): path.replace(backup)
                 if review.onenote.get("status") == "saved" and not review.store_error:
                     self.onenote.cleanup_document(review)
-            except (OSError, ValueError, KeyError, TypeError):
-                self.error = "Eine gespeicherte Notiz konnte nicht geladen werden. Die Datei bleibt unverändert im Speicherordner."
+            except (OSError, ValueError, KeyError, TypeError, AttributeError, RecursionError):
+                # One damaged meeting file must never keep the app from starting.
+                self.error = t("notes.errors.noteLoadFailed")
 
     def export(self, review_id, data):
         review = self.reviews.get(review_id)
         if review is None or not review.public()["editable"]:
-            raise ValueError("Notizen werden noch automatisch aktualisiert.")
+            raise ValueError(t("notes.errors.stillUpdating"))
         if not isinstance(data, dict) or set(data) != {"draft", "revision"}:
-            raise ValueError("Ungültige Notizen.")
+            raise ValueError(t("notes.errors.invalidNotes"))
         edited = Draft.model_validate(data["draft"]).model_dump()
         # A lost local HTTP reply must not turn a successfully applied edit into
         # a permanent version conflict when the same edit is retried.
         duplicate = (type(data["revision"]) is int and data["revision"] == review.revision - 1
                      and edited == review.draft)
         if not duplicate and (type(data["revision"]) is not int or data["revision"] != review.revision):
-            raise ValueError("Die Notizen wurden anderweitig geändert. Fenster neu öffnen und Änderungen abgleichen.")
+            raise ValueError(t("notes.errors.changedElsewhere"))
         if not duplicate:
             review.draft, review.edited = edited, True
             review.revision += 1
@@ -623,9 +660,9 @@ class Notes:
 
     def patch(self, review_id, data):
         review = self.reviews.get(review_id)
-        if review is None: raise ValueError("Meeting nicht verfügbar")
+        if review is None: raise ValueError(t("notes.errors.meetingUnavailable"))
         if review.onenote.get("status") in ("preparing", "sending", "uncertain"):
-            raise ValueError("Diese Notizen werden in OneNote bearbeitet.")
+            raise ValueError(t("notes.errors.editingInOneNote"))
         self.onenote.prepare_task_edit(review)
         apply_edit(review, data)
         from engine.notes_people import reconcile_owners
@@ -644,7 +681,7 @@ class Notes:
         if review.draft:
             text = "Bisheriger Notizenstand:\n" + json.dumps(review.draft, ensure_ascii=False) + "\n" + text
         try:
-            draft = Draft.model_validate(await asyncio.to_thread(generate_draft, text, review.provider.copy())).model_dump()
+            draft = Draft.model_validate(await review_draft(review, text)).model_dump()
             if not review.discarded and not self.closed:
                 merge_generated(review, draft)
                 review.live_segments = end
@@ -653,7 +690,7 @@ class Notes:
                 self.persist(review)
         except Exception:
             if not review.discarded and not self.closed:
-                review.error = "Zwischenstand verzögert. Erfassung läuft weiter; erneuter Versuch automatisch."
+                review.error = t("notes.errors.interimDelayed")
         finally:
             text = ""
             review.next_live = time.monotonic() + LIVE_INTERVAL

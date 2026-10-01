@@ -1,0 +1,350 @@
+{
+  "calendar": {
+    "loadFailed": "Outlook-Termine konnten nicht geladen werden.",
+    "meeting": "Outlook-Termin",
+    "organizedBy": "Organisiert von:",
+    "invitedParticipants": "Teilnehmer laut Einladung ({{count}})",
+    "connectHint": "Kalender verbinden, um Einladungstitel und Teilnehmer zu übernehmen.",
+    "candidatesMatch_one": "{{count}} Outlook-Termine passen zu dieser Aufzeichnung. Bitte auswählen.",
+    "candidatesMatch_other": "{{count}} Outlook-Termine passen zu dieser Aufzeichnung. Bitte auswählen.",
+    "searching": "Der passende Outlook-Termin wird gesucht.",
+    "whichMeeting": "Welcher Kalendertermin gehört zu diesem Gespräch?",
+    "selectMeeting": "Termin auswählen",
+    "accepted": " · Zugesagt",
+    "tentative": " · Mit Vorbehalt",
+    "loading": "Outlook wird geladen …",
+    "connect": "Kalender verbinden",
+    "reload": "Outlook-Termine neu laden"
+  },
+  "common": {
+    "retry": "Erneut versuchen",
+    "openFolder": "Ordner öffnen",
+    "openOneNote": "OneNote öffnen",
+    "closeMeetingWindow": "Meeting-Fenster schließen",
+    "signInWithMicrosoft": "Mit Microsoft anmelden",
+    "openSettings": "Einstellungen öffnen",
+    "pleaseWait": "Bitte warten …",
+    "close": "Schließen",
+    "done": "Fertig",
+    "open": "Öffnen",
+    "notSaved": "Nicht gespeichert",
+    "savingChanges": "Änderungen werden gespeichert …",
+    "notesNotSaved": "Notizen noch nicht gespeichert.",
+    "savedLocallyOneNoteUnconfirmed": "Lokal gesichert · OneNote noch nicht bestätigt",
+    "turnOnAutoStart": "Automatischen Start einschalten"
+  },
+  "errors": {
+    "clientUnreachableChangesKept": "Client nicht erreichbar. Änderungen bleiben in diesem Fenster erhalten.",
+    "actionFailed": "Aktion fehlgeschlagen."
+  },
+  "history": {
+    "savedNotes": "Gespeicherte Meeting-Notizen",
+    "toCurrent": "Zum aktuellen Meeting",
+    "search": "Meeting suchen",
+    "searchPlaceholder": "Titel oder Datum",
+    "empty": "Noch keine gespeicherten Meetings.",
+    "last100": "Die letzten 100 Meetings. Ältere Dokumente finden Sie über „Ordner öffnen“.",
+    "noMatch": "Kein Meeting mit diesem Titel oder Datum gefunden.",
+    "savedToOneNote": "In OneNote gespeichert",
+    "oneNotePending": "OneNote-Ablage ausstehend",
+    "savedOnPc": "Auf diesem PC gespeichert",
+    "preliminary": "Vorläufige Notizen",
+    "incomplete": "Unvollständig"
+  },
+  "idle": {
+    "connecting": "Verbindung zum Client …",
+    "setUpNotes": "Meeting-Notizen einrichten",
+    "setUpDas": "DAS-Zugang einrichten",
+    "azureMissing": "Azure-Zugang fehlt",
+    "autoStartOff": "Automatischer Start ist aus",
+    "teamsMissing": "Teams-Verbindung fehlt",
+    "paused": "Für diesen Anruf pausiert",
+    "ready": "Bereit für Teams-Anrufe",
+    "fallbackDestination": "Ohne gemerktes Kundenziel: Auf diesem PC",
+    "hintReady": "Beim nächsten Teams-Anruf entstehen hier automatisch Ihre Notizen. Andere Gespräche, z. B. Zoom, mit „Jetzt starten“ erfassen.",
+    "hintManual": "Mit „Jetzt starten“ werden Mikrofon und PC-Wiedergabe sofort erfasst, z. B. für Zoom.",
+    "hintNotReady": "Die Erfassung kann erst starten, wenn die Verbindung bereit ist.",
+    "setUpAccess": "Zugang einrichten",
+    "startNow": "Jetzt starten"
+  },
+  "meeting": {
+    "storage": {
+      "chooseDestination": "Ziel noch wählen",
+      "localFolder": "Auf diesem PC · Ordner „{{folder}}“"
+    },
+    "status": {
+      "clientUnreachable": "Client nicht erreichbar",
+      "inProgress": "Meeting läuft",
+      "processing": "Verarbeitung läuft …",
+      "notesReady": "Notizen fertig",
+      "incomplete": "Abschluss unvollständig"
+    },
+    "save": {
+      "savingToOneNote": "Wird in OneNote gespeichert …",
+      "savedLocallyNotInOneNote": "Lokal gesichert · Noch nicht in OneNote gespeichert",
+      "startingOneNoteSave": "Automatische OneNote-Ablage wird gestartet …",
+      "draftSavedOneNoteLater": "Entwurf gesichert · OneNote-Ablage nach Meeting-Ende",
+      "notSavedYet": "Noch nicht gespeichert",
+      "savedAutomatically": "Notizen werden automatisch gespeichert",
+      "preliminarySaved": "✓ Vorläufige Notizen gespeichert",
+      "savedOnPc": "✓ Auf diesem PC gespeichert"
+    },
+    "notices": {
+      "connectionUnconfirmed": "Der aktuelle Stand kann gerade nicht bestätigt werden. Die Verbindung wird automatisch erneut geprüft.",
+      "autoRetry": "Ein neuer Versuch startet automatisch.",
+      "teamsUnreachable": "Der Teams-Status ist nicht erreichbar. Das Anrufende kann nicht zuverlässig erkannt werden."
+    },
+    "footer": {
+      "recordingContinues": "Aufnahme läuft beim Schließen im Hintergrund weiter.",
+      "processingContinues": "Verarbeitung läuft beim Schließen im Hintergrund weiter."
+    },
+    "stop": "Stoppen",
+    "startNew": "Neues Meeting starten",
+    "recording": "Aufzeichnung:",
+    "tasks": {
+      "title": "Aufgabenvorschläge",
+      "selectedOf": "{{selected}} von {{total}} ausgewählt",
+      "noneYet": "Noch keine Vorschläge. Vereinbarte Aufgaben erscheinen hier automatisch.",
+      "noFollowUp": "Keine Nacharbeit vereinbart.",
+      "helpPublished": "Verantwortliche und Angaben können Sie hier ergänzen. Änderungen werden automatisch in OneNote gespeichert; abhaken können Sie die Aufgaben dort.",
+      "helpLocal": "Ausgewählte Aufgaben bleiben in Ihrer Aufgabenliste. Sie können Vorschläge abwählen.",
+      "missingDetails_one": "Bei einer ausgewählten Aufgabe fehlen noch Angaben.",
+      "missingDetails_other": "Bei {{count}} ausgewählten Aufgaben fehlen noch Angaben.",
+      "reloadPeople": "Personen erneut laden",
+      "peopleAccessHint": "Teilnehmer fehlen in der Auswahl? Mit Teams-Zugriff kann der Client Anrufereignisse und Namen ermitteln. Microsoft verlangt dafür Leserechte auf Ihre Chats.",
+      "connectPeople": "Teams-Personen verbinden"
+    },
+    "copy": {
+      "action": "Notizen kopieren",
+      "hint": "Zusammenfassung und ausgewählte Aufgaben",
+      "copying": "Wird kopiert …",
+      "copied": "Kopiert · Notizen und ausgewählte Aufgaben sind in der Zwischenablage."
+    }
+  },
+  "navigation": {
+    "label": "Meeting-Navigation",
+    "appLanguage": "App-Sprache",
+    "allMeetings": "Alle Meetings",
+    "settings": "Einstellungen"
+  },
+  "oneNote": {
+    "errors": {
+      "clientUnreachable": "Client nicht erreichbar.",
+      "oneNoteUnreachable": "OneNote nicht erreichbar."
+    },
+    "taskSync": {
+      "saving": "Aufgabenänderungen werden in OneNote gespeichert …",
+      "uncertain": "Aufgaben lokal gesichert · OneNote-Status prüfen",
+      "notUpdated": "Aufgaben lokal gesichert · OneNote noch nicht aktualisiert",
+      "saved": "✓ In OneNote gespeichert",
+      "autoApplied": "Aufgabenänderungen werden automatisch übernommen. Die Zusammenfassung bearbeiten und Aufgaben abhaken können Sie in OneNote.",
+      "resend": "Aufgaben erneut übertragen",
+      "checkStatus": "Aufgabenstatus prüfen"
+    },
+    "destination": {
+      "eyebrow": "MEETING-NOTIZEN",
+      "titleMove": "Nach OneNote verschieben",
+      "titleChoose": "OneNote-Ziel wählen",
+      "cancelSelection": "Auswahl abbrechen",
+      "helpMove": "Wählen Sie das Ziel für die fertigen Notizen. Es wird eine neue Seite angelegt.",
+      "helpChoose": "Hier wird nach Meeting-Ende automatisch eine neue Seite angelegt.",
+      "loadingNotebooks": "Notizbücher werden geladen …",
+      "notebook": "Notizbuch",
+      "notebookPlaceholder": "Notizbuch auswählen oder suchen …",
+      "notebookEmpty": "Kein passendes Notizbuch gefunden.",
+      "showNotebooks": "Notizbücher anzeigen",
+      "section": "Abschnitt",
+      "loadingSections": "Abschnitte werden geladen …",
+      "sectionPlaceholder": "Abschnitt auswählen oder suchen …",
+      "chooseNotebookFirst": "Zuerst ein Notizbuch wählen",
+      "sectionEmpty": "Kein passender Abschnitt gefunden.",
+      "showSections": "Abschnitte anzeigen",
+      "reloadSections": "Abschnitte erneut laden",
+      "noSections": "Dieses Notizbuch enthält keine erreichbaren Abschnitte. Wählen Sie ein anderes Notizbuch oder legen Sie in OneNote einen Abschnitt an.",
+      "rememberBefore": "Dieses Ziel für Termine mit ",
+      "rememberAfter": " merken",
+      "rememberHelp": "Weitere Termine mit dieser Kundendomäne werden automatisch in diesem Abschnitt gespeichert.",
+      "selectedLocation": "Ausgewählter Speicherort",
+      "noSuitableNotebook": "Kein passendes Notizbuch?",
+      "noSuitableNotebookHelp": "Sie können ein anderes Notizbuch wählen oder abbrechen und lokal speichern. Neue Notizbücher legen Sie in OneNote an; laden Sie die Auswahl danach neu. Bei Ladefehlern kann die Liste unvollständig sein.",
+      "reloadList": "Liste neu laden",
+      "checkAccess": "Microsoft-Zugriff prüfen",
+      "footerMove": "Ihre lokale Notizdatei bleibt erhalten, bis OneNote die Ablage bestätigt hat.",
+      "footerChoose": "„Fertig“ übernimmt das Ziel. Die fertigen Notizen werden nach Meeting-Ende automatisch gespeichert.",
+      "cancel": "Abbrechen",
+      "move": "Verschieben",
+      "done": "Fertig"
+    },
+    "storage": {
+      "defaultFolder": "Meeting-Notizen",
+      "label": "Speicherort",
+      "eyebrow": "SPEICHERORT",
+      "afterMeeting": "Speicherort nach dem Meeting",
+      "savedToOneNote": "In OneNote gespeichert",
+      "savedOnPc": "Auf diesem PC gespeichert",
+      "onPc": "Auf diesem PC",
+      "openOneNote": "OneNote öffnen",
+      "change": "Ändern",
+      "chooseDestination": "Ziel wählen",
+      "chooseLocation": "Speicherort auswählen",
+      "started": "Die Ablage in OneNote wird gestartet.",
+      "applied": "Speicherort übernommen."
+    },
+    "status": {
+      "pleaseWait": "Bitte warten …",
+      "checkingTransfer": "Übertragung wird geprüft …",
+      "saving": "Wird in OneNote gespeichert …",
+      "unconfirmed": "Übertragung noch nicht bestätigt. „Status prüfen“ erzeugt keine weitere Seite.",
+      "notYetSaved": "Noch nicht in OneNote gespeichert. Ihre Notizen bleiben lokal gesichert.",
+      "chooseTarget": "Wählen Sie ein Notizbuch und einen Abschnitt.",
+      "autoSaveStarting": "Die automatische Ablage in OneNote wird gestartet …",
+      "savedAfterMeeting": "Wird nach Meeting-Ende automatisch in diesem Abschnitt gespeichert.",
+      "retry": "Erneut versuchen",
+      "checkStatus": "Status prüfen",
+      "keepOnPc": "Auf diesem PC behalten"
+    },
+    "local": {
+      "folder": "Ordner „{{folder}}“",
+      "canMove": "Sie können die Notizen jetzt nach OneNote verschieben.",
+      "unconfirmed": "Die lokale Ablage ist noch nicht bestätigt. Beachten Sie den Speicherstatus.",
+      "savedAfterMeeting": "Wird nach Meeting-Ende automatisch hier gespeichert.",
+      "moveToOneNote": "Nach OneNote verschieben …",
+      "openFolder": "Ordner öffnen"
+    }
+  },
+  "settings": {
+    "meetingLanguage": "Meeting-Sprache",
+    "meetingLanguageHint": "Gesprochene Sprache für die Spracherkennung",
+    "meetingLanguageCustom": "Sprachcode, z. B. de-CH",
+    "languages": {
+      "german": "Deutsch",
+      "english": "Englisch",
+      "french": "Französisch",
+      "other": "Andere …"
+    },
+    "microphone": "Mikrofon",
+    "teamsPlayback": "Teams-Wiedergabe / Headset",
+    "windowsDefaultDevice": "Windows-Standardgerät",
+    "currentlyUnavailable": " (aktuell nicht verfügbar)",
+    "reloadDevices": "Geräte neu laden",
+    "adjust": "Einstellungen anpassen",
+    "optional": "optional",
+    "autoStartTeams": "Bei Teams-Anrufen automatisch starten",
+    "checkDasConnection": "DAS-Verbindung erneut prüfen",
+    "dasPrivacy": "DAS stellt die Sprachverarbeitung und Zusammenfassungen bereit. Audio und Transkript werden vom Client nicht als Dateien gespeichert.",
+    "reopenLater": "Einstellungen können Sie später über das App-Symbol neben der Windows-Uhr wieder öffnen.",
+    "storageLocation": "Speicherort für Meeting-Notizen",
+    "backToMeeting": "Zurück zum Meeting",
+    "backToMeetings": "Zurück zu allen Meetings",
+    "changeAfterMeeting": "Geräte und Zugänge können nach dem Meeting geändert werden.",
+    "turnOffAutoStart": "Automatischen Start ausschalten",
+    "notesInsteadOfRecording": "Meeting-Notizen statt Dateiaufzeichnung",
+    "azureConnections": "Azure-Verbindungen",
+    "speechRegion": "Speech-Region",
+    "speechKey": "Speech-Schlüssel",
+    "textModelEndpoint": "Textmodell-Endpunkt",
+    "deployment": "Deployment",
+    "textModelKey": "Textmodell-Schlüssel",
+    "keySavedEncrypted": "Verschlüsselt gespeichert · leer lassen zum Beibehalten",
+    "keyLoadedForSession": "Für diesen Lauf geladen · mit Einstellungen speichern",
+    "keyRemoved": "Schlüssel entfernt.",
+    "removeSpeechKey": "Speech-Schlüssel entfernen",
+    "removeTextModelKey": "Textmodell-Schlüssel entfernen",
+    "keysPrivacy": "Schlüssel werden mit Windows verschlüsselt im eigenen Benutzerprofil gespeichert und beim Start geladen. Zwischenstände und Abschlussnotizen werden direkt in Azure erstellt. Audio und Transkript werden nicht als Dateien gespeichert.",
+    "apply": "Einstellungen übernehmen"
+  },
+  "setup": {
+    "closesToTray": "Das Fenster wird geschlossen. Die App läuft im Infobereich neben der Windows-Uhr weiter.",
+    "signInFirst": "Erst nach der Anmeldung und „Fertig“ können Meeting-Notizen starten.",
+    "stepFinish": "Schritt 2 von 2 · Abschließen",
+    "stepSignIn": "Schritt 1 von 2 · Anmelden",
+    "signedIn": "Anmeldung erfolgreich",
+    "welcome": "Willkommen bei DAS Meeting Assistant",
+    "signInIntro": "Melden Sie sich mit Ihrem Microsoft-Firmenkonto an, um DAS Meeting Assistant zu nutzen. Die Anmeldung ist erforderlich.",
+    "browserHint": "Die Microsoft-Anmeldung öffnet sich bei Bedarf im Browser. Kehren Sie danach zu diesem Fenster zurück.",
+    "checking": "Anmeldung und DAS-Zugang werden geprüft …",
+    "incompleteHint": "Wenn Sie dieses Fenster jetzt schließen, bleibt die Einrichtung unvollständig. Sie können sie über das App-Symbol neben der Windows-Uhr fortsetzen.",
+    "ready": "✓ Microsoft-Anmeldung und DAS-Zugang sind bereit.",
+    "meetingInProgress": "Ein Meeting läuft. Einstellungen können danach geändert werden. Sie können dieses Fenster schließen; die Erfassung läuft weiter.",
+    "keepSettings": "Sie können die Einstellungen beibehalten und direkt auf „Fertig“ klicken.",
+    "autoStartOn": "Meeting-Notizen starten bei erkannten Teams-Anrufen automatisch.",
+    "autoStartOff": "Der automatische Start ist ausgeschaltet. Sie können ihn unter „Einstellungen anpassen“ einschalten."
+  },
+  "summary": {
+    "sections": {
+      "decisions": "Entscheidungen",
+      "openQuestions": "Offene Fragen"
+    },
+    "title": "Zusammenfassung",
+    "live": "Laufende Zusammenfassung",
+    "inOneNote": "In OneNote",
+    "transferring": "Übertragung",
+    "preliminary": "Vorläufig",
+    "collapse": "Verkleinern",
+    "expand": "Vergrößern",
+    "editLabel": "Zusammenfassung direkt bearbeiten",
+    "appearsAutomatically": "Die Zusammenfassung erscheint hier automatisch.",
+    "noInterim": "Es liegt noch kein Zwischenstand vor. Bitte warten Sie auf den Abschluss.",
+    "tasksKept": "Vorhandene Aufgabenvorschläge bleiben erhalten.",
+    "saving": "Speichert …",
+    "savedAt": "Gespeichert um {{time}}",
+    "savedAutomatically": "Wird automatisch gespeichert",
+    "status": {
+      "savedVersion": "Abgelegter Stand · Weitere Änderungen direkt in OneNote",
+      "checkProcessing": "Verarbeitung prüfen",
+      "creatingFinal": "Finale Zusammenfassung wird erstellt …",
+      "editDirectly": "Text direkt bearbeiten. Jede Änderung wird automatisch gespeichert.",
+      "updatedContinuously": "Wird laufend aktualisiert. Nach Abschluss bearbeitbar.",
+      "processingConversation": "Gespräch wird verarbeitet …",
+      "noneAvailable": "Keine Zusammenfassung verfügbar."
+    }
+  },
+  "tasks": {
+    "inline": {
+      "reverted": "Änderung zurückgesetzt.",
+      "emptyDiscarded": "Leere Beschreibung verworfen; bisheriger Text bleibt erhalten.",
+      "describeTask": "Aufgabe beschreiben",
+      "enterAnswer": "Antwort eingeben",
+      "hint": "Automatisch speichern · Enter: schließen · Esc: zurücksetzen"
+    },
+    "errors": {
+      "nameRequired": "Bitte einen Namen eingeben.",
+      "checkEmail": "Bitte die E-Mail-Adresse prüfen."
+    },
+    "task": {
+      "label": "Aufgabe {{number}}",
+      "include": "In Aufgabenliste aufnehmen",
+      "deselected": "Abgewählt",
+      "noLongerSuggested": "Im aktuellen Gesprächsstand nicht mehr vorgeschlagen.",
+      "edit": "Aufgabe {{number}} bearbeiten",
+      "answerPrefix": "Antwort: ",
+      "moreDetails": "Weitere Angaben",
+      "recipientField": "Empfänger · falls nötig",
+      "recipient": "Empfänger",
+      "dueField": "Termin · optional",
+      "due": "Termin"
+    },
+    "owner": {
+      "label": "Verantwortlich",
+      "ariaLabel": "Verantwortlich für Aufgabe {{number}}",
+      "selectPerson": "Person auswählen",
+      "addAnother": "+ Weitere Person hinzufügen …",
+      "me": " (ich)"
+    },
+    "source": {
+      "self": "Eigene Person",
+      "calendar": "Aus der Kalendereinladung",
+      "call": "Aus dem Teams-Anruf",
+      "contact": "Aus Teams-Chats · Teilnahme nicht bestätigt",
+      "manual": "Für dieses Meeting ergänzt"
+    },
+    "newPerson": {
+      "name": "Name",
+      "nameAria": "Name der weiteren Person",
+      "email": "E-Mail · optional",
+      "emailAria": "E-Mail der weiteren Person",
+      "add": "Person hinzufügen",
+      "cancel": "Abbrechen"
+    }
+  }
+}

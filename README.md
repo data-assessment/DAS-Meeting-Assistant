@@ -43,8 +43,8 @@ does not require a Teams meeting or Teams presence detection.
 
 ![Meeting Notes showing a summary and editable action items](docs/assets/meeting-notes.png)
 
-*The application UI with synthetic example content. Current interface and summary
-output are primarily German.*
+*The application UI with synthetic example content. The Meeting Notes interface is
+available in German and English; pick the app language with the flag in the top bar.*
 
 ## What you can do
 
@@ -79,8 +79,10 @@ output are primarily German.*
 
 The desktop client does not require a DAS service subscription. Speech recognition
 and summarization use cloud services, so this is not an offline AI application.
-The current summary prompt produces German notes; changing the recognition language
-alone does not change the summary language.
+Notes are written in the app language (German or English) chosen when the meeting
+starts; each meeting keeps that language. The separate meeting language only tells
+speech recognition which language is spoken. A new installation starts in the Windows
+display language; an existing installation stays German until you switch.
 
 ## Install with your AI agent
 

@@ -8,6 +8,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 from urllib.parse import unquote, urlsplit
 from urllib.request import ProxyHandler, build_opener
+from engine.notes_i18n import t
 
 INSTANCE_HEADER = "X-Voice-Transcriber-Instance"
 
@@ -49,8 +50,7 @@ def validate_assets(directory):
                 raise ValueError("Missing or invalid UI asset")
         return hashlib.sha256(content).digest()
     except (OSError, ValueError) as exc:
-        raise StartupError("Die Programmoberfläche fehlt oder ist unvollständig. "
-                           "Bitte den Installer erneut ausführen.") from exc
+        raise StartupError(t("startup.errors.interfaceMissing")) from exc
 
 
 class LocalUI:
@@ -72,9 +72,7 @@ class LocalUI:
             sock.setblocking(False)
         except (OSError, OverflowError) as exc:
             sock.close()
-            raise StartupError("Die lokale Verbindung konnte nicht gestartet werden. "
-                               "Bitte DAS Meeting Assistant beenden und erneut starten. "
-                               "Falls der Fehler bleibt, die lokale Port-Einstellung prüfen lassen.") from exc
+            raise StartupError(t("startup.errors.connectionFailed")) from exc
         self.socket = sock
         self.port = sock.getsockname()[1]
         self.host = host
@@ -100,5 +98,4 @@ class LocalUI:
             except (OSError, ValueError):
                 pass
             time.sleep(0.05)
-        raise StartupError("Die Programmoberfläche konnte nicht gestartet werden. "
-                           "Bitte DAS Meeting Assistant erneut starten. Falls der Fehler bleibt, den Installer erneut ausführen.")
+        raise StartupError(t("startup.errors.interfaceFailed"))

@@ -42,6 +42,7 @@ version_info = VSVersionInfo(
 datas = [
     (os.path.join(ROOT, "frontend", "dist"), "frontend/dist"),
     (os.path.join(ROOT, "docs", "app"), "docs/app"),
+    (os.path.join(ROOT, "engine", "locales"), "engine/locales"),
     (os.path.join(ROOT, "favicon.ico"), "."),
     (os.path.join(SPECPATH, PROFILE_FILENAME), "."),
 ]

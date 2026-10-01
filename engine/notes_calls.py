@@ -12,6 +12,7 @@ from urllib.parse import quote, urlsplit
 
 import requests
 from engine.graph_auth import get_token_for_scopes
+from engine.notes_i18n import t
 from engine.notes_schema import Person
 
 GRAPH = "https://graph.microsoft.com/v1.0"
@@ -122,7 +123,7 @@ def call_people(started, ended=None):
         matches = {key: value for key, value in matches.items() if key not in finished
                    or value[0].get("@odata.type", "").endswith(".callEndedEventMessageDetail")}
         if len(matches) != 1 or incomplete:
-            return list(contacts.values())[:100], ("Anruf nicht eindeutig erkannt. Kontakte aus Einzel-, Gruppen- und Meeting-Chats stehen zur Auswahl; ihre Teilnahme ist nicht bestätigt."), False
+            return list(contacts.values())[:100], t("calls.notes.callAmbiguous"), False
         event, chat = next(iter(matches.values()))
         members = chat.get("members") or []
         # Expanded members may be truncated. Read all pages of the matched chat
@@ -154,7 +155,7 @@ def call_people(started, ended=None):
         elif chat.get("chatType") == "oneOnOne" and len(relevant) == 2:
             values = [(m.get("displayName"), m.get("email"), m.get("userId")) for m in members]
         else:
-            return list(contacts.values())[:100], "Personen aus dem Meeting-Chat stehen zur Auswahl. Bestätigte Anrufteilnehmer können nach Gesprächsende verfügbar werden.", False
+            return list(contacts.values())[:100], t("calls.notes.chatPeopleOnly"), False
         people = {}
         for name, email, user_id in values:
             email = str(email or "").strip().lower()
@@ -169,7 +170,7 @@ def call_people(started, ended=None):
         return [], "", True
     except Exception:
         # No API error bodies, chat text, IDs or credentials in logs/UI.
-        return [], "Anrufteilnehmer gerade nicht verfügbar. Personen können ergänzt werden.", False
+        return [], t("calls.notes.participantsUnavailable"), False
 
 
 def merge_people(existing, incoming):

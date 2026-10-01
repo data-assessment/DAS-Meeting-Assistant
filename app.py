@@ -39,6 +39,8 @@ from engine import choice_memory, graph_auth, settings_store, suggest
 from engine.meeting import write_transcript
 from engine.meeting_notes import Notes
 from engine.local_ui import LocalUI, StartupError, INSTANCE_HEADER, validate_assets
+from engine import notes_i18n
+from engine.notes_i18n import t
 
 FRONTEND_DIST = paths.resource_path("frontend", "dist")
 ICON_PATH = paths.resource_path("favicon.ico")
@@ -129,7 +131,22 @@ class AppState:
         self.quitting = False                 # set true only on a real Quit
 
 
+def _ui_language(data: dict) -> str:
+    """The saved app language. Saved on its own, outside meeting_notes_options, so neither an
+    unknown value nor an older release can reject it. Without one, a new installation starts
+    in the Windows display language; an existing one keeps German, its language so far."""
+    options = data.get("meeting_notes_options")
+    legacy = options.get("uiLanguage") if isinstance(options, dict) else None  # early builds of this feature
+    for value in (data.get("ui_language"), legacy):
+        if value in notes_i18n.LANGUAGES:
+            return value
+    existing = any(key.startswith("meeting_notes_") for key in data)
+    return "de" if existing else notes_i18n.system_language()
+
+
 STATE = AppState()
+# Before Notes loads the history, so its messages are already in the app language.
+notes_i18n.set_language(_ui_language(settings_store.load()))
 NOTES = Notes(os.path.join(paths.data_dir(), "Meeting-Notizen"))
 _NOTES_WINDOW_LOCK = threading.RLock()
 
@@ -178,7 +195,7 @@ def state_payload() -> dict:
     return {
         "type": "state",
         "notesEnabled": NOTES.enabled,
-        "notesError": NOTES.error,
+        "notesError": notes_i18n.localize(NOTES.error),
         "notesCount": len(NOTES.reviews),
         "active": STATE.active,
         "title": STATE.title,
@@ -405,6 +422,7 @@ def _persistable_settings() -> dict:
         "meeting_notes_onboarding_complete": NOTES.onboarding_complete,
         "meeting_notes_access_mode": config.AI_MODE,
         "meeting_notes_options": {k: v for k, v in NOTES.options.items() if not k.endswith("Key")},
+        "ui_language": notes_i18n.app_language(),
         "live_on": STATE.live_on,
         "auto_start": STATE.auto_start,
         "win_w": STATE.win_w,
@@ -423,9 +441,11 @@ def _apply_settings(data: dict) -> None:
         "meeting_notes_onboarding_complete", True) is True
     if isinstance(data.get("meeting_notes_enabled"), bool):
         try:
-            NOTES.configure({**(data.get("meeting_notes_options") or {}), "enabled": data["meeting_notes_enabled"]})
+            options = {k: v for k, v in (data.get("meeting_notes_options") or {}).items() if k != "uiLanguage"}
+            NOTES.configure({**options, "enabled": data["meeting_notes_enabled"]})
         except Exception:
             NOTES.enabled = data["meeting_notes_enabled"]  # never fall back to file recording
+    NOTES.set_ui_language(_ui_language(data))
     NOTES.load_credentials()
     if isinstance(data.get("live_on"), bool):
         STATE.live_on = data["live_on"]
@@ -455,6 +475,27 @@ def _restore_settings() -> None:
 def _save_settings(*, strict: bool = False) -> None:
     """Snapshot the current user settings to disk. Call after any change."""
     settings_store.save(_persistable_settings(), strict=strict)
+    _refresh_tray_language()
+
+
+_tray_language = None
+
+
+def _refresh_tray_language() -> None:
+    """Texts fixed when created: the tray menu (Windows builds it once), its tooltip and the
+    settings window title. Refresh them when the app language changed."""
+    global _tray_language
+    language = notes_i18n.app_language()
+    if not STATE.tray or language == _tray_language:
+        return
+    try:
+        STATE.tray.update_menu()
+        _refresh_tray()
+        if STATE.settings_window:
+            STATE.settings_window.set_title(f"{APP_DISPLAY_NAME} · " + t("settings.title"))
+        _tray_language = language  # only once refreshed, so a failed refresh is retried
+    except Exception:
+        pass
 
 
 # --------------------------------------------------------------------------- #
@@ -901,14 +942,14 @@ async def _begin_meeting(
     if STATE.active or STATE.notes_starting:
         return
     if NOTES.managed and not NOTES.ready:
-        NOTES.error = "Bitte zuerst mit Microsoft anmelden und die Einrichtung mit „Fertig“ abschließen."
+        NOTES.error = t("notes.errors.setupFirst")
         STATE.autostart_suppressed = True
         _show_notes_window("settings", activate=True)
         await broadcast()
         return
     if NOTES.enabled:
         if any(r.status == "Azure-Abschluss" and r.busy for r in NOTES.reviews.values()):
-            NOTES.error = "Bitte den Audio-Abschluss des vorherigen Meetings abwarten."
+            NOTES.error = t("notes.errors.waitForPreviousAudio")
             await broadcast()
             return
         STATE.notes_starting = True
@@ -919,8 +960,7 @@ async def _begin_meeting(
             from engine.notes_calls import schedule_people
             schedule_people(NOTES, review)
         except Exception:
-            NOTES.error = ("Meeting-Notizen konnten nicht starten. Bitte in den Einstellungen die DAS-Anmeldung und Audiogeräte prüfen."
-                           if NOTES.managed else "Meeting-Notizen konnten nicht starten. Im Fenster Meeting-Notizen Geräte, Region und beide Azure-Zugänge prüfen.")
+            NOTES.error = t("notes.errors.startFailedManaged") if NOTES.managed else t("notes.errors.startFailedDirect")
             STATE.autostart_suppressed = True
             _show_notes_window(activate=True)
             await broadcast()
@@ -1027,7 +1067,7 @@ async def _finish_notes(review) -> None:
     try:
         await NOTES.finish(review)
     except Exception:
-        review.error = "Meeting-Abschluss fehlgeschlagen; Rohtext verworfen."
+        review.error = t("notes.errors.completionFailed")
         review.busy = False
         review.clear_raw()
     await broadcast()
@@ -1758,7 +1798,7 @@ async def manual_start() -> dict:
         )
     else:
         await _begin_meeting(manual=True, trigger="manual start")
-    return {"ok": STATE.active, "error": NOTES.error if not STATE.active else ""}
+    return {"ok": STATE.active, "error": notes_i18n.localize(NOTES.error) if not STATE.active else ""}
 
 
 @api.post("/api/stop")
@@ -2855,7 +2895,7 @@ def _present_notes_window(activate: bool) -> None:
         present(window, activate)
         _fit_notes_window(STATE.notes_content_height)
     except Exception:
-        NOTES.error = "Meeting-Fenster konnte nicht eingeblendet werden. Über das Tray-Symbol öffnen."
+        NOTES.error = t("notes.errors.windowShowFailed")
 
 
 def _show_notes_window(view: str = "meeting", activate: bool = True) -> None:
@@ -2877,7 +2917,7 @@ def _show_notes_window(view: str = "meeting", activate: bool = True) -> None:
             return
         try:
             window = webview.create_window(APP_DISPLAY_NAME,
-                url=_ui_url("?view=notes"),
+                url=_ui_url("?view=notes&lang=" + notes_i18n.app_language()),
                 width=680, height=750, min_size=(360, 400), resizable=True,
                 hidden=True, on_top=False, focus=False, text_select=True)
             STATE.notes_window = window
@@ -2901,7 +2941,7 @@ def _show_notes_window(view: str = "meeting", activate: bool = True) -> None:
             window.events.closed += closed
             window.events.resized += resized
         except Exception:
-            NOTES.error = "Meeting-Fenster konnte nicht geöffnet werden."
+            NOTES.error = t("notes.errors.windowOpenFailed")
 
 
 def _hide_notes_window() -> None:
@@ -2945,7 +2985,7 @@ def _show_settings_window() -> None:
             STATE.settings_window = None
     try:
         win = webview.create_window(
-            f"{APP_DISPLAY_NAME} · Einstellungen",
+            f"{APP_DISPLAY_NAME} · " + t("settings.title"),
             url=url,
             width=760,
             height=720,
@@ -3078,11 +3118,11 @@ def _refresh_tray() -> None:
     STATE.tray.icon = _recording_icon() if STATE.active else _load_icon()
     n = len(STATE.jobs)
     if STATE.active:
-        status = "Recording…" + (f" · {n} processing" if n else "")
+        status = t("tray.status.recordingProcessing", count=n) if n else t("tray.status.recording")
     elif n:
-        status = f"Processing {n} transcript{'s' if n != 1 else ''}…"
+        status = t("tray.status.processing", count=n)
     else:
-        status = "Idle"
+        status = t("tray.status.idle")
     STATE.tray.title = f"{APP_DISPLAY_NAME} ({status})"
 
 
@@ -3131,21 +3171,24 @@ def run_tray() -> None:
     items = [
         # default + invisible: left-clicking the tray icon shows the window,
         # without a redundant "Show window" entry in the menu.
-        pystray.MenuItem("Show window", _on_show, default=True, visible=False),
+        pystray.MenuItem(lambda item: t("tray.showWindow"), _on_show, default=True, visible=False),
         pystray.MenuItem(f"{APP_DISPLAY_NAME} {config.VERSION}", _noop, enabled=False),
         pystray.Menu.SEPARATOR,
-        pystray.MenuItem("Frühere Meetings", _on_notes_history, visible=lambda item: NOTES.enabled),
-        pystray.MenuItem("Einstellungen…", _on_settings),
-        pystray.MenuItem("Documentation...", _on_docs, visible=lambda item: not NOTES.enabled),
+        pystray.MenuItem(lambda item: t("tray.pastMeetings"), _on_notes_history,
+                         visible=lambda item: NOTES.enabled),
+        pystray.MenuItem(lambda item: t("tray.settings"), _on_settings),
+        pystray.MenuItem(lambda item: t("tray.documentation"), _on_docs, visible=lambda item: not NOTES.enabled),
         pystray.Menu.SEPARATOR,
-        pystray.MenuItem("Quit", _on_quit),
+        pystray.MenuItem(lambda item: t("tray.quit"), _on_quit),
     ]
     STATE.tray = pystray.Icon(
         "transcriber",
         _load_icon(),
-        f"{APP_DISPLAY_NAME} (Idle)",
+        f"{APP_DISPLAY_NAME} ({t('tray.status.idle')})",
         pystray.Menu(*items),
     )
+    global _tray_language
+    _tray_language = notes_i18n.app_language()
     STATE.tray.run()
 
 
@@ -3187,7 +3230,7 @@ def _rescue_recording() -> None:
     if NOTES.current:
         NOTES.current.session.stop()
         NOTES.current.clear_raw()
-        NOTES.current.error = "Verarbeitung unterbrochen; Rohtext verworfen."
+        NOTES.current.error = t("notes.errors.processingInterrupted")
         NOTES.current.status = "Abgebrochen"
         NOTES.current.ended = datetime.datetime.now().isoformat()
         NOTES.current.expires = time.monotonic() + 24 * 60 * 60
@@ -3197,7 +3240,7 @@ def _rescue_recording() -> None:
         STATE.active = False
         STATE.started_at = None
         STATE.phase = "idle"
-        NOTES.error = "Meeting-Notizen wurden unterbrochen. Keine Audiodatei angelegt."
+        NOTES.error = t("notes.errors.interrupted")
         return
     recorder, STATE.recorder = STATE.recorder, None
     # Both of these belong to the dead loop; touching them from this thread
@@ -3268,7 +3311,7 @@ async def _finalize_rescued() -> None:
 def _serve_once(*, background: bool = True) -> None:
     endpoint = STATE.local_ui
     if endpoint is None:
-        raise StartupError("Die lokale Verbindung wurde nicht vorbereitet.")
+        raise StartupError(t("startup.errors.connectionNotPrepared"))
     cfg = uvicorn.Config(api, host=endpoint.host, port=endpoint.port, log_level="warning",
                          lifespan="auto" if background else "off")
     server = uvicorn.Server(cfg)
@@ -3452,7 +3495,7 @@ def _run_app() -> None:
 def _ui_smoke_test() -> None:
     """Verify the bundled HTML over real HTTP without GUI, sign-in or capture."""
     if not os.getenv("VOICE_TRANSCRIBER_DATA_ROOT"):
-        raise StartupError("Für den Starttest ist ein getrenntes App-Datenverzeichnis erforderlich.")
+        raise StartupError(t("startup.errors.separateDataDir"))
     digest = validate_assets(FRONTEND_DIST)
     endpoint = LocalUI(config.HOST, config.PORT, allow_fallback=True)
     STATE.local_ui = endpoint
@@ -3505,7 +3548,7 @@ def main() -> None:
     except StartupError as exc:
         print(f"startup failed: {exc}")
         if os.name == "nt":
-            ctypes.windll.user32.MessageBoxW(None, str(exc), f"{APP_DISPLAY_NAME} konnte nicht starten", 0x10)
+            ctypes.windll.user32.MessageBoxW(None, str(exc), t("startup.errors.title", app=APP_DISPLAY_NAME), 0x10)
         raise SystemExit(1) from exc
     finally:
         instance.release()

@@ -45,8 +45,8 @@ Teams-Meeting noch die Teams-Präsenzerkennung.
 
 ![Meeting-Notizen mit Zusammenfassung und bearbeitbaren Aufgaben](assets/meeting-notes.png)
 
-*Echte Anwendungsoberfläche mit Beispieldaten. Oberfläche und Zusammenfassungen
-sind derzeit überwiegend deutschsprachig.*
+*Echte Anwendungsoberfläche mit Beispieldaten. Die Meeting-Notizen gibt es auf
+Deutsch und Englisch; die App-Sprache wählst du über die Flagge oben im Fenster.*
 
 ## Was die Anwendung kann
 
@@ -101,8 +101,10 @@ Der separat wählbare ältere Aufzeichnungsmodus kann Audiodateien und Transkrip
 speichern. Die Geräteaufnahme aktiviert selbst keine Aufnahmebenachrichtigung in
 Teams. Starte sie mit dem Einverständnis der Beteiligten.
 
-Der aktuelle Zusammenfassungs-Prompt erzeugt deutsche Notizen. Eine andere
-Erkennungssprache ändert nicht automatisch die Sprache der Zusammenfassung.
+Notizen entstehen in der App-Sprache (Deutsch oder Englisch), die beim Start des
+Meetings gilt; jedes Meeting behält diese Sprache. Die getrennte Meeting-Sprache sagt
+nur der Spracherkennung, welche Sprache gesprochen wird. Eine neue Installation startet
+in der Windows-Anzeigesprache; eine bestehende bleibt Deutsch, bis du umschaltest.
 Weitere Einzelheiten: [Data handling](../README.md#data-handling).
 
 ## Über DAS und Mitarbeit

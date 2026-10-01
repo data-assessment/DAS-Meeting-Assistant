@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { t } from './i18n'
 
 export type Person = { id: string; name: string; email: string; source: 'calendar' | 'self' | 'manual' | 'call' | 'contact' }
 export type Question = { id: string; label: string; options: string[]; answer: string; field: 'context' | 'owner' | 'recipient' }
@@ -21,7 +22,7 @@ function InlineText({ value, label, editable, change, max = 1000, title = false 
     pending.current = false
     if (cancel || (title && !current.current.trim())) {
       changeRef.current(original.current)
-      setHint(cancel ? 'Änderung zurückgesetzt.' : 'Leere Beschreibung verworfen; bisheriger Text bleibt erhalten.')
+      setHint(cancel ? t('tasks.inline.reverted') : t('tasks.inline.emptyDiscarded'))
     }
     setEditing(false)
   }
@@ -33,12 +34,12 @@ function InlineText({ value, label, editable, change, max = 1000, title = false 
     return () => { pending.current = false; document.removeEventListener('pointerdown', down, true); document.removeEventListener('pointerup', up, true); document.removeEventListener('pointercancel', up, true) }
   }, [])
   useEffect(() => { if (editing && input.current) { input.current.style.height = 'auto'; input.current.style.height = input.current.scrollHeight + 2 + 'px' } }, [editing, value])
-  const showValue = value || (title ? 'Aufgabe beschreiben' : 'Antwort eingeben')
+  const showValue = value || (title ? t('tasks.inline.describeTask') : t('tasks.inline.enterAnswer'))
   return <div className={title ? 'inline-task-title' : 'inline-task-value'}>
     {editable && editing ? <><textarea ref={input} autoFocus aria-label={label} value={value} maxLength={max} rows={2}
       onChange={e => change(e.target.value)} onBlur={() => { if (held.current) pending.current = true; else end() }}
       onKeyDown={e => { if ((e.key === 'Enter' && !e.shiftKey) || e.key === 'Escape') { e.preventDefault(); end(e.key === 'Escape'); window.setTimeout(() => button.current?.focus(), 0) } }} />
-      <div className="inline-hint">Automatisch speichern · Enter: schließen · Esc: zurücksetzen</div></>
+      <div className="inline-hint">{t('tasks.inline.hint')}</div></>
       : editable ? <button ref={button} className="inline-edit" aria-label={label + ': ' + showValue} onClick={() => { original.current = value; setHint(''); setEditing(true) }}><span>{showValue}</span><Pencil /></button>
       : <span className="task-title">{showValue}</span>}
     {hint && <div className="inline-hint" role="status">{hint}</div>}
@@ -61,8 +62,8 @@ export function NotesTasks({ draft, people, peopleNote, editable, expanded, chan
     patch(id, { ownerId: person?.id || '', owner: person?.name || '' }); setNewFor(null)
   }
   function add(id: string) {
-    if (!name.trim()) { setError('Bitte einen Namen eingeben.'); return }
-    if (email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) { setError('Bitte die E-Mail-Adresse prüfen.'); return }
+    if (!name.trim()) { setError(t('tasks.errors.nameRequired')); return }
+    if (email.trim() && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) { setError(t('tasks.errors.checkEmail')); return }
     const match = persons.find(p => email.trim() && p.email.toLowerCase() === email.trim().toLowerCase())
     const person: Person = match || { id: crypto.randomUUID(), name: name.trim(), email: email.trim(), source: 'manual' }
     change(d => ({ ...d, people: match ? d.people : [...d.people, person], tasks: d.tasks.map(t => t.id === id ? { ...t, ownerId: person.id, owner: person.name } : t) }))
@@ -74,31 +75,31 @@ export function NotesTasks({ draft, people, peopleNote, editable, expanded, chan
     {(expanded ? draft.tasks : draft.tasks.slice(0, 3)).map((task, index) => {
       const selected = persons.find(p => p.id === task.ownerId) || persons.filter(p => p.name.toLowerCase() === task.owner.toLowerCase()).filter((_, __, all) => all.length === 1)[0]
       const value = selected?.id || (task.owner ? '__retained' : '')
-      return <section className={"notes-task" + (task.included === false ? " task-excluded" : "")} key={task.id} aria-label={'Aufgabe ' + (index + 1)}>
-        <div className="task-selection"><label className="checkbox"><input type="checkbox" checked={task.included !== false} disabled={!editable} onChange={e => patch(task.id, { included: e.target.checked })} />In Aufgabenliste aufnehmen</label>{task.included === false && <span>Abgewählt</span>}</div>
-        {task.suggested === false && <p className="quiet">Im aktuellen Gesprächsstand nicht mehr vorgeschlagen.</p>}
-        <InlineText title value={task.title} label={'Aufgabe ' + (index + 1) + ' bearbeiten'} editable={editable} change={title => patch(task.id, { title })} />
-        <label className="person-field">Verantwortlich
-          <select aria-label={'Verantwortlich für Aufgabe ' + (index + 1)} disabled={!editable} value={value} className={!task.owner && editable ? 'person-missing' : ''} onChange={e => assign(task.id, e.target.value)}>
-            <option value="">Person auswählen</option>
-            {(['self', 'calendar', 'call', 'contact', 'manual'] as const).map(source => persons.some(p => p.source === source) && <optgroup key={source} label={{self:'Eigene Person',calendar:'Aus der Kalendereinladung',call:'Aus dem Teams-Anruf',contact:'Aus Teams-Chats · Teilnahme nicht bestätigt',manual:'Für dieses Meeting ergänzt'}[source]}>
-              {persons.filter(p => p.source === source).map(p => <option key={p.id} value={p.id}>{p.name}{p.source === 'self' ? ' (ich)' : ''}{persons.filter(other => other.name === p.name).length > 1 ? ' · ' + p.email : ''}</option>)}
+      return <section className={"notes-task" + (task.included === false ? " task-excluded" : "")} key={task.id} aria-label={t('tasks.task.label', { number: index + 1 })}>
+        <div className="task-selection"><label className="checkbox"><input type="checkbox" checked={task.included !== false} disabled={!editable} onChange={e => patch(task.id, { included: e.target.checked })} />{t('tasks.task.include')}</label>{task.included === false && <span>{t('tasks.task.deselected')}</span>}</div>
+        {task.suggested === false && <p className="quiet">{t('tasks.task.noLongerSuggested')}</p>}
+        <InlineText title value={task.title} label={t('tasks.task.edit', { number: index + 1 })} editable={editable} change={title => patch(task.id, { title })} />
+        <label className="person-field">{t('tasks.owner.label')}
+          <select aria-label={t('tasks.owner.ariaLabel', { number: index + 1 })} disabled={!editable} value={value} className={!task.owner && editable ? 'person-missing' : ''} onChange={e => assign(task.id, e.target.value)}>
+            <option value="">{t('tasks.owner.selectPerson')}</option>
+            {(['self', 'calendar', 'call', 'contact', 'manual'] as const).map(source => persons.some(p => p.source === source) && <optgroup key={source} label={t(`tasks.source.${source}`)}>
+              {persons.filter(p => p.source === source).map(p => <option key={p.id} value={p.id}>{p.name}{p.source === 'self' ? t('tasks.owner.me') : ''}{persons.filter(other => other.name === p.name).length > 1 ? ' · ' + p.email : ''}</option>)}
             </optgroup>)}
             {value === '__retained' && <option value="__retained">{task.owner}</option>}
-            <option value="__add">+ Weitere Person hinzufügen …</option>
+            <option value="__add">{t('tasks.owner.addAnother')}</option>
           </select>
         </label>
-        {newFor === task.id && <div className="new-person"><label>Name<input ref={input} aria-label="Name der weiteren Person" value={name} maxLength={200} onChange={e => setName(e.target.value)} /></label>
-          <label>E-Mail · optional<input aria-label="E-Mail der weiteren Person" type="email" value={email} maxLength={300} onChange={e => setEmail(e.target.value)} onKeyDown={e => { if(e.key === 'Enter') add(task.id) }} /></label>
-          {error && <p role="alert">{error}</p>}<div className="notes-more"><button className="primary" onClick={() => add(task.id)}>Person hinzufügen</button><button onClick={() => setNewFor(null)}>Abbrechen</button></div></div>}
+        {newFor === task.id && <div className="new-person"><label>{t('tasks.newPerson.name')}<input ref={input} aria-label={t('tasks.newPerson.nameAria')} value={name} maxLength={200} onChange={e => setName(e.target.value)} /></label>
+          <label>{t('tasks.newPerson.email')}<input aria-label={t('tasks.newPerson.emailAria')} type="email" value={email} maxLength={300} onChange={e => setEmail(e.target.value)} onKeyDown={e => { if(e.key === 'Enter') add(task.id) }} /></label>
+          {error && <p role="alert">{error}</p>}<div className="notes-more"><button className="primary" onClick={() => add(task.id)}>{t('tasks.newPerson.add')}</button><button onClick={() => setNewFor(null)}>{t('tasks.newPerson.cancel')}</button></div></div>}
         {task.questions.filter(q => q.field !== 'owner').map(q => <div key={q.id} className={'task-clarification' + (questionOpen(q, task) ? ' unanswered' : '')}>
           <p>{q.label}</p>
           {q.options.length ? <div className="notes-more" role="group" aria-label={q.label}>{q.options.map(option => <button key={option} disabled={!editable} aria-pressed={q.answer === option}
             onClick={() => patch(task.id, t => ({ ...t, questions: t.questions.map(item => item.id === q.id ? { ...item, answer: option } : item) }))}>{q.answer === option ? '✓ ' : ''}{option}</button>)}</div>
-            : <InlineText value={q.answer} label={'Antwort: ' + q.label} editable={editable} change={answer => patch(task.id, t => ({ ...t, questions: t.questions.map(item => item.id === q.id ? { ...item, answer } : item) }))} />}
+            : <InlineText value={q.answer} label={t('tasks.task.answerPrefix') + q.label} editable={editable} change={answer => patch(task.id, t => ({ ...t, questions: t.questions.map(item => item.id === q.id ? { ...item, answer } : item) }))} />}
         </div>)}
-        {expanded && <details className="task-details"><summary>Weitere Angaben</summary><label>Empfänger · falls nötig<input aria-label="Empfänger" disabled={!editable} value={task.recipient} maxLength={300} onChange={e => patch(task.id, { recipient: e.target.value })} /></label>
-          <label>Termin · optional<input aria-label="Termin" disabled={!editable} value={task.due} maxLength={100} onChange={e => patch(task.id, { due: e.target.value })} /></label>
+        {expanded && <details className="task-details"><summary>{t('tasks.task.moreDetails')}</summary><label>{t('tasks.task.recipientField')}<input aria-label={t('tasks.task.recipient')} disabled={!editable} value={task.recipient} maxLength={300} onChange={e => patch(task.id, { recipient: e.target.value })} /></label>
+          <label>{t('tasks.task.dueField')}<input aria-label={t('tasks.task.due')} disabled={!editable} value={task.due} maxLength={100} onChange={e => patch(task.id, { due: e.target.value })} /></label>
 </details>}
       </section>
     })}

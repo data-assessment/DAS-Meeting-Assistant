@@ -1,0 +1,350 @@
+{
+  "calendar": {
+    "loadFailed": "Could not load Outlook meetings.",
+    "meeting": "Outlook meeting",
+    "organizedBy": "Organised by:",
+    "invitedParticipants": "Invited participants ({{count}})",
+    "connectHint": "Connect your calendar to use the invitation title and participants.",
+    "candidatesMatch_one": "1 Outlook meeting matches this recording. Please select it.",
+    "candidatesMatch_other": "{{count}} Outlook meetings match this recording. Please select one.",
+    "searching": "Looking for the matching Outlook meeting.",
+    "whichMeeting": "Which calendar meeting belongs to this conversation?",
+    "selectMeeting": "Select meeting",
+    "accepted": " · Accepted",
+    "tentative": " · Tentative",
+    "loading": "Loading Outlook …",
+    "connect": "Connect calendar",
+    "reload": "Reload Outlook meetings"
+  },
+  "common": {
+    "retry": "Try again",
+    "openFolder": "Open folder",
+    "openOneNote": "Open OneNote",
+    "closeMeetingWindow": "Close meeting window",
+    "signInWithMicrosoft": "Sign in with Microsoft",
+    "openSettings": "Open settings",
+    "pleaseWait": "Please wait …",
+    "close": "Close",
+    "done": "Done",
+    "open": "Open",
+    "notSaved": "Not saved",
+    "savingChanges": "Saving changes …",
+    "notesNotSaved": "Notes not saved yet.",
+    "savedLocallyOneNoteUnconfirmed": "Saved locally · OneNote not yet confirmed",
+    "turnOnAutoStart": "Turn on automatic start"
+  },
+  "errors": {
+    "clientUnreachableChangesKept": "Client not reachable. Changes are kept in this window.",
+    "actionFailed": "Action failed."
+  },
+  "history": {
+    "savedNotes": "Saved meeting notes",
+    "toCurrent": "To current meeting",
+    "search": "Search meetings",
+    "searchPlaceholder": "Title or date",
+    "empty": "No saved meetings yet.",
+    "last100": "The last 100 meetings. Find older documents via “Open folder”.",
+    "noMatch": "No meeting found with this title or date.",
+    "savedToOneNote": "Saved to OneNote",
+    "oneNotePending": "OneNote save pending",
+    "savedOnPc": "Saved on this PC",
+    "preliminary": "Preliminary notes",
+    "incomplete": "Incomplete"
+  },
+  "idle": {
+    "connecting": "Connecting to client …",
+    "setUpNotes": "Set up meeting notes",
+    "setUpDas": "Set up DAS access",
+    "azureMissing": "Azure access missing",
+    "autoStartOff": "Automatic start is off",
+    "teamsMissing": "Teams connection missing",
+    "paused": "Paused for this call",
+    "ready": "Ready for Teams calls",
+    "fallbackDestination": "Without a remembered customer destination: On this PC",
+    "hintReady": "Your notes appear here automatically during the next Teams call. Capture other conversations, e.g. Zoom, with “Start now”.",
+    "hintManual": "“Start now” captures the microphone and PC playback immediately, e.g. for Zoom.",
+    "hintNotReady": "Capture can start only once the connection is ready.",
+    "setUpAccess": "Set up access",
+    "startNow": "Start now"
+  },
+  "meeting": {
+    "storage": {
+      "chooseDestination": "Choose destination",
+      "localFolder": "On this PC · Folder “{{folder}}”"
+    },
+    "status": {
+      "clientUnreachable": "Client not reachable",
+      "inProgress": "Meeting in progress",
+      "processing": "Processing …",
+      "notesReady": "Notes ready",
+      "incomplete": "Completion incomplete"
+    },
+    "save": {
+      "savingToOneNote": "Saving to OneNote …",
+      "savedLocallyNotInOneNote": "Saved locally · Not yet saved to OneNote",
+      "startingOneNoteSave": "Starting automatic save to OneNote …",
+      "draftSavedOneNoteLater": "Draft saved · Saved to OneNote after the meeting",
+      "notSavedYet": "Not saved yet",
+      "savedAutomatically": "Notes are saved automatically",
+      "preliminarySaved": "✓ Preliminary notes saved",
+      "savedOnPc": "✓ Saved on this PC"
+    },
+    "notices": {
+      "connectionUnconfirmed": "The current state cannot be confirmed right now. The connection is checked again automatically.",
+      "autoRetry": "A new attempt starts automatically.",
+      "teamsUnreachable": "Teams status is not reachable. The end of the call cannot be detected reliably."
+    },
+    "footer": {
+      "recordingContinues": "Recording continues in the background when you close.",
+      "processingContinues": "Processing continues in the background when you close."
+    },
+    "stop": "Stop",
+    "startNew": "Start new meeting",
+    "recording": "Recording:",
+    "tasks": {
+      "title": "Suggested tasks",
+      "selectedOf": "{{selected}} of {{total}} selected",
+      "noneYet": "No suggestions yet. Agreed tasks appear here automatically.",
+      "noFollowUp": "No follow-up agreed.",
+      "helpPublished": "You can add owners and details here. Changes are saved to OneNote automatically; you can tick off the tasks there.",
+      "helpLocal": "Selected tasks stay in your task list. You can deselect suggestions.",
+      "missingDetails_one": "One selected task is still missing details.",
+      "missingDetails_other": "{{count}} selected tasks are still missing details.",
+      "reloadPeople": "Reload people",
+      "peopleAccessHint": "Participants missing from the list? With Teams access, the client can identify call events and names. Microsoft requires read access to your chats for this.",
+      "connectPeople": "Connect Teams people"
+    },
+    "copy": {
+      "action": "Copy notes",
+      "hint": "Summary and selected tasks",
+      "copying": "Copying …",
+      "copied": "Copied · Notes and selected tasks are on the clipboard."
+    }
+  },
+  "navigation": {
+    "label": "Meeting navigation",
+    "appLanguage": "App language",
+    "allMeetings": "All meetings",
+    "settings": "Settings"
+  },
+  "oneNote": {
+    "errors": {
+      "clientUnreachable": "Client not reachable.",
+      "oneNoteUnreachable": "OneNote not reachable."
+    },
+    "taskSync": {
+      "saving": "Saving task changes to OneNote …",
+      "uncertain": "Tasks saved locally · Check OneNote status",
+      "notUpdated": "Tasks saved locally · OneNote not yet updated",
+      "saved": "✓ Saved to OneNote",
+      "autoApplied": "Task changes are applied automatically. You can edit the summary and tick off tasks in OneNote.",
+      "resend": "Resend tasks",
+      "checkStatus": "Check task status"
+    },
+    "destination": {
+      "eyebrow": "MEETING NOTES",
+      "titleMove": "Move to OneNote",
+      "titleChoose": "Choose OneNote destination",
+      "cancelSelection": "Cancel selection",
+      "helpMove": "Choose the destination for the finished notes. A new page will be created.",
+      "helpChoose": "A new page will be created here automatically after the meeting ends.",
+      "loadingNotebooks": "Loading notebooks …",
+      "notebook": "Notebook",
+      "notebookPlaceholder": "Select or search notebook …",
+      "notebookEmpty": "No matching notebook found.",
+      "showNotebooks": "Show notebooks",
+      "section": "Section",
+      "loadingSections": "Loading sections …",
+      "sectionPlaceholder": "Select or search section …",
+      "chooseNotebookFirst": "Choose a notebook first",
+      "sectionEmpty": "No matching section found.",
+      "showSections": "Show sections",
+      "reloadSections": "Reload sections",
+      "noSections": "This notebook has no accessible sections. Choose another notebook or create a section in OneNote.",
+      "rememberBefore": "Remember this destination for meetings with ",
+      "rememberAfter": "",
+      "rememberHelp": "Future meetings with this customer domain will be saved to this section automatically.",
+      "selectedLocation": "Selected location",
+      "noSuitableNotebook": "No suitable notebook?",
+      "noSuitableNotebookHelp": "You can choose another notebook or cancel and save locally. Create new notebooks in OneNote, then reload the list. If loading fails, the list may be incomplete.",
+      "reloadList": "Reload list",
+      "checkAccess": "Check Microsoft access",
+      "footerMove": "Your local notes file is kept until OneNote confirms the upload.",
+      "footerChoose": "“Done” applies the destination. The finished notes will be saved automatically after the meeting ends.",
+      "cancel": "Cancel",
+      "move": "Move",
+      "done": "Done"
+    },
+    "storage": {
+      "defaultFolder": "Meeting notes",
+      "label": "Storage location",
+      "eyebrow": "STORAGE LOCATION",
+      "afterMeeting": "Storage location after the meeting",
+      "savedToOneNote": "Saved to OneNote",
+      "savedOnPc": "Saved on this PC",
+      "onPc": "On this PC",
+      "openOneNote": "Open OneNote",
+      "change": "Change",
+      "chooseDestination": "Choose destination",
+      "chooseLocation": "Choose storage location",
+      "started": "Saving to OneNote has started.",
+      "applied": "Storage location applied."
+    },
+    "status": {
+      "pleaseWait": "Please wait …",
+      "checkingTransfer": "Checking transfer …",
+      "saving": "Saving to OneNote …",
+      "unconfirmed": "Transfer not yet confirmed. “Check status” does not create another page.",
+      "notYetSaved": "Not yet saved to OneNote. Your notes remain saved locally.",
+      "chooseTarget": "Choose a notebook and a section.",
+      "autoSaveStarting": "Starting automatic save to OneNote …",
+      "savedAfterMeeting": "Will be saved to this section automatically after the meeting ends.",
+      "retry": "Try again",
+      "checkStatus": "Check status",
+      "keepOnPc": "Keep on this PC"
+    },
+    "local": {
+      "folder": "Folder “{{folder}}”",
+      "canMove": "You can now move the notes to OneNote.",
+      "unconfirmed": "Local save not yet confirmed. Check the save status.",
+      "savedAfterMeeting": "Will be saved here automatically after the meeting ends.",
+      "moveToOneNote": "Move to OneNote …",
+      "openFolder": "Open folder"
+    }
+  },
+  "settings": {
+    "meetingLanguage": "Meeting language",
+    "meetingLanguageHint": "Spoken language for speech recognition",
+    "meetingLanguageCustom": "Language code, e.g. de-CH",
+    "languages": {
+      "german": "German",
+      "english": "English",
+      "french": "French",
+      "other": "Other …"
+    },
+    "microphone": "Microphone",
+    "teamsPlayback": "Teams playback / headset",
+    "windowsDefaultDevice": "Windows default device",
+    "currentlyUnavailable": " (currently unavailable)",
+    "reloadDevices": "Reload devices",
+    "adjust": "Adjust settings",
+    "optional": "optional",
+    "autoStartTeams": "Start automatically for Teams calls",
+    "checkDasConnection": "Check DAS connection again",
+    "dasPrivacy": "DAS provides speech processing and summaries. The client does not save audio or transcripts as files.",
+    "reopenLater": "You can reopen settings later from the app icon next to the Windows clock.",
+    "storageLocation": "Storage location for meeting notes",
+    "backToMeeting": "Back to meeting",
+    "backToMeetings": "Back to all meetings",
+    "changeAfterMeeting": "Devices and access can be changed after the meeting.",
+    "turnOffAutoStart": "Turn off automatic start",
+    "notesInsteadOfRecording": "Meeting notes instead of file recording",
+    "azureConnections": "Azure connections",
+    "speechRegion": "Speech region",
+    "speechKey": "Speech key",
+    "textModelEndpoint": "Text model endpoint",
+    "deployment": "Deployment",
+    "textModelKey": "Text model key",
+    "keySavedEncrypted": "Saved encrypted · leave empty to keep",
+    "keyLoadedForSession": "Loaded for this session · save with settings",
+    "keyRemoved": "Key removed.",
+    "removeSpeechKey": "Remove speech key",
+    "removeTextModelKey": "Remove text model key",
+    "keysPrivacy": "Keys are encrypted with Windows, saved in your own user profile and loaded at startup. Interim results and final notes are created directly in Azure. Audio and transcripts are not saved as files.",
+    "apply": "Apply settings"
+  },
+  "setup": {
+    "closesToTray": "The window closes. The app keeps running in the notification area next to the Windows clock.",
+    "signInFirst": "Meeting notes can start only after you sign in and click “Done”.",
+    "stepFinish": "Step 2 of 2 · Finish",
+    "stepSignIn": "Step 1 of 2 · Sign in",
+    "signedIn": "Signed in successfully",
+    "welcome": "Welcome to DAS Meeting Assistant",
+    "signInIntro": "Sign in with your Microsoft work account to use DAS Meeting Assistant. Signing in is required.",
+    "browserHint": "Microsoft sign-in opens in your browser if needed. Return to this window afterwards.",
+    "checking": "Checking sign-in and DAS access …",
+    "incompleteHint": "If you close this window now, setup stays incomplete. You can continue it from the app icon next to the Windows clock.",
+    "ready": "✓ Microsoft sign-in and DAS access are ready.",
+    "meetingInProgress": "A meeting is in progress. Settings can be changed afterwards. You can close this window; capture continues.",
+    "keepSettings": "You can keep the settings and click “Done” right away.",
+    "autoStartOn": "Meeting notes start automatically when a Teams call is detected.",
+    "autoStartOff": "Automatic start is off. You can turn it on under “Adjust settings”."
+  },
+  "summary": {
+    "sections": {
+      "decisions": "Decisions",
+      "openQuestions": "Open questions"
+    },
+    "title": "Summary",
+    "live": "Live summary",
+    "inOneNote": "In OneNote",
+    "transferring": "Transferring",
+    "preliminary": "Preliminary",
+    "collapse": "Collapse",
+    "expand": "Expand",
+    "editLabel": "Edit summary directly",
+    "appearsAutomatically": "The summary appears here automatically.",
+    "noInterim": "No interim result yet. Please wait for processing to finish.",
+    "tasksKept": "Existing suggested tasks are kept.",
+    "saving": "Saving …",
+    "savedAt": "Saved at {{time}}",
+    "savedAutomatically": "Saved automatically",
+    "status": {
+      "savedVersion": "Saved version · Make further changes directly in OneNote",
+      "checkProcessing": "Check processing",
+      "creatingFinal": "Creating final summary …",
+      "editDirectly": "Edit the text directly. Every change is saved automatically.",
+      "updatedContinuously": "Updated continuously. Editable once complete.",
+      "processingConversation": "Processing conversation …",
+      "noneAvailable": "No summary available."
+    }
+  },
+  "tasks": {
+    "inline": {
+      "reverted": "Change reverted.",
+      "emptyDiscarded": "Empty description discarded; the previous text is kept.",
+      "describeTask": "Describe task",
+      "enterAnswer": "Enter answer",
+      "hint": "Saves automatically · Enter: close · Esc: revert"
+    },
+    "errors": {
+      "nameRequired": "Please enter a name.",
+      "checkEmail": "Please check the email address."
+    },
+    "task": {
+      "label": "Task {{number}}",
+      "include": "Add to task list",
+      "deselected": "Deselected",
+      "noLongerSuggested": "No longer suggested in the current conversation.",
+      "edit": "Edit task {{number}}",
+      "answerPrefix": "Answer: ",
+      "moreDetails": "More details",
+      "recipientField": "Recipient · if needed",
+      "recipient": "Recipient",
+      "dueField": "Due date · optional",
+      "due": "Due date"
+    },
+    "owner": {
+      "label": "Owner",
+      "ariaLabel": "Owner of task {{number}}",
+      "selectPerson": "Select person",
+      "addAnother": "+ Add another person …",
+      "me": " (me)"
+    },
+    "source": {
+      "self": "Me",
+      "calendar": "From the calendar invitation",
+      "call": "From the Teams call",
+      "contact": "From Teams chats · attendance not confirmed",
+      "manual": "Added for this meeting"
+    },
+    "newPerson": {
+      "name": "Name",
+      "nameAria": "Name of the additional person",
+      "email": "Email · optional",
+      "emailAria": "Email of the additional person",
+      "add": "Add person",
+      "cancel": "Cancel"
+    }
+  }
+}

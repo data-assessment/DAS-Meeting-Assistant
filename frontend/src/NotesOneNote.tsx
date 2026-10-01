@@ -1,5 +1,6 @@
 import { useEffect, useId, useRef, useState } from 'react'
 import { SearchableSelect } from './SearchableSelect'
+import { t } from './i18n'
 
 export type OneNoteState = { mode: 'local' | 'onenote'; status: 'ready' | 'preparing' | 'sending' | 'uncertain' | 'saved';
   taskSync?: { status: 'saved' | 'pending' | 'sending' | 'uncertain' | 'error' | 'conflict'; error?: string };
@@ -10,19 +11,19 @@ type Section = { id: string; name: string }
 type Targets = { account: string; notebooks: Book[]; suggestedBook: string; suggestedSection?: string; reason: string; domain: string; warning: string; rememberDomain?: boolean }
 async function post(url: string, body: unknown = {}) {
   const response = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) })
-  if (!response.ok) throw new Error('Client nicht erreichbar.')
+  if (!response.ok) throw new Error(t('oneNote.errors.clientUnreachable'))
   const result = await response.json()
-  if (!result.ok) throw new Error(result.error || 'OneNote nicht erreichbar.')
+  if (!result.ok) throw new Error(result.error || t('oneNote.errors.oneNoteUnreachable'))
   return result
 }
-const message = (error: unknown) => error instanceof Error ? error.message : 'OneNote nicht erreichbar.'
+const message = (error: unknown) => error instanceof Error ? error.message : t('oneNote.errors.oneNoteUnreachable')
 
 export function oneNoteSavedLabel(value: OneNoteState) {
   const status = value.taskSync?.status
-  return status === 'pending' || status === 'sending' ? 'Aufgabenänderungen werden in OneNote gespeichert …'
-    : status === 'uncertain' ? 'Aufgaben lokal gesichert · OneNote-Status prüfen'
-    : status === 'error' || status === 'conflict' ? 'Aufgaben lokal gesichert · OneNote noch nicht aktualisiert'
-    : '✓ In OneNote gespeichert'
+  return status === 'pending' || status === 'sending' ? t('oneNote.taskSync.saving')
+    : status === 'uncertain' ? t('oneNote.taskSync.uncertain')
+    : status === 'error' || status === 'conflict' ? t('oneNote.taskSync.notUpdated')
+    : t('oneNote.taskSync.saved')
 }
 
 function DestinationDialog({ base, value, complete, disabled, onClose, onSaved }: {
@@ -89,47 +90,47 @@ function DestinationDialog({ base, value, complete, disabled, onClose, onSaved }
   return <dialog ref={dialog} className="notes-destination-dialog" aria-labelledby={titleId} aria-describedby={helpId}
     onCancel={event => { event.preventDefault(); if (!saving) onClose() }}>
     <header className="destination-header">
-      <div><p className="destination-eyebrow">MEETING-NOTIZEN</p><h1 id={titleId} ref={heading} tabIndex={-1}>{complete ? 'Nach OneNote verschieben' : 'OneNote-Ziel wählen'}</h1></div>
-      <button className="destination-close" aria-label="Auswahl abbrechen" disabled={saving} onClick={onClose}>×</button>
+      <div><p className="destination-eyebrow">{t('oneNote.destination.eyebrow')}</p><h1 id={titleId} ref={heading} tabIndex={-1}>{complete ? t('oneNote.destination.titleMove') : t('oneNote.destination.titleChoose')}</h1></div>
+      <button className="destination-close" aria-label={t('oneNote.destination.cancelSelection')} disabled={saving} onClick={onClose}>×</button>
     </header>
     <div className="destination-body">
-      <p id={helpId} className="quiet">{complete ? 'Wählen Sie das Ziel für die fertigen Notizen. Es wird eine neue Seite angelegt.' : 'Hier wird nach Meeting-Ende automatisch eine neue Seite angelegt.'}</p>
+      <p id={helpId} className="quiet">{complete ? t('oneNote.destination.helpMove') : t('oneNote.destination.helpChoose')}</p>
       {error && <p className="notice" role="alert">{error}</p>}
       <>
-        {loading && <p className="destination-loading" role="status"><span className="notes-spinner" />Notizbücher werden geladen …</p>}
+        {loading && <p className="destination-loading" role="status"><span className="notes-spinner" />{t('oneNote.destination.loadingNotebooks')}</p>}
         {targets && <>
           {targets.warning && <p className="notice">{targets.warning}</p>}
-          <div className="destination-field"><span>Notizbuch</span>
-            <SearchableSelect ariaLabel="Notizbuch" value={book} disabled={saving} placeholder="Notizbuch auswählen oder suchen …"
-              emptyMessage="Kein passendes Notizbuch gefunden." toggleLabel="Notizbücher anzeigen"
+          <div className="destination-field"><span>{t('oneNote.destination.notebook')}</span>
+            <SearchableSelect ariaLabel={t('oneNote.destination.notebook')} value={book} disabled={saving} placeholder={t('oneNote.destination.notebookPlaceholder')}
+              emptyMessage={t('oneNote.destination.notebookEmpty')} toggleLabel={t('oneNote.destination.showNotebooks')}
               options={targets.notebooks.map(b => ({ value: b.sectionsUrl, label: b.label }))}
               onChange={next => { if (next !== book) { sectionGeneration.current++; setSection(''); setSections([]); setBook(next) }; setError('') }} />
             {book === targets.suggestedBook && targets.reason && <p className="destination-suggestion">{targets.reason}</p>}
           </div>
-          <div className="destination-field"><span>Abschnitt</span>
-            <SearchableSelect ariaLabel="Abschnitt" value={section} disabled={saving || loadingSections || !book}
-              placeholder={loadingSections ? 'Abschnitte werden geladen …' : book ? 'Abschnitt auswählen oder suchen …' : 'Zuerst ein Notizbuch wählen'}
-              emptyMessage="Kein passender Abschnitt gefunden." toggleLabel="Abschnitte anzeigen"
+          <div className="destination-field"><span>{t('oneNote.destination.section')}</span>
+            <SearchableSelect ariaLabel={t('oneNote.destination.section')} value={section} disabled={saving || loadingSections || !book}
+              placeholder={loadingSections ? t('oneNote.destination.loadingSections') : book ? t('oneNote.destination.sectionPlaceholder') : t('oneNote.destination.chooseNotebookFirst')}
+              emptyMessage={t('oneNote.destination.sectionEmpty')} toggleLabel={t('oneNote.destination.showSections')}
               options={sections.map(s => ({ value: s.id, label: s.name }))} onChange={setSection} />
           </div>
-          {sectionError && <div className="notice" role="alert"><p>{sectionError}</p><button disabled={saving || loadingSections} onClick={() => setSectionRetry(n => n + 1)}>Abschnitte erneut laden</button></div>}
-          {book && !loadingSections && !sectionError && !sections.length && <p className="quiet">Dieses Notizbuch enthält keine erreichbaren Abschnitte. Wählen Sie ein anderes Notizbuch oder legen Sie in OneNote einen Abschnitt an.</p>}
-          {targets.domain && <><label className="checkbox destination-remember"><input type="checkbox" disabled={saving} checked={remember} onChange={e => setRemember(e.target.checked)} /><span>Dieses Ziel für Termine mit <strong>{targets.domain}</strong> merken</span></label><p className="quiet">Weitere Termine mit dieser Kundendomäne werden automatisch in diesem Abschnitt gespeichert.</p></>}
-          {selectedBook && selectedSection && <div className="destination-preview"><span>Ausgewählter Speicherort</span><strong>{selectedBook.label} › {selectedSection.name}</strong></div>}
+          {sectionError && <div className="notice" role="alert"><p>{sectionError}</p><button disabled={saving || loadingSections} onClick={() => setSectionRetry(n => n + 1)}>{t('oneNote.destination.reloadSections')}</button></div>}
+          {book && !loadingSections && !sectionError && !sections.length && <p className="quiet">{t('oneNote.destination.noSections')}</p>}
+          {targets.domain && <><label className="checkbox destination-remember"><input type="checkbox" disabled={saving} checked={remember} onChange={e => setRemember(e.target.checked)} /><span>{t('oneNote.destination.rememberBefore')}<strong>{targets.domain}</strong>{t('oneNote.destination.rememberAfter')}</span></label><p className="quiet">{t('oneNote.destination.rememberHelp')}</p></>}
+          {selectedBook && selectedSection && <div className="destination-preview"><span>{t('oneNote.destination.selectedLocation')}</span><strong>{selectedBook.label} › {selectedSection.name}</strong></div>}
         </>}
         <details className="destination-help" open={!loading && !targets ? true : undefined}>
-          <summary>Kein passendes Notizbuch?</summary>
-          <p className="quiet">Sie können ein anderes Notizbuch wählen oder abbrechen und lokal speichern. Neue Notizbücher legen Sie in OneNote an; laden Sie die Auswahl danach neu. Bei Ladefehlern kann die Liste unvollständig sein.</p>
+          <summary>{t('oneNote.destination.noSuitableNotebook')}</summary>
+          <p className="quiet">{t('oneNote.destination.noSuitableNotebookHelp')}</p>
           <div className="onenote-actions">
-            <button disabled={loading || saving} onClick={() => void load()}>Liste neu laden</button>
-            {(error || targets?.warning) && <button disabled={loading || saving} onClick={() => void load(true)}>Microsoft-Zugriff prüfen</button>}
+            <button disabled={loading || saving} onClick={() => void load()}>{t('oneNote.destination.reloadList')}</button>
+            {(error || targets?.warning) && <button disabled={loading || saving} onClick={() => void load(true)}>{t('oneNote.destination.checkAccess')}</button>}
           </div>
         </details>
       </>
     </div>
     <footer className="destination-footer">
-      <p className="quiet">{complete ? 'Ihre lokale Notizdatei bleibt erhalten, bis OneNote die Ablage bestätigt hat.' : '„Fertig“ übernimmt das Ziel. Die fertigen Notizen werden nach Meeting-Ende automatisch gespeichert.'}</p>
-      <div><button disabled={saving} onClick={onClose}>Abbrechen</button><button className="primary" disabled={!canFinish} onClick={() => void finish()}>{saving ? 'Bitte warten …' : complete ? 'Verschieben' : 'Fertig'}</button></div>
+      <p className="quiet">{complete ? t('oneNote.destination.footerMove') : t('oneNote.destination.footerChoose')}</p>
+      <div><button disabled={saving} onClick={onClose}>{t('oneNote.destination.cancel')}</button><button className="primary" disabled={!canFinish} onClick={() => void finish()}>{saving ? t('oneNote.status.pleaseWait') : complete ? t('oneNote.destination.move') : t('oneNote.destination.done')}</button></div>
     </footer>
   </dialog>
 }
@@ -140,7 +141,7 @@ export function NotesOneNote({ id, value, complete, ended, savedLocally, revisio
 }) {
   const [open, setOpen] = useState(false), [busy, setBusy] = useState(false), [error, setError] = useState('')
   const [notice, setNotice] = useState('')
-  const folder = storage.split(/[\\/]/).filter(Boolean).pop() || 'Meeting-Notizen'
+  const folder = storage.split(/[\\/]/).filter(Boolean).pop() || t('oneNote.storage.defaultFolder')
   const base = `/api/notes/${id}/onenote`
   const locked = ['preparing', 'sending', 'uncertain', 'saved'].includes(value.status)
   async function publish() {
@@ -162,35 +163,35 @@ export function NotesOneNote({ id, value, complete, ended, savedLocally, revisio
     catch (e) { setError(message(e)) }
     finally { setBusy(false) }
   }
-  return <section className="notes-onenote" aria-label="Speicherort">
-    <div className="onenote-heading"><div>{ended && <span className="destination-eyebrow">SPEICHERORT</span>}<strong>{!ended ? 'Speicherort nach dem Meeting' : value.status === 'saved' ? 'In OneNote gespeichert' : complete && savedLocally && value.mode === 'local' ? 'Auf diesem PC gespeichert' : value.mode === 'onenote' ? 'OneNote' : 'Auf diesem PC'}</strong></div>
-      {value.status === 'saved' && <button onClick={() => void post(base + '/open').catch(e => setError(message(e)))}>OneNote öffnen</button>}
-      {!locked && value.mode === 'onenote' && <button disabled={busy || disabled} onClick={start}>{value.target ? 'Ändern' : 'Ziel wählen'}</button>}</div>
-    {!ended && !locked && <fieldset className="destination-methods" disabled={busy || disabled}><legend className="sr-only">Speicherort auswählen</legend>
-      <label className={value.mode === 'local' ? 'selected' : ''}><input type="radio" name={`storage-${id}`} checked={value.mode === 'local'} onChange={() => void local()} /><span>Auf diesem PC</span></label>
+  return <section className="notes-onenote" aria-label={t('oneNote.storage.label')}>
+    <div className="onenote-heading"><div>{ended && <span className="destination-eyebrow">{t('oneNote.storage.eyebrow')}</span>}<strong>{!ended ? t('oneNote.storage.afterMeeting') : value.status === 'saved' ? t('oneNote.storage.savedToOneNote') : complete && savedLocally && value.mode === 'local' ? t('oneNote.storage.savedOnPc') : value.mode === 'onenote' ? 'OneNote' : t('oneNote.storage.onPc')}</strong></div>
+      {value.status === 'saved' && <button onClick={() => void post(base + '/open').catch(e => setError(message(e)))}>{t('oneNote.storage.openOneNote')}</button>}
+      {!locked && value.mode === 'onenote' && <button disabled={busy || disabled} onClick={start}>{value.target ? t('oneNote.storage.change') : t('oneNote.storage.chooseDestination')}</button>}</div>
+    {!ended && !locked && <fieldset className="destination-methods" disabled={busy || disabled}><legend className="sr-only">{t('oneNote.storage.chooseLocation')}</legend>
+      <label className={value.mode === 'local' ? 'selected' : ''}><input type="radio" name={`storage-${id}`} checked={value.mode === 'local'} onChange={() => void local()} /><span>{t('oneNote.storage.onPc')}</span></label>
       <label className={value.mode === 'onenote' ? 'selected' : ''}><input type="radio" name={`storage-${id}`} checked={value.mode === 'onenote'} onChange={start} /><span>OneNote</span></label>
     </fieldset>}
     {notice && <p className="copy-success" role="status">{notice}</p>}
     {value.mode === 'onenote' ? <>
       {value.target && <p className="onenote-target">{value.target.bookName} › {value.target.sectionName}</p>}
-      {value.status === 'saved' ? <><p className="quiet" role="status">{oneNoteSavedLabel(value)}</p><p className="quiet">Aufgabenänderungen werden automatisch übernommen. Die Zusammenfassung bearbeiten und Aufgaben abhaken können Sie in OneNote.</p>
+      {value.status === 'saved' ? <><p className="quiet" role="status">{oneNoteSavedLabel(value)}</p><p className="quiet">{t('oneNote.taskSync.autoApplied')}</p>
           {value.taskSync?.error && <p className="notes-error" role="alert">{value.taskSync.error}</p>}
-          {['error', 'conflict', 'uncertain'].includes(value.taskSync?.status || '') && <button disabled={busy || disabled} onClick={() => void syncTasks()}>{busy ? 'Bitte warten …' : value.taskSync?.status === 'error' ? 'Aufgaben erneut übertragen' : 'Aufgabenstatus prüfen'}</button>}
+          {['error', 'conflict', 'uncertain'].includes(value.taskSync?.status || '') && <button disabled={busy || disabled} onClick={() => void syncTasks()}>{busy ? t('oneNote.status.pleaseWait') : value.taskSync?.status === 'error' ? t('oneNote.taskSync.resend') : t('oneNote.taskSync.checkStatus')}</button>}
         </>
-        : ['preparing', 'sending'].includes(value.status) || busy ? <p className="destination-loading" role="status"><span className="notes-spinner" />{value.status === 'uncertain' ? 'Übertragung wird geprüft …' : 'Wird in OneNote gespeichert …'}</p>
-        : value.status === 'uncertain' ? <p className="notice" role="status">Übertragung noch nicht bestätigt. „Status prüfen“ erzeugt keine weitere Seite.</p>
-        : <p className="quiet">{value.error ? 'Noch nicht in OneNote gespeichert. Ihre Notizen bleiben lokal gesichert.' : !value.target ? 'Wählen Sie ein Notizbuch und einen Abschnitt.' : complete ? 'Die automatische Ablage in OneNote wird gestartet …' : 'Wird nach Meeting-Ende automatisch in diesem Abschnitt gespeichert.'}</p>}
+        : ['preparing', 'sending'].includes(value.status) || busy ? <p className="destination-loading" role="status"><span className="notes-spinner" />{value.status === 'uncertain' ? t('oneNote.status.checkingTransfer') : t('oneNote.status.saving')}</p>
+        : value.status === 'uncertain' ? <p className="notice" role="status">{t('oneNote.status.unconfirmed')}</p>
+        : <p className="quiet">{value.error ? t('oneNote.status.notYetSaved') : !value.target ? t('oneNote.status.chooseTarget') : complete ? t('oneNote.status.autoSaveStarting') : t('oneNote.status.savedAfterMeeting')}</p>}
       {value.reason && !locked && <p className="quiet">{value.reason}</p>}
-      {!locked && value.target && value.error && <button className="primary" disabled={busy || disabled || !complete} onClick={() => void publish()}>Erneut versuchen</button>}
-      {value.status === 'uncertain' && <button disabled={busy} onClick={() => void publish()}>Status prüfen</button>}
-      {value.status === 'uncertain' && <button disabled={busy} onClick={() => void post(base + '/open').catch(e => setError(message(e)))}>OneNote öffnen</button>}
-      {ended && !locked && <button disabled={busy || disabled} onClick={() => void local()}>Auf diesem PC behalten</button>}
-    </> : <><p className="onenote-target">Ordner „{folder}“</p><p className="quiet">{complete ? savedLocally ? 'Sie können die Notizen jetzt nach OneNote verschieben.' : 'Die lokale Ablage ist noch nicht bestätigt. Beachten Sie den Speicherstatus.' : 'Wird nach Meeting-Ende automatisch hier gespeichert.'}</p>
+      {!locked && value.target && value.error && <button className="primary" disabled={busy || disabled || !complete} onClick={() => void publish()}>{t('oneNote.status.retry')}</button>}
+      {value.status === 'uncertain' && <button disabled={busy} onClick={() => void publish()}>{t('oneNote.status.checkStatus')}</button>}
+      {value.status === 'uncertain' && <button disabled={busy} onClick={() => void post(base + '/open').catch(e => setError(message(e)))}>{t('oneNote.storage.openOneNote')}</button>}
+      {ended && !locked && <button disabled={busy || disabled} onClick={() => void local()}>{t('oneNote.status.keepOnPc')}</button>}
+    </> : <><p className="onenote-target">{t('oneNote.local.folder', { folder })}</p><p className="quiet">{complete ? savedLocally ? t('oneNote.local.canMove') : t('oneNote.local.unconfirmed') : t('oneNote.local.savedAfterMeeting')}</p>
       {documentName && savedLocally && <div className="storage-filename">{documentName}</div>}
-      {ended && <div className="onenote-local-actions"><button disabled={busy || disabled || !complete} onClick={start}>Nach OneNote verschieben …</button>{savedLocally && <button onClick={onFolder}>Ordner öffnen</button>}</div>}</>}
+      {ended && <div className="onenote-local-actions"><button disabled={busy || disabled || !complete} onClick={start}>{t('oneNote.local.moveToOneNote')}</button>{savedLocally && <button onClick={onFolder}>{t('oneNote.local.openFolder')}</button>}</div>}</>}
     {(value.notice || value.localNotice) && <p className="notice" role="status">{value.localNotice || value.notice}</p>}
     {(error || value.error) && <p className="notes-error" role="alert">{error || value.error}</p>}
     {open && !locked && <DestinationDialog base={base} value={value} complete={complete} disabled={disabled} onClose={() => setOpen(false)}
-      onSaved={async () => { setOpen(false); await refresh(); setNotice(complete ? 'Die Ablage in OneNote wird gestartet.' : 'Speicherort übernommen.'); }} />}
+      onSaved={async () => { setOpen(false); await refresh(); setNotice(complete ? t('oneNote.storage.started') : t('oneNote.storage.applied')); }} />}
   </section>
 }

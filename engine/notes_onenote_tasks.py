@@ -7,12 +7,18 @@ replace the page body, summary, or an unrecognized/externally changed paragraph.
 import hashlib
 import html
 from html.parser import HTMLParser
+from engine import notes_i18n
+from engine.notes_i18n import t
+
+
+def task_headings():
+    """Parsed, not emitted: pages created in any app language keep synchronizing."""
+    return notes_i18n.variants("document.headings.tasks")
 
 
 class Conflict(ValueError):
     def __init__(self):
-        super().__init__("Diese Aufgabe wurde in OneNote geändert oder konnte nicht eindeutig zugeordnet werden. "
-                         "Ihre Korrektur bleibt lokal gesichert. Bitte die Aufgabe in OneNote prüfen und dort ergänzen.")
+        super().__init__(t("oneNote.errors.taskConflict"))
 
 
 def snapshot(draft):
@@ -21,19 +27,20 @@ def snapshot(draft):
         if not task["included"]:
             continue
         prefix = "task-" + hashlib.sha256(task["id"].encode()).hexdigest()[:24]
-        detail = [task["title"], task["owner"] or "Verantwortlich: noch zu klären"]
+        detail = [task["title"], task["owner"] or t("document.labels.ownerToBeClarified")]
         if task["due"]:
-            detail.append("Termin: " + task["due"])
+            detail.append(t("document.labels.due") + ": " + task["due"])
         lines[prefix] = {"text": " — ".join(detail), "todo": True}
         if task["recipient"]:
-            lines[prefix + "-recipient"] = {"text": "Empfänger: " + task["recipient"], "todo": False}
+            lines[prefix + "-recipient"] = {"text": t("document.labels.recipient") + ": " + task["recipient"], "todo": False}
         for question in task["questions"]:
             if question["field"] != "owner":
-                answer = question["answer"] or (task["recipient"] if question["field"] == "recipient" else "") or "Noch zu klären"
+                answer = (question["answer"] or (task["recipient"] if question["field"] == "recipient" else "")
+                          or t("document.labels.toBeClarified"))
                 key = prefix + "-" + hashlib.sha256(question["id"].encode()).hexdigest()[:16]
                 lines[key] = {"text": question["label"] + " " + answer, "todo": False}
     if not lines:
-        lines["tasks-empty"] = {"text": "Keine Aufgaben ausgewählt.", "todo": False}
+        lines["tasks-empty"] = {"text": t("document.noTasks"), "todo": False}
     return lines
 
 
@@ -65,13 +72,17 @@ class Element:
 
 
 class Page(HTMLParser):
-    def __init__(self, content, meeting_id):
+    def __init__(self, content, meeting_id, heading=None):
         super().__init__(convert_charrefs=True)
         self.root = self.current = Element()
         self.elements = []
         self.feed(content)
         markers = [e for e in self.elements if e.attrs.get("data-id") == "meeting-" + meeting_id]
-        headings = [e for e in self.elements if e.tag == "h2" and normalize(e.text()) == "Aufgaben"]
+        headings = [e for e in self.elements if e.tag == "h2" and normalize(e.text()) in task_headings()]
+        # The page's own heading wins, so a summary heading in the other language
+        # ("## Tasks" on a German page) is not taken for the task section.
+        own = [e for e in headings if heading and normalize(e.text()) == heading]
+        headings = own or headings
         if len(markers) != 1 or len(headings) != 1 or self.elements.index(headings[0]) < self.elements.index(markers[0]):
             raise Conflict()
         self.heading = headings[0]
@@ -111,7 +122,7 @@ class Page(HTMLParser):
             return False
         if line is None:
             return not normalize(node.text()) and not node.attrs.get("data-tag")
-        todo = any(t.strip().startswith("to-do") for t in node.attrs.get("data-tag", "").split(","))
+        todo = any(tag.strip().startswith("to-do") for tag in node.attrs.get("data-tag", "").split(","))
         return normalize(node.text()) == normalize(line["text"]) and todo == line["todo"]
 
     def locate(self, key, old, desired):
@@ -138,13 +149,13 @@ class Page(HTMLParser):
         return value
 
 
-def plan(content, meeting_id, before, after, *, reconcile=False):
+def plan(content, meeting_id, before, after, *, reconcile=False, heading=None):
     """Return a minimal patch or, for an uncertain write, only verify its result.
 
     Uncertain writes are never reissued. A read must confirm every changed line
     before another update can run. This also covers partially applied batches.
     """
-    page = Page(content, meeting_id)
+    page = Page(content, meeting_id, heading)
     changed = {key for key in before.keys() | after.keys() if before.get(key) != after.get(key)}
     nodes, replacements, inserts = {}, [], []
     used = set()
@@ -159,8 +170,7 @@ def plan(content, meeting_id, before, after, *, reconcile=False):
         if page.matches(node, desired):
             continue
         if reconcile:
-            raise ValueError("Die Aufgabenänderung ist noch nicht bestätigt. Ihre Korrektur bleibt lokal gesichert. "
-                             "Bitte OneNote öffnen oder den Status später erneut prüfen. Es wird nichts erneut übertragen.")
+            raise ValueError(t("oneNote.errors.taskChangePending"))
         if not page.matches(node, old):
             raise Conflict()
         if node is not None:

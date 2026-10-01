@@ -9,6 +9,16 @@ import pytest
 
 
 @pytest.fixture(autouse=True)
+def _german_app_language():
+    """The app language is process-wide and defaults to the Windows display language;
+    tests expect German unless they switch it themselves."""
+    from engine import notes_i18n
+    notes_i18n.set_language("de")
+    yield
+    notes_i18n.set_language("de")
+
+
+@pytest.fixture(autouse=True)
 def _default_local_ai(monkeypatch):
     # Profile-reload tests mutate the shared config module. Ordinary notes tests
     # use synthetic local credentials; managed tests opt in explicitly.
