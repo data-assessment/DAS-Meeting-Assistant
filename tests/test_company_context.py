@@ -9,7 +9,7 @@ import pytest
 from dotenv import dotenv_values
 
 import config
-from engine import meeting_notes as mn, settings_schema, summarize
+from engine import meeting_notes as mn, prompts, settings_schema, summarize
 from engine.speech.mixed import MixedSession
 from engine.speech.session import apply_phrase_list
 from test_audio_device_recovery import (HEADSET_MIC, HEADSET_OUT, LAPTOP_MIC, LAPTOP_OUT, Machine,
@@ -105,17 +105,18 @@ def test_company_context_is_a_user_setting_in_managed_builds(monkeypatch):
 
 def test_notes_prompt_carries_context_and_dictionary_as_background(vocabulary):
     prompt = mn.system_prompt("de")
-    assert prompt.startswith(mn.SYSTEM)
-    assert "UNTERNEHMENSKONTEXT" in prompt and CONTEXT in prompt
-    assert "Nichts daraus in die Notizen übernehmen, was im Gespräch nicht vorkam" in prompt
+    rules = prompts.NOTES.replace("{language}", "German")
+    assert prompt.startswith(rules)
+    assert "COMPANY CONTEXT" in prompt and CONTEXT in prompt
+    assert "Do not add anything from it to the notes that was not said in the conversation" in prompt
     assert "decídalo, Review-Agent" in prompt
-    assert "englische Meeting-Notizen" in mn.system_prompt("en") and CONTEXT in mn.system_prompt("en")
+    assert "in English, even if" in mn.system_prompt("en") and CONTEXT in mn.system_prompt("en")
 
 
 def test_notes_prompt_is_unchanged_without_context(monkeypatch):
     monkeypatch.setattr(config, "STT_DICTIONARY", [])
     monkeypatch.setattr(config, "COMPANY_CONTEXT", "")
-    assert mn.system_prompt("de") == mn.SYSTEM
+    assert mn.system_prompt("de") == prompts.NOTES.replace("{language}", "German")
 
 
 def test_legacy_summary_gets_the_same_background(vocabulary, monkeypatch):
@@ -123,8 +124,11 @@ def test_legacy_summary_gets_the_same_background(vocabulary, monkeypatch):
     monkeypatch.setattr(summarize, "_enabled", lambda: (True, ""))
     monkeypatch.setattr(summarize, "_chat", lambda messages: seen.append(messages) or ("ok", None))
     monkeypatch.setattr(config, "COMPANY_CONTEXT", CONTEXT + " {kein Platzhalter}")
-    assert summarize.summarize("Transkript").text == "ok"
-    assert CONTEXT + " {kein Platzhalter}" in seen[0][0]["content"]
+    assert summarize.summarize("Transkript", language="de").text == "ok"
+    system = seen[0][0]["content"]
+    assert CONTEXT + " {kein Platzhalter}" in system
+    assert "Answer only in German" in system and "{language}" not in system
+    assert seen[0][1]["content"] == "Participants: unknown\n\nTranscript:\nTranskript"
 
 
 def test_phrase_list_is_added_to_both_native_recognizers():

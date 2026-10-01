@@ -1,6 +1,7 @@
 """Opt-in Azure formatting evaluation with synthetic content only; no real meetings."""
 import json
 import re
+from engine import prompts
 from engine.meeting_notes import generate_draft
 
 TOPICS = [
@@ -19,7 +20,7 @@ def evaluate(provider):
     flat = {"summary":" ".join(TOPICS),"decisions":"","openQuestions":"","tasks":[]}
     cases = {
         "final_hour_scenario": conversation,
-        "update_flat_previous_notes": "Bisheriger Notizenstand:\n" + json.dumps(flat, ensure_ascii=False) + "\nNeue Gesprächsabschnitte:\nPerson A: Wir halten an den genannten Beschlüssen fest. Bitte den Piloten nicht mit einer vollständigen Produktivfreigabe verwechseln. Person B: Einverstanden; die Kostenfreigabe bleibt offen.",
+        "update_flat_previous_notes": prompts.NOTES_PREVIOUS + "\n" + json.dumps(flat, ensure_ascii=False) + "\n" + prompts.NOTES_SEGMENTS + "\nPerson A: Wir halten an den genannten Beschlüssen fest. Bitte den Piloten nicht mit einer vollständigen Produktivfreigabe verwechseln. Person B: Einverstanden; die Kostenfreigabe bleibt offen.",
     }
     results, drafts = [], {}
     for name, text in cases.items():

@@ -89,7 +89,7 @@ def test_summary_prompt_uses_the_meeting_language(monkeypatch):
     review = SimpleNamespace(language="de", provider={})
     notes_i18n.set_language("en")
     asyncio.run(meeting_notes.review_draft(review, "text"))
-    assert seen == [meeting_notes.SYSTEM]
+    assert len(seen) == 1 and "in German, even if" in seen[0]
 
 
 def test_onenote_page_and_task_lines_in_both_languages(setup):

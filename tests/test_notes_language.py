@@ -115,12 +115,16 @@ def test_configure_validation_message_follows_app_language(notes):
         notes.configure({"enabled": True, "unknown": "x"})
 
 
-def test_system_prompt_keeps_german_rules_and_switches_output_language():
-    assert mn.system_prompt("de") == mn.SYSTEM
-    prompt = mn.system_prompt("en")
-    assert prompt != mn.SYSTEM
-    assert "auf Englisch schreiben" in prompt
-    assert "englische Meeting-Notizen" in prompt
+def test_system_prompt_is_english_and_only_names_the_output_language(monkeypatch):
+    from engine import prompts
+    monkeypatch.setattr(mn.config, "STT_DICTIONARY", [])
+    monkeypatch.setattr(mn.config, "COMPANY_CONTEXT", "")
+    german, english = mn.system_prompt("de"), mn.system_prompt("en")
+    assert "write every text value" in german and "in German, even if" in german
+    assert "in English, even if" in english
+    assert german.replace("German", "English") == english  # one rule set for every language
+    assert "{language}" not in german and "Erstelle" not in german
+    assert prompts.language_name("de-DE") == "German" and prompts.language_name("French") == "French"
 
 
 def test_t_keeps_intentionally_empty_texts(monkeypatch):
