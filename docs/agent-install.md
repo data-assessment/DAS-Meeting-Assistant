@@ -287,9 +287,10 @@ Graph-dependent features will remain unverified and may show a connection warnin
 
 A packaged app does not load `.env` from its installation directory. General Settings
 persists editable runtime configuration to the per-user `.env`. Values in that file are
-read literally: references such as `${VAR}` or `$VAR` are not expanded (since the
-company-context setting, which may contain such text). Write the actual value, not a
-reference to another environment variable. The general
+read literally: `${VAR}` and `${VAR:-default}` stay as written instead of being replaced by
+environment values. Earlier versions expanded them; this changed so that free text such as
+the company context is stored exactly as entered. Write the actual value, not a reference to
+another environment variable. The general
 `AOAI_API_KEY`/`AOAI_ENDPOINT` fields are for the other processing paths; they do **not**
 populate Meeting Notes' `speechKey`/`chatKey` options. Configure those in step 5.
 

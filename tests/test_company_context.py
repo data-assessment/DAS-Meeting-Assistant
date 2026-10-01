@@ -1,5 +1,7 @@
 """Business dictionary and company context reach speech recognition and the notes model."""
 import asyncio
+import contextlib
+import importlib
 import os
 from types import SimpleNamespace as NS
 
@@ -42,17 +44,28 @@ def test_multi_line_context_survives_the_settings_file(tmp_path, monkeypatch):
     assert settings_schema.write_env({"COMPANY_CONTEXT": CONTEXT}) == []  # unchanged on a second save
 
 
-def test_context_with_dollar_braces_stays_literal_through_reload_and_later_saves(tmp_path, monkeypatch):
-    """Quoting alone does not stop python-dotenv's ${...} expansion (both quote styles)."""
-    import importlib
-    import paths
-    text = "Kosten ${UNSET_VARIABLE} und ${EXISTING_VARIABLE} sowie $EXISTING_VARIABLE\nZweite Zeile"
-    monkeypatch.setenv("LOCALAPPDATA", str(tmp_path))
-    monkeypatch.setenv("EXISTING_VARIABLE", "SECRET-VALUE")
-    monkeypatch.delenv("UNSET_VARIABLE", raising=False)
-    monkeypatch.delenv("COMPANY_CONTEXT", raising=False)
-    monkeypatch.setattr(settings_schema, "_ENV_PATH", paths.data_dir() / ".env")
+@contextlib.contextmanager
+def _exact_environment():
+    """Restore os.environ exactly, including absent versus empty values. load_dotenv writes
+    keys that monkeypatch never saw, so monkeypatch alone cannot undo them."""
+    before = dict(os.environ)
     try:
+        yield
+    finally:
+        os.environ.clear()
+        os.environ.update(before)
+        importlib.reload(config)
+
+
+def _save_reload_and_save_again(tmp_path):
+    """Save the context, reload as the app does, make an unrelated save, reload again."""
+    import paths
+    text = "Kosten ${UNSET_VARIABLE} und ${EXISTING_VARIABLE:-standard} sowie ${EXISTING_VARIABLE}\nZweite Zeile"
+    with _exact_environment(), pytest.MonkeyPatch.context() as patch:
+        patch.setenv("LOCALAPPDATA", str(tmp_path))
+        patch.setenv("EXISTING_VARIABLE", "SECRET-VALUE")
+        patch.delenv("UNSET_VARIABLE", raising=False)
+        patch.setattr(settings_schema, "_ENV_PATH", paths.data_dir() / ".env")
         settings_schema.write_env({"COMPANY_CONTEXT": text})
         importlib.reload(config)  # what the app does after saving and at the next start
         assert config.COMPANY_CONTEXT == text
@@ -61,14 +74,26 @@ def test_context_with_dollar_braces_stays_literal_through_reload_and_later_saves
         assert config.COMPANY_CONTEXT == text
         assert dotenv_values(settings_schema._ENV_PATH, interpolate=False)["COMPANY_CONTEXT"] == text
         assert "SECRET-VALUE" not in settings_schema._ENV_PATH.read_text(encoding="utf-8")
-    finally:
-        # load_dotenv put the file's keys into os.environ; monkeypatch cannot undo keys it
-        # never saw, and a leaked COMPANY_CONTEXT would end up in every later test's prompt.
-        written = dotenv_values(settings_schema._ENV_PATH, interpolate=False) if settings_schema._ENV_PATH.exists() else {}
-        for key in written:
-            os.environ.pop(key, None)
-        monkeypatch.undo()
-        importlib.reload(config)
+
+
+def test_context_with_dollar_braces_stays_literal_through_reload_and_later_saves(tmp_path):
+    """Quoting alone does not stop python-dotenv's ${...} expansion (both quote styles)."""
+    before = dict(os.environ)
+    _save_reload_and_save_again(tmp_path)
+    assert dict(os.environ) == before and config.COMPANY_CONTEXT == ""
+
+
+def test_the_literal_check_restores_pre_existing_and_empty_values(tmp_path):
+    """The scenario rewrites SUMMARIZE and COMPANY_CONTEXT; the caller's values must come back."""
+    with _exact_environment():
+        os.environ["SUMMARIZE"] = "false"   # e.g. exported by a developer or CI job
+        os.environ["COMPANY_CONTEXT"] = ""  # present but empty, which is not the same as absent
+        os.environ.pop("STT_DICTIONARY", None)
+        before = dict(os.environ)
+        _save_reload_and_save_again(tmp_path)
+        assert dict(os.environ) == before
+        assert os.environ["SUMMARIZE"] == "false" and os.environ["COMPANY_CONTEXT"] == ""
+        assert "STT_DICTIONARY" not in os.environ
     assert config.COMPANY_CONTEXT == ""
 
 
