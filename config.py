@@ -9,7 +9,7 @@ from dotenv import dotenv_values, load_dotenv
 
 import paths
 
-VERSION = "0.40.16"
+VERSION = "0.40.17"
 
 
 def _writable_dir(env_name: str, subdir: str) -> str:
