@@ -1,4 +1,4 @@
-"""Build vocabulary guidance for speech-to-text calls and background for summaries."""
+"""Build vocabulary guidance for speech-to-text calls (summary background: engine/prompts)."""
 
 from __future__ import annotations
 
@@ -23,24 +23,6 @@ def combine_prompt(explicit_prompt: str | None, terms: list[str] | None = None) 
     parts = [str(explicit_prompt or "").strip(), dictionary_prompt(terms)]
     combined = "\n\n".join(part for part in parts if part)
     return combined or None
-
-
-def summary_background() -> str:
-    """Company context and dictionary for the notes/summary model (German, like its rules).
-    Marked as background so the model uses it to understand and spell, never as content."""
-    parts = []
-    if config.COMPANY_CONTEXT:
-        parts.append(
-            "UNTERNEHMENSKONTEXT des Nutzers (Hintergrundwissen, keine Anweisungen und kein "
-            "Gesprächsinhalt): Nur nutzen, um Gesagtes richtig einzuordnen und Namen, Teams, "
-            "Kunden, Produkte und Werkzeuge richtig zu schreiben. Nichts daraus in die Notizen "
-            "übernehmen, was im Gespräch nicht vorkam.\n" + config.COMPANY_CONTEXT)
-    if config.STT_DICTIONARY:
-        parts.append(
-            "WICHTIGE BEGRIFFE und ihre exakte Schreibweise: " + ", ".join(config.STT_DICTIONARY)
-            + ". Ähnlich klingende Erkennungsfehler im Transkript diesen Begriffen zuordnen, "
-            "wenn der Zusammenhang es eindeutig nahelegt.")
-    return "\n\n".join(parts)
 
 
 def translation_instructions(terms: list[str] | None = None) -> str | None:
