@@ -10,16 +10,20 @@ ordered model list; the top is the default/active model and the rest are fallbac
 The connection is chosen automatically (primary preferred, failover if the primary
 can't serve the model), so lists hold plain model names — no per-model connection.
 
-Field types: text | number | bool | select | combo | list | secret.
+Field types: text | textarea | number | bool | select | combo | list | secret.
+- textarea: multi-line free text (stored quoted in .env so line breaks survive).
 - list:   ordered strings (add / remove / reorder); the FIRST is the default.
 - secret: never sent to the client; an empty value on save means "leave unchanged".
 - restart: only takes effect after an app restart.
 - visibleWhenContains {key, value}: only show when another field contains `value`.
 """
+import re
+
 from dotenv import dotenv_values
 
 import config
 import paths
+from engine.notes_i18n import t
 
 _ENV_PATH = paths.data_dir() / ".env"
 
@@ -132,6 +136,9 @@ SCHEMA = [
            help="Chat model(s) for summary / cleanup / translate; tried top-down, "
                 "primary connection then failover."),
         _f("SUMMARY_LANGUAGE", "Summary language", "select", options=_SUMMARY_LANGS),
+        _f("COMPANY_CONTEXT", "Company context", "textarea",
+           help="Background for the notes: what your company does, teams, customers, products, "
+                "tools. Sent with each summary request; stored only in your user settings."),
     ]},
     {"group": "OneNote", "fields": [
         _f("ONENOTE_ENABLED", "Offer 'Save to OneNote' after meetings", "bool"),
@@ -177,7 +184,7 @@ _MANAGED_GROUPS = [
         "MAX_RECORDING_MINUTES", "FETCH_ATTENDEES", "USE_TEAMS_TRANSCRIPT",
         "STT_LANGUAGE", "STT_DICTIONARY", "CLEAN_TRANSCRIPT",
     ]),
-    ("Summary", ["SUMMARIZE", "SUMMARY_LANGUAGE"]),
+    ("Summary", ["SUMMARIZE", "SUMMARY_LANGUAGE", "COMPANY_CONTEXT"]),
     ("OneNote", [
         "ONENOTE_ENABLED", "ONENOTE_NOTEBOOK", "ONENOTE_SECTION",
         "ONENOTE_SITE_PATHS",
@@ -240,6 +247,30 @@ def _to_env(val) -> str:
     return str(val)
 
 
+def _checked_dictionary(raw) -> list[str]:
+    """The normalized dictionary, or a translated error that names the term to fix."""
+    try:
+        return config.normalize_stt_dictionary(raw, strict=True)
+    except ValueError:
+        candidates = re.split(r"[,\r\n]+", raw) if isinstance(raw, str) else list(raw or [])
+        for value in candidates:
+            term = " ".join(str(value or "").split())
+            if len(term) > config.STT_DICTIONARY_MAX_TERM_LENGTH or any(c in term for c in ",=<>"):
+                raise ValueError(t("settings.errors.dictionaryTerm", term=term[:60],
+                                   max=config.STT_DICTIONARY_MAX_TERM_LENGTH)) from None
+        raise ValueError(t("settings.errors.dictionaryTooMany", max=config.STT_DICTIONARY_MAX_TERMS)) from None
+
+
+def _env_line_value(value: str) -> str:
+    """One .env line per key: text with line breaks, quotes or a comment marker is
+    double-quoted with escapes, which python-dotenv decodes back; other values are
+    written unchanged, as before. Quoting does not stop "${...}" expansion, which is why
+    this file is always read with interpolate=False."""
+    if not ("\n" in value or '"' in value or "'" in value or " #" in value):
+        return value
+    return '"' + value.replace("\\", "\\\\").replace('"', '\\"').replace("\n", "\\n") + '"'
+
+
 def write_env(updates: dict) -> list[str]:
     """Merge the posted values into the per-user .env (preserving any unmanaged keys).
     Superseded legacy model keys are removed so they can't shadow the new *_MODELS
@@ -256,7 +287,8 @@ def write_env(updates: dict) -> list[str]:
             "These settings are controlled by the managed service: "
             + ", ".join(unsupported)
         )
-    existing = {k: v for k, v in dotenv_values(_ENV_PATH).items() if v is not None} \
+    # Literal, like config.py loads it: an expanded "${...}" must not be written back.
+    existing = {k: v for k, v in dotenv_values(_ENV_PATH, interpolate=False).items() if v is not None} \
         if _ENV_PATH.exists() else {}
     for legacy in config.LEGACY_MODEL_KEYS:
         existing.pop(legacy, None)  # migrate away from the old per-resource keys
@@ -265,12 +297,17 @@ def write_env(updates: dict) -> list[str]:
         if key in SECRET_KEYS and (raw is None or raw == ""):
             continue  # "leave unchanged"
         if key == "STT_DICTIONARY":
-            raw = config.normalize_stt_dictionary(raw, strict=True)
+            raw = _checked_dictionary(raw)
+        if key == "COMPANY_CONTEXT":
+            try:
+                raw = config.normalize_company_context(raw, strict=True)
+            except ValueError:
+                raise ValueError(t("settings.errors.contextTooLong", max=config.COMPANY_CONTEXT_MAX_LENGTH)) from None
         val = _to_env(raw)
         if existing.get(key) != val:
             changed.append(key)
         existing[key] = val
     _ENV_PATH.parent.mkdir(parents=True, exist_ok=True)
-    body = "\n".join(f"{k}={v}" for k, v in existing.items())
+    body = "\n".join(f"{k}={_env_line_value(v)}" for k, v in existing.items())
     _ENV_PATH.write_text(body + "\n", encoding="utf-8")
     return changed

@@ -52,6 +52,10 @@ Deutsch und Englisch; die App-Sprache wählst du über die Flagge oben im Fenste
 
 - Mikrofon und Gesprächswiedergabe über Azure Speech transkribieren und während
   des Meetings Notizen und Aufgabenvorschläge aktualisieren.
+- Unter Einstellungen › Unternehmenskontext wichtige Begriffe (Produkte, Kunden,
+  Personen, Fachbegriffe) pflegen und Unternehmen, Teams und Werkzeuge beschreiben.
+  Die Spracherkennung bevorzugt die Begriffe, die Notizen benennen damit Dinge richtig.
+  Der Text wird mit jeder Zusammenfassung an dein Textmodell gesendet.
 - Zusammenfassungen bearbeiten, Aufgaben auswählen und Verantwortliche zuordnen.
 - Titel und eingeladene Personen aus einem passenden Outlook-Termin übernehmen.
   Die Einladung ersetzt keine Anwesenheitsliste.

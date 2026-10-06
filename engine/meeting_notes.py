@@ -21,6 +21,7 @@ from openai import OpenAI
 import config
 from engine.speech.mixed import MixedSession
 from engine.speech.session import validate
+from engine.stt_context import summary_background
 from engine import notes_i18n
 from engine.notes_i18n import t
 
@@ -124,12 +125,15 @@ Regeln zur Aufgabenstellung oben. Vorschläge nicht als Beschluss darstellen. Ke
 """
 
 def system_prompt(language="de"):
-    """The rules stay German; only the output language follows the meeting's notes language."""
+    """The rules stay German; only the output language follows the meeting's notes language.
+    Company context and business dictionary are appended as background when configured."""
+    prompt = SYSTEM
     if language == "en":
-        return SYSTEM.replace("Erstelle knappe deutsche Meeting-Notizen", "Erstelle knappe englische Meeting-Notizen", 1) + (
+        prompt = SYSTEM.replace("Erstelle knappe deutsche Meeting-Notizen", "Erstelle knappe englische Meeting-Notizen", 1) + (
             "AUSGABESPRACHE: Alle Textwerte (summary, decisions, openQuestions, Aufgaben, "
             "Sachfragen und Optionen) auf Englisch schreiben, auch wenn das Gespräch auf Deutsch geführt wurde.\n")
-    return SYSTEM
+    background = summary_background()
+    return prompt + ("\n" + background + "\n" if background else "")
 
 def generate_draft(transcript, provider, language="de"):
     """Managed routing always comes from the profile, never a saved local key. `language` is
@@ -234,7 +238,8 @@ class Review:
         return {"id": self.id, "title": self.title, "displayTitle": display_title, "language": self.language,
                 "started": self.started, "ended": self.ended,
                 "status": self.status, "error": localize(self.error),
-                "warning": localize(self.warning or getattr(self.session, "error", "") or getattr(self.session, "notice", "")),
+                "warning": localize(self.warning or getattr(self.session, "error", "") or getattr(self.session, "notice", "")
+                                    or getattr(self.session, "dictionary_warning", "")),
                 "draft": self.draft, "busy": self.busy,
                 "tasksEditable": self.draft is not None and not self.discarded and self.onenote.get("status") not in ("preparing", "sending", "uncertain"),
                 "canSummarize": bool(self.raw_deadline > time.monotonic() and not self.busy),
@@ -429,7 +434,8 @@ class Notes:
         review.session.stop()
         done = await asyncio.to_thread(review.session.finished.wait, 25)
         capture_warning = getattr(review.session, "capture_warning", None)
-        review.warning = review.session.error or (capture_warning() if capture_warning else "")
+        review.warning = (review.session.error or (capture_warning() if capture_warning else "")
+                          or getattr(review.session, "dictionary_warning", ""))
         review.status = "Zusammenfassung wird erstellt"
         if review.live_task:
             await asyncio.shield(review.live_task)

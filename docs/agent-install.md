@@ -286,7 +286,11 @@ start off. Manual Meeting Notes can still be configured and tested using Azure k
 Graph-dependent features will remain unverified and may show a connection warning.
 
 A packaged app does not load `.env` from its installation directory. General Settings
-persists editable runtime configuration to the per-user `.env`. The general
+persists editable runtime configuration to the per-user `.env`. Values in that file are
+read literally: `${VAR}` and `${VAR:-default}` stay as written instead of being replaced by
+environment values. Earlier versions expanded them; this changed so that free text such as
+the company context is stored exactly as entered. Write the actual value, not a reference to
+another environment variable. The general
 `AOAI_API_KEY`/`AOAI_ENDPOINT` fields are for the other processing paths; they do **not**
 populate Meeting Notes' `speechKey`/`chatKey` options. Configure those in step 5.
 

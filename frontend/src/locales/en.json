@@ -236,6 +236,18 @@
     "storageLocation": "Storage location for meeting notes",
     "backToMeeting": "Back to meeting",
     "backToMeetings": "Back to all meetings",
+    "context": {
+      "title": "Company context",
+      "intro": "Helps speech recognition and the notes get names, products and context right. Applies from the next meeting or the next summary.",
+      "dictionary": "Important terms",
+      "dictionaryPlaceholder": "e.g.\ndecídalo\nData Assessment Solutions\nReview agent",
+      "dictionaryHint": "One term per line, spelled exactly: products, customers, people, jargon. At most 100 terms of up to 80 characters each, without comma, =, < or >.",
+      "text": "About the company",
+      "textPlaceholder": "e.g. what we work on and with whom, which teams exist, which tools we use.",
+      "textHint": "Sent to the text model with every summary, including the interim updates during the meeting (about every two minutes). {{used}} of {{max}} characters.",
+      "save": "Save context",
+      "saved": "✓ Context saved."
+    },
     "changeAfterMeeting": "Devices and access can be changed after the meeting.",
     "turnOffAutoStart": "Turn off automatic start",
     "notesInsteadOfRecording": "Meeting notes instead of file recording",

@@ -115,6 +115,8 @@
 .meeting-notes .summary-inline-editor{display:block;width:100%;height:100%;min-height:0;resize:none;padding:8px;line-height:1.5}
 .summary-body:has(.summary-inline-editor){overflow:hidden}.inline-save{font-size:11px;font-weight:400;color:var(--notes-accent);text-align:right}
 .notes-copy{display:flex;align-items:center;flex-wrap:wrap;gap:8px 12px;margin:20px 0}.notes-copy p{flex-basis:100%;margin:0}.copy-success{color:var(--notes-accent)}
+.company-context{margin-top:24px;padding-top:16px;border-top:1px solid var(--notes-line)}
+.meeting-notes .company-context textarea{width:100%;box-sizing:border-box;resize:vertical;font:inherit;line-height:1.5}
 
 /* Paragraphs and list lines remain visible while editing and reading. */
 .meeting-notes .summary-inline-editor{line-height:1.65}
